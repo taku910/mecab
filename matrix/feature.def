@@ -1,0 +1,58 @@
+#
+# ここから bigram 定義
+#
+# %F[0..N] Unigram文脈
+# %F?: 未定義の場合は,このテンプレートを適用しない
+
+# POS Unigram
+UNIGRAM U1:%F[0]
+UNIGRAM U2:%F[0],%F?[1]
+UNIGRAM U3:%F[0],%F[1],%F?[2]
+UNIGRAM U4:%F[0],%F[1],%F[2],%F?[3]
+
+# Word-POS
+UNIGRAM W0:%F[6]
+UNIGRAM W1:%F[0]/%F[6]
+UNIGRAM W2:%F[0],%F?[1]/%F[6]
+UNIGRAM W3:%F[0],%F[1],%F?[2]/%F[6]
+UNIGRAM W4:%F[0],%F[1],%F[2],%F?[3]/%F[6]
+
+# Word-Read-POS
+UNIGRAM R0:%F[7]
+UNIGRAM R1:%F[6],%F[7]
+UNIGRAM R2:%F[0],%F[6],%F[7]
+UNIGRAM R3:%F[0],%F?[1],%F[6],%F[7]
+UNIGRAM R4:%F[0],%F[1],%F?[2],%F[6],%F[7]
+UNIGRAM R5:%F[0],%F[1],%F[2],%F?[3],%F[6],%F[7]
+
+# char type
+UNIGRAM T0:%t
+UNIGRAM T1:%F[0]/%t
+UNIGRAM T2:%F[0],%F?[1]/%t
+UNIGRAM T3:%F[0],%F[1],%F?[2]/%t
+UNIGRAM T4:%F[0],%F[1],%F[2],%F?[3]/%t
+
+#
+# ここから bigram 定義
+#
+# %L[0..N] 左文脈
+# %R[0..N] 右文脈
+#
+# %R?: 未定義の場合は,このテンプレートを適用しない
+
+# 品詞
+BIGRAM B00:%L[0]/%R[0]
+BIGRAM B01:%L[0],%L?[1]/%R[0]
+BIGRAM B02:%L[0]/%R[0],%R?[1]
+BIGRAM B03:%L[0]/%R[0],%R[1],%R?[2]
+BIGRAM B04:%L[0],%L?[1]/%R[0],%R[1],%R?[2]
+BIGRAM B05:%L[0]/%R[0],%R[1],%R[2],%R?[3]
+BIGRAM B06:%L[0],%L?[1]/%R[0],%R[1],%R[2],%R?[3]
+BIGRAM B07:%L[0],%L[1],%L?[2]/%R[0]
+BIGRAM B08:%L[0],%L[1],%L?[2]/%R[0],%R?[1]
+BIGRAM B09:%L[0],%L[1],%L[2],%L?[3]/%R[0]
+BIGRAM B10:%L[0],%L[1],%L[2],%L?[3]/%R[0],%R?[1]
+BIGRAM B11:%L[0],%L[1],%L?[2]/%R[0],%R[1],%R?[2]
+BIGRAM B12:%L[0],%L[1],%L?[2]/%R[0],%R[1],%R[2],%R?[3]
+BIGRAM B13:%L[0],%L[1],%L[2],%L?[3]/%R[0],%R[1],%R?[2]
+BIGRAM B14:%L[0],%L[1],%L[2],%L?[3]/%R[0],%R[1],%R[2],%R?[3]
