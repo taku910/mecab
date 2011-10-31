@@ -5,6 +5,7 @@
 //  Copyright(C) 2001-2011 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 #include <algorithm>
+#include <iterator>
 #include <cmath>
 #include <cstring>
 #include "common.h"

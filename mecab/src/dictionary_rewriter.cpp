@@ -6,6 +6,7 @@
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 #include <cstring>
 #include <fstream>
+#include <iterator>
 #include <map>
 #include <string>
 #include <vector>

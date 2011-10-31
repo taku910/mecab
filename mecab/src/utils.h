@@ -121,8 +121,7 @@ inline size_t tokenizeCSV(char *str,
 
   for (; str < eos; ++str) {
     // skip white spaces
-    while (*str == ' ' || *str == '\t') ++str;
-    bool inquote = false;
+     while (*str == ' ' || *str == '\t') ++str;
     if (*str == '"') {
       start = ++str;
       end = start;
@@ -134,7 +133,6 @@ inline size_t tokenizeCSV(char *str,
         }
         *end++ = *str;
       }
-      inquote = true;
       str = std::find(str, eos, ',');
     } else {
       start = str;

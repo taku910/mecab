@@ -277,7 +277,7 @@ template <typename N, typename P> class Allocator;
 class Tagger;
 class NBestGenerator;
 
-MECAB_DLL_CLASS_EXTERN class Lattice {
+class MECAB_DLL_CLASS_EXTERN Lattice {
  public:
   virtual void clear()              = 0;
   virtual bool is_available() const = 0;
@@ -344,7 +344,7 @@ MECAB_DLL_CLASS_EXTERN class Lattice {
   virtual ~Lattice() {}
 };
 
-MECAB_DLL_CLASS_EXTERN class Model {
+class MECAB_DLL_CLASS_EXTERN Model {
  public:
   virtual bool open(int argc, char **argv) = 0;
   virtual bool open(const char *arg) = 0;
@@ -365,7 +365,7 @@ MECAB_DLL_CLASS_EXTERN class Model {
 #endif
 };
 
-MECAB_DLL_CLASS_EXTERN class Tagger {
+class MECAB_DLL_CLASS_EXTERN Tagger {
  public:
   // New interface
   static bool  parse(const Model &model, Lattice *lattice);
