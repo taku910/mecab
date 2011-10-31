@@ -4,24 +4,24 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#include <vector>
-#include <string>
 #include <fstream>
-#include "param.h"
+#include <string>
+#include <vector>
 #include "common.h"
-#include "lbfgs.h"
-#include "utils.h"
-#include "thread.h"
-#include "learner_tagger.h"
-#include "freelist.h"
 #include "feature_index.h"
+#include "freelist.h"
+#include "lbfgs.h"
+#include "learner_tagger.h"
+#include "param.h"
 #include "string_buffer.h"
+#include "thread.h"
+#include "utils.h"
 
 namespace {
 double toLogProb(double f1, double f2) {
   return std::log(1.0 * f1 / f2) - VERY_SMALL_LOGPROB;  // avoid 0
 }
-}
+}  // namespace
 
 namespace MeCab {
 
@@ -31,7 +31,6 @@ class HMMLearner {
  public:
   static int run(Param *param) {
     DictionaryRewriter rewrite;
-
 
     const std::string dicdir = param->get<std::string>("dicdir");
     CHECK_DIE(param->load(DCONF(DICRC)))
@@ -71,8 +70,9 @@ class HMMLearner {
       size_t size = 0;
       while (ifs.getline(line, sizeof(line))) {
         if (std::strcmp("EOS", line) == 0) {
-          if (++size % 100 == 0)
+          if (++size % 100 == 0) {
             std::cout << size << "... " << std::flush;
+          }
           continue;
         }
 
@@ -125,8 +125,9 @@ class HMMLearner {
       size_t size = 0;
       while (ifs.getline(line, sizeof(line))) {
         if (std::strcmp("EOS", line) == 0) {
-          if (++size % 100 == 0)
+          if (++size % 100 == 0) {
             std::cout << size << "... " << std::flush;
+          }
           feature = bos_feature;
         } else {
           CHECK_DIE(tokenize(line, "\t", col, 2) == 2)
@@ -213,9 +214,10 @@ class HMMLearner {
 
         for (std::map<std::string, double>
                  ::const_iterator it2 = it->second.begin();
-             it2 != it->second.end(); ++it2)
+             it2 != it->second.end(); ++it2) {
           ofs << toLogProb(it2->second, freq) << '\t'
               << 'B' << ':' << it->first << '/' << it2->first << std::endl;
+        }
       }
 
       // unigram
@@ -226,8 +228,9 @@ class HMMLearner {
         double freq = 0.0;
         for (std::map<std::string, double>
                  ::const_iterator it2 = it->second.begin();
-             it2 != it->second.end(); ++it2)
+             it2 != it->second.end(); ++it2) {
           freq += it2->second;
+        }
 
         for (std::map<std::string, double>
                  ::const_iterator it2 = it->second.begin();
@@ -279,8 +282,8 @@ class OLLearner {
     const size_t freq = param->get<size_t>("freq");
 
     EncoderFeatureIndex feature_index;
-    LearnerTokenizer tokenizer;
-    FreeList<LearnerPath> path_freelist(PATH_FREELIST_SIZE);
+    Tokenizer<LearnerNode, LearnerPath> tokenizer;
+    Allocator<LearnerNode, LearnerPath> allocator;
     std::vector<double> expected;
     std::vector<double> observed;
     std::vector<double> alpha;
@@ -293,8 +296,8 @@ class OLLearner {
       CHECK_DIE(eval_size > 0) << "eval-size is out of range: " << eval_size;
       CHECK_DIE(unk_eval_size > 0) <<
           "unk-eval-size is out of range: " << unk_eval_size;
-      CHECK_DIE(tokenizer.open(*param)) << tokenizer.what();
-      CHECK_DIE(feature_index.open(*param)) << feature_index.what();
+      CHECK_DIE(tokenizer.open(*param)) << "cannot open tokenizer";
+      CHECK_DIE(feature_index.open(*param)) << "cannot open feature index";
       CHECK_DIE(iter >= 1 && iter <= 100) << "iteration should be <= 100";
       CHECK_DIE(freq == 1) << "freq must be 1";
     }
@@ -306,17 +309,16 @@ class OLLearner {
       std::ifstream ifs(ifile.c_str());
       CHECK_DIE(ifs) << "no such file or directory: " << ifile;
       while (ifs) {
-        path_freelist.free();
-        tokenizer.clear();
+        allocator.free();
         std::fill(expected.begin(), expected.end(), 0.0);
         std::fill(observed.begin(), observed.end(), 0.0);
 
         CHECK_DIE(x.open(&tokenizer,
-                         &path_freelist,
+                         &allocator,
                          &feature_index,
                          eval_size,
-                         unk_eval_size)) << x.what();
-        CHECK_DIE(x.read(&ifs, &observed)) << x.what();
+                         unk_eval_size));
+        CHECK_DIE(x.read(&ifs, &observed));
 
         if (x.empty()) {
           continue;
@@ -332,8 +334,9 @@ class OLLearner {
         size_t micro_p = 0;
         size_t micro_r = 0;
         size_t micro_c = 0;
-        size_t err = x.eval(&micro_c, &micro_p, &micro_r);
-        std::cout << micro_p << " " << micro_r << " " << micro_c << " " << err << std::endl;
+        const size_t err = x.eval(&micro_c, &micro_p, &micro_r);
+        std::cout << micro_p << " " << micro_r << " "
+                  << micro_c << " " << err << std::endl;
 
         // gradient
         double margin = 0.0;
@@ -361,12 +364,10 @@ class OLLearner {
     std::string txtfile = model;
     txtfile += ".txt";
 
-    CHECK_DIE(feature_index.save(txtfile.c_str()))
-        << feature_index.what();
+    CHECK_DIE(feature_index.save(txtfile.c_str()));
 
     if (!text_only) {
-      CHECK_DIE(feature_index.convert(txtfile.c_str(), model.c_str()))
-          << feature_index.what();
+      CHECK_DIE(feature_index.convert(txtfile.c_str(), model.c_str()));
     }
 
     return true;
@@ -425,12 +426,12 @@ class CRFLearner {
     const size_t thread_num = param->get<size_t>("thread");
 
     EncoderFeatureIndex feature_index;
-    LearnerTokenizer tokenizer;
-    FreeList<LearnerPath> path_freelist(PATH_FREELIST_SIZE);
+    Tokenizer<LearnerNode, LearnerPath> tokenizer;
+    Allocator<LearnerNode, LearnerPath> allocator;
     std::vector<double> expected;
     std::vector<double> observed;
     std::vector<double> alpha;
-    std::vector<EncoderLearnerTagger *> x_;
+    std::vector<EncoderLearnerTagger *> x;
 
     std::cout.setf(std::ios::fixed, std::ios::floatfield);
     std::cout.precision(5);
@@ -446,31 +447,33 @@ class CRFLearner {
           "freq is out of range: " << unk_eval_size;
       CHECK_DIE(thread_num > 0 && thread_num <= 512)
           << "# thread is invalid: " << thread_num;
-      CHECK_DIE(tokenizer.open(*param)) << tokenizer.what();
-      CHECK_DIE(feature_index.open(*param)) << feature_index.what();
+      CHECK_DIE(tokenizer.open(*param)) << "cannot open tokenizer";
+      CHECK_DIE(feature_index.open(*param)) << "cannot open feature index";
       CHECK_DIE(ifs) << "no such file or directory: " << ifile;
     }
 
     std::cout << "reading corpus ..." << std::flush;
 
     while (ifs) {
-      EncoderLearnerTagger *_x = new EncoderLearnerTagger();
+      EncoderLearnerTagger *tagger = new EncoderLearnerTagger();
 
-      CHECK_DIE(_x->open(&tokenizer, &path_freelist,
-                         &feature_index,
-                         eval_size,
-                         unk_eval_size))
-          << _x->what();
+      CHECK_DIE(tagger->open(&tokenizer,
+                             &allocator,
+                             &feature_index,
+                             eval_size,
+                             unk_eval_size));
 
-      CHECK_DIE(_x->read(&ifs, &observed)) << _x->what();
+      CHECK_DIE(tagger->read(&ifs, &observed));
 
-      if (!_x->empty())
-        x_.push_back(_x);
-      else
-        delete _x;
+      if (!tagger->empty()) {
+        x.push_back(tagger);
+      } else {
+        delete tagger;
+      }
 
-      if (x_.size() % 100 == 0)
-        std::cout << x_.size() << "... " << std::flush;
+      if (x.size() % 100 == 0) {
+        std::cout << x.size() << "... " << std::flush;
+      }
     }
 
     feature_index.shrink(freq, &observed);
@@ -478,7 +481,7 @@ class CRFLearner {
 
     int converge = 0;
     double old_f = 0.0;
-    size_t psize = feature_index.size();
+    const size_t psize = feature_index.size();
     observed.resize(psize);
     LBFGS lbfgs;
 
@@ -489,7 +492,7 @@ class CRFLearner {
     feature_index.set_alpha(&alpha[0]);
 
     std::cout << std::endl;
-    std::cout << "Number of sentences: " << x_.size() << std::endl;
+    std::cout << "Number of sentences: " << x.size() << std::endl;
     std::cout << "Number of features:  " << psize     << std::endl;
     std::cout << "eta:                 " << eta       << std::endl;
     std::cout << "freq:                " << freq      << std::endl;
@@ -505,9 +508,9 @@ class CRFLearner {
       thread.resize(thread_num);
       for (size_t i = 0; i < thread_num; ++i) {
         thread[i].start_i = i;
-        thread[i].size = x_.size();
+        thread[i].size = x.size();
         thread[i].thread_num = thread_num;
-        thread[i].x = &x_[0];
+        thread[i].x = &x[0];
         thread[i].expected.resize(expected.size());
       }
     }
@@ -524,11 +527,13 @@ class CRFLearner {
 
 #ifdef MECAB_USE_THREAD
       if (thread_num > 1) {
-        for (size_t i = 0; i < thread_num; ++i)
+        for (size_t i = 0; i < thread_num; ++i) {
           thread[i].start();
+        }
 
-        for (size_t i = 0; i < thread_num; ++i)
+        for (size_t i = 0; i < thread_num; ++i) {
           thread[i].join();
+        }
 
         for (size_t i = 0; i < thread_num; ++i) {
           f += thread[i].f;
@@ -543,9 +548,9 @@ class CRFLearner {
       else
 #endif
       {
-        for (size_t i = 0; i < x_.size(); ++i) {
-          f += x_[i]->gradient(&expected[0]);
-          err += x_[i]->eval(&micro_c, &micro_p, &micro_r);
+        for (size_t i = 0; i < x.size(); ++i) {
+          f += x[i]->gradient(&expected[0]);
+          err += x[i]->eval(&micro_c, &micro_p, &micro_r);
         }
       }
 
@@ -558,23 +563,26 @@ class CRFLearner {
         expected[i] = expected[i] - observed[i] + alpha[i]/C;
       }
 
-      double diff = (itr == 0 ? 1.0 : std::fabs(1.0 *(old_f - f) )/old_f);
+      const double diff = (itr == 0 ? 1.0 : std::fabs(1.0 *(old_f - f) )/old_f);
       std::cout << "iter="    << itr
-                << " err="    << 1.0 * err/x_.size()
+                << " err="    << 1.0 * err/x.size()
                 << " F="      << micro_f
                 << " target=" << f
                 << " diff="   << diff << std::endl;
       old_f = f;
 
-      if (diff < eta)
+      if (diff < eta) {
         converge++;
-      else
+      } else {
         converge = 0;
+      }
 
-      if (converge == 3)
+      if (converge == 3) {
         break;  // 3 is ad-hoc
+      }
 
-      int ret = lbfgs.optimize(psize, &alpha[0], f, &expected[0], false, C);
+      const int ret = lbfgs.optimize(psize, &alpha[0], f,
+                                     &expected[0], false, C);
 
       CHECK_DIE(ret > 0) << "unexpected error in LBFGS routin";
     }
@@ -584,12 +592,10 @@ class CRFLearner {
     std::string txtfile = model;
     txtfile += ".txt";
 
-    CHECK_DIE(feature_index.save(txtfile.c_str()))
-        << feature_index.what();
+    CHECK_DIE(feature_index.save(txtfile.c_str()));
 
     if (!text_only) {
-      CHECK_DIE(feature_index.convert(txtfile.c_str(), model.c_str()))
-          << feature_index.what();
+      CHECK_DIE(feature_index.convert(txtfile.c_str(), model.c_str()));
     }
 
     return 0;
@@ -650,8 +656,7 @@ class Learner {
         const std::string ifile = files[0];
         const std::string model = files[1];
         EncoderFeatureIndex feature_index;
-        CHECK_DIE(feature_index.convert(ifile.c_str(), model.c_str()))
-            << feature_index.what();
+        CHECK_DIE(feature_index.convert(ifile.c_str(), model.c_str()));
         return 0;
       }
     }

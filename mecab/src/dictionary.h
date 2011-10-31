@@ -2,23 +2,22 @@
 //
 //  $Id: dictionary.h 173 2009-04-18 08:10:57Z taku-ku $;
 //
-//  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
+//  Copyright(C) 2001-2011 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#ifndef MECAB_DICTIONARY_H
-#define MECAB_DICTIONARY_H
+#ifndef MECAB_DICTIONARY_H_
+#define MECAB_DICTIONARY_H_
 
 #include "mecab.h"
+#include "mmap.h"
 #include "darts.h"
 #include "char_property.h"
 
 namespace MeCab {
 
 class Param;
-template <class T> class Mmap;
-
 class Dictionary {
  private:
-  Mmap<char>         *dmmap_;
+  scoped_ptr<Mmap<char> > dmmap_;
   const Token        *token_;
   const char         *feature_;
   const char         *charset_;
@@ -34,17 +33,16 @@ class Dictionary {
  public:
   typedef Darts::DoubleArray::result_pair_type result_type;
 
-  bool open(const char *filename,
-            const char *mode = "r");
+  bool open(const char *filename, const char *mode = "r");
   void close();
 
   size_t commonPrefixSearch(const char* key, size_t len,
                             result_type *result,
-                            size_t rlen) {
+                            size_t rlen) const {
     return da_.commonPrefixSearch(key, result, rlen, len);
   }
 
-  result_type exactMatchSearch(const char* key) {
+  result_type exactMatchSearch(const char* key) const {
     result_type n;
     da_.exactMatchSearch(key, n);
     return n;
@@ -84,9 +82,9 @@ class Dictionary {
 
   const char *what() { return what_.str(); }
 
-  explicit Dictionary(): dmmap_(0), token_(0),
+  explicit Dictionary(): dmmap_(new Mmap<char>), token_(0),
                          feature_(0), charset_(0) {}
   virtual ~Dictionary() { this->close(); }
 };
 }
-#endif
+#endif  // MECAB_DICTIONARY_H_

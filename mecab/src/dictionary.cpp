@@ -5,18 +5,17 @@
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 #include <fstream>
-#include "param.h"
-#include "dictionary.h"
-#include "common.h"
-#include "mempool.h"
-#include "dictionary_rewriter.h"
 #include "connector.h"
 #include "context_id.h"
-#include "utils.h"
+#include "common.h"
+#include "dictionary.h"
+#include "dictionary_rewriter.h"
 #include "iconv_utils.h"
-#include "scoped_ptr.h"
-#include "writer.h"
 #include "mmap.h"
+#include "param.h"
+#include "scoped_ptr.h"
+#include "utils.h"
+#include "writer.h"
 
 namespace MeCab {
 
@@ -26,12 +25,12 @@ int progress_bar_darts(size_t current, size_t total) {
   return progress_bar("emitting double-array", current, total);
 }
 
-bool Dictionary::open(const char *file,
-                      const char *mode) {
-  filename_ = file;
-  MMAP_OPEN(char, dmmap_, filename_, mode);
+bool Dictionary::open(const char *file, const char *mode) {
+  close();
+  filename_.assign(file);
+  CHECK_FALSE(dmmap_->open(file, mode)) << "no such file or directory: " << file;
 
-  CHECK_CLOSE_FALSE(dmmap_->size() >= 100)
+  CHECK_FALSE(dmmap_->size() >= 100)
       << "dictionary file is broken: " << file;
 
   const char *ptr = dmmap_->begin();
@@ -43,11 +42,11 @@ bool Dictionary::open(const char *file,
   unsigned int dummy;
 
   read_static<unsigned int>(&ptr, magic);
-  CHECK_CLOSE_FALSE((magic ^ DictionaryMagicID) == dmmap_->size())
+  CHECK_FALSE((magic ^ DictionaryMagicID) == dmmap_->size())
       << "dictionary file is broken: " << file;
 
   read_static<unsigned int>(&ptr, version_);
-  CHECK_CLOSE_FALSE(version_ == DIC_VERSION)
+  CHECK_FALSE(version_ == DIC_VERSION)
       << "incompatible version: " << version_;
 
   read_static<unsigned int>(&ptr, type_);
@@ -71,14 +70,14 @@ bool Dictionary::open(const char *file,
   feature_ = ptr;
   ptr += fsize;
 
-  CHECK_CLOSE_FALSE(ptr == dmmap_->end())
+  CHECK_FALSE(ptr == dmmap_->end())
       << "dictionary file is broken: " << file;
 
   return true;
 }
 
 void Dictionary::close() {
-  MMAP_CLOSE(char, dmmap_);
+  dmmap_->close();
 }
 
 bool Dictionary::compile(const Param &param,
@@ -95,6 +94,7 @@ bool Dictionary::compile(const Param &param,
   scoped_ptr<POSIDGenerator> posid(0);
   scoped_ptr<ContextID> cid(0);
   scoped_ptr<Writer> writer(0);
+  scoped_ptr<Lattice> lattice(0);
   scoped_ptr<StringBuffer> os(0);
   Node node;
 
@@ -113,7 +113,9 @@ bool Dictionary::compile(const Param &param,
 
   // for backward compatibility
   std::string config_charset = param.get<std::string>("config-charset");
-  if (config_charset.empty()) config_charset = from;
+  if (config_charset.empty()) {
+    config_charset = from;
+  }
 
   CHECK_DIE(!from.empty()) << "input dictionary charset is empty";
   CHECK_DIE(!to.empty())   << "output dictionary charset is empty";
@@ -128,12 +130,12 @@ bool Dictionary::compile(const Param &param,
 
   if (!node_format.empty()) {
     writer.reset(new Writer);
+    lattice.reset(createLattice());
     os.reset(new StringBuffer);
     memset(&node, 0, sizeof(node));
   }
 
-  if (!matrix.openText(matrix_file) &&
-      !matrix.open(matrix_bin_file)) {
+  if (!matrix.openText(matrix_file) && !matrix.open(matrix_bin_file)) {
     matrix.set_left_size(1);
     matrix.set_right_size(1);
   }
@@ -224,20 +226,22 @@ bool Dictionary::compile(const Param &param,
         node.rlength = w.size();
         node.posid   = pid;
         node.stat    = MECAB_NOR_NODE;
+        lattice->set_sentence(w.c_str());
         CHECK_DIE(os.get());
         CHECK_DIE(writer.get());
         os->clear();
-        CHECK_DIE(writer->writeNode(&*os,
+        CHECK_DIE(writer->writeNode(lattice.get(),
                                     node_format.c_str(),
-                                    w.c_str(),
-                                    &node)) <<
+                                    &node, &*os)) <<
             "conversion error: " << feature << " with " << node_format;
         *os << '\0';
         feature = os->str();
       }
 
       key.clear();
-      if (!wakati) key = feature + '\0';
+      if (!wakati) {
+        key = feature + '\0';
+      }
 
       Token* token  = new Token;
       token->lcAttr = lid;
@@ -246,10 +250,12 @@ bool Dictionary::compile(const Param &param,
       token->wcost = cost;
       token->feature = offset;
       token->compound = 0;
-      dic.push_back(std::make_pair<std::string, Token*>(w, token));
+      dic.push_back(std::pair<std::string, Token*>(w, token));
 
       // append to output buffer
-      if (!wakati) fbuf.append(key.data(), key.size());
+      if (!wakati) {
+        fbuf.append(key.data(), key.size());
+      }
       offset += key.size();
 
       ++num;
@@ -259,9 +265,11 @@ bool Dictionary::compile(const Param &param,
     std::cout << num << std::endl;
   }
 
-  if (wakati) fbuf.append("\0", 1);
+  if (wakati) {
+    fbuf.append("\0", 1);
+  }
 
-  std::sort(dic.begin(), dic.end());
+  std::stable_sort(dic.begin(), dic.end());
 
   size_t bsize = 0;
   size_t idx = 0;

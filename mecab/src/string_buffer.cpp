@@ -4,8 +4,8 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#include <cstring>
 #include <cstdio>
+#include <cstring>
 #include "common.h"
 #include "string_buffer.h"
 

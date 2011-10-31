@@ -29,7 +29,7 @@ bool open_map(const char *filename,
     if (iconv) {
       iconv->convert(&pos);
     }
-    cmap->insert(std::make_pair<std::string, int>
+    cmap->insert(std::pair<std::string, int>
                  (pos, std::atoi(col[0])));
   }
   return true;

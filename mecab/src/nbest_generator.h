@@ -4,8 +4,8 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#ifndef MECAB_NBEST_GENERATOR_H
-#define MECAB_NBEST_GENERATOR_H
+#ifndef MECAB_NBEST_GENERATOR_H_
+#define MECAB_NBEST_GENERATOR_H_
 
 #include <queue>
 #include "mecab.h"
@@ -41,4 +41,4 @@ class NBestGenerator {
 };
 }
 
-#endif
+#endif   // MECAB_NBEST_GENERATOR_H_

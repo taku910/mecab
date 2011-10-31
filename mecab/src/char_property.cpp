@@ -4,18 +4,17 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#include <string>
 #include <fstream>
 #include <map>
 #include <vector>
 #include <set>
+#include <string>
 #include <sstream>
-#include "param.h"
-#include "mempool.h"
-#include "common.h"
 #include "char_property.h"
-#include "utils.h"
+#include "common.h"
 #include "mmap.h"
+#include "param.h"
+#include "utils.h"
 
 namespace MeCab {
 
@@ -81,7 +80,8 @@ bool CharProperty::open(const Param &param) {
 }
 
 bool CharProperty::open(const char *filename) {
-  MMAP_OPEN(char, cmmap_, std::string(filename), "r");
+  std::ostringstream error;
+  CHECK_FALSE(cmmap_->open(filename, "r"));
 
   const char *ptr = cmmap_->begin();
   unsigned int csize;
@@ -90,7 +90,7 @@ bool CharProperty::open(const char *filename) {
   size_t fsize = sizeof(unsigned int) +
       (32 * csize) + sizeof(unsigned int) * 0xffff;
 
-  CHECK_CLOSE_FALSE(fsize == cmmap_->size())
+  CHECK_FALSE(fsize == cmmap_->size())
       << "invalid file size: " << filename;
 
   clist_.clear();
@@ -105,7 +105,7 @@ bool CharProperty::open(const char *filename) {
 }
 
 void CharProperty::close() {
-  MMAP_CLOSE(char, cmmap_);
+  cmmap_->close();
 }
 
 size_t CharProperty::size() const { return clist_.size(); }
@@ -192,7 +192,7 @@ bool CharProperty::compile(const char *cfile,
       c.length  = std::atoi(col[3]);
       c.default_type = id++;
 
-      category.insert(std::make_pair<std::string, CharInfo>(key, c));
+      category.insert(std::pair<std::string, CharInfo>(key, c));
       category_ary.push_back(key);
     }
   }

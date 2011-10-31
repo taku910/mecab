@@ -4,21 +4,21 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
+#include <fstream>
 #include <iostream>
 #include <map>
 #include <vector>
 #include <string>
-#include <fstream>
-#include "common.h"
-#include "utils.h"
-#include "mecab.h"
-#include "param.h"
-#include "mmap.h"
-#include "feature_index.h"
-#include "context_id.h"
-#include "dictionary_rewriter.h"
-#include "dictionary.h"
 #include "char_property.h"
+#include "common.h"
+#include "context_id.h"
+#include "dictionary.h"
+#include "dictionary_rewriter.h"
+#include "feature_index.h"
+#include "mecab.h"
+#include "mmap.h"
+#include "param.h"
+#include "utils.h"
 
 namespace MeCab {
 
@@ -277,7 +277,7 @@ class DictionaryGenerator {
           "Please specify different directory.";
       CHECK_DIE(!outdir.empty()) << "output directory is empty";
       CHECK_DIE(!model.empty()) << "model file is empty";
-      CHECK_DIE(fi.open(param)) << fi.what();
+      CHECK_DIE(fi.open(param)) << "cannot open feature index";
       CHECK_DIE(factor > 0)   << "cost factor needs to be positive value";
       CHECK_DIE(!bos.empty()) << "bos-feature is empty";
       CHECK_DIE(dic.size()) << "no dictionary is found in " << dicdir;

@@ -4,15 +4,15 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
+#include <cstring>
 #include <fstream>
 #include <string>
-#include <cstring>
-#include "param.h"
 #include "common.h"
-#include "utils.h"
-#include "learner_node.h"
 #include "feature_index.h"
+#include "param.h"
+#include "learner_node.h"
 #include "string_buffer.h"
+#include "utils.h"
 
 #define BUFSIZE 2048
 #define POSSIZE 64
@@ -38,8 +38,7 @@ const char* FeatureIndex::getIndex(char **p, char ** column, size_t max) {
     ++(*p);
   }  // undef flg
 
-  CHECK_RETURN(**p =='[', static_cast<const char *>(0))
-      << "getIndex(): unmatched '['";
+  CHECK_DIE(**p =='[') << "getIndex(): unmatched '['";
 
   size_t n = 0;
   ++(*p);
@@ -51,17 +50,16 @@ const char* FeatureIndex::getIndex(char **p, char ** column, size_t max) {
         n = 10 * n + (**p - '0');
         break;
       case ']':
-        CHECK_RETURN(n < max, static_cast<const char *>(0))
-            << "given index is out of range: " << n;
+        CHECK_DIE(n < max) << "given index is out of range: " << n;
 
         if (flg == true && ((std::strcmp("*", column[n]) == 0)
-                            || column[n][0] == '\0')) return 0;
-
+                            || column[n][0] == '\0')) {
+          return 0;
+        }
         return column[n];  // return;
-
         break;
       default:
-        CHECK_RETURN(false, static_cast<const char *>(0)) << "unmatched '['";
+        CHECK_DIE(false) << "unmatched '['";
     }
   }
 
@@ -84,7 +82,7 @@ bool FeatureIndex::openTemplate(const Param &param) {
   std::string filename = create_filename(param.get<std::string>("dicdir"),
                                          FEATURE_FILE);
   std::ifstream ifs(filename.c_str());
-  CHECK_FALSE(ifs) << "no such file or directory: " << filename;
+  CHECK_DIE(ifs) << "no such file or directory: " << filename;
 
   char buf[BUF_SIZE];
   char *column[4];
@@ -94,7 +92,7 @@ bool FeatureIndex::openTemplate(const Param &param) {
 
   while (ifs.getline(buf, sizeof(buf))) {
     if (buf[0] == '\0' || buf[0] == '#' || buf[0] == ' ') continue;
-    CHECK_FALSE(tokenize2(buf, "\t ", column, 2) == 2)
+    CHECK_DIE(tokenize2(buf, "\t ", column, 2) == 2)
         << "format error: " <<filename;
 
     if (std::strcmp(column[0], "UNIGRAM") == 0)
@@ -102,7 +100,7 @@ bool FeatureIndex::openTemplate(const Param &param) {
     else if (std::strcmp(column[0], "BIGRAM") == 0 )
       bigram_templs_.push_back(this->strdup(column[1]));
     else
-      CHECK_FALSE(false) << "format error: " <<  filename;
+      CHECK_DIE(false) << "format error: " <<  filename;
   }
 
   // second, open rewrite rules
@@ -120,7 +118,7 @@ bool EncoderFeatureIndex::open(const Param &param) {
 bool DecoderFeatureIndex::open(const Param &param) {
   const std::string modelfile = param.get<std::string>("model");
 
-  CHECK_FALSE(mmap_.open(modelfile.c_str())) << mmap_.what();
+  CHECK_DIE(mmap_.open(modelfile.c_str())) << mmap_.what();
 
   const char *ptr = mmap_.begin();
   unsigned int maxid;
@@ -178,7 +176,7 @@ void FeatureIndex::calcCost(LearnerPath *path) {
 const char *FeatureIndex::strdup(const char *p) {
   size_t len = std::strlen(p);
   char *q = char_freelist_.alloc(len + 1);
-  std::strncpy(q, p, len);
+  std::strncpy(q, p, len + 1);
   return q;
 }
 
@@ -253,7 +251,7 @@ bool EncoderFeatureIndex::buildFeature(LearnerPath *path) {
       feature_cache_.insert(std::pair
                             <std::string, std::pair<const int *, size_t> >
                             (key,
-                             std::make_pair<const int *, size_t>
+                             std::pair<const int *, size_t>
                              (path->rnode->fvector, 1)));
     }
   }
@@ -272,7 +270,7 @@ bool EncoderFeatureIndex::buildFeature(LearnerPath *path) {
         return false;
       feature_cache_.insert(std::pair
                             <std::string, std::pair<const int *, size_t> >
-                            (key, std::make_pair<const int *, size_t>
+                            (key, std::pair<const int *, size_t>
                              (path->fvector, 1)));
     }
   }
@@ -311,7 +309,7 @@ bool FeatureIndex::buildUnigramFeature(LearnerPath *path,
             case 't':  os_ << (size_t)path->rnode->char_type;     break;
             case 'u':  os_ << ufeature; break;
             default:
-              CHECK_FALSE(false) << "unkonwn meta char: " <<  *p;
+              CHECK_DIE(false) << "unkonwn meta char: " <<  *p;
           }
         }
       }
@@ -367,7 +365,7 @@ bool FeatureIndex::buildBigramFeature(LearnerPath *path,
             case 'l':  os_ << lfeature; break;  // use lfeature as it is
             case 'r':  os_ << rfeature; break;
             default:
-              CHECK_FALSE(false) << "unkonwn meta char: " <<  *p;
+              CHECK_DIE(false) << "unkonwn meta char: " <<  *p;
           }
         }
       }
@@ -392,7 +390,7 @@ int DecoderFeatureIndex::id(const char *key) {
 int EncoderFeatureIndex::id(const char *key) {
   std::map<std::string, int>::const_iterator it = dic_.find(key);
   if (it == dic_.end()) {
-    dic_.insert(std::make_pair<std::string, int>(std::string(key), maxid_));
+    dic_.insert(std::pair<std::string, int>(std::string(key), maxid_));
     return maxid_++;
   } else {
     return it->second;
@@ -419,7 +417,7 @@ void EncoderFeatureIndex::shrink(size_t freq,
   std::map<int, int> old2new;
   for (size_t i = 0; i < freqv.size(); ++i) {
     if (freqv[i] >= freq)
-      old2new.insert(std::make_pair<int, int>(i, maxid_++));
+      old2new.insert(std::pair<int, int>(i, maxid_++));
   }
 
   // update dic_
@@ -474,7 +472,7 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
     CHECK_DIE(tokenize2(buf, "\t", column, 2) == 2)
         << "format error: " << buf;
 
-    dic.insert(std::make_pair<std::string, double>
+    dic.insert(std::pair<std::string, double>
                (std::string(column[1]), atof(column[0]) ));
   }
 
@@ -504,7 +502,7 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
 bool EncoderFeatureIndex::save(const char *filename) {
   std::ofstream ofs(filename);
 
-  CHECK_FALSE(ofs) << "permission denied: " << filename;
+  CHECK_DIE(ofs) << "permission denied: " << filename;
 
   ofs.setf(std::ios::fixed, std::ios::floatfield);
   ofs.precision(24);

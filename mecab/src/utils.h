@@ -7,17 +7,17 @@
 #ifndef MECAB_UTILS_H
 #define MECAB_UTILS_H
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
+#include <algorithm>
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
-#include <algorithm>
 #include <string>
 #include <vector>
 #include "common.h"
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 namespace MeCab {
 
@@ -89,6 +89,8 @@ inline void read_static(const char **ptr, T& value) {
   const char *r = read_ptr(ptr, sizeof(T));
   memcpy(&value, r, sizeof(T));
 }
+
+int load_request_type(const Param &param);
 
 bool load_dictionary_resource(Param *);
 

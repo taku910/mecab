@@ -222,11 +222,11 @@ class DoubleArrayImpl {
                               no_delete_(0), error_(0) {}
   ~DoubleArrayImpl() { clear(); }
 
-  void set_result(value_type& x, value_type r, size_t) {
+  void set_result(value_type& x, value_type r, size_t) const {
     x = r;
   }
 
-  void set_result(result_pair_type& x, value_type r, size_t l) {
+  void set_result(result_pair_type& x, value_type r, size_t l) const {
     x.value = r;
     x.length = l;
   }
@@ -391,7 +391,7 @@ class DoubleArrayImpl {
   inline void exactMatchSearch(const key_type *key,
                                T & result,
                                size_t len = 0,
-                               size_t node_pos = 0) {
+                               size_t node_pos = 0) const {
     result = exactMatchSearch<T>(key, len, node_pos);
     return;
   }
@@ -399,7 +399,7 @@ class DoubleArrayImpl {
   template <class T>
   inline T exactMatchSearch(const key_type *key,
                             size_t len = 0,
-                            size_t node_pos = 0) {
+                            size_t node_pos = 0) const {
     if (!len) len = length_func_()(key);
 
     T result;
@@ -429,7 +429,7 @@ class DoubleArrayImpl {
                             T* result,
                             size_t result_len,
                             size_t len = 0,
-                            size_t node_pos = 0) {
+                            size_t node_pos = 0) const {
     if (!len) len = length_func_()(key);
 
     register array_type_  b   = array_[node_pos].base;
@@ -467,7 +467,7 @@ class DoubleArrayImpl {
   value_type traverse(const key_type *key,
                       size_t &node_pos,
                       size_t &key_pos,
-                      size_t len = 0) {
+                      size_t len = 0) const {
     if (!len) len = length_func_()(key);
 
     register array_type_  b = array_[node_pos].base;

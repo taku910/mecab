@@ -32,7 +32,6 @@ class FeatureIndex {
   StringBuffer         os_;
   size_t               maxid_;
   const double         *alpha_;
-  whatlog              what_;
 
   virtual int id(const char *) = 0;
   const char* getIndex(char **, char **, size_t);
@@ -53,8 +52,6 @@ class FeatureIndex {
 
   void calcCost(LearnerPath *path);
   void calcCost(LearnerNode *node);
-
-  const char *what() { return what_.str(); }
 
   const char *strdup(const char *str);
 

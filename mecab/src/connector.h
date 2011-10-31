@@ -4,19 +4,20 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#ifndef MECAB_CONNECTOR_H
-#define MECAB_CONNECTOR_H
+#ifndef MECAB_CONNECTOR_H_
+#define MECAB_CONNECTOR_H_
 
 #include "mecab.h"
+#include "mmap.h"
 #include "common.h"
+#include "scoped_ptr.h"
 
 namespace MeCab {
 class Param;
-template <class T> class Mmap;
 
 class Connector {
  private:
-  Mmap<short>    *cmmap_;
+  scoped_ptr<Mmap<short> >  cmmap_;
   short          *matrix_;
   unsigned short  lsize_;
   unsigned short  rsize_;
@@ -54,9 +55,9 @@ class Connector {
   static bool compile(const char *, const char *);
 
   explicit Connector():
-      cmmap_(0), matrix_(0), lsize_(0), rsize_(0) {}
+      cmmap_(new Mmap<short>), matrix_(0), lsize_(0), rsize_(0) {}
 
   virtual ~Connector() { this->close(); }
 };
 }
-#endif
+#endif  // MECAB_CONNECTOR_H_

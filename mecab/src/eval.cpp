@@ -5,14 +5,14 @@
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 #include <cstdio>
+#include <fstream>
 #include <iostream>
 #include <map>
-#include <fstream>
 #include <vector>
-#include "mecab.h"
-#include "stream_wrapper.h"
-#include "param.h"
 #include "common.h"
+#include "mecab.h"
+#include "param.h"
+#include "stream_wrapper.h"
 #include "utils.h"
 
 namespace MeCab {

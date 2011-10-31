@@ -4,20 +4,20 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#include <iostream>
-#include <fstream>
 #include <cstring>
+#include <fstream>
+#include <iostream>
 #include <string>
 #include "common.h"
-#include "utils.h"
 #include "scoped_ptr.h"
+#include "utils.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "iconv_utils.h"
 #include "char_property.h"
+#include "iconv_utils.h"
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
 #include "windows.h"

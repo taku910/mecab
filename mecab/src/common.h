@@ -4,17 +4,17 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#ifndef MECAB_COMMON_H
-#define MECAB_COMMON_H
+#ifndef MECAB_COMMON_H_
+#define MECAB_COMMON_H_
 
-#include <setjmp.h>
+#include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
 #include <string>
 #include <iostream>
-#include <algorithm>
-#include <cmath>
+#include <setjmp.h>
 #include <sstream>
 
 #ifdef __CYGWIN__
@@ -28,14 +28,12 @@
 // tricky macro for MSVC
 #if defined(_MSC_VER) || defined(__CYGWIN__)
 #define for if (0); else for
-/* why windows.h define such a generic macro */
-#undef max
-#undef min
+#define NOMINMAX
 #define snprintf _snprintf
 #endif
 
 #define COPYRIGHT "MeCab: Yet Another Part-of-Speech and Morphological Analyzer\n\
-\nCopyright(C) 2001-2009 Taku Kudo \nCopyright(C) 2004-2008 Nippon Telegraph and Telephone Corporation\n"
+\nCopyright(C) 2001-2011 Taku Kudo \nCopyright(C) 2004-2008 Nippon Telegraph and Telephone Corporation\n"
 
 #define SYS_DIC_FILE            "sys.dic"
 #define UNK_DEF_FILE            "unk.def"
@@ -76,7 +74,7 @@
 #define NODE_FREELIST_SIZE 512
 #define PATH_FREELIST_SIZE 2048
 #define MIN_INPUT_BUFFER_SIZE 8192
-#define MAX_INPUT_BUFFER_SIZE 8192*640
+#define MAX_INPUT_BUFFER_SIZE (8192*640)
 #define BUF_SIZE 8192
 
 #ifndef EXIT_FAILURE
@@ -88,67 +86,51 @@
 #endif
 
 namespace MeCab {
+class die {
+ public:
+  die() {}
+  ~die() { std::cerr << std::endl; exit(-1); }
+  int operator&(std::ostream&) { return 0; }
+};
 
-  class die {
-  public:
-    die() {}
-    ~die() { std::cerr << std::endl; exit(-1); }
-    int operator&(std::ostream&) { return 0; }
-  };
+class warn {
+ public:
+  warn() {}
+  ~warn() { std::cerr << std::endl; }
+  int operator&(std::ostream&) { return 0; }
+};
 
-  class warn {
-  public:
-    warn() {}
-    ~warn() { std::cerr << std::endl; }
-    int operator&(std::ostream&) { return 0; }
-  };
+struct whatlog {
+  std::ostringstream stream_;
+  std::string str_;
+  const char *str() {
+    str_ = stream_.str();
+    return str_.c_str();
+  }
+};
 
-  struct whatlog {
-    std::ostringstream stream_;
-    std::string str_;     
-    const char *str() {
-      str_ = stream_.str();
-      return str_.c_str();
-    }
-    jmp_buf cond_;
-  };
-
-  class wlog {
-  public:
-    whatlog *l_;
-    explicit wlog(whatlog *l): l_(l) { l_->stream_.clear(); }
-    ~wlog() { longjmp(l_->cond_, 1); }
-    int operator&(std::ostream &) { return 0; }
-  };
-}
+class wlog {
+ public:
+  wlog(whatlog *what) : what_(what) {
+    what_->stream_.clear();
+  }
+  bool operator&(std::ostream &) {
+    return false;
+  }
+ private:
+  whatlog *what_;
+};
+}  // MeCab
 
 #define WHAT what_.stream_
 
-#define CHECK_RETURN(condition, value) \
-if (condition) {} else \
-  if (setjmp(what_.cond_) == 1) { \
-    return value;  \
-  } else \
-    wlog(&what_) & what_.stream_ << \
-    __FILE__ << "(" << __LINE__ << ") [" << #condition << "] "
-
-#define CHECK_0(condition)      CHECK_RETURN(condition, 0)
-#define CHECK_FALSE(condition)  CHECK_RETURN(condition, false)
-
-#define CHECK_CLOSE_FALSE(condition) \
-if (condition) {} else \
-  if (setjmp(what_.cond_) == 1) { \
-    close(); \
-    return false;  \
-  } else \
-    wlog(&what_) & what_.stream_ << \
-    __FILE__ << "(" << __LINE__ << ") [" << #condition << "] "
+#define CHECK_FALSE(condition) \
+ if (condition) {} else return \
+   wlog(&what_) & what_.stream_ <<              \
+      __FILE__ << "(" << __LINE__ << ") [" << #condition << "] "
 
 #define CHECK_DIE(condition) \
 (condition) ? 0 : die() & std::cerr << __FILE__ << \
 "(" << __LINE__ << ") [" << #condition << "] "
 
-#define CHECK_WARN(condition) \
-(condition) ? 0 : warn() & std::cerr << __FILE__ << \
-"(" << __LINE__ << ") [" << #condition << "] "
-#endif
+#endif  // MECAB_COMMON_H_

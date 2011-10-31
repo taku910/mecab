@@ -6,10 +6,9 @@
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 #include <fstream>
 #include <sstream>
-#include "mempool.h"
+#include "common.h"
 #include "connector.h"
 #include "mmap.h"
-#include "common.h"
 #include "param.h"
 #include "utils.h"
 
@@ -25,18 +24,19 @@ bool Connector::open(const Param &param) {
 
 bool Connector::open(const char* filename,
                      const char *mode) {
-  MMAP_OPEN(short, cmmap_, std::string(filename), mode);
+  CHECK_FALSE(cmmap_->open(filename, mode))
+      << "cannot open: " << filename;
 
   matrix_ = cmmap_->begin();
 
-  CHECK_CLOSE_FALSE(matrix_) << "matrix is NULL" ;
-  CHECK_CLOSE_FALSE(cmmap_->size() >= 2)
+  CHECK_FALSE(matrix_) << "matrix is NULL" ;
+  CHECK_FALSE(cmmap_->size() >= 2)
       << "file size is invalid: " << filename;
 
   lsize_ = static_cast<unsigned short>((*cmmap_)[0]);
   rsize_ = static_cast<unsigned short>((*cmmap_)[1]);
 
-  CHECK_CLOSE_FALSE(static_cast<size_t>(lsize_ * rsize_ + 2)
+  CHECK_FALSE(static_cast<size_t>(lsize_ * rsize_ + 2)
                     == cmmap_->size())
       << "file size is invalid: " << filename;
 
@@ -45,13 +45,12 @@ bool Connector::open(const char* filename,
 }
 
 void Connector::close() {
-  MMAP_CLOSE(short, cmmap_);
+  cmmap_->close();
 }
 
 bool Connector::openText(const char *filename) {
   std::ifstream ifs(filename);
-  CHECK_CLOSE_FALSE(ifs) <<
-      "no such file or directory: " << filename;
+  CHECK_DIE(ifs) << "no such file or directory: " << filename;
   char *column[2];
   char buf[BUF_SIZE];
   ifs.getline(buf, sizeof(buf));

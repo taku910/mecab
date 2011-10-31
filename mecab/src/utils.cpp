@@ -4,9 +4,9 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#include <iostream>
-#include <fstream>
 #include <cstring>
+#include <fstream>
+#include <iostream>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -32,8 +32,6 @@ extern HINSTANCE DllInstance;
 #include "common.h"
 #include "utils.h"
 #include "param.h"
-
-using namespace std;
 
 namespace MeCab {
 
@@ -211,6 +209,43 @@ int progress_bar(const char* message, size_t current, size_t total) {
   return 1;
 }
 
+int load_request_type(const Param &param) {
+  int request_type = MECAB_ONE_BEST;
+
+  if (param.get<bool>("allocate-sentence")) {
+    request_type |= MECAB_ALLOCATE_SENTENCE;
+  }
+
+  if (param.get<bool>("partial")) {
+    request_type |= MECAB_PARTIAL;
+  }
+
+  if (param.get<bool>("all-morphs")) {
+    request_type |= MECAB_ALL_MORPHS;
+  }
+
+  if (param.get<bool>("marginal")) {
+    request_type |= MECAB_MARGINAL_PROB;
+  }
+
+  const int nbest = param.get<int>("nbest");
+  if (nbest >= 2) {
+    request_type |= MECAB_NBEST;
+  }
+
+  // DEPRECATED:
+  const int lattice_level = param.get<int>("lattice-level");
+  if (lattice_level >= 1) {
+    request_type |= MECAB_NBEST;
+  }
+
+  if (lattice_level >= 2) {
+    request_type |= MECAB_MARGINAL_PROB;
+  }
+
+  return request_type;
+}
+
 bool load_dictionary_resource(Param *param) {
   std::string rcfile = param->get<std::string>("rcfile");
 
@@ -221,13 +256,17 @@ bool load_dictionary_resource(Param *param) {
       std::string s = MeCab::create_filename(std::string(homedir),
                                              ".mecabrc");
       std::ifstream ifs(s.c_str());
-      if (ifs) rcfile = s;
+      if (ifs) {
+        rcfile = s;
+      }
     }
   }
 
   if (rcfile.empty()) {
     const char *rcenv = getenv("MECABRC");
-    if (rcenv) rcfile = rcenv;
+    if (rcenv) {
+      rcfile = rcenv;
+    }
   }
 #endif
 
@@ -279,9 +318,13 @@ bool load_dictionary_resource(Param *param) {
   }
 #endif
 
-  if (rcfile.empty()) rcfile = MECAB_DEFAULT_RC;
+  if (rcfile.empty()) {
+    rcfile = MECAB_DEFAULT_RC;
+  }
 
-  if (!param->load(rcfile.c_str())) return false;
+  if (!param->load(rcfile.c_str())) {
+    return false;
+  }
 
   std::string dicdir = param->get<std::string>("dicdir");
   if (dicdir.empty()) dicdir = ".";  // current
@@ -290,7 +333,9 @@ bool load_dictionary_resource(Param *param) {
   param->set<std::string>("dicdir", dicdir, true);
   dicdir = create_filename(dicdir, DICRC);
 
-  if (!param->load(dicdir.c_str())) return false;
+  if (!param->load(dicdir.c_str())) {
+    return false;
+  }
 
   return true;
 }

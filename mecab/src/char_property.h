@@ -4,15 +4,16 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#ifndef MECAB_CHARACTER_CATEGORY_H
-#define MECAB_CHARACTER_CATEGORY_H
+#ifndef MECAB_CHARACTER_CATEGORY_H_
+#define MECAB_CHARACTER_CATEGORY_H_
 
+#include "mmap.h"
+#include "scoped_ptr.h"
 #include "ucs.h"
 #include "utils.h"
 
 namespace MeCab {
 class Param;
-template <class T> class Mmap;
 
 struct CharInfo {
   unsigned int type:         18;
@@ -25,7 +26,7 @@ struct CharInfo {
 
 class CharProperty {
  private:
-  MeCab::Mmap<char>         *cmmap_;
+  scoped_ptr<Mmap<char> >   cmmap_;
   std::vector<const char *>  clist_;
   const CharInfo            *map_;
   int                        charset_;
@@ -85,8 +86,8 @@ class CharProperty {
 
   static bool compile(const char *, const char *, const char*);
 
-  explicit CharProperty(): cmmap_(0), map_(0), charset_(0) {}
+  explicit CharProperty(): cmmap_(new Mmap<char>), map_(0), charset_(0) {}
   virtual ~CharProperty() { this->close(); }
 };
 }
-#endif
+#endif   // MECAB_CHARACTER_CATEGORY_H_

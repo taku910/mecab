@@ -4,21 +4,20 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#include <functional>
 #include <algorithm>
-#include <iterator>
+#include <functional>
 #include <iostream>
+#include <iterator>
 #include <vector>
-
+#include "common.h"
 #include "learner_node.h"
 #include "learner_tagger.h"
 #include "utils.h"
-#include "common.h"
 
 namespace MeCab {
 namespace {
 char *mystrdup(const char *str) {
-  size_t l = std::strlen(str);
+  const size_t l = std::strlen(str);
   char *r = new char[l + 1];
   std::strncpy(r, str, l+1);
   return r;
@@ -27,34 +26,33 @@ char *mystrdup(const char *str) {
 char *mystrdup(const std::string &str) {
   return mystrdup(str.c_str());
 }
-}
+}  // namespace
 
-bool EncoderLearnerTagger::open(LearnerTokenizer      *p0,
-                                FreeList<LearnerPath> *p1,
-                                FeatureIndex          *p2,
+bool EncoderLearnerTagger::open(Tokenizer<LearnerNode, LearnerPath> *tokenizer,
+                                Allocator<LearnerNode, LearnerPath> *allocator,
+                                FeatureIndex               *feature_index,
                                 size_t eval_size,
                                 size_t unk_eval_size) {
   close();
-  tokenizer_      = p0;
-  path_freelist_  = p1;
-  feature_index_  = p2;
-  eval_size_     = eval_size;
-  unk_eval_size_ = unk_eval_size;
+  tokenizer_      = tokenizer;
+  allocator_      = allocator;
+  feature_index_  = feature_index;
+  eval_size_      = eval_size;
+  unk_eval_size_  = unk_eval_size;
   return true;
 }
 
 bool DecoderLearnerTagger::open(const Param &param) {
   close();
-  path_freelist__.reset(new FreeList<LearnerPath>(BUF_SIZE));
-  tokenizer__.reset(new LearnerTokenizer());
-  feature_index__.reset(new DecoderFeatureIndex);
-  path_freelist_ = path_freelist__.get();
-  tokenizer_ = tokenizer__.get();
-  feature_index_ = feature_index__.get();
+  allocator_data_.reset(new Allocator<LearnerNode, LearnerPath>());
+  tokenizer_data_.reset(new Tokenizer<LearnerNode, LearnerPath>());
+  feature_index_data_.reset(new DecoderFeatureIndex);
+  allocator_ = allocator_data_.get();
+  tokenizer_ = tokenizer_data_.get();
+  feature_index_ = feature_index_data_.get();
 
-  CHECK_CLOSE_FALSE(tokenizer_->open(param)) << tokenizer_->what();
-
-  CHECK_CLOSE_FALSE(feature_index_->open(param)) << feature_index_->what();
+  CHECK_DIE(tokenizer_->open(param)) << tokenizer_->what();
+  CHECK_DIE(feature_index_->open(param));
 
   return true;
 }
@@ -63,7 +61,7 @@ bool EncoderLearnerTagger::read(std::istream *is,
                                 std::vector<double> *observed) {
   char line[BUF_SIZE];
   char *column[8];
-  std::string sentence = "";
+  std::string sentence;
   std::vector<LearnerNode *> corpus;
   ans_path_list_.clear();
 
@@ -83,8 +81,8 @@ bool EncoderLearnerTagger::read(std::istream *is,
     if (eos) {
       m->stat = MECAB_EOS_NODE;
     } else {
-      size_t _size = tokenize(line, "\t", column, 2);
-      CHECK_FALSE(_size == 2) << "format error: " << line;
+      const size_t size = tokenize(line, "\t", column, 2);
+      CHECK_DIE(size == 2) << "format error: " << line;
       m->stat    = MECAB_NOR_NODE;
       m->surface = mystrdup(column[0]);
       m->feature = mystrdup(column[1]);
@@ -93,17 +91,19 @@ bool EncoderLearnerTagger::read(std::istream *is,
 
     corpus.push_back(m);
 
-    if (eos) break;
+    if (eos) {
+      break;
+    }
 
-    sentence += std::string(column[0]);
+    sentence.append(column[0]);
   }
 
-  CHECK_FALSE(!sentence.empty()) << "empty sentence";
+  CHECK_DIE(!sentence.empty()) << "empty sentence";
 
-  CHECK_FALSE(eos) << "\"EOS\" is not found";
+  CHECK_DIE(eos) << "\"EOS\" is not found";
 
-  begin__.reset_string(sentence);
-  begin_ = begin__.get();
+  begin_data_.reset_string(sentence);
+  begin_ = begin_data_.get();
 
   initList();
 
@@ -111,7 +111,7 @@ bool EncoderLearnerTagger::read(std::istream *is,
   for (size_t i = 0; corpus[i]->stat != MECAB_EOS_NODE; ++i) {
     LearnerNode *found = 0;
     for (LearnerNode *node = lookup(pos); node; node = node->bnext) {
-      if ( node_cmp_eq(*(corpus[i]), *node, eval_size_, unk_eval_size_) ) {
+      if (node_cmp_eq(*(corpus[i]), *node, eval_size_, unk_eval_size_)) {
         found = node;
         break;
       }
@@ -119,15 +119,15 @@ bool EncoderLearnerTagger::read(std::istream *is,
 
     // cannot find node even using UNKNOWN WORD PROSESSING
     if (!found) {
-      LearnerNode *node = tokenizer_->getNewNode();
+      LearnerNode *node = allocator_->newNode();
       node->surface  = begin_ + pos;
       node->length   = node->rlength = std::strlen(corpus[i]->surface);
       node->feature  = feature_index_->strdup(corpus[i]->feature);
       node->stat     = MECAB_NOR_NODE;
       node->fvector  = 0;
       node->wcost    = 0.0;
-      node->bnext    = beginNodeList_[pos];
-      beginNodeList_[pos] = node;
+      node->bnext    = begin_node_list_[pos];
+      begin_node_list_[pos] = node;
       std::cout << "adding virtual node: " << node->feature << std::endl;
     }
 
@@ -136,13 +136,13 @@ bool EncoderLearnerTagger::read(std::istream *is,
 
   buildLattice();
 
-  LearnerNode* prev = endNodeList_[0];  // BOS
+  LearnerNode* prev = end_node_list_[0];  // BOS
   prev->anext = 0;
   pos = 0;
 
   for (size_t i = 0; i < corpus.size(); ++i) {
     LearnerNode *rNode = 0;
-    for (LearnerNode *node = beginNodeList_[pos]; node; node = node->bnext) {
+    for (LearnerNode *node = begin_node_list_[pos]; node; node = node->bnext) {
       if (corpus[i]->stat == MECAB_EOS_NODE ||
           node_cmp_eq(*(corpus[i]), *node, eval_size_, unk_eval_size_) )
         rNode = node;  // take last node
@@ -157,15 +157,17 @@ bool EncoderLearnerTagger::read(std::istream *is,
 
     CHECK_DIE(lpath->fvector) << "lpath is NULL";
     for (const int *f = lpath->fvector; *f != -1; ++f) {
-      if (*f >= static_cast<long>(observed->size()))
+      if (*f >= static_cast<long>(observed->size())) {
         observed->resize(*f + 1);
+      }
       ++(*observed)[*f];
     }
 
     if (lpath->rnode->stat != MECAB_EOS_NODE) {
       for (const int *f = lpath->rnode->fvector; *f != -1; ++f) {
-        if (*f >= static_cast<long>(observed->size()))
+        if (*f >= static_cast<long>(observed->size())) {
           observed->resize(*f + 1);
+        }
         ++(*observed)[*f];
       }
     }
@@ -175,13 +177,15 @@ bool EncoderLearnerTagger::read(std::istream *is,
     prev->anext = rNode;
     prev = rNode;
 
-    if (corpus[i]->stat == MECAB_EOS_NODE) break;
+    if (corpus[i]->stat == MECAB_EOS_NODE) {
+      break;
+    }
 
     pos += std::strlen(corpus[i]->surface);
   }
 
-  prev->anext = beginNodeList_[len_];  // connect to EOS
-  beginNodeList_[len_]->anext = 0;
+  prev->anext = begin_node_list_[len_];  // connect to EOS
+  begin_node_list_[len_]->anext = 0;
 
   for (size_t i = 0 ; i < corpus.size(); ++i) {
     delete [] corpus[i]->surface;
@@ -196,8 +200,8 @@ int EncoderLearnerTagger::eval(size_t *crr,
                                size_t *prec, size_t *recall) const {
   int zeroone = 0;
 
-  LearnerNode *res = endNodeList_[0]->next;
-  LearnerNode *ans = endNodeList_[0]->anext;
+  LearnerNode *res = end_node_list_[0]->next;
+  LearnerNode *ans = end_node_list_[0]->anext;
 
   size_t resp = 0;
   size_t ansp = 0;
@@ -242,13 +246,12 @@ int EncoderLearnerTagger::eval(size_t *crr,
 }
 
 bool DecoderLearnerTagger::parse(std::istream* is, std::ostream *os) {
-  path_freelist_->free();
+  allocator_->free();
   feature_index_->clear();
-  tokenizer_->clear();
 
   if (!begin_) {
-    begin__.reset(new char[BUF_SIZE * 16]);
-    begin_ = begin__.get();
+    begin_data_.reset(new char[BUF_SIZE * 16]);
+    begin_ = begin_data_.get();
   }
 
   if (!is->getline(const_cast<char *>(begin_), BUF_SIZE * 16)) {
@@ -260,7 +263,7 @@ bool DecoderLearnerTagger::parse(std::istream* is, std::ostream *os) {
   buildLattice();
   viterbi();
 
-  for (LearnerNode *node = endNodeList_[0]->next;
+  for (LearnerNode *node = end_node_list_[0]->next;
        node->next; node = node->next) {
     os->write(node->surface, node->length);
     *os << '\t' << node->feature << '\n';
@@ -271,17 +274,19 @@ bool DecoderLearnerTagger::parse(std::istream* is, std::ostream *os) {
 }
 
 LearnerNode *LearnerTagger::lookup(size_t pos) {
-  if (beginNodeList_[pos]) return beginNodeList_[pos];
-  LearnerNode *m = tokenizer_->lookup(begin_ + pos, end_);
-  beginNodeList_[pos] = m;
+  if (begin_node_list_[pos]) {
+    return begin_node_list_[pos];
+  }
+  LearnerNode *m = tokenizer_->lookup(begin_ + pos, end_, allocator_);
+  begin_node_list_[pos] = m;
   return m;
 }
 
 bool LearnerTagger::connect(size_t pos, LearnerNode *_rNode) {
   for (LearnerNode *rNode = _rNode ; rNode; rNode = rNode->bnext) {
-    for (LearnerNode *lNode = endNodeList_[pos]; lNode;
+    for (LearnerNode *lNode = end_node_list_[pos]; lNode;
          lNode = lNode->enext) {
-      LearnerPath *path   = path_freelist_->alloc();
+      LearnerPath *path   = allocator_->newPath();
       std::memset(path, 0, sizeof(Path));
       path->rnode   = rNode;
       path->lnode   = lNode;
@@ -293,50 +298,53 @@ bool LearnerTagger::connect(size_t pos, LearnerNode *_rNode) {
       rNode->lpath  = path;
       path->rnext   = lNode->rpath;
       lNode->rpath  = path;
-      CHECK_FALSE(feature_index_->buildFeature(path))
-          << feature_index_->what();
+      CHECK_DIE(feature_index_->buildFeature(path));
       CHECK_DIE(path->fvector);
     }
-    size_t x = rNode->rlength + pos;
-    rNode->enext  = endNodeList_[x];
-    endNodeList_[x] = rNode;
+    const size_t x = rNode->rlength + pos;
+    rNode->enext  = end_node_list_[x];
+    end_node_list_[x] = rNode;
   }
 
   return true;
 }
 
 bool LearnerTagger::initList() {
-  if (!begin_) return false;
+  if (!begin_) {
+    return false;
+  }
 
   len_ = std::strlen(begin_);
   end_ = begin_ + len_;
 
-  endNodeList_.resize(len_ + 2);
-  std::fill(endNodeList_.begin(), endNodeList_.end(),
+  end_node_list_.resize(len_ + 2);
+  std::fill(end_node_list_.begin(), end_node_list_.end(),
             reinterpret_cast<LearnerNode *>(0));
 
-  beginNodeList_.resize(len_ + 2);
-  std::fill(beginNodeList_.begin(), beginNodeList_.end(),
+  begin_node_list_.resize(len_ + 2);
+  std::fill(begin_node_list_.begin(), begin_node_list_.end(),
             reinterpret_cast<LearnerNode *>(0));
 
-  endNodeList_[0] = tokenizer_->getBOSNode();
-  endNodeList_[0]->surface = begin_;
-  beginNodeList_[len_] = tokenizer_->getEOSNode();
+  end_node_list_[0] = tokenizer_->getBOSNode(allocator_);
+  end_node_list_[0]->surface = begin_;
+  begin_node_list_[len_] = tokenizer_->getEOSNode(allocator_);
 
   return true;
 }
 
 bool LearnerTagger::buildLattice() {
   for (int pos = 0; pos <= static_cast<long>(len_);  pos++) {
-    if (!endNodeList_[pos]) continue;
+    if (!end_node_list_[pos]) {
+      continue;
+    }
     connect(pos, lookup(pos));
   }
 
-  if (!endNodeList_[len_]) {
-    beginNodeList_[len_] = lookup(len_);
+  if (!end_node_list_[len_]) {
+    begin_node_list_[len_] = lookup(len_);
     for (size_t pos = len_; static_cast<long>(pos) >= 0;  pos--) {
-      if (endNodeList_[pos]) {
-        connect(pos, beginNodeList_[len_]);
+      if (end_node_list_[pos]) {
+        connect(pos, begin_node_list_[len_]);
         break;
       }
     }
@@ -347,7 +355,7 @@ bool LearnerTagger::buildLattice() {
 
 bool LearnerTagger::viterbi() {
   for (int pos = 0;   pos <= static_cast<long>(len_);  ++pos) {
-    for (LearnerNode *node = beginNodeList_[pos]; node; node = node->bnext) {
+    for (LearnerNode *node = begin_node_list_[pos]; node; node = node->bnext) {
       double bestc = -1e37;
       LearnerNode *best = 0;
       feature_index_->calcCost(node);
@@ -365,7 +373,7 @@ bool LearnerTagger::viterbi() {
     }
   }
 
-  LearnerNode *node = beginNodeList_[len_];  // EOS
+  LearnerNode *node = begin_node_list_[len_];  // EOS
   for (LearnerNode *prev; node->prev;) {
     prev = node->prev;
     prev->next = node;
@@ -378,23 +386,31 @@ bool LearnerTagger::viterbi() {
 double EncoderLearnerTagger::gradient(double *expected) {
   viterbi();
 
-  for (int pos = 0;   pos <= static_cast<long>(len_);  ++pos)
-    for (LearnerNode *node = beginNodeList_[pos]; node; node = node->bnext)
+  for (int pos = 0;   pos <= static_cast<long>(len_);  ++pos) {
+    for (LearnerNode *node = begin_node_list_[pos]; node; node = node->bnext){
       calc_alpha(node);
+    }
+  }
 
-  for (int pos = static_cast<long>(len_); pos >=0;    --pos)
-    for (LearnerNode *node = endNodeList_[pos]; node; node = node->enext)
+  for (int pos = static_cast<long>(len_); pos >=0;    --pos) {
+    for (LearnerNode *node = end_node_list_[pos]; node; node = node->enext) {
       calc_beta(node);
+    }
+  }
 
-  double Z = beginNodeList_[len_]->alpha;  // alpha of EOS
+  double Z = begin_node_list_[len_]->alpha;  // alpha of EOS
 
-  for (int pos = 0;   pos <= static_cast<long>(len_);  ++pos)
-    for (LearnerNode *node = beginNodeList_[pos]; node; node = node->bnext)
-      for (LearnerPath *path = node->lpath; path; path = path->lnext)
+  for (int pos = 0;   pos <= static_cast<long>(len_);  ++pos) {
+    for (LearnerNode *node = begin_node_list_[pos]; node; node = node->bnext) {
+      for (LearnerPath *path = node->lpath; path; path = path->lnext) {
         calc_expectation(path, expected, Z);
+      }
+    }
+  }
 
-  for (size_t i = 0; i < ans_path_list_.size(); ++i)
+  for (size_t i = 0; i < ans_path_list_.size(); ++i) {
     Z -= ans_path_list_[i]->cost;
+  }
 
   return Z;
 }
@@ -402,7 +418,7 @@ double EncoderLearnerTagger::gradient(double *expected) {
 double EncoderLearnerTagger::online_update(double *expected) {
   viterbi();
 
-  LearnerNode *prev = endNodeList_[0];
+  LearnerNode *prev = end_node_list_[0];
   for (LearnerNode *node = prev->next; node; node = node->next) {
     for (LearnerPath *path = node->lpath; path; path = path->lnext) {
       if (prev == path->lnode) {

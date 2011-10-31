@@ -4,21 +4,19 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#include <fstream>
 #include <cstdio>
-#include "param.h"
+#include <fstream>
 #include "common.h"
-#include "utils.h"
+#include "param.h"
 #include "string_buffer.h"
+#include "utils.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
 namespace MeCab {
-
-using namespace std;
-
+namespace {
 void init_param(std::string *help,
                 std::string *version,
                 const std::string &system_name,
@@ -56,6 +54,7 @@ void init_param(std::string *help,
   *help += '\n';
   return;
 }
+}  // namespace
 
 void Param::dump_config(std::ostream *os) const {
   for (std::map<std::string, std::string>::const_iterator it = conf_.begin();

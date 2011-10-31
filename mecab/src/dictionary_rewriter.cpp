@@ -5,15 +5,14 @@
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 #include <cstring>
+#include <fstream>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
-#include <fstream>
-
-#include "utils.h"
 #include "common.h"
 #include "dictionary_rewriter.h"
 #include "iconv_utils.h"
+#include "utils.h"
 
 namespace {
 
@@ -189,7 +188,7 @@ bool DictionaryRewriter::rewrite2(const std::string &feature,
     f.ufeature = *ufeature;
     f.lfeature = *lfeature;
     f.rfeature = *rfeature;
-    cache_.insert(std::make_pair<std::string, FeatureSet>(feature, f));
+    cache_.insert(std::pair<std::string, FeatureSet>(feature, f));
   } else {
     *ufeature = it->second.ufeature;
     *lfeature = it->second.lfeature;

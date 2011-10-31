@@ -6,16 +6,16 @@
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 #include <cstring>
 #include <iostream>
-
-#include "viterbi.h"
 #include "common.h"
-#include "param.h"
-#include "mecab.h"
-#include "string_buffer.h"
-#include "writer.h"
 #include "connector.h"
+#include "mecab.h"
 #include "nbest_generator.h"
+#include "param.h"
 #include "stream_wrapper.h"
+#include "string_buffer.h"
+#include "tokenizer.h"
+#include "viterbi.h"
+#include "writer.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -24,6 +24,7 @@
 const char *getGlobalError();
 void setGlobalError(const char *str);
 
+namespace MeCab {
 namespace {
 
 const MeCab::Option long_options[] = {
@@ -31,12 +32,14 @@ const MeCab::Option long_options[] = {
   { "dicdir",        'd',  0, "DIR",    "set DIR  as a system dicdir" },
   { "userdic",        'u',  0, "FILE",    "use FILE as a user dictionary" },
   { "lattice-level",      'l', "0", "INT",
-    "lattice information level (default 0)" },
+    "lattice information level (DEPRECATED)" },
   { "dictionary-info",  'D', 0, 0, "show dictionary information and exit" },
-  { "all-morphs",      'a', 0, 0,    "output all morphs(default false)" },
   { "output-format-type", 'O',  0, "TYPE",
     "set output format type (wakati,none,...)" },
-  { "partial",            'p',  0, 0,      "partial parsing mode" },
+  { "all-morphs",      'a', 0, 0,    "output all morphs(default false)" },
+  { "nbest",              'N', "1",    "INT", "output N best results (default 1)" },
+  { "partial",            'p',  0, 0,      "partial parsing mode (default false)" },
+  { "marginal",           'm',  0, 0,      "output marginal probability (default false)" },
   { "node-format",        'F',  "%m\\t%H\\n", "STR",
     "use STR as the user-defined node format" },
   { "unk-format",        'U',  "%m\\t%H\\n", "STR",
@@ -56,8 +59,6 @@ const MeCab::Option long_options[] = {
     "open dictioanry with mutable mode (experimental)" },
   { "allocate-sentence",  'C', 0, 0,
     "allocate new memory for input sentence" },
-  { "nbest",        'N', "1",    "INT",
-    "output N best results (default 1)" },
   { "theta",        't',  "0.75",  "FLOAT",
     "set temparature parameter theta (default 0.75)"  },
   { "cost-factor",        'c',  "700",  "INT",
@@ -67,25 +68,75 @@ const MeCab::Option long_options[] = {
   { "help",          'h',  0, 0,     "show this help and exit." },
   { 0, 0, 0, 0 }
 };
-}
 
-namespace MeCab {
-class TaggerImpl: public Tagger {
- private:
-  Tokenizer                  tokenizer_;
-  Connector                  connector_;
-  Viterbi                    viterbi_;
-  StringBuffer               ostrs_;
-  Writer                     writer_;
-  scoped_ptr<NBestGenerator> nbest_;
-  const char*                begin_;
-  whatlog                    what_;
-
+class ModelImpl: public Model {
  public:
-  bool                  open(Param *);
-  bool                  open(int, char**);
-  bool                  open(const char*);
-  void                  close();
+  ModelImpl();
+  virtual ~ModelImpl();
+
+  bool open(int argc, char **argv);
+  bool open(const char *arg);
+  bool open(const Param &param);
+
+  bool is_available() const {
+    return (tokenizer_.get() && connector_.get() && connector_.get() &&
+            viterbi_.get() && writer_.get());
+  }
+
+  int requesat_type() const {
+    return request_type_;
+  }
+
+  const DictionaryInfo *dictionary_info() const {
+    if (!is_available()) {
+      return 0;
+    }
+    return tokenizer_->dictionary_info();
+  }
+
+  Tagger *createTagger() const;
+
+  Lattice *createLattice() const;
+
+  const Viterbi *viterbi() const {
+    return viterbi_.get();
+  }
+
+  const Writer *writer() const {
+    return writer_.get();
+  }
+
+  const char *what() const {
+    return what_.c_str();
+  }
+
+ private:
+  void set_what(const char *str) {
+    what_.assign(str);
+  }
+
+  scoped_ptr<Tokenizer<Node, Path> > tokenizer_;
+  scoped_ptr<Connector> connector_;
+  scoped_ptr<Viterbi> viterbi_;
+  scoped_ptr<Writer> writer_;
+  int request_type_;
+  double theta_;
+  std::string what_;
+};
+
+class TaggerImpl: public Tagger {
+ public:
+  bool                  open(int argc, char **argv);
+  bool                  open(const char *arg);
+  bool                  open(const ModelImpl &model);
+
+  bool                  parse(Lattice *lattice) const;
+  bool                  parse(const char *str, Lattice *lattice) const;
+  bool                  parse(const char *str, size_t len, Lattice *lattice) const;
+
+  void                  set_request_type(int request_type);
+  int                   request_type() const;
+
   const char*           parse(const char*);
   const char*           parse(const char*, size_t);
   const char*           parse(const char*, size_t, char*, size_t);
@@ -100,9 +151,12 @@ class TaggerImpl: public Tagger {
   const Node*           nextNode();
   const char*           next();
   const char*           next(char*, size_t);
+
   const char           *formatNode(const Node *);
   const char           *formatNode(const Node *, char *, size_t);
+
   const DictionaryInfo *dictionary_info() const;
+
   void                  set_partial(bool partial);
   bool                  partial() const;
   void                  set_theta(float theta);
@@ -111,95 +165,344 @@ class TaggerImpl: public Tagger {
   int                   lattice_level() const;
   void                  set_all_morphs(bool all_morphs);
   bool                  all_morphs() const;
-  const char*           what();
 
-  TaggerImpl() {}
-  virtual ~TaggerImpl() { this->close(); }
+  const char*           what() const;
+
+  TaggerImpl();
+  virtual ~TaggerImpl();
+
+ private:
+  const ModelImpl *model() const { return current_model_; }
+
+  void set_what(const char *str) {
+    what_.assign(str);
+  }
+
+  void initRequestType() {
+    mutable_lattice()->set_request_type(request_type_);
+    mutable_lattice()->set_theta(theta_);
+  }
+
+  Lattice *mutable_lattice() {
+    if (!lattice_.get()) {
+      lattice_.reset(model()->createLattice());
+    }
+    return lattice_.get();
+  }
+
+  const ModelImpl          *current_model_;
+  scoped_ptr<ModelImpl>     model_;
+  scoped_ptr<Lattice>       lattice_;
+  int                       request_type_;
+  double                    theta_;
+  std::string               what_;
 };
 
-const char *TaggerImpl::what() {
-  return what_.str();
-}
+class LatticeImpl : public Lattice {
+ public:
+  explicit LatticeImpl(const Writer *writer = 0);
+  ~LatticeImpl();
 
-bool TaggerImpl::open(int argc, char **argv) {
+  // clear internal lattice
+  void clear();
+
+  bool is_available() const {
+    return (size_ > 0 && sentence_ &&
+            !begin_nodes_.empty() &&
+            !end_nodes_.empty());
+  }
+
+  // nbest;
+  bool next();
+
+  // return bos/eos node
+  Node *bos_node() const { return end_nodes_[0]; }
+  Node *eos_node() const { return begin_nodes_[size()]; }
+  Node **begin_nodes() const { return const_cast<Node **>(&begin_nodes_[0]); }
+  Node **end_nodes() const   { return const_cast<Node **>(&end_nodes_[0]); }
+  Node *end_nodes(size_t pos) const { return begin_nodes_[pos]; }
+  Node *begin_nodes(size_t pos) const { return end_nodes_[pos]; }
+
+  const char *sentence() const { return sentence_; }
+  void set_sentence(const char *sentence);
+  void set_sentence(const char *sentence, size_t len);
+  size_t size() const { return size_; }
+  size_t len()  const { return size_; }
+
+  void set_Z(double Z) { Z_ = Z; }
+  double Z() const { return Z_; }
+
+  float theta() const { return theta_; }
+  void  set_theta(float theta) { theta_ = theta; }
+
+  int request_type() const { return request_type_; }
+
+  void set_request_type(int request_type) {
+    request_type_ = request_type;
+  }
+  bool has_request_type(int request_type) const {
+    return request_type & request_type_;
+  }
+  void add_request_type(int request_type) {
+    request_type_ |= request_type;
+  }
+  void remove_request_type(int request_type) {
+    request_type_ &= ~request_type;
+  }
+
+  char *alloc(size_t size);
+  char *strdup(const char *str);
+
+  Allocator<Node, Path> *allocator() const {
+    return allocator_.get();
+  }
+
+  NBestGenerator *nbest_generator() {
+    if (!nbest_generator_.get()) {
+      nbest_generator_.reset(new NBestGenerator);
+    }
+    return nbest_generator_.get();
+  }
+
+  const char *what() const { return what_.c_str(); }
+
+  void set_what(const char *str) {
+    what_.assign(str);
+  }
+
+  const char *toString();
+  const char *toString(char *buf, size_t size);
+  const char *toString(const Node *node);
+  const char *toString(const Node *node,
+                       char *buf, size_t size);
+  const char *enumNBestAsString(size_t N);
+  const char *enumNBestAsString(size_t N, char *buf, size_t size);
+
+ private:
+  const char                 *sentence_;
+  size_t                      size_;
+  double                      theta_;
+  double                      Z_;
+  int                         request_type_;
+  std::string                 what_;
+  std::vector<Node *>         end_nodes_;
+  std::vector<Node *>         begin_nodes_;
+  const Writer               *writer_;
+  scoped_ptr<StringBuffer>    ostrs_;
+  scoped_ptr<ChunkFreeList<char>  >  char_freelist_;
+  scoped_ptr<Allocator<Node, Path> > allocator_;
+  scoped_ptr<NBestGenerator>  nbest_generator_;
+
+  StringBuffer *stream() {
+    if (!ostrs_.get()) {
+      ostrs_.reset(new StringBuffer);
+    }
+    return ostrs_.get();
+  }
+
+  const char *toStringInternal(StringBuffer *os);
+  const char *toStringInternal(const Node *node, StringBuffer *os);
+  const char *enumNBestAsStringInternal(size_t N, StringBuffer *os);
+};
+
+ModelImpl::ModelImpl()
+    : tokenizer_(0), connector_(0), viterbi_(0), writer_(0),
+      request_type_(MECAB_ONE_BEST), theta_(0.0) {}
+
+ModelImpl::~ModelImpl() {}
+
+bool ModelImpl::open(int argc, char **argv) {
   Param param;
-  CHECK_CLOSE_FALSE(param.open(argc, argv, long_options)) << param.what();
-  return open(&param);
+  if (!param.open(argc, argv, long_options) ||
+      !load_dictionary_resource(&param)) {
+    set_what(param.what());
+    return false;
+  }
+  return open(param);
 }
 
-bool TaggerImpl::open(const char *arg) {
+bool ModelImpl::open(const char *arg) {
   Param param;
-  CHECK_CLOSE_FALSE(param.open(arg, long_options)) << param.what();
-  return open(&param);
+  if (!param.open(arg, long_options) ||
+      !load_dictionary_resource(&param)) {
+    set_what(param.what());
+    return false;
+  }
+  return open(param);
 }
 
-bool TaggerImpl::open(Param *param) {
-  close();
-
-  if (param->get<bool>("help")) {
-    WHAT << param->help();
-    close();
+bool ModelImpl::open(const Param &param) {
+  if (param.get<bool>("help")) {
+    set_what(param.help());
     return false;
   }
 
-  if (param->get<bool>("version")) {
-    WHAT << param->version();
-    close();
+  if (param.get<bool>("version")) {
+    set_what(param.version());
     return false;
   }
 
-  CHECK_CLOSE_FALSE(load_dictionary_resource(param)) << param->what();
+  tokenizer_.reset(new Tokenizer<Node, Path>);
+  connector_.reset(new Connector);
+  viterbi_.reset(new Viterbi);
+  writer_.reset(new Writer);
 
-  CHECK_CLOSE_FALSE(tokenizer_.open(*param)) << tokenizer_.what();
-  CHECK_CLOSE_FALSE(connector_.open(*param)) << connector_.what();
-  CHECK_CLOSE_FALSE(viterbi_.open(*param, &tokenizer_, &connector_))
-      << viterbi_.what();
-  CHECK_CLOSE_FALSE(writer_.open(*param)) << writer_.what();
+  if (!tokenizer_->open(param) || !connector_->open(param) || !writer_->open(param) ||
+      !viterbi_->open(param, tokenizer_.get(), connector_.get())) {
+    std::string error = tokenizer_->what();
+    if (!error.empty()) {
+      error.append(" ");
+    }
+    error.append(connector_->what());
+    if (!error.empty()) {
+      error.append(" ");
+    }
+    error.append(writer_->what());
 
-  if (param->get<std::string>("output-format-type") == "dump") {
-    set_lattice_level(3);
-    set_all_morphs(true);
+    set_what(error.c_str());
+
+    tokenizer_.reset(0);
+    connector_.reset(0);
+    writer_.reset(0);
+    viterbi_.reset(0);
+    return false;
   }
+
+  request_type_ = load_request_type(param);
+  theta_ = param.get<double>("theta");
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
   std::locale::global(std::locale("C"));
 #endif
 
+  return is_available();
+}
+
+Tagger *ModelImpl::createTagger() const {
+  if (!is_available()) {
+    return 0;
+  }
+  TaggerImpl *tagger = new TaggerImpl;
+  if (!tagger->open(*this)) {
+    delete tagger;
+    return 0;
+  }
+  tagger->set_theta(theta_);
+  tagger->set_request_type(request_type_);
+  return tagger;
+}
+
+Lattice *ModelImpl::createLattice() const {
+  if (!is_available()) {
+    return 0;
+  }
+  return new LatticeImpl(writer_.get());
+}
+
+TaggerImpl::TaggerImpl()
+    : current_model_(0),
+      request_type_(MECAB_ONE_BEST), theta_(0.0) {}
+
+TaggerImpl::~TaggerImpl() {}
+
+const char *TaggerImpl::what() const {
+  return what_.c_str();
+}
+
+bool TaggerImpl::open(int argc, char **argv) {
+  model_.reset(new ModelImpl);
+  if (!model_->open(argc, argv)) {
+    set_what(model_->what());
+    model_.reset(0);
+    return false;
+  }
+  current_model_ = model_.get();
   return true;
 }
 
-void TaggerImpl::close() {}
+bool TaggerImpl::open(const char *arg) {
+  model_.reset(new ModelImpl);
+  if (!model_->open(arg)) {
+    set_what(model_->what());
+    model_.reset(0);
+    return false;
+  }
+  current_model_ = model_.get();
+  return true;
+}
+
+bool TaggerImpl::open(const ModelImpl &model) {
+  if (!model.is_available()) {
+    return false;
+  }
+  model_.reset(0);
+  current_model_ = &model;
+  return true;
+}
+
+void TaggerImpl::set_request_type(int request_type) {
+  request_type_ = request_type;
+}
+
+int TaggerImpl::request_type() const {
+  return request_type_;
+}
 
 void TaggerImpl::set_partial(bool partial) {
-  viterbi_.set_partial(partial);
+  if (partial) {
+    request_type_ |= MECAB_PARTIAL;
+  } else {
+    request_type_ &= ~MECAB_PARTIAL;
+  }
 }
 
 bool TaggerImpl::partial() const {
-  return viterbi_.partial();
+  return request_type_ & MECAB_PARTIAL;
 }
 
 void TaggerImpl::set_theta(float theta) {
-  viterbi_.set_theta(theta);
+  theta_ = theta;
 }
 
 float TaggerImpl::theta() const {
-  return viterbi_.theta();
+  return theta_;
 }
 
 void TaggerImpl::set_lattice_level(int level) {
-  viterbi_.set_lattice_level(level);
+  std::cerr << "DEPRECATED: this method no longer works" << std::endl;
 }
 
 int TaggerImpl::lattice_level() const {
-  return viterbi_.lattice_level();
+  std::cerr << "DEPRECATED: this method no longer works" << std::endl;
+  return 0;
 }
 
 void TaggerImpl::set_all_morphs(bool all_morphs) {
-  viterbi_.set_all_morphs(all_morphs);
+  if (all_morphs) {
+    request_type_ |= MECAB_ALL_MORPHS;
+  } else {
+    request_type_ &= ~MECAB_ALL_MORPHS;
+  }
 }
 
 bool TaggerImpl::all_morphs() const {
-  return viterbi_.all_morphs();
+  return request_type_ & MECAB_ALL_MORPHS;
+}
+
+bool TaggerImpl::parse(Lattice *lattice) const {
+  return model()->viterbi()->analyze(lattice);
+}
+
+bool TaggerImpl::parse(const char *str, Lattice *lattice) const {
+  return parse(str, std::strlen(str), lattice);
+}
+
+bool TaggerImpl::parse(const char *str, size_t len, Lattice *lattice) const {
+  if (!lattice || !str || len == 0) {
+    return false;
+  }
+  lattice->set_sentence(str, len);
+  return parse(lattice);
 }
 
 const char *TaggerImpl::parse(const char *str) {
@@ -207,43 +510,26 @@ const char *TaggerImpl::parse(const char *str) {
 }
 
 const char *TaggerImpl::parse(const char *str, size_t len) {
-  const Node *n = parseToNode(str, len);
-  if (!n) return 0;
-  ostrs_.clear();
-  CHECK_0(writer_.write(&ostrs_, str, n)) << writer_.what();
-  ostrs_ << '\0';
-  return ostrs_.str();
+  Lattice *lattice = mutable_lattice();
+  lattice->set_sentence(str, len);
+  initRequestType();
+  if (!parse(lattice)) {
+    set_what(lattice->what());
+    return 0;
+  }
+  return lattice->toString();
 }
 
 const char *TaggerImpl::parse(const char *str, size_t len,
                               char *out, size_t len2) {
-  const Node *n = parseToNode(str, len);
-  if (!n) return 0;
-  StringBuffer os(out, len2);
-  CHECK_0(writer_.write(&os, str, n)) << writer_.what();
-  os << '\0';
-  CHECK_0(os.str()) << "output buffer overflow";
-  return os.str();
-}
-
-const char* TaggerImpl::formatNode(const Node* node) {
-  ostrs_.clear();
-  CHECK_0(writer_.writeNode(&ostrs_,
-                            static_cast<const char *>(begin_), node))
-      <<  writer_.what();
-  ostrs_ << '\0';
-  return ostrs_.str();
-}
-
-const char* TaggerImpl::formatNode(const Node* node,
-                                   char *out, size_t len) {
-  StringBuffer os(out, len);
-  CHECK_0(writer_.writeNode(&os,
-                            static_cast<const char *>(begin_), node))
-      <<  writer_.what();
-  os << '\0';
-  CHECK_0(os.str()) << "output buffer overflow";
-  return os.str();
+  Lattice *lattice = mutable_lattice();
+  lattice->set_sentence(str, len);
+  initRequestType();
+  if (!parse(lattice)) {
+    set_what(lattice->what());
+    return 0;
+  }
+  return lattice->toString(out, len2);
 }
 
 const Node *TaggerImpl::parseToNode(const char *str) {
@@ -251,10 +537,14 @@ const Node *TaggerImpl::parseToNode(const char *str) {
 }
 
 const Node *TaggerImpl::parseToNode(const char *str, size_t len) {
-  CHECK_RETURN(str, static_cast<Node *>(0)) << "NULL pointer is given";
-  const Node *bosNode = viterbi_.analyze(str, len);
-  CHECK_RETURN(bosNode, static_cast<const Node *>(0)) << viterbi_.what();
-  return bosNode;
+  Lattice *lattice = mutable_lattice();
+  lattice->set_sentence(str, len);
+  initRequestType();
+  if (!parse(lattice)) {
+    set_what(lattice->what());
+    return 0;
+  }
+  return lattice->bos_node();
 }
 
 bool TaggerImpl::parseNBestInit(const char *str) {
@@ -262,45 +552,38 @@ bool TaggerImpl::parseNBestInit(const char *str) {
 }
 
 bool TaggerImpl::parseNBestInit(const char *str, size_t len) {
-  CHECK_FALSE(viterbi_.lattice_level() >= 1) <<
-      "use -l option to obtain N-Best results"
-      ". e.g., mecab -N10 -l1";
-  const Node *n = parseToNode(str, len);
-  begin_ = str;
-  if (!n) return false;
-  if (!nbest_.get()) nbest_.reset(new NBestGenerator);
-  nbest_->set(const_cast<Node *>(n));
-  return true;
+  Lattice *lattice = mutable_lattice();
+  lattice->set_sentence(str, len);
+  initRequestType();
+  lattice->add_request_type(MECAB_NBEST);
+  return parse(lattice);
 }
 
 const Node* TaggerImpl::nextNode() {
-  if (!nbest_.get()) nbest_.reset(new NBestGenerator);
-  const Node *n = nbest_->next();
-  CHECK_RETURN(n, static_cast<const Node*>(0)) << "no more results";
-  return n;
+  Lattice *lattice = mutable_lattice();
+  if (!lattice->next()) {
+    lattice->set_what("no more results");
+    return 0;
+  }
+  return lattice->bos_node();
 }
 
 const char* TaggerImpl::next() {
-  const Node *n = nextNode();
-  if (!n) return 0;
-  ostrs_.clear();
-  CHECK_0(writer_.write(&ostrs_,
-                        static_cast<const char *>(begin_), n))
-      << writer_.what();
-  ostrs_ << '\0';
-  return ostrs_.str();
+  Lattice *lattice = mutable_lattice();
+  if (!lattice->next()) {
+    lattice->set_what("no more results");
+    return 0;
+  }
+  return lattice->toString();
 }
 
 const char* TaggerImpl::next(char *out, size_t len2) {
-  const Node *n = nextNode();
-  if (!n) return 0;
-  StringBuffer os(out, len2);
-  CHECK_0(writer_.write(&os,
-                        static_cast<const char *>(begin_), n))
-      << writer_.what();
-  os << '\0';
-  CHECK_0(os.str()) << "output buffer overflow";
-  return os.str();
+  Lattice *lattice = mutable_lattice();
+  if (!lattice->next()) {
+    lattice->set_what("no more results");
+    return 0;
+  }
+  return lattice->toString(out, len2);
 }
 
 const char* TaggerImpl::parseNBest(size_t N, const char* str) {
@@ -309,49 +592,240 @@ const char* TaggerImpl::parseNBest(size_t N, const char* str) {
 
 const char* TaggerImpl::parseNBest(size_t N,
                                    const char* str, size_t len) {
-  if (N == 1) return parse(str, len);
+  Lattice *lattice = mutable_lattice();
+  lattice->set_sentence(str, len);
+  initRequestType();
+  lattice->add_request_type(MECAB_NBEST);
 
-  if (!parseNBestInit(str, len)) return 0;
-  ostrs_.clear();
-
-  for (size_t i = 0; i < N; ++i) {
-    const Node *n = nextNode();
-    if (!n) break;
-    CHECK_0(writer_.write(&ostrs_, str, n)) << writer_.what();
+  if (!parse(lattice)) {
+    return 0;
   }
 
-  // make a dummy node for EON
-  Node eon_node;
-  memset(&eon_node, 0, sizeof(eon_node));
-  eon_node.stat = MECAB_EON_NODE;
-  eon_node.next = 0;
-  eon_node.surface = "";
-  writer_.writeNode(&ostrs_, str, &eon_node);
-
-  ostrs_ << '\0';
-  return ostrs_.str();
-}
-
-const DictionaryInfo *TaggerImpl::dictionary_info() const {
-  return tokenizer_.dictionary_info();
+  return lattice->enumNBestAsString(N);
 }
 
 const char* TaggerImpl::parseNBest(size_t N, const char* str, size_t len,
                                    char *out, size_t len2) {
-  if (N == 1) return parse(str, len, out, len2);
+  Lattice *lattice = mutable_lattice();
+  lattice->set_sentence(str, len);
+  initRequestType();
+  lattice->add_request_type(MECAB_NBEST);
 
-  if (!parseNBestInit(str, len)) return 0;
-  StringBuffer os(out, len2);
+  if (!parse(lattice)) {
+    return 0;
+  }
+
+  return lattice->enumNBestAsString(N, out, len2);
+}
+
+const char* TaggerImpl::formatNode(const Node* node) {
+  return mutable_lattice()->toString(node);
+}
+
+const char* TaggerImpl::formatNode(const Node* node,
+                                   char *out, size_t len) {
+  return mutable_lattice()->toString(node, out, len);
+}
+
+const DictionaryInfo *TaggerImpl::dictionary_info() const {
+  return model()->dictionary_info();
+}
+
+LatticeImpl::LatticeImpl(const Writer *writer)
+    : sentence_(0), size_(0), theta_(0.0), Z_(0.0),
+      request_type_(MECAB_ONE_BEST),
+      writer_(writer),
+      ostrs_(0),
+      char_freelist_(0),
+      allocator_(new Allocator<Node, Path>),
+      nbest_generator_(0) {
+  begin_nodes_.reserve(MIN_INPUT_BUFFER_SIZE);
+  end_nodes_.reserve(MIN_INPUT_BUFFER_SIZE);
+}
+
+LatticeImpl::~LatticeImpl() {}
+
+char *LatticeImpl::alloc(size_t size) {
+  if (!char_freelist_.get()) {
+    char_freelist_.reset(new ChunkFreeList<char>(BUF_SIZE));
+  }
+  return char_freelist_->alloc(size + 1);
+}
+
+char *LatticeImpl::strdup(const char *str) {
+  const size_t size = std::strlen(str);
+  char *n = alloc(size + 1);
+  std::strcpy(n, str);
+  return n;
+}
+
+void LatticeImpl::clear() {
+  allocator_->free();
+  if (char_freelist_.get()) {
+    char_freelist_->free();
+  }
+  if (ostrs_.get()) {
+    ostrs_->clear();
+  }
+  begin_nodes_.clear();
+  end_nodes_.clear();
+  size_ = 0;
+  Z_ = 0.0;
+  sentence_ = 0;
+}
+
+void LatticeImpl::set_sentence(const char *sentence) {
+  return set_sentence(sentence, strlen(sentence));
+}
+
+void LatticeImpl::set_sentence(const char *sentence, size_t len) {
+  clear();
+  end_nodes_.resize(len + 4);
+  begin_nodes_.resize(len + 4);
+  sentence_ = sentence;
+  size_ = len;
+  std::memset(&end_nodes_[0],   0,
+              sizeof(end_nodes_[0]) * (len + 4));
+  std::memset(&begin_nodes_[0], 0,
+              sizeof(begin_nodes_[0]) * (len + 4));
+}
+
+bool LatticeImpl::next() {
+  if (!nbest_generator_.get()) {
+    set_what("set MECAB_NBEST flag or --nbest command line flag");
+    return false;
+  }
+  if (nbest_generator_->next()) {
+    return true;
+  }
+  set_what("no more results");
+  return false;
+}
+
+namespace {
+void writeLattice(Lattice *lattice, StringBuffer *os) {
+  for (const Node *node = lattice->bos_node()->next;
+       node->next; node = node->next) {
+    os->write(node->surface, node->length);
+    *os << '\t' << node->feature;
+    *os << '\n';
+  }
+  *os << "EOS\n";
+}
+}  // namespace
+
+const char *LatticeImpl::toString() {
+  StringBuffer *os = stream();
+  os->clear();
+  return toStringInternal(os);
+}
+
+const char *LatticeImpl::toString(char *buf, size_t size) {
+  StringBuffer os(buf, size);
+  return toStringInternal(&os);
+}
+
+const char *LatticeImpl::toStringInternal(StringBuffer *os) {
+  if (writer_) {
+    if (!writer_->write(this, os)) {
+      return 0;
+    }
+  } else {
+    writeLattice(this, os);
+  }
+  *os << '\0';
+  if (!os->str()) {
+    set_what("output buffer overflow");
+    return 0;
+  }
+  return os->str();
+}
+
+const char *LatticeImpl::toString(const Node *node) {
+  StringBuffer *os = stream();
+  os->clear();
+  return toStringInternal(node, os);
+}
+
+const char *LatticeImpl::toString(const Node *node,
+                                  char *buf, size_t size) {
+  StringBuffer os(buf, size);
+  return toStringInternal(node, &os);
+}
+
+const char *LatticeImpl::toStringInternal(const Node *node,
+                                          StringBuffer *os) {
+  if (!node) {
+    set_what("node is NULL");
+    return 0;
+  }
+  if (writer_) {
+    if (!writer_->write(this, os)) {
+      return 0;
+    }
+  } else {
+    os->write(node->surface, node->length);
+    *os << '\t' << node->feature;
+  }
+  *os << '\0';
+  if (!os->str()) {
+    set_what("output buffer overflow");
+    return 0;
+  }
+  return os->str();
+}
+
+const char *LatticeImpl::enumNBestAsString(size_t N) {
+  StringBuffer *os = stream();
+  os->clear();
+  return enumNBestAsStringInternal(N, os);
+}
+
+const char *LatticeImpl::enumNBestAsString(size_t N, char *buf, size_t size) {
+  StringBuffer os(buf, size);
+  return enumNBestAsStringInternal(N, &os);
+}
+
+const char *LatticeImpl::enumNBestAsStringInternal(size_t N, StringBuffer *os) {
+  if (N == 0 || N > NBEST_MAX) {
+    set_what("nbest size must be 1 <= nbest <= 512");
+    return 0;
+  }
 
   for (size_t i = 0; i < N; ++i) {
-    const Node *n = nextNode();
-    if (!n) break;
-    CHECK_0(writer_.write(&os, str, n)) << writer_.what();
+    if (!next()) {
+      break;
+    }
+    if (writer_) {
+      if (!writer_->write(this, os)) {
+        return 0;
+      }
+    } else {
+      writeLattice(this, os);
+    }
   }
-  os << '\0';
-  CHECK_0(os.str()) << "output buffer overflow";
-  return os.str();
+
+  // make a dummy node for EON
+  if (writer_) {
+    Node eon_node;
+    memset(&eon_node, 0, sizeof(eon_node));
+    eon_node.stat = MECAB_EON_NODE;
+    eon_node.next = 0;
+    eon_node.surface = this->sentence() + this->size();
+    if (!writer_->writeNode(this, &eon_node, os)) {
+      return 0;
+    }
+  }
+  *os << '\0';
+
+  if (!os->str()) {
+    set_what("output buffer overflow");
+    return 0;
+  }
+
+  return os->str();
 }
+}  // namespace
 
 Tagger *Tagger::create(int argc, char **argv) {
   return createTagger(argc, argv);
@@ -385,10 +859,67 @@ Tagger *createTagger(const char *argv) {
   return tagger;
 }
 
+void deleteTagger(Tagger *tagger) {
+  delete tagger;
+}
+
 const char *getTaggerError() {
   return getGlobalError();
 }
+
+Model *createModel(int argc, char **argv) {
+  ModelImpl *model = new ModelImpl;
+  if (!model->open(argc, argv)) {
+    setGlobalError(model->what());
+    delete model;
+    return 0;
+  }
+  return model;
 }
+
+Model *createModel(const char *arg) {
+  ModelImpl *model = new ModelImpl;
+  if (!model->open(arg)) {
+    setGlobalError(model->what());
+    delete model;
+    return 0;
+  }
+  return model;
+}
+
+void deleteModel(Model *model) {
+  delete model;
+}
+
+Model *Model::create(int argc, char **argv) {
+  return createModel(argc, argv);
+}
+
+Model *Model::create(const char *arg) {
+  return createModel(arg);
+}
+
+const char *Model::version() {
+  return VERSION;
+}
+
+bool Tagger::parse(const Model &model, Lattice *lattice) {
+  scoped_ptr<Tagger> tagger(model.createTagger());
+  return tagger->parse(lattice);
+}
+
+Lattice *Lattice::create() {
+  return createLattice();
+}
+
+Lattice *createLattice() {
+  return new LatticeImpl;
+}
+
+void deleteLattice(Lattice *lattice) {
+  delete lattice;
+}
+}  // MeCab
 
 int mecab_do(int argc, char **argv) {
 #define WHAT_ERROR(msg) do {                    \
@@ -396,32 +927,33 @@ int mecab_do(int argc, char **argv) {
     return EXIT_FAILURE; }                      \
   while (0);
 
-  MeCab::TaggerImpl tagger;
   MeCab::Param param;
-
-  if (!param.open(argc, argv, long_options)) {
+  if (!param.open(argc, argv, MeCab::long_options) ||
+      !load_dictionary_resource(&param)) {
     std::cout << param.what() << std::endl;
     return EXIT_SUCCESS;
   }
 
+  MeCab::scoped_ptr<MeCab::ModelImpl> model(new MeCab::ModelImpl);
+  if (!model->open(param)) {
+    std::cout << model->what() << std::endl;
+    return EXIT_FAILURE;
+  }
+
   std::string ofilename = param.get<std::string>("output");
-  if (ofilename.empty()) ofilename = "-";
+  if (ofilename.empty()) {
+    ofilename = "-";
+  }
 
   const int nbest = param.get<int>("nbest");
-  if (nbest <= 0 || nbest > NBEST_MAX)
+  if (nbest <= 0 || nbest > NBEST_MAX) {
     WHAT_ERROR("invalid N value");
-
-  if (nbest >= 2)
-    param.set("lattice-level", 1, true);
-
-  if (!tagger.open(&param)) {
-    std::cout << tagger.what() << std::endl;
-    std::exit(EXIT_FAILURE);
   }
 
   MeCab::ostream_wrapper ofs(ofilename.c_str());
-  if (!*ofs)
+  if (!*ofs) {
     WHAT_ERROR("no such file or directory: " << ofilename);
+  }
 
   if (param.get<bool>("dump-config")) {
     param.dump_config(&*ofs);
@@ -429,7 +961,7 @@ int mecab_do(int argc, char **argv) {
   }
 
   if (param.get<bool>("dictionary-info")) {
-    for (const MeCab::DictionaryInfo *d = tagger.dictionary_info();
+    for (const MeCab::DictionaryInfo *d = model->dictionary_info();
          d; d = d->next) {
       *ofs << "filename:\t" << d->filename << std::endl;
       *ofs << "version:\t" << d->version << std::endl;
@@ -446,7 +978,9 @@ int mecab_do(int argc, char **argv) {
   const std::vector<std::string>& rest_ = param.rest_args();
   std::vector<std::string> rest = rest_;
 
-  if (rest.empty()) rest.push_back("-");
+  if (rest.empty()) {
+    rest.push_back("-");
+  }
 
   size_t ibufsize = MeCab::_min(MAX_INPUT_BUFFER_SIZE,
                                 MeCab::_max(param.get<int>
@@ -454,14 +988,24 @@ int mecab_do(int argc, char **argv) {
                                             MIN_INPUT_BUFFER_SIZE));
 
   bool partial = param.get<bool>("partial");
-  if (partial) ibufsize *= 8;
+  if (partial) {
+    ibufsize *= 8;
+  }
 
-  MeCab::scoped_array<char> ibuf_(new char[ibufsize]);
-  char *ibuf =ibuf_.get();
+  MeCab::scoped_array<char> ibuf_data(new char[ibufsize]);
+  char *ibuf = ibuf_data.get();
+
+  MeCab::scoped_ptr<MeCab::Tagger> tagger(model->createTagger());
+
+  if (!tagger.get()) {
+    WHAT_ERROR("cannot create tagger");
+  }
 
   for (size_t i = 0; i < rest.size(); ++i) {
     MeCab::istream_wrapper ifs(rest[i].c_str());
-    if (!*ifs) WHAT_ERROR("no such file or directory: " << rest[i]);
+    if (!*ifs) {
+      WHAT_ERROR("no such file or directory: " << rest[i]);
+    }
 
     while (true) {
       if (!partial) {
@@ -476,20 +1020,25 @@ int mecab_do(int argc, char **argv) {
           }
           sentence += line;
           sentence += '\n';
-          if (std::strcmp(line, "EOS") == 0 || line[0] == '\0')
+          if (std::strcmp(line, "EOS") == 0 || line[0] == '\0') {
             break;
+          }
         }
         std::strncpy(ibuf, sentence.c_str(), ibufsize);
       }
-      if (ifs->eof() && !ibuf[0]) return false;
+      if (ifs->eof() && !ibuf[0]) {
+        return false;
+      }
       if (ifs->fail()) {
         std::cerr << "input-buffer overflow. "
                   << "The line is splitted. use -b #SIZE option." << std::endl;
         ifs->clear();
       }
-      const char *r = (nbest >= 2) ? tagger.parseNBest(nbest, ibuf) :
-          tagger.parse(ibuf);
-      if (!r)  WHAT_ERROR(tagger.what());
+      const char *r = (nbest >= 2) ? tagger->parseNBest(nbest, ibuf) :
+          tagger->parse(ibuf);
+      if (!r)  {
+        WHAT_ERROR(tagger->what());
+      }
       *ofs << r << std::flush;
     }
   }

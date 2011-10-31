@@ -1,8 +1,8 @@
-#! /bin/bash
+#! /bin/sh
 
 # libtool - Provide generalized library-building support services.
-# Generated automatically by config.status (mecab) 0.98
-# Libtool was configured on host woodstock:
+# Generated automatically by config.status (mecab) 0.99pre1
+# Libtool was configured on host kiwi2.tok.corp.google.com:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 #
 #   Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005,
@@ -48,8 +48,8 @@ DLLTOOL=dlltool
 OBJDUMP=objdump
 
 # Which release of libtool.m4 was used?
-macro_version=2.2.6
-macro_revision=1.3012
+macro_version=2.2.6b
+macro_revision=1.3017
 
 # Whether or not to build shared libraries.
 build_libtool_libs=yes
@@ -65,12 +65,12 @@ fast_install=yes
 
 # The host system.
 host_alias=
-host=i686-pc-linux-gnu
+host=x86_64-unknown-linux-gnu
 host_os=linux-gnu
 
 # The build system.
 build_alias=
-build=i686-pc-linux-gnu
+build=x86_64-unknown-linux-gnu
 build_os=linux-gnu
 
 # A sed program that does not truncate output.
@@ -95,7 +95,7 @@ NM="/usr/bin/nm -B"
 LN_S="ln -s"
 
 # What is the maximum length of a command?
-max_cmd_len=805306365
+max_cmd_len=1572864
 
 # Object file suffix (normally "o").
 objext=o
@@ -156,7 +156,7 @@ global_symbol_to_c_name_address_lib_prefix="sed -n -e 's/^: \\([^ ]*\\) \$/  {\\
 objdir=.libs
 
 # Shell to use when invoking shell scripts.
-SHELL="/bin/bash"
+SHELL="/bin/sh"
 
 # An echo program that does not interpret backslashes.
 ECHO="echo"
@@ -240,10 +240,10 @@ finish_eval=""
 hardcode_into_libs=yes
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/usr/lib/gcc/i486-linux-gnu/4.3.3 /usr/lib /lib"
+sys_lib_search_path_spec="/usr/lib/gcc/x86_64-linux-gnu/4.4.3 /usr/lib /lib /usr/lib/x86_64-linux-gnu"
 
 # Run-time system search path for libraries.
-sys_lib_dlsearch_path_spec="/lib /usr/lib /lib/i486-linux-gnu /usr/lib/i486-linux-gnu /usr/lib/alsa-lib /usr/local/lib /usr/local/lib "
+sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/lib/nvidia-current /usr/lib32/nvidia-current /usr/lib32/alsa-lib /usr/lib/alsa-lib /usr/local/lib /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu "
 
 # Whether dlopen is supported.
 dlopen_support=unknown
@@ -260,7 +260,7 @@ striplib="strip --strip-unneeded"
 
 
 # The linker used to build libraries.
-LD="/usr/bin/ld"
+LD="/usr/bin/ld -m elf_x86_64"
 
 # Commands used to build an old-style archive.
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$oldlib"
@@ -367,7 +367,7 @@ hardcode_automatic=no
 inherit_rpath=no
 
 # Whether libtool must link a program against all its dependency libraries.
-link_all_deplibs=unknown
+link_all_deplibs=no
 
 # Fix the shell variable $srcfile for the compiler.
 fix_srcfile_path=""
@@ -411,7 +411,7 @@ compiler_lib_search_path=""
 
 # Generated from ltmain.m4sh.
 
-# ltmain.sh (GNU libtool) 2.2.6
+# ltmain.sh (GNU libtool) 2.2.6b
 # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006, 2007 2008 Free Software Foundation, Inc.
@@ -476,7 +476,7 @@ compiler_lib_search_path=""
 #       compiler:		$LTCC
 #       compiler flags:		$LTCFLAGS
 #       linker:		$LD (gnu? $with_gnu_ld)
-#       $progname:		(GNU libtool) 2.2.6 Debian-2.2.6a-1ubuntu1
+#       $progname:		(GNU libtool) 2.2.6b Debian-2.2.6b-2ubuntu1
 #       automake:		$automake_version
 #       autoconf:		$autoconf_version
 #
@@ -484,9 +484,9 @@ compiler_lib_search_path=""
 
 PROGRAM=ltmain.sh
 PACKAGE=libtool
-VERSION="2.2.6 Debian-2.2.6a-1ubuntu1"
+VERSION="2.2.6b Debian-2.2.6b-2ubuntu1"
 TIMESTAMP=""
-package_revision=1.3012
+package_revision=1.3017
 
 # Be Bourne compatible
 if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
@@ -5854,19 +5854,19 @@ func_mode_link ()
 	    # It is a libtool convenience library, so add in its objects.
 	    convenience="$convenience $ladir/$objdir/$old_library"
 	    old_convenience="$old_convenience $ladir/$objdir/$old_library"
+	    tmp_libs=
+	    for deplib in $dependency_libs; do
+	      deplibs="$deplib $deplibs"
+	      if $opt_duplicate_deps ; then
+		case "$tmp_libs " in
+		*" $deplib "*) specialdeplibs="$specialdeplibs $deplib" ;;
+		esac
+	      fi
+	      tmp_libs="$tmp_libs $deplib"
+	    done
 	  elif test "$linkmode" != prog && test "$linkmode" != lib; then
 	    func_fatal_error "\`$lib' is not a convenience library"
 	  fi
-	  tmp_libs=
-	  for deplib in $dependency_libs; do
-	    deplibs="$deplib $deplibs"
-	    if $opt_duplicate_deps ; then
-	      case "$tmp_libs " in
-	      *" $deplib "*) specialdeplibs="$specialdeplibs $deplib" ;;
-	      esac
-	    fi
-	    tmp_libs="$tmp_libs $deplib"
-	  done
 	  continue
 	fi # $pass = conv
 
@@ -6403,6 +6403,7 @@ func_mode_link ()
 	  if test "$link_all_deplibs" != no; then
 	    # Add the search paths of all dependency libraries
 	    for deplib in $dependency_libs; do
+	      path=
 	      case $deplib in
 	      -L*) path="$deplib" ;;
 	      *.la)
@@ -8921,7 +8922,7 @@ build_old_libs=`case $build_libtool_libs in yes) echo no;; *) echo yes;; esac`
 # ### BEGIN LIBTOOL TAG CONFIG: CXX
 
 # The linker used to build libraries.
-LD="/usr/bin/ld"
+LD="/usr/bin/ld -m elf_x86_64"
 
 # Commands used to build an old-style archive.
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$oldlib"
@@ -9052,17 +9053,17 @@ file_list_spec=""
 hardcode_action=immediate
 
 # The directories searched by this compiler when creating a shared library.
-compiler_lib_search_dirs="/usr/lib/gcc/i486-linux-gnu/4.3.3 /usr/lib/gcc/i486-linux-gnu/4.3.3 /usr/lib/gcc/i486-linux-gnu/4.3.3/../../../../lib /lib/../lib /usr/lib/../lib /usr/lib/gcc/i486-linux-gnu/4.3.3/../../.."
+compiler_lib_search_dirs="/usr/lib/gcc/x86_64-linux-gnu/4.4.3 /usr/lib/gcc/x86_64-linux-gnu/4.4.3 /usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../../../lib /lib/../lib /usr/lib/../lib /usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../.. /usr/lib/x86_64-linux-gnu"
 
 # Dependencies to place before and after the objects being linked to
 # create a shared library.
-predep_objects="/usr/lib/gcc/i486-linux-gnu/4.3.3/../../../../lib/crti.o /usr/lib/gcc/i486-linux-gnu/4.3.3/crtbeginS.o"
-postdep_objects="/usr/lib/gcc/i486-linux-gnu/4.3.3/crtendS.o /usr/lib/gcc/i486-linux-gnu/4.3.3/../../../../lib/crtn.o"
+predep_objects="/usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../../../lib/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.4.3/crtbeginS.o"
+postdep_objects="/usr/lib/gcc/x86_64-linux-gnu/4.4.3/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../../../lib/crtn.o"
 predeps=""
 postdeps="-lstdc++ -lm -lgcc_s -lc -lgcc_s"
 
 # The library search path used internally by the compiler when linking
 # a shared library.
-compiler_lib_search_path="-L/usr/lib/gcc/i486-linux-gnu/4.3.3 -L/usr/lib/gcc/i486-linux-gnu/4.3.3 -L/usr/lib/gcc/i486-linux-gnu/4.3.3/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/i486-linux-gnu/4.3.3/../../.."
+compiler_lib_search_path="-L/usr/lib/gcc/x86_64-linux-gnu/4.4.3 -L/usr/lib/gcc/x86_64-linux-gnu/4.4.3 -L/usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../.. -L/usr/lib/x86_64-linux-gnu"
 
 # ### END LIBTOOL TAG CONFIG: CXX

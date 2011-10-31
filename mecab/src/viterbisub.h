@@ -2,61 +2,140 @@
 //
 //  $Id: viterbisub.h 173 2009-04-18 08:10:57Z taku-ku $;
 //
-//  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
+//  Copyright(C) 2001-2011 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#include "viterbi.h"
-
-// for MSVC
-#undef max
-
 namespace MeCab {
-
-#ifdef _VITERBI_WITH_ALL_PATH
-bool Viterbi::connectWithAllPath(size_t pos, Node *rNode) {
+namespace {
+#ifdef VITERBI_WITH_ALL_PATH_
+inline bool connectWithAllPath(size_t pos, Node *rnode,
+                               Node **begin_node_list,
+                               Node **end_node_list,
+                               const Connector *connector,
+                               Allocator<Node, Path> *allocator)
 #else
-  bool Viterbi::connectNormal(size_t pos, Node *rNode) {
+inline bool connect(size_t pos, Node *rnode,
+                    Node **begin_node_list,
+                    Node **end_node_list,
+                    const Connector *connector,
+                    Allocator<Node, Path> *allocator)
 #endif
-    for (;rNode; rNode = rNode->bnext) {
-      register long bestCost = 2147483647;
+{
+  for (;rnode; rnode = rnode->bnext) {
+    register long best_cost = 2147483647;
 
-      Node* bestNode = 0;
+    Node* best_node = 0;
 
-      for (Node *lNode = end_node_list_[pos]; lNode; lNode = lNode->enext) {
-#ifdef _VITERBI_WITH_ALL_PATH
-        register int  lcost = connector_->cost(lNode, rNode);  // local cost
-        register long cost  = lNode->cost + lcost;
+    for (Node *lnode = end_node_list[pos]; lnode; lnode = lnode->enext) {
+#ifdef VITERBI_WITH_ALL_PATH_
+      register int  lcost = connector->cost(lnode, rnode);  // local cost
+      register long cost  = lnode->cost + lcost;
 #else
-        register long cost  = lNode->cost + connector_->cost(lNode, rNode);
+      register long cost  = lnode->cost + connector->cost(lnode, rnode);
 #endif
 
-        if (cost < bestCost) {
-          bestNode  = lNode;
-          bestCost  = cost;
-        }
-
-#ifdef _VITERBI_WITH_ALL_PATH
-        Path *path   = path_freelist_->alloc();
-        path->cost   = lcost;
-        path->rnode  = rNode;
-        path->lnode  = lNode;
-        path->lnext  = rNode->lpath;
-        rNode->lpath = path;
-        path->rnext  = lNode->rpath;
-        lNode->rpath = path;
-#endif
+      if (cost < best_cost) {
+        best_node  = lnode;
+        best_cost  = cost;
       }
 
-      // overflow check 2003/03/09
-      CHECK_FALSE(bestNode) << "too long sentence.";
-
-      rNode->prev = bestNode;
-      rNode->next = 0;
-      rNode->cost = bestCost;
-      size_t x    = rNode->rlength + pos;
-      rNode->enext = end_node_list_[x];
-      end_node_list_[x] = rNode;
+#ifdef VITERBI_WITH_ALL_PATH_
+      Path *path   = allocator->newPath();
+      path->cost   = lcost;
+      path->rnode  = rnode;
+      path->lnode  = lnode;
+      path->lnext  = rnode->lpath;
+      rnode->lpath = path;
+      path->rnext  = lnode->rpath;
+      lnode->rpath = path;
+#endif
     }
 
-    return true;
+    // overflow check 2003/03/09
+    if (!best_node) {
+      return false;
+    }
+
+    rnode->prev = best_node;
+    rnode->next = 0;
+    rnode->cost = best_cost;
+    const size_t x = rnode->rlength + pos;
+    rnode->enext = end_node_list[x];
+    end_node_list[x] = rnode;
   }
+
+  return true;
 }
+}  // namespace
+
+#ifdef VITERBI_WITH_ALL_PATH_
+bool Viterbi::viterbiWithAllPath
+#else
+bool Viterbi::viterbi
+#endif
+(Lattice *lattice) const {
+  Node **end_node_list   = lattice->end_nodes();
+  Node **begin_node_list = lattice->begin_nodes();
+  Allocator<Node, Path> *allocator = lattice->allocator();
+  const bool partial  = lattice->has_request_type(MECAB_PARTIAL);
+  const size_t len = lattice->size();
+  const char *begin = lattice->sentence();
+  const char *end = begin + len;
+
+  for (size_t pos = 0; pos < len; ++pos) {
+    if (end_node_list[pos]) {
+      Node *right_node = tokenizer_->lookup(begin + pos, end, allocator);
+      if (partial) {
+        right_node = filterNode(begin_node_list[pos], right_node);
+      }
+      begin_node_list[pos] = right_node;
+#ifdef VITERBI_WITH_ALL_PATH_
+      if (!connectWithAllPath(pos, right_node,
+                              begin_node_list,
+                              end_node_list,
+                              connector_,
+                              allocator)) {
+        lattice->set_what("too long sentence.");
+        return false;
+      }
+#else
+      if (!connect(pos, right_node,
+                   begin_node_list,
+                   end_node_list,
+                   connector_,
+                   allocator)) {
+        lattice->set_what("too long sentence.");
+        return false;
+      }
+#endif
+    }
+  }
+
+  Node *eos_node = lattice->eos_node();
+  for (long pos = len; static_cast<long>(pos) >= 0; --pos) {
+    if (end_node_list[pos]) {
+#ifdef VITERBI_WITH_ALL_PATH_
+      if (!connectWithAllPath(pos, eos_node,
+                              begin_node_list,
+                              end_node_list,
+                              connector_,
+                              allocator)) {
+        lattice->set_what("too long sentence.");
+        return false;
+      }
+#else
+      if (!connect(pos, eos_node,
+                   begin_node_list,
+                   end_node_list,
+                   connector_,
+                   allocator)) {
+        lattice->set_what("too long sentence.");
+        return false;
+      }
+#endif
+      break;
+    }
+  }
+
+  return true;
+}
+}  // Mecab
