@@ -55,8 +55,6 @@ struct mecab_node_t {
   struct mecab_node_t  *bnext;
   struct mecab_path_t  *rpath;
   struct mecab_path_t  *lpath;
-  struct mecab_node_t **begin_node_list;
-  struct mecab_node_t **end_node_list;
   const char           *surface;
   const char           *feature;
   unsigned int          id;
@@ -68,7 +66,6 @@ struct mecab_node_t {
   unsigned char         char_type;
   unsigned char         stat;
   unsigned char         isbest;
-  unsigned int          sentence_length; /* it is avaialbe only when BOS node */
   float                 alpha;
   float                 beta;
   float                 prob;

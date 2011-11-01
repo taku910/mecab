@@ -146,7 +146,7 @@ bool Dictionary::compile(const Param &param,
   std::istringstream iss(UNK_DEF_DEFAULT);
 
   for (size_t i = 0; i < dics.size(); ++i) {
-    std::ifstream ifs(dics[i].c_str());
+    std::ifstream ifs(WPATH(dics[i].c_str()));
     std::istream *is = &ifs;
     if (!ifs) {
       if (type == MECAB_UNK_DIC) {
@@ -329,7 +329,7 @@ bool Dictionary::compile(const Param &param,
   std::fill(charset, charset + sizeof(charset), '\0');
   std::strncpy(charset, to.c_str(), 31);
 
-  std::ofstream bofs(output, std::ios::binary|std::ios::out);
+  std::ofstream bofs(WPATH(output), std::ios::binary|std::ios::out);
   CHECK_DIE(bofs) << "permission denied: " << output;
 
   unsigned int magic = 0;

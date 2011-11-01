@@ -332,16 +332,6 @@ bool ModelImpl::open(const char *arg) {
 }
 
 bool ModelImpl::open(const Param &param) {
-  if (param.get<bool>("help")) {
-    set_what(param.help());
-    return false;
-  }
-
-  if (param.get<bool>("version")) {
-    set_what(param.version());
-    return false;
-  }
-
   tokenizer_.reset(new Tokenizer<Node, Path>);
   connector_.reset(new Connector);
   viterbi_.reset(new Viterbi);
@@ -469,12 +459,26 @@ float TaggerImpl::theta() const {
 }
 
 void TaggerImpl::set_lattice_level(int level) {
-  std::cerr << "DEPRECATED: this method no longer works" << std::endl;
+  switch (level) {
+    case 0: request_type_ |= MECAB_ONE_BEST;
+      break;
+    case 1: request_type_ |= MECAB_NBEST;
+      break;
+    case 2: request_type_ |= MECAB_MARGINAL_PROB;
+      break;
+    default:
+      break;
+  }
 }
 
 int TaggerImpl::lattice_level() const {
-  std::cerr << "DEPRECATED: this method no longer works" << std::endl;
-  return 0;
+  if (request_type_ & MECAB_MARGINAL_PROB) {
+    return 2;
+  } else if (request_type_ & MECAB_NBEST) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 void TaggerImpl::set_all_morphs(bool all_morphs) {
@@ -928,8 +932,22 @@ int mecab_do(int argc, char **argv) {
   while (0);
 
   MeCab::Param param;
-  if (!param.open(argc, argv, MeCab::long_options) ||
-      !load_dictionary_resource(&param)) {
+  if (!param.open(argc, argv, MeCab::long_options)) {
+    std::cout << param.what() << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  if (param.get<bool>("help")) {
+    std::cout << param.help() << std::endl;
+    return EXIT_SUCCESS;
+  }
+
+  if (param.get<bool>("version")) {
+    std::cout << param.version() << std::endl;
+    return EXIT_SUCCESS;
+  }
+
+  if (!load_dictionary_resource(&param)) {
     std::cout << param.what() << std::endl;
     return EXIT_SUCCESS;
   }

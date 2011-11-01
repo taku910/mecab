@@ -134,7 +134,7 @@ bool CharProperty::compile(const char *cfile,
   std::vector<Range> range;
   std::map<std::string, CharInfo> category;
   std::vector<std::string> category_ary;
-  std::ifstream ifs(cfile);
+  std::ifstream ifs(WPATH(cfile));
   std::istringstream iss(CHAR_PROPERTY_DEF_DEFAULT);
   std::istream *is = &ifs;
 
@@ -206,7 +206,7 @@ bool CharProperty::compile(const char *cfile,
       << "category [SPACE] is undefined";
 
   std::istringstream iss2(UNK_DEF_DEFAULT);
-  std::ifstream ifs2(ufile);
+  std::ifstream ifs2(WPATH(ufile));
   std::istream *is2 = &ifs2;
 
   if (!ifs2) {
@@ -250,7 +250,7 @@ bool CharProperty::compile(const char *cfile,
 
   // output binary table
   {
-    std::ofstream ofs(ofile, std::ios::binary|std::ios::out);
+    std::ofstream ofs(WPATH(ofile), std::ios::binary|std::ios::out);
     CHECK_DIE(ofs) << "permission denied: " << ofile;
 
     unsigned int size = static_cast<unsigned int>(category.size());

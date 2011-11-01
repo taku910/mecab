@@ -15,7 +15,7 @@
 #include "config.h"
 #endif
 
-#ifndef MECAB_WITHOUT_MUTEX_LOCK
+#ifndef MECAB_NO_MUTEX_LOCK
 #ifdef HAVE_PTHREAD_H
 #define _USE_PTHREAD_MUTEX
 #include <pthread.h>

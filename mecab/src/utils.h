@@ -219,5 +219,10 @@ inline char getEscapedChar(const char p) {
 
   return '\0';  // never be here
 }
+
+#if defined(_WIN32) && !defined(__CYGWIN__)
+std::wstring Utf8ToWide(const std::string &input);
+std::string WideToUtf8(const std::wstring &input);
+#endif
 }
 #endif

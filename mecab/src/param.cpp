@@ -65,7 +65,7 @@ void Param::dump_config(std::ostream *os) const {
 }
 
 bool Param::load(const char *filename) {
-  std::ifstream ifs(filename);
+  std::ifstream ifs(WPATH(filename));
 
   CHECK_FALSE(ifs) << "no such file or directory: " << filename;
 

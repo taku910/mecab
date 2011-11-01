@@ -33,7 +33,7 @@ AC_C_CONST
 AC_C_BIGENDIAN
 AC_CHECK_HEADERS(string.h stdlib.h unistd.h fcntl.h \
 		sys/stat.h sys/mman.h sys/times.h sys/types.h dirent.h \
-	        ctype.h sys/types.h io.h windows.h pthread.h setjmp.h)
+	        ctype.h sys/types.h io.h windows.h pthread.h)
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_CHECK_SIZEOF(char)
@@ -52,15 +52,14 @@ AC_CHECK_LIB(pthread,pthread_mutex_lock)
 AC_CHECK_LIB(iconv,iconv_open)
 AC_CHECK_FUNCS(getenv)
 AC_CHECK_FUNCS(opendir)
-AC_CHECK_FUNCS(setjmp)
 AC_LANG(C++)
 
 AC_ARG_ENABLE(mutex,
 [  --disable-mutex            trun off mutex lock [default no]])
 if test "$enable_mutex" = "no"; then
-MECAB_WITHOUT_MUTEX_LOCK="-DMECAB_WITHOUT_MUTEX_LOCK"
+MECAB_NO_MUTEX_LOCK="-DMECAB_NO_MUTEX_LOCK"
 else
-MECAB_WITHOUT_MUTEX_LOCK=""
+MECAB_NO_MUTEX_LOCK=""
 MECAB_LIBS="$MECAB_LIBS $PTHREAD_LIB"
 fi
 
@@ -74,7 +73,7 @@ fi
 
 LIBS="$LIBS $MECAB_LIBS"
 AC_SUBST(MECAB_LIBS)
-AC_SUBST(MECAB_WITHOUT_MUTEX_LOCK)
+AC_SUBST(MECAB_NO_MUTEX_LOCK)
 AC_SUBST(MECAB_USE_UTF8_ONLY)
 
 MECAB_LIBEXEC_DIR="$libexecdir/mecab"
@@ -192,23 +191,6 @@ AC_TRY_COMPILE(
 ])
 AC_MSG_RESULT([$ac_static_cast])
 
-# check for dynamic_cast<>
-AC_MSG_CHECKING(if ${CXX-c++} supports dynamic_cast<> (required))
-AC_TRY_COMPILE(
-[
-   class foo {};
-   class bar: public foo {};
-],[
-   bar *c = 0;
-   foo *c1 = dynamic_cast<foo *>(c);
-],[
-  ac_dynamic_cast=yes
-],[
-  AC_WARN(${CXX-c++} dynamic_cast<> does not work)
-  config_error=yes
-])
-AC_MSG_RESULT([$ac_dynamic_cast])
-
 # check for reinterpret_cast
 AC_MSG_CHECKING(if ${CXX-c++} supports reinterpret_cast<> (required))
 AC_TRY_COMPILE(
@@ -223,27 +205,6 @@ AC_TRY_COMPILE(
   config_error=yes
 ])
 AC_MSG_RESULT([$ac_reinterpret_cast])
-
-# check for try
-AC_MSG_CHECKING(if ${CXX-c++} supports exception handler (required))
-AC_TRY_COMPILE(
-[
-  ;
-],[
-   try {
-      int i = 0;
-   }
-   catch (char *e) {
-   }
-   catch (...) {
-   }
-],[
-  ac_exception=yes
-],[
-  AC_WARN(${CXX-c++} exception does not work)
-  config_error=yes
-])
-AC_MSG_RESULT([$ac_exception])
 
 # check for namespaces
 AC_MSG_CHECKING(if ${CXX-c++} supports namespaces (required) )
@@ -261,6 +222,27 @@ dnl AC_DEFINE(HAVE_CXX_NAMESPACE)
  ac_namespaces=no
 ])
 AC_MSG_RESULT([$ac_namespaces])
+
+dnl __thread keyword
+AC_MSG_CHECKING([if ${CXX-c++} supports __thread (optional)])
+AC_TRY_COMPILE(
+[
+__thread int a = 0;
+],[
+  a = 10;
+],[
+ enable_tls=yes
+],[
+ enable_tls=no
+])
+AC_MSG_RESULT([$enable_tls])
+
+if test "$enable_tls" = "no"; then
+MECAB_NO_TLS="-DMECAB_NO_TLS"
+else
+MECAB_NO_TLS=""
+fi
+AC_SUBST(MECAB_NO_TLS)
 
 AC_MSG_CHECKING(if ${CXX-c++} environment provides all required features)
 if test "x$config_error" = xyes ; then

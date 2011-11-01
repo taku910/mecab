@@ -14,7 +14,6 @@
 #include <cstring>
 #include <string>
 #include <iostream>
-#include <setjmp.h>
 #include <sstream>
 
 #ifdef __CYGWIN__
@@ -85,18 +84,18 @@
 #define EXIT_SUCCESS 0
 #endif
 
+#if defined(_WIN32) && !defined(__CYGWIN__)
+#define WPATH(path) (MeCab::Utf8ToWide(path).c_str())
+#else
+#define WPATH(path) (path)
+#endif
+
+
 namespace MeCab {
 class die {
  public:
   die() {}
   ~die() { std::cerr << std::endl; exit(-1); }
-  int operator&(std::ostream&) { return 0; }
-};
-
-class warn {
- public:
-  warn() {}
-  ~warn() { std::cerr << std::endl; }
   int operator&(std::ostream&) { return 0; }
 };
 

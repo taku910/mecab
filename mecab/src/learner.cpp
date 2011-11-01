@@ -65,7 +65,7 @@ class HMMLearner {
 
     // corpus
     if (em_hmm) {
-      std::ifstream ifs(ifile.c_str());
+      std::ifstream ifs(WPATH(ifile.c_str()));
       CHECK_DIE(ifs) << "no such file or directory: " << ifile;
       size_t size = 0;
       while (ifs.getline(line, sizeof(line))) {
@@ -114,7 +114,7 @@ class HMMLearner {
         ++size;
       }
     } else {
-      std::ifstream ifs(ifile.c_str());
+      std::ifstream ifs(WPATH(ifile.c_str()));
       CHECK_DIE(ifs) << "no such file or directory: " << ifile;
 
       CHECK_DIE(rewrite.rewrite(bos_feature,
@@ -167,7 +167,7 @@ class HMMLearner {
            it != dic.end(); ++it) {
         std::cout << "reading " << *it << " ... " << std::flush;
 
-        std::ifstream ifs(it->c_str());
+        std::ifstream ifs(WPATH(it->c_str()));
         CHECK_DIE(ifs) << "no such file or directory: " << *it;
 
         while (ifs.getline(line, sizeof(line))) {
@@ -194,7 +194,7 @@ class HMMLearner {
       std::string txtfile = model;
       txtfile += ".txt";
 
-      std::ofstream ofs(txtfile.c_str());
+      std::ofstream ofs(WPATH(txtfile.c_str()));
       CHECK_DIE(ofs) << "permission denied: " << model;
 
       ofs.setf(std::ios::fixed, std::ios::floatfield);
@@ -306,7 +306,7 @@ class OLLearner {
 
     EncoderLearnerTagger x;
     for (size_t i = 0; i < 10; ++i) {
-      std::ifstream ifs(ifile.c_str());
+      std::ifstream ifs(WPATH(ifile.c_str()));
       CHECK_DIE(ifs) << "no such file or directory: " << ifile;
       while (ifs) {
         allocator.free();
@@ -436,7 +436,7 @@ class CRFLearner {
     std::cout.setf(std::ios::fixed, std::ios::floatfield);
     std::cout.precision(5);
 
-    std::ifstream ifs(ifile.c_str());
+    std::ifstream ifs(WPATH(ifile.c_str()));
     {
       CHECK_DIE(C > 0) << "cost parameter is out of range: " << C;
       CHECK_DIE(eta > 0) "eta is out of range: " << eta;

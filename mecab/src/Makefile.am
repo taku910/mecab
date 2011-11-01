@@ -2,7 +2,7 @@ AUTOMAKE_OPTIONS = no-dependencies
 lib_LTLIBRARIES = libmecab.la
 EXTRA_DIST = Makefile.msvc.in make.bat
 pkglibexecdir = ${libexecdir}/mecab
-INCLUDES = -DDIC_VERSION=$(DIC_VERSION) $(MECAB_WITHOUT_MUTEX_LOCK) $(MECAB_USE_UTF8_ONLY) -DMECAB_DEFAULT_RC="\"$(MECAB_DEFAULT_RC)\""
+INCLUDES = -DDIC_VERSION=$(DIC_VERSION) $(MECAB_NO_TLS) $(MECAB_NO_MUTEX_LOCK) $(MECAB_USE_UTF8_ONLY) -DMECAB_DEFAULT_RC="\"$(MECAB_DEFAULT_RC)\""
 libmecab_la_LDFLAGS = -no-undefined -version-info $(LTVERSION)
 libmecab_la_SOURCES = viterbi.cpp tagger.cpp  utils.cpp utils.h eval.cpp iconv_utils.cpp iconv_utils.h \
                       dictionary_rewriter.h dictionary_rewriter.cpp dictionary_generator.cpp \

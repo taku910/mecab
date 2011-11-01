@@ -116,8 +116,8 @@ class Eval {
 
     const std::string level_str = param.get<std::string>("level");
 
-    std::ifstream ifs1(files[0].c_str());
-    std::ifstream ifs2(files[1].c_str());
+    std::ifstream ifs1(WPATH(files[0].c_str()));
+    std::ifstream ifs2(WPATH(files[1].c_str()));
 
     CHECK_DIE(ifs1) << "no such file or directory: " << files[0].c_str();
     CHECK_DIE(ifs2) << "no such file or directory: " << files[0].c_str();

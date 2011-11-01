@@ -36,7 +36,7 @@ void copy(const char *src, const char *dst) {
   std::cout << "copying " << src << " to " <<  dst << std::endl;
   Mmap<char> mmap;
   CHECK_DIE(mmap.open(src)) << mmap.what();
-  std::ofstream ofs(dst, std::ios::binary|std::ios::out);
+  std::ofstream ofs(WPATH(dst), std::ios::binary|std::ios::out);
   CHECK_DIE(ofs) << "permission denied: " << dst;
   ofs.write(reinterpret_cast<char*>(mmap.begin()), mmap.size());
   ofs.close();
@@ -55,7 +55,7 @@ class DictionaryGenerator {
   static void gencid(const char *filename,
                      DictionaryRewriter *rewrite,
                      ContextID *cid) {
-    std::ifstream ifs(filename);
+    std::ifstream ifs(WPATH(filename));
     CHECK_DIE(ifs) << "no such file or directory: " << filename;
     char line[BUF_SIZE];
     std::cout << "reading " << filename << " ... " << std::flush;
@@ -79,7 +79,7 @@ class DictionaryGenerator {
                         DecoderFeatureIndex *fi,
                         int factor,
                         int default_cost) {
-    std::ofstream ofs(filename);
+    std::ofstream ofs(WPATH(filename));
     CHECK_DIE(ofs) << "permission denied: " << filename;
 
     LearnerPath path;
@@ -128,10 +128,10 @@ class DictionaryGenerator {
                      bool unk,
                      int factor,
                      int default_cost) {
-    std::ifstream ifs(ifile);
+    std::ifstream ifs(WPATH(ifile));
     CHECK_DIE(ifs) << "no such file or directory: " << ifile;
 
-    std::ofstream ofs(ofile);
+    std::ofstream ofs(WPATH(ofile));
     CHECK_DIE(ofs) << "permission denied: " << ofile;
 
     std::string w, feature, ufeature, lfeature, rfeature;

@@ -81,7 +81,7 @@ bool FeatureIndex::openTemplate(const Param &param) {
 
   std::string filename = create_filename(param.get<std::string>("dicdir"),
                                          FEATURE_FILE);
-  std::ifstream ifs(filename.c_str());
+  std::ifstream ifs(WPATH(filename.c_str()));
   CHECK_DIE(ifs) << "no such file or directory: " << filename;
 
   char buf[BUF_SIZE];
@@ -460,7 +460,7 @@ void EncoderFeatureIndex::shrink(size_t freq,
 }
 
 bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
-  std::ifstream ifs(txtfile);
+  std::ifstream ifs(WPATH(txtfile));
 
   CHECK_DIE(ifs) << "no such file or directory: " << txtfile;
 
@@ -476,7 +476,7 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
                (std::string(column[1]), atof(column[0]) ));
   }
 
-  std::ofstream ofs(binfile, std::ios::out | std::ios::binary);
+  std::ofstream ofs(WPATH(binfile), std::ios::out | std::ios::binary);
   CHECK_DIE(ofs) << "permission denied: " << binfile;
 
   std::vector<char *> key;
@@ -500,7 +500,7 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
 }
 
 bool EncoderFeatureIndex::save(const char *filename) {
-  std::ofstream ofs(filename);
+  std::ofstream ofs(WPATH(filename));
 
   CHECK_DIE(ofs) << "permission denied: " << filename;
 

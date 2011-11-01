@@ -1,3 +1,4 @@
+
 //
 //  MeCab -- Yet Another Part-of-Speech and Morphological Analyzer
 //
@@ -18,46 +19,87 @@
 #include "config.h"
 #endif
 
-MeCab::Mutex *getGlobalMutex() {
-  static MeCab::Mutex m;
-  return &m;
-}
-
-std::string *getStaticErrorString() {
-  static std::string errorStr;
-  return &errorStr;
-}
-
-const char *getGlobalError() {
-  return getStaticErrorString()->c_str();
-}
-
-void setGlobalError(const char *str) {
-  MeCab::Mutex *m = getGlobalMutex();
-  m->lock();
-  std::string *error = getStaticErrorString();
-  *error = str;
-  m->unlock();
+namespace {
+const char kUnknownError[] = "Unknown Error";
+const size_t kErrorBufferSize = 1024;
 }
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
+namespace {
+DWORD g_tls_index = TLS_OUT_OF_INDEXES;
+}
+
+const char *getGlobalError() {
+  LPVOID data = ::TlsGetValue(g_tls_index);
+  return data == NULL ? kUnknownError : reinterpret_cast<const char *>(data);
+}
+
+void setGlobalError(const char *str) {
+  char *data = reinterpret_cast<char *>(::TlsGetValue(g_tls_index));
+  if (data == NULL) {
+    return;
+  }
+  strncpy(data, str, kErrorBufferSize - 1);
+  data[kErrorBufferSize - 1] = '\0';
+}
+
 HINSTANCE DllInstance = 0;
 
-#ifdef __cplusplus
 extern "C" {
-#endif
   BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID) {
+    LPVOID data = 0;
     if (!DllInstance) {
       DllInstance = hinst;
     }
-    std::locale loc(std::locale("japanese"),
-                    "C", std::locale::numeric);
-    std::locale::global(loc);
+    switch (dwReason) {
+      case DLL_PROCESS_ATTACH:
+        if ((g_tls_index = ::TlsAlloc()) == TLS_OUT_OF_INDEXES) {
+          return FALSE;
+        }
+        // Not break in order to initialize the TLS.
+      case DLL_THREAD_ATTACH:
+        data = (LPVOID)::LocalAlloc(LPTR, kErrorBufferSize);
+        if (data) {
+          ::TlsSetValue(g_tls_index, data);
+        }
+        break;
+      case DLL_THREAD_DETACH:
+        data = ::TlsGetValue(g_tls_index);
+        if (data) {
+          ::LocalFree((HLOCAL)data);
+        }
+        break;
+      case DLL_PROCESS_DETACH:
+        data = ::TlsGetValue(g_tls_index);
+        if (data) {
+          ::LocalFree((HLOCAL)data);
+        }
+        ::TlsFree(g_tls_index);
+        g_tls_index = TLS_OUT_OF_INDEXES;
+        break;
+      default:
+        break;
+    }
     return TRUE;
   }
-#ifdef __cplusplus
 }
+#else  // _WIN32
+namespace {
+#ifdef MECAB_NO_TLS
+char kErrorBuffer[kErrorBufferSize];
+#else
+__thread char kErrorBuffer[kErrorBufferSize];
 #endif
+}
+
+const char *getGlobalError() {
+  return kErrorBuffer;
+}
+
+void setGlobalError(const char *str) {
+  strncpy(kErrorBuffer, str, kErrorBufferSize - 1);
+  kErrorBuffer[kErrorBufferSize - 1] = '\0';
+}
 #endif
 
 mecab_t* mecab_new(int argc, char **argv) {
@@ -190,6 +232,11 @@ const char* mecab_format_node(mecab_t *tagger, const mecab_node_t* n) {
 
 const mecab_dictionary_info_t *mecab_dictionary_info(mecab_t *tagger) {
   return (const mecab_dictionary_info_t *)(reinterpret_cast<MeCab::Tagger *>(tagger)->dictionary_info());
+}
+
+int mecab_parse_lattice(mecab_t *mecab, mecab_lattice_t *lattice) {
+  return static_cast<int>(reinterpret_cast<MeCab::Tagger *>(mecab)->parse(
+      reinterpret_cast<MeCab::Lattice *>(lattice)));
 }
 
 mecab_lattice_t *mecab_lattice_new() {

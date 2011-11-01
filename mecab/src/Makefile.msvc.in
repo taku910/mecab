@@ -1,6 +1,7 @@
 CC = cl.exe
 CXXC = cl.exe
 LINK=link.exe
+
 CFLAGS = /EHsc /O2 /GL /GA /Ob2 /nologo /W3 /MT /Zi /wd4800 /wd4305 /wd4244
 LDFLAGS = /nologo /OPT:REF /OPT:ICF /LTCG /NXCOMPAT /DYNAMICBASE /MACHINE:X86 ADVAPI32.LIB
 DEFS =  -D_CRT_SECURE_NO_DEPRECATE -DMECAB_USE_THREAD \
@@ -21,15 +22,15 @@ OBJ =   feature_index.obj param.obj  learner.obj string_buffer.obj \
 
 .c.obj:
 	$(CC) $(CFLAGS) $(INC) $(DEFS) -c  $<
-	
+
 .cpp.obj:
 	$(CC) $(CFLAGS) $(INC) $(DEFS) -c  $<
-			      
+
 all: libmecab mecab mecab-dict-index mecab-dict-gen mecab-cost-train mecab-system-eval mecab-test-gen
-			      
+
 mecab: $(OBJ) mecab.obj
 	$(LINK) $(LDFLAGS) /out:$@.exe mecab.obj libmecab.lib
-	
+
 mecab-dict-index: $(OBJ) mecab-dict-index.obj
 	$(LINK) $(LDFLAGS) /out:$@.exe mecab-dict-index.obj libmecab.lib
 

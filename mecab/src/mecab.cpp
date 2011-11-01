@@ -9,4 +9,3 @@
 int main(int argc, char **argv) {
   return mecab_do (argc, argv);
 }
-

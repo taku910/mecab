@@ -132,7 +132,7 @@ void DictionaryRewriter::clear() { cache_.clear(); }
 
 bool DictionaryRewriter::open(const char *filename,
                               Iconv *iconv) {
-  std::ifstream ifs(filename);
+  std::ifstream ifs(WPATH(filename));
   CHECK_DIE(ifs) << "no such file or directory: " << filename;
   int append_to = 0;
   std::string line;
@@ -201,7 +201,7 @@ bool DictionaryRewriter::rewrite2(const std::string &feature,
 
 bool POSIDGenerator::open(const char *filename,
                           Iconv *iconv) {
-  std::ifstream ifs(filename);
+  std::ifstream ifs(WPATH(filename));
   if (!ifs) {
     std::cerr << filename
               << " is not found. minimum setting is used" << std::endl;

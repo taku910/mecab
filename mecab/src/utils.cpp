@@ -35,7 +35,46 @@ extern HINSTANCE DllInstance;
 
 namespace MeCab {
 
+#if defined(_WIN32) && !defined(__CYGWIN__)
+std::wstring Utf8ToWide(const std::string &input) {
+  int output_length = ::MultiByteToWideChar(CP_UTF8, 0,
+                                            input.c_str(), -1, NULL, 0);
+  output_length = output_length <= 0 ? 0 : output_length - 1;
+  if (output_length == 0) {
+    return L"";
+  }
+  scoped_array<wchar_t> input_wide(new wchar_t[output_length + 1]);
+  const int result = ::MultiByteToWideChar(CP_UTF8, 0, input.c_str(), -1,
+                                           input_wide.get(), output_length + 1);
+  std::wstring output;
+  if (result > 0) {
+    output.assign(input_wide.get());
+  }
+  return output;
+}
+
+std::string WideToUtf8(const std::wstring &input) {
+  const int output_length = WideCharToMultiByte(CP_UTF8, 0,
+                                                input.c_str(), -1, NULL, 0,
+                                                NULL, NULL);
+  if (output_length == 0) {
+    return "";
+  }
+
+  scoped_array<char> input_encoded(new char[output_length + 1]);
+  const int result = ::WideCharToMultiByte(CP_UTF8, 0, input.c_str(), -1,
+                                           input_encoded.get(),
+                                           output_length + 1, NULL, NULL);
+  std::string output;
+  if (result > 0) {
+    output.assign(input_encoded.get());
+  }
+  return output;
+}
+#endif
+
 int decode_charset(const char *charset) {
+
   std::string tmp = charset;
   toLower(&tmp);
   if (tmp == "sjis"  || tmp == "shift-jis" ||
@@ -121,9 +160,10 @@ void remove_pathname(std::string *s) {
 void replace_string(std::string *s,
                     const std::string &src,
                     const std::string &dst) {
-  size_t pos = s->find(src);
-  if (pos != std::string::npos)
+  const std::string::size_type pos = s->find(src);
+  if (pos != std::string::npos) {
     s->replace(pos, src.size(), dst);
+  }
 }
 
 void enum_csv_dictionaries(const char *path,
@@ -131,17 +171,17 @@ void enum_csv_dictionaries(const char *path,
   dics->clear();
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
-  WIN32_FIND_DATA wfd;
+  WIN32_FIND_DATAW wfd;
   HANDLE hFind;
-  const std::string pat = create_filename(path, "*.csv");
-  hFind = FindFirstFile(pat.c_str(), &wfd);
+  const std::wstring pat = Utf8ToWide(create_filename(path, "*.csv"));
+  hFind = ::FindFirstFileW(pat.c_str(), &wfd);
   CHECK_DIE(hFind != INVALID_HANDLE_VALUE)
       << "Invalid File Handle. Get Last Error reports";
   do {
-    std::string tmp = create_filename(path, wfd.cFileName);
+    std::string tmp = create_filename(path, WideToUtf8(wfd.cFileName));
     dics->push_back(tmp);
-  } while (FindNextFile(hFind, &wfd));
-  FindClose(hFind);
+  } while (::FindNextFileW(hFind, &wfd));
+  ::FindClose(hFind);
 #else
   DIR *dir = opendir(path);
   CHECK_DIE(dir) << "no such directory: " << path;
@@ -153,8 +193,9 @@ void enum_csv_dictionaries(const char *path,
     if (tmp.size() >= 5) {
       std::string ext = tmp.substr(tmp.size() - 4, 4);
       toLower(&ext);
-      if (ext == ".csv")
+      if (ext == ".csv") {
         dics->push_back(create_filename(path, tmp));
+      }
     }
   }
   closedir(dir);
@@ -253,9 +294,9 @@ bool load_dictionary_resource(Param *param) {
   if (rcfile.empty()) {
     const char *homedir = getenv("HOME");
     if (homedir) {
-      std::string s = MeCab::create_filename(std::string(homedir),
-                                             ".mecabrc");
-      std::ifstream ifs(s.c_str());
+      const std::string s = MeCab::create_filename(std::string(homedir),
+                                                   ".mecabrc");
+      std::ifstream ifs(WPATH(s.c_str()));
       if (ifs) {
         rcfile = s;
       }
@@ -272,48 +313,52 @@ bool load_dictionary_resource(Param *param) {
 
 #if defined (HAVE_GETENV) && defined(_WIN32) && !defined(__CYGWIN__)
   if (rcfile.empty()) {
-    char buf[BUF_SIZE];
-    DWORD len = GetEnvironmentVariable("MECABRC",
-                                       buf,
-                                       sizeof(buf));
+    wchar_t buf[BUF_SIZE];
+    const DWORD len = ::GetEnvironmentVariableW(L"MECABRC",
+                                                buf,
+                                                sizeof(buf));
     if (len < sizeof(buf) && len > 0) {
-      rcfile = buf;
+      rcfile = WideToUtf8(buf);
     }
   }
 #endif
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
   HKEY hKey;
-  char v[BUF_SIZE];
+  wchar_t v[BUF_SIZE];
   DWORD vt;
-  DWORD size = sizeof(v);
+  DWORD size = sizeof(v) * sizeof(v[0]);
 
   if (rcfile.empty()) {
-    RegOpenKeyEx(HKEY_LOCAL_MACHINE, "software\\mecab", 0, KEY_READ, &hKey);
-    RegQueryValueEx(hKey, "mecabrc", 0, &vt,
-                    reinterpret_cast<BYTE *>(v), &size);
-    RegCloseKey(hKey);
-    if (vt == REG_SZ) rcfile = v;
+    ::RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"software\\mecab", 0, KEY_READ, &hKey);
+    ::RegQueryValueExW(hKey, L"mecabrc", 0, &vt,
+                       reinterpret_cast<BYTE *>(v), &size);
+    ::RegCloseKey(hKey);
+    if (vt == REG_SZ) {
+      rcfile = WideToUtf8(v);
+    }
   }
 
   if (rcfile.empty()) {
-    RegOpenKeyEx(HKEY_CURRENT_USER, "software\\mecab", 0, KEY_READ, &hKey);
-    RegQueryValueEx(hKey, "mecabrc", 0, &vt,
-                    reinterpret_cast<BYTE *>(v), &size);
-    RegCloseKey(hKey);
-    if (vt == REG_SZ) rcfile = v;
+    ::RegOpenKeyExW(HKEY_CURRENT_USER, L"software\\mecab", 0, KEY_READ, &hKey);
+    ::RegQueryValueExW(hKey, L"mecabrc", 0, &vt,
+                      reinterpret_cast<BYTE *>(v), &size);
+    ::RegCloseKey(hKey);
+    if (vt == REG_SZ) {
+      rcfile = WideToUtf8(v);
+    }
   }
 
   if (rcfile.empty()) {
-    vt = GetModuleFileName(DllInstance, v, size);
+    vt = ::GetModuleFileNameW(DllInstance, v, size);
     if (vt != 0) {
-      char drive[_MAX_DRIVE];
-      char dir[_MAX_DIR];
-      _splitpath(v, drive, dir, NULL, NULL);
-      std::string s = std::string(drive)
-          + std::string(dir) + std::string("mecabrc");
-      std::ifstream ifs(s.c_str());
-      if (ifs) rcfile = s;
+      wchar_t drive[_MAX_DRIVE];
+      wchar_t dir[_MAX_DIR];
+      _wsplitpath(v, drive, dir, NULL, NULL);
+      const std::wstring path = std::wstring(drive) + std::wstring(dir) + L"mecabrc";
+      if (::GetFileAttributesW(path.c_str()) != -1) {
+        rcfile = WideToUtf8(path);
+      }
     }
   }
 #endif
@@ -327,7 +372,9 @@ bool load_dictionary_resource(Param *param) {
   }
 
   std::string dicdir = param->get<std::string>("dicdir");
-  if (dicdir.empty()) dicdir = ".";  // current
+  if (dicdir.empty()) {
+    dicdir = ".";  // current
+  }
   remove_filename(&rcfile);
   replace_string(&dicdir, "$(rcpath)", rcfile);
   param->set<std::string>("dicdir", dicdir, true);
@@ -339,4 +386,4 @@ bool load_dictionary_resource(Param *param) {
 
   return true;
 }
-}
+}  // namespace MeCab

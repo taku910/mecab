@@ -49,6 +49,7 @@ extern "C" {
 }
 
 #include "common.h"
+#include "utils.h"
 
 #ifndef O_BINARY
 #define O_BINARY 0
@@ -111,14 +112,14 @@ template <class T> class Mmap {
       CHECK_FALSE(false) << "unknown open mode:" << filename;
     }
 
-    hFile = CreateFile(filename, mode1, FILE_SHARE_READ, 0,
-                       OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+    hFile = ::CreateFileW(WPATH(filename), mode1, FILE_SHARE_READ, 0,
+                          OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
     CHECK_FALSE(hFile != INVALID_HANDLE_VALUE)
         << "CreateFile() failed: " << filename;
 
-    length = GetFileSize(hFile, 0);
+    length = ::GetFileSize(hFile, 0);
 
-    hMap = CreateFileMapping(hFile, 0, mode2, 0, 0, 0);
+    hMap = ::CreateFileMapping(hFile, 0, mode2, 0, 0, 0);
     CHECK_FALSE(hMap) << "CreateFileMapping() failed: " << filename;
 
     text = reinterpret_cast<T *>(MapViewOfFile(hMap, mode3, 0, 0, 0));
@@ -128,13 +129,13 @@ template <class T> class Mmap {
   }
 
   void close() {
-    if (text) { UnmapViewOfFile(text); }
+    if (text) { ::UnmapViewOfFile(text); }
     if (hFile != INVALID_HANDLE_VALUE) {
-      CloseHandle(hFile);
+      ::CloseHandle(hFile);
       hFile = INVALID_HANDLE_VALUE;
     }
     if (hMap) {
-      CloseHandle(hMap);
+      ::CloseHandle(hMap);
       hMap = 0;
     }
     text = 0;
