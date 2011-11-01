@@ -90,12 +90,14 @@
 #define WPATH(path) (path)
 #endif
 
-
 namespace MeCab {
 class die {
  public:
   die() {}
-  ~die() { std::cerr << std::endl; exit(-1); }
+  ~die() {
+    std::cerr << std::endl;
+    exit(-1);
+  }
   int operator&(std::ostream&) { return 0; }
 };
 

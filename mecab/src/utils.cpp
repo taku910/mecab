@@ -54,9 +54,9 @@ std::wstring Utf8ToWide(const std::string &input) {
 }
 
 std::string WideToUtf8(const std::wstring &input) {
-  const int output_length = WideCharToMultiByte(CP_UTF8, 0,
-                                                input.c_str(), -1, NULL, 0,
-                                                NULL, NULL);
+  const int output_length = ::WideCharToMultiByte(CP_UTF8, 0,
+                                                  input.c_str(), -1, NULL, 0,
+                                                  NULL, NULL);
   if (output_length == 0) {
     return "";
   }
