@@ -340,25 +340,57 @@ SWIGINTERN void SWIG_CSharpException(int code, const char *msg) {
 
 
 
-void delete_MeCab_Tagger (MeCab::Tagger *t) {
-  delete t;
-  t = 0;
-}
-
 MeCab::Tagger* new_MeCab_Tagger (const char *arg) {
   char *p = new char [strlen(arg) + 4];
   strcpy(p, "-C ");
   strcat(p, arg);
   MeCab::Tagger *tagger = MeCab::createTagger(p);
   delete [] p;
-  if (! tagger) throw MeCab::getTaggerError();
+  if (! tagger) throw MeCab::getLastError();
   return tagger;
 }
 
 MeCab::Tagger* new_MeCab_Tagger () {
   MeCab::Tagger *tagger = MeCab::createTagger("-C");
-  if (! tagger) throw MeCab::getTaggerError();
+  if (! tagger) throw MeCab::getLastError();
   return tagger;
+}
+
+void delete_MeCab_Tagger (MeCab::Tagger *t) {
+  delete t;
+  t = 0;
+}
+
+MeCab::Model* new_MeCab_Model (const char *arg) {
+  char *p = new char [strlen(arg) + 4];
+  strcpy(p, "-C ");
+  strcat(p, arg);
+  MeCab::Model *model = MeCab::createModel(p);
+  delete [] p;
+  if (! model) throw MeCab::getLastError();
+  return model;
+}
+
+MeCab::Model* new_MeCab_Model () {
+  MeCab::Model *model = MeCab::createModel("-C");
+  if (! model) throw MeCab::getLastError();
+  return model;
+}
+
+void delete_MeCab_Model (MeCab::Model *t) {
+  delete t;
+  t = 0;
+}
+
+MeCab::Lattice* new_MeCab_Lattice () {
+  MeCab::Lattice *lattice = MeCab::createLattice();
+  lattice->set_request_type(MECAB_ALLOCATE_SENTENCE);
+  return lattice;
+}
+
+void delete_MeCab_Lattice (MeCab::Lattice *t) {
+  delete t;
+  t = 0;
 }
 
 char* mecab_node_t_surface_get(mecab_node_t *n) {
@@ -368,23 +400,6 @@ char* mecab_node_t_surface_get(mecab_node_t *n) {
   return s;
 }
 
-
-SWIGINTERN mecab_node_t const *mecab_node_t_begin_node_list(mecab_node_t *self,size_t i){
-     if (self->stat != MECAB_BOS_NODE)
-       throw "begin_node_list is available in BOS node";
-     if (self->sentence_length < i)
-       throw "index is out of range";
-     if (!self->begin_node_list) return 0;
-     return self->begin_node_list[i];
-  }
-SWIGINTERN mecab_node_t const *mecab_node_t_end_node_list(mecab_node_t *self,size_t i){
-     if (self->stat != MECAB_BOS_NODE)
-       throw "end_node_list is available in BOS node";
-     if (self->sentence_length  < i)
-       throw "index is out of range";
-     if (!self->end_node_list) return 0;
-     return self->end_node_list[i];
-  }
 SWIGINTERN char const *MeCab_Tagger_parseToString__SWIG_0(MeCab::Tagger *self,char const *str,size_t length=0){
      return self->parse(str, length);
    }
@@ -881,18 +896,6 @@ SWIGEXPORT unsigned char SWIGSTDCALL CSharp_Node_isbest_get(void * jarg1) {
 }
 
 
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Node_sentence_length_get(void * jarg1) {
-  unsigned int jresult ;
-  mecab_node_t *arg1 = (mecab_node_t *) 0 ;
-  unsigned int result;
-  
-  arg1 = (mecab_node_t *)jarg1; 
-  result = (unsigned int) ((arg1)->sentence_length);
-  jresult = result; 
-  return jresult;
-}
-
-
 SWIGEXPORT float SWIGSTDCALL CSharp_Node_alpha_get(void * jarg1) {
   float jresult ;
   mecab_node_t *arg1 = (mecab_node_t *) 0 ;
@@ -1002,62 +1005,6 @@ SWIGEXPORT char * SWIGSTDCALL CSharp_Node_surface_get(void * jarg1) {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_Node_begin_node_list(void * jarg1, unsigned long jarg2) {
-  void * jresult ;
-  mecab_node_t *arg1 = (mecab_node_t *) 0 ;
-  size_t arg2 ;
-  mecab_node_t *result = 0 ;
-  
-  arg1 = (mecab_node_t *)jarg1; 
-  arg2 = (size_t)jarg2; 
-  {
-    try {
-      result = (mecab_node_t *)mecab_node_t_begin_node_list(arg1,arg2); 
-    }
-    catch (char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  jresult = (void *)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_Node_end_node_list(void * jarg1, unsigned long jarg2) {
-  void * jresult ;
-  mecab_node_t *arg1 = (mecab_node_t *) 0 ;
-  size_t arg2 ;
-  mecab_node_t *result = 0 ;
-  
-  arg1 = (mecab_node_t *)jarg1; 
-  arg2 = (size_t)jarg2; 
-  {
-    try {
-      result = (mecab_node_t *)mecab_node_t_end_node_list(arg1,arg2); 
-    }
-    catch (char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  jresult = (void *)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_NOR_NODE_get() {
   int jresult ;
   int result;
@@ -1138,7 +1085,1275 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_UNK_DIC_get() {
 }
 
 
-SWIGEXPORT char * SWIGSTDCALL CSharp_Tagger_parse(void * jarg1, char * jarg2) {
+SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_ONE_BEST_get() {
+  int jresult ;
+  int result;
+  
+  result = (int) (1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_NBEST_get() {
+  int jresult ;
+  int result;
+  
+  result = (int) (2);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_PARTIAL_get() {
+  int jresult ;
+  int result;
+  
+  result = (int) (4);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_MARGINAL_PROB_get() {
+  int jresult ;
+  int result;
+  
+  result = (int) (8);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_ALTERNATIVE_get() {
+  int jresult ;
+  int result;
+  
+  result = (int) (16);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_ALL_MORPHS_get() {
+  int jresult ;
+  int result;
+  
+  result = (int) (32);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_ALLOCATE_SENTENCE_get() {
+  int jresult ;
+  int result;
+  
+  result = (int) (64);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_clear(void * jarg1) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      (arg1)->clear(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Lattice_is_available(void * jarg1) {
+  unsigned int jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  bool result;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (bool)((MeCab::Lattice const *)arg1)->is_available(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Lattice_bos_node(void * jarg1) {
+  void * jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  MeCab::Node *result = 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (MeCab::Node *)((MeCab::Lattice const *)arg1)->bos_node(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Lattice_eos_node(void * jarg1) {
+  void * jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  MeCab::Node *result = 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (MeCab::Node *)((MeCab::Lattice const *)arg1)->eos_node(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Lattice_end_nodes(void * jarg1, unsigned long jarg2) {
+  void * jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  MeCab::Node *result = 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (size_t)jarg2; 
+  {
+    try {
+      result = (MeCab::Node *)((MeCab::Lattice const *)arg1)->end_nodes(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Lattice_begin_nodes(void * jarg1, unsigned long jarg2) {
+  void * jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  MeCab::Node *result = 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (size_t)jarg2; 
+  {
+    try {
+      result = (MeCab::Node *)((MeCab::Lattice const *)arg1)->begin_nodes(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT char * SWIGSTDCALL CSharp_Lattice_sentence(void * jarg1) {
+  char * jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  char *result = 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (char *)((MeCab::Lattice const *)arg1)->sentence(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = SWIG_csharp_string_callback((const char *)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_sentence__SWIG_0(void * jarg1, char * jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (char *)jarg2; 
+  {
+    try {
+      (arg1)->set_sentence((char const *)arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_sentence__SWIG_1(void * jarg1, char * jarg2, unsigned long jarg3) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  char *arg2 = (char *) 0 ;
+  size_t arg3 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (char *)jarg2; 
+  arg3 = (size_t)jarg3; 
+  {
+    try {
+      (arg1)->set_sentence((char const *)arg2,arg3); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT unsigned long SWIGSTDCALL CSharp_Lattice_size(void * jarg1) {
+  unsigned long jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t result;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = ((MeCab::Lattice const *)arg1)->size(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (unsigned long)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned long SWIGSTDCALL CSharp_Lattice_len(void * jarg1) {
+  unsigned long jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t result;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = ((MeCab::Lattice const *)arg1)->len(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (unsigned long)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_Z(void * jarg1, double jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  double arg2 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (double)jarg2; 
+  {
+    try {
+      (arg1)->set_Z(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_Lattice_Z(void * jarg1) {
+  double jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  double result;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (double)((MeCab::Lattice const *)arg1)->Z(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT float SWIGSTDCALL CSharp_Lattice_theta(void * jarg1) {
+  float jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  float result;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (float)((MeCab::Lattice const *)arg1)->theta(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_theta(void * jarg1, float jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  float arg2 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (float)jarg2; 
+  {
+    try {
+      (arg1)->set_theta(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Lattice_next(void * jarg1) {
+  unsigned int jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  bool result;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (bool)(arg1)->next(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_Lattice_request_type(void * jarg1) {
+  int jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  int result;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (int)((MeCab::Lattice const *)arg1)->request_type(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Lattice_has_request_type(void * jarg1, int jarg2) {
+  unsigned int jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  int arg2 ;
+  bool result;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (int)jarg2; 
+  {
+    try {
+      result = (bool)((MeCab::Lattice const *)arg1)->has_request_type(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_request_type(void * jarg1, int jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  int arg2 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (int)jarg2; 
+  {
+    try {
+      (arg1)->set_request_type(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_add_request_type(void * jarg1, int jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  int arg2 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (int)jarg2; 
+  {
+    try {
+      (arg1)->add_request_type(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_remove_request_type(void * jarg1, int jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  int arg2 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (int)jarg2; 
+  {
+    try {
+      (arg1)->remove_request_type(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT char * SWIGSTDCALL CSharp_Lattice_toString__SWIG_0(void * jarg1) {
+  char * jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  char *result = 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (char *)(arg1)->toString(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = SWIG_csharp_string_callback((const char *)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * SWIGSTDCALL CSharp_Lattice_toString__SWIG_1(void * jarg1, void * jarg2) {
+  char * jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  MeCab::Node *arg2 = (MeCab::Node *) 0 ;
+  char *result = 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (MeCab::Node *)jarg2; 
+  {
+    try {
+      result = (char *)(arg1)->toString((MeCab::Node const *)arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = SWIG_csharp_string_callback((const char *)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * SWIGSTDCALL CSharp_Lattice_enumNBestAsString(void * jarg1, unsigned long jarg2) {
+  char * jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  char *result = 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (size_t)jarg2; 
+  {
+    try {
+      result = (char *)(arg1)->enumNBestAsString(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = SWIG_csharp_string_callback((const char *)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * SWIGSTDCALL CSharp_Lattice_what(void * jarg1) {
+  char * jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  char *result = 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (char *)((MeCab::Lattice const *)arg1)->what(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = SWIG_csharp_string_callback((const char *)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_what(void * jarg1, char * jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (char *)jarg2; 
+  {
+    try {
+      (arg1)->set_what((char const *)arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Lattice_create() {
+  void * jresult ;
+  MeCab::Lattice *result = 0 ;
+  
+  {
+    try {
+      result = (MeCab::Lattice *)MeCab::Lattice::create(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_Lattice(void * jarg1) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      delete arg1; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_Lattice() {
+  void * jresult ;
+  MeCab::Lattice *result = 0 ;
+  
+  {
+    try {
+      result = (MeCab::Lattice *)new_MeCab_Lattice(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Model_open__SWIG_0(void * jarg1, int jarg2, void * jarg3) {
+  unsigned int jresult ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  int arg2 ;
+  char **arg3 = (char **) 0 ;
+  bool result;
+  
+  arg1 = (MeCab::Model *)jarg1; 
+  arg2 = (int)jarg2; 
+  arg3 = (char **)jarg3; 
+  {
+    try {
+      result = (bool)(arg1)->open(arg2,arg3); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Model_open__SWIG_1(void * jarg1, char * jarg2) {
+  unsigned int jresult ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  char *arg2 = (char *) 0 ;
+  bool result;
+  
+  arg1 = (MeCab::Model *)jarg1; 
+  arg2 = (char *)jarg2; 
+  {
+    try {
+      result = (bool)(arg1)->open((char const *)arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Model_is_available(void * jarg1) {
+  unsigned int jresult ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  bool result;
+  
+  arg1 = (MeCab::Model *)jarg1; 
+  {
+    try {
+      result = (bool)((MeCab::Model const *)arg1)->is_available(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Model_dictionary_info(void * jarg1) {
+  void * jresult ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  MeCab::DictionaryInfo *result = 0 ;
+  
+  arg1 = (MeCab::Model *)jarg1; 
+  {
+    try {
+      result = (MeCab::DictionaryInfo *)((MeCab::Model const *)arg1)->dictionary_info(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Model_createTagger(void * jarg1) {
+  void * jresult ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  MeCab::Tagger *result = 0 ;
+  
+  arg1 = (MeCab::Model *)jarg1; 
+  {
+    try {
+      result = (MeCab::Tagger *)((MeCab::Model const *)arg1)->createTagger(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Model_createLattice(void * jarg1) {
+  void * jresult ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  MeCab::Lattice *result = 0 ;
+  
+  arg1 = (MeCab::Model *)jarg1; 
+  {
+    try {
+      result = (MeCab::Lattice *)((MeCab::Model const *)arg1)->createLattice(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT char * SWIGSTDCALL CSharp_Model_what(void * jarg1) {
+  char * jresult ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  char *result = 0 ;
+  
+  arg1 = (MeCab::Model *)jarg1; 
+  {
+    try {
+      result = (char *)((MeCab::Model const *)arg1)->what(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = SWIG_csharp_string_callback((const char *)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * SWIGSTDCALL CSharp_Model_version() {
+  char * jresult ;
+  char *result = 0 ;
+  
+  {
+    try {
+      result = (char *)MeCab::Model::version(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = SWIG_csharp_string_callback((const char *)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_Model(void * jarg1) {
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  
+  arg1 = (MeCab::Model *)jarg1; 
+  {
+    try {
+      delete arg1; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Model_create__SWIG_0(int jarg1, void * jarg2) {
+  void * jresult ;
+  int arg1 ;
+  char **arg2 = (char **) 0 ;
+  MeCab::Model *result = 0 ;
+  
+  arg1 = (int)jarg1; 
+  arg2 = (char **)jarg2; 
+  {
+    try {
+      result = (MeCab::Model *)MeCab::Model::create(arg1,arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Model_create__SWIG_1(char * jarg1) {
+  void * jresult ;
+  char *arg1 = (char *) 0 ;
+  MeCab::Model *result = 0 ;
+  
+  arg1 = (char *)jarg1; 
+  {
+    try {
+      result = (MeCab::Model *)MeCab::Model::create((char const *)arg1); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_Model__SWIG_0(char * jarg1) {
+  void * jresult ;
+  char *arg1 = (char *) 0 ;
+  MeCab::Model *result = 0 ;
+  
+  arg1 = (char *)jarg1; 
+  {
+    try {
+      result = (MeCab::Model *)new_MeCab_Model((char const *)arg1); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_Model__SWIG_1() {
+  void * jresult ;
+  MeCab::Model *result = 0 ;
+  
+  {
+    try {
+      result = (MeCab::Model *)new_MeCab_Model(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Tagger_parse__SWIG_0(void * jarg1, void * jarg2) {
+  unsigned int jresult ;
+  MeCab::Model *arg1 = 0 ;
+  MeCab::Lattice *arg2 = (MeCab::Lattice *) 0 ;
+  bool result;
+  
+  arg1 = (MeCab::Model *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "MeCab::Model const & type is null", 0);
+    return 0;
+  } 
+  arg2 = (MeCab::Lattice *)jarg2; 
+  {
+    try {
+      result = (bool)MeCab::Tagger::parse((MeCab::Model const &)*arg1,arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Tagger_parse__SWIG_1(void * jarg1, void * jarg2) {
+  unsigned int jresult ;
+  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+  MeCab::Lattice *arg2 = (MeCab::Lattice *) 0 ;
+  bool result;
+  
+  arg1 = (MeCab::Tagger *)jarg1; 
+  arg2 = (MeCab::Lattice *)jarg2; 
+  {
+    try {
+      result = (bool)((MeCab::Tagger const *)arg1)->parse(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Tagger_parse__SWIG_2(void * jarg1, char * jarg2, void * jarg3) {
+  unsigned int jresult ;
+  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+  char *arg2 = (char *) 0 ;
+  MeCab::Lattice *arg3 = (MeCab::Lattice *) 0 ;
+  bool result;
+  
+  arg1 = (MeCab::Tagger *)jarg1; 
+  arg2 = (char *)jarg2; 
+  arg3 = (MeCab::Lattice *)jarg3; 
+  {
+    try {
+      result = (bool)((MeCab::Tagger const *)arg1)->parse((char const *)arg2,arg3); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Tagger_parse__SWIG_3(void * jarg1, char * jarg2, unsigned long jarg3, void * jarg4) {
+  unsigned int jresult ;
+  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+  char *arg2 = (char *) 0 ;
+  size_t arg3 ;
+  MeCab::Lattice *arg4 = (MeCab::Lattice *) 0 ;
+  bool result;
+  
+  arg1 = (MeCab::Tagger *)jarg1; 
+  arg2 = (char *)jarg2; 
+  arg3 = (size_t)jarg3; 
+  arg4 = (MeCab::Lattice *)jarg4; 
+  {
+    try {
+      result = (bool)((MeCab::Tagger const *)arg1)->parse((char const *)arg2,arg3,arg4); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT char * SWIGSTDCALL CSharp_Tagger_parse__SWIG_4(void * jarg1, char * jarg2) {
   char * jresult ;
   MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -1332,6 +2547,56 @@ SWIGEXPORT char * SWIGSTDCALL CSharp_Tagger_formatNode(void * jarg1, void * jarg
 }
 
 
+SWIGEXPORT void SWIGSTDCALL CSharp_Tagger_set_request_type(void * jarg1, int jarg2) {
+  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+  int arg2 ;
+  
+  arg1 = (MeCab::Tagger *)jarg1; 
+  arg2 = (int)jarg2; 
+  {
+    try {
+      (arg1)->set_request_type(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_Tagger_request_type(void * jarg1) {
+  int jresult ;
+  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+  int result;
+  
+  arg1 = (MeCab::Tagger *)jarg1; 
+  {
+    try {
+      result = (int)((MeCab::Tagger const *)arg1)->request_type(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Tagger_partial(void * jarg1) {
   unsigned int jresult ;
   MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
@@ -1367,56 +2632,6 @@ SWIGEXPORT void SWIGSTDCALL CSharp_Tagger_set_partial(void * jarg1, unsigned int
   {
     try {
       (arg1)->set_partial(arg2); 
-    }
-    catch (char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
-      }; 
-    }
-  }
-}
-
-
-SWIGEXPORT float SWIGSTDCALL CSharp_Tagger_theta(void * jarg1) {
-  float jresult ;
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  float result;
-  
-  arg1 = (MeCab::Tagger *)jarg1; 
-  {
-    try {
-      result = (float)((MeCab::Tagger const *)arg1)->theta(); 
-    }
-    catch (char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_Tagger_set_theta(void * jarg1, float jarg2) {
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  float arg2 ;
-  
-  arg1 = (MeCab::Tagger *)jarg1; 
-  arg2 = (float)jarg2; 
-  {
-    try {
-      (arg1)->set_theta(arg2); 
     }
     catch (char *e) {
       {
@@ -1532,6 +2747,56 @@ SWIGEXPORT void SWIGSTDCALL CSharp_Tagger_set_all_morphs(void * jarg1, unsigned 
 }
 
 
+SWIGEXPORT float SWIGSTDCALL CSharp_Tagger_theta(void * jarg1) {
+  float jresult ;
+  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+  float result;
+  
+  arg1 = (MeCab::Tagger *)jarg1; 
+  {
+    try {
+      result = (float)((MeCab::Tagger const *)arg1)->theta(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Tagger_set_theta(void * jarg1, float jarg2) {
+  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+  float arg2 ;
+  
+  arg1 = (MeCab::Tagger *)jarg1; 
+  arg2 = (float)jarg2; 
+  {
+    try {
+      (arg1)->set_theta(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
 SWIGEXPORT void * SWIGSTDCALL CSharp_Tagger_dictionary_info(void * jarg1) {
   void * jresult ;
   MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
@@ -1566,7 +2831,7 @@ SWIGEXPORT char * SWIGSTDCALL CSharp_Tagger_what(void * jarg1) {
   arg1 = (MeCab::Tagger *)jarg1; 
   {
     try {
-      result = (char *)(arg1)->what(); 
+      result = (char *)((MeCab::Tagger const *)arg1)->what(); 
     }
     catch (char *e) {
       {
@@ -1796,7 +3061,7 @@ SWIGEXPORT char * SWIGSTDCALL CSharp_VERSION_get() {
   char * jresult ;
   char *result = 0 ;
   
-  result = (char *) "0.98";
+  result = (char *) "0.99pre1";
   jresult = SWIG_csharp_string_callback((const char *)result); 
   return jresult;
 }

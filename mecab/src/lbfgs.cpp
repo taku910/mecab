@@ -1,6 +1,5 @@
 //   MeCab: Yet Another Part-of-Speech and Morphological Analyzer
 //
-//   $Id: lbfgs.c 1528 2006-08-07 02:39:50Z taku $;
 //
 //   lbfgs.c was ported from the FORTRAN code of lbfgs.m to C
 //   using f2c converter

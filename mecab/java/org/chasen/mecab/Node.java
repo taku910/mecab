@@ -101,10 +101,6 @@ public class Node {
     return MeCabJNI.Node_isbest_get(swigCPtr, this);
   }
 
-  public long getSentence_length() {
-    return MeCabJNI.Node_sentence_length_get(swigCPtr, this);
-  }
-
   public float getAlpha() {
     return MeCabJNI.Node_alpha_get(swigCPtr, this);
   }
@@ -136,16 +132,6 @@ public class Node {
 
   public String getSurface() {
     return MeCabJNI.Node_surface_get(swigCPtr, this);
-  }
-
-  public Node begin_node_list(long i) {
-    long cPtr = MeCabJNI.Node_begin_node_list(swigCPtr, this, i);
-    return (cPtr == 0) ? null : new Node(cPtr, false);
-  }
-
-  public Node end_node_list(long i) {
-    long cPtr = MeCabJNI.Node_end_node_list(swigCPtr, this, i);
-    return (cPtr == 0) ? null : new Node(cPtr, false);
   }
 
 }

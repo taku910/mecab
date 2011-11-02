@@ -1,7 +1,6 @@
 /*
   MeCab -- Yet Another Part-of-Speech and Morphological Analyzer
 
-  $Id: mecab.h 173 2009-04-18 08:10:57Z taku-ku $;
 
   Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
   Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
@@ -427,6 +426,7 @@ class MECAB_DLL_CLASS_EXTERN Tagger {
 
 /* factory method */
 MECAB_DLL_EXTERN Lattice     *createLattice();
+
 MECAB_DLL_EXTERN Model       *createModel(int argc, char **argv);
 MECAB_DLL_EXTERN Model       *createModel(const char *arg);
 MECAB_DLL_EXTERN Tagger      *createTagger(int argc, char **argv);
@@ -436,6 +436,10 @@ MECAB_DLL_EXTERN void        deleteLattice(Lattice *lattice);
 MECAB_DLL_EXTERN void        deleteModel(Model *model);
 MECAB_DLL_EXTERN void        deleteTagger(Tagger *tagger);
 
+MECAB_DLL_EXTERN const char*  getLastError();
+
+// Keep it for backward compatibility.
+// getTaggerError() is the same as getLastError()
 MECAB_DLL_EXTERN const char*  getTaggerError();
 }
 #endif

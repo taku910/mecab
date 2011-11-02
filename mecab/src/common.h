@@ -1,6 +1,5 @@
 // MeCab -- Yet Another Part-of-Speech and Morphological Analyzer
 //
-//  $Id: common.h 177 2009-05-31 03:16:43Z taku-ku $;
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation

@@ -206,8 +206,6 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_stat_set = *MeCabc::Node_stat_set;
 *swig_isbest_get = *MeCabc::Node_isbest_get;
 *swig_isbest_set = *MeCabc::Node_isbest_set;
-*swig_sentence_length_get = *MeCabc::Node_sentence_length_get;
-*swig_sentence_length_set = *MeCabc::Node_sentence_length_set;
 *swig_alpha_get = *MeCabc::Node_alpha_get;
 *swig_alpha_set = *MeCabc::Node_alpha_set;
 *swig_beta_get = *MeCabc::Node_beta_get;
@@ -222,8 +220,113 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_token_set = *MeCabc::Node_token_set;
 *swig_surface_get = *MeCabc::Node_surface_get;
 *swig_surface_set = *MeCabc::Node_surface_set;
-*begin_node_list = *MeCabc::Node_begin_node_list;
-*end_node_list = *MeCabc::Node_end_node_list;
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : MeCab::Lattice ##############
+
+package MeCab::Lattice;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( MeCab );
+%OWNER = ();
+%ITERATORS = ();
+*clear = *MeCabc::Lattice_clear;
+*is_available = *MeCabc::Lattice_is_available;
+*bos_node = *MeCabc::Lattice_bos_node;
+*eos_node = *MeCabc::Lattice_eos_node;
+*end_nodes = *MeCabc::Lattice_end_nodes;
+*begin_nodes = *MeCabc::Lattice_begin_nodes;
+*sentence = *MeCabc::Lattice_sentence;
+*set_sentence = *MeCabc::Lattice_set_sentence;
+*size = *MeCabc::Lattice_size;
+*len = *MeCabc::Lattice_len;
+*set_Z = *MeCabc::Lattice_set_Z;
+*Z = *MeCabc::Lattice_Z;
+*theta = *MeCabc::Lattice_theta;
+*set_theta = *MeCabc::Lattice_set_theta;
+*next = *MeCabc::Lattice_next;
+*request_type = *MeCabc::Lattice_request_type;
+*has_request_type = *MeCabc::Lattice_has_request_type;
+*set_request_type = *MeCabc::Lattice_set_request_type;
+*add_request_type = *MeCabc::Lattice_add_request_type;
+*remove_request_type = *MeCabc::Lattice_remove_request_type;
+*toString = *MeCabc::Lattice_toString;
+*enumNBestAsString = *MeCabc::Lattice_enumNBestAsString;
+*what = *MeCabc::Lattice_what;
+*set_what = *MeCabc::Lattice_set_what;
+*create = *MeCabc::Lattice_create;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        MeCabc::delete_Lattice($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub new {
+    my $pkg = shift;
+    my $self = MeCabc::new_Lattice(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : MeCab::Model ##############
+
+package MeCab::Model;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( MeCab );
+%OWNER = ();
+%ITERATORS = ();
+*open = *MeCabc::Model_open;
+*is_available = *MeCabc::Model_is_available;
+*dictionary_info = *MeCabc::Model_dictionary_info;
+*createTagger = *MeCabc::Model_createTagger;
+*createLattice = *MeCabc::Model_createLattice;
+*what = *MeCabc::Model_what;
+*version = *MeCabc::Model_version;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        MeCabc::delete_Model($self);
+        delete $OWNER{$self};
+    }
+}
+
+*create = *MeCabc::Model_create;
+sub new {
+    my $pkg = shift;
+    my $self = MeCabc::new_Model(@_);
+    bless $self, $pkg if defined($self);
+}
+
 sub DISOWN {
     my $self = shift;
     my $ptr = tied(%$self);
@@ -251,14 +354,16 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *nextNode = *MeCabc::Tagger_nextNode;
 *next = *MeCabc::Tagger_next;
 *formatNode = *MeCabc::Tagger_formatNode;
+*set_request_type = *MeCabc::Tagger_set_request_type;
+*request_type = *MeCabc::Tagger_request_type;
 *partial = *MeCabc::Tagger_partial;
 *set_partial = *MeCabc::Tagger_set_partial;
-*theta = *MeCabc::Tagger_theta;
-*set_theta = *MeCabc::Tagger_set_theta;
 *lattice_level = *MeCabc::Tagger_lattice_level;
 *set_lattice_level = *MeCabc::Tagger_set_lattice_level;
 *all_morphs = *MeCabc::Tagger_all_morphs;
 *set_all_morphs = *MeCabc::Tagger_set_all_morphs;
+*theta = *MeCabc::Tagger_theta;
+*set_theta = *MeCabc::Tagger_set_theta;
 *dictionary_info = *MeCabc::Tagger_dictionary_info;
 *what = *MeCabc::Tagger_what;
 sub DESTROY {
@@ -306,5 +411,12 @@ package MeCab;
 *MECAB_USR_DIC = *MeCabc::MECAB_USR_DIC;
 *MECAB_SYS_DIC = *MeCabc::MECAB_SYS_DIC;
 *MECAB_UNK_DIC = *MeCabc::MECAB_UNK_DIC;
+*MECAB_ONE_BEST = *MeCabc::MECAB_ONE_BEST;
+*MECAB_NBEST = *MeCabc::MECAB_NBEST;
+*MECAB_PARTIAL = *MeCabc::MECAB_PARTIAL;
+*MECAB_MARGINAL_PROB = *MeCabc::MECAB_MARGINAL_PROB;
+*MECAB_ALTERNATIVE = *MeCabc::MECAB_ALTERNATIVE;
+*MECAB_ALL_MORPHS = *MeCabc::MECAB_ALL_MORPHS;
+*MECAB_ALLOCATE_SENTENCE = *MeCabc::MECAB_ALLOCATE_SENTENCE;
 *VERSION = *MeCabc::VERSION;
 1;

@@ -302,9 +302,6 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_Node_isbest_get")]
   public static extern byte Node_isbest_get(HandleRef jarg1);
 
-  [DllImport("MeCab", EntryPoint="CSharp_Node_sentence_length_get")]
-  public static extern uint Node_sentence_length_get(HandleRef jarg1);
-
   [DllImport("MeCab", EntryPoint="CSharp_Node_alpha_get")]
   public static extern float Node_alpha_get(HandleRef jarg1);
 
@@ -328,12 +325,6 @@ class MeCabPINVOKE {
 
   [DllImport("MeCab", EntryPoint="CSharp_Node_surface_get")]
   public static extern string Node_surface_get(HandleRef jarg1);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Node_begin_node_list")]
-  public static extern IntPtr Node_begin_node_list(HandleRef jarg1, uint jarg2);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Node_end_node_list")]
-  public static extern IntPtr Node_end_node_list(HandleRef jarg1, uint jarg2);
 
   [DllImport("MeCab", EntryPoint="CSharp_MECAB_NOR_NODE_get")]
   public static extern int MECAB_NOR_NODE_get();
@@ -359,8 +350,167 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_MECAB_UNK_DIC_get")]
   public static extern int MECAB_UNK_DIC_get();
 
-  [DllImport("MeCab", EntryPoint="CSharp_Tagger_parse")]
-  public static extern string Tagger_parse(HandleRef jarg1, string jarg2);
+  [DllImport("MeCab", EntryPoint="CSharp_MECAB_ONE_BEST_get")]
+  public static extern int MECAB_ONE_BEST_get();
+
+  [DllImport("MeCab", EntryPoint="CSharp_MECAB_NBEST_get")]
+  public static extern int MECAB_NBEST_get();
+
+  [DllImport("MeCab", EntryPoint="CSharp_MECAB_PARTIAL_get")]
+  public static extern int MECAB_PARTIAL_get();
+
+  [DllImport("MeCab", EntryPoint="CSharp_MECAB_MARGINAL_PROB_get")]
+  public static extern int MECAB_MARGINAL_PROB_get();
+
+  [DllImport("MeCab", EntryPoint="CSharp_MECAB_ALTERNATIVE_get")]
+  public static extern int MECAB_ALTERNATIVE_get();
+
+  [DllImport("MeCab", EntryPoint="CSharp_MECAB_ALL_MORPHS_get")]
+  public static extern int MECAB_ALL_MORPHS_get();
+
+  [DllImport("MeCab", EntryPoint="CSharp_MECAB_ALLOCATE_SENTENCE_get")]
+  public static extern int MECAB_ALLOCATE_SENTENCE_get();
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_clear")]
+  public static extern void Lattice_clear(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_is_available")]
+  public static extern bool Lattice_is_available(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_bos_node")]
+  public static extern IntPtr Lattice_bos_node(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_eos_node")]
+  public static extern IntPtr Lattice_eos_node(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_end_nodes")]
+  public static extern IntPtr Lattice_end_nodes(HandleRef jarg1, uint jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_begin_nodes")]
+  public static extern IntPtr Lattice_begin_nodes(HandleRef jarg1, uint jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_sentence")]
+  public static extern string Lattice_sentence(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_sentence__SWIG_0")]
+  public static extern void Lattice_set_sentence__SWIG_0(HandleRef jarg1, string jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_sentence__SWIG_1")]
+  public static extern void Lattice_set_sentence__SWIG_1(HandleRef jarg1, string jarg2, uint jarg3);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_size")]
+  public static extern uint Lattice_size(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_len")]
+  public static extern uint Lattice_len(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_Z")]
+  public static extern void Lattice_set_Z(HandleRef jarg1, double jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_Z")]
+  public static extern double Lattice_Z(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_theta")]
+  public static extern float Lattice_theta(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_theta")]
+  public static extern void Lattice_set_theta(HandleRef jarg1, float jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_next")]
+  public static extern bool Lattice_next(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_request_type")]
+  public static extern int Lattice_request_type(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_has_request_type")]
+  public static extern bool Lattice_has_request_type(HandleRef jarg1, int jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_request_type")]
+  public static extern void Lattice_set_request_type(HandleRef jarg1, int jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_add_request_type")]
+  public static extern void Lattice_add_request_type(HandleRef jarg1, int jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_remove_request_type")]
+  public static extern void Lattice_remove_request_type(HandleRef jarg1, int jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_toString__SWIG_0")]
+  public static extern string Lattice_toString__SWIG_0(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_toString__SWIG_1")]
+  public static extern string Lattice_toString__SWIG_1(HandleRef jarg1, HandleRef jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_enumNBestAsString")]
+  public static extern string Lattice_enumNBestAsString(HandleRef jarg1, uint jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_what")]
+  public static extern string Lattice_what(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_what")]
+  public static extern void Lattice_set_what(HandleRef jarg1, string jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_create")]
+  public static extern IntPtr Lattice_create();
+
+  [DllImport("MeCab", EntryPoint="CSharp_delete_Lattice")]
+  public static extern void delete_Lattice(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_new_Lattice")]
+  public static extern IntPtr new_Lattice();
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_open__SWIG_0")]
+  public static extern bool Model_open__SWIG_0(HandleRef jarg1, int jarg2, HandleRef jarg3);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_open__SWIG_1")]
+  public static extern bool Model_open__SWIG_1(HandleRef jarg1, string jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_is_available")]
+  public static extern bool Model_is_available(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_dictionary_info")]
+  public static extern IntPtr Model_dictionary_info(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_createTagger")]
+  public static extern IntPtr Model_createTagger(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_createLattice")]
+  public static extern IntPtr Model_createLattice(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_what")]
+  public static extern string Model_what(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_version")]
+  public static extern string Model_version();
+
+  [DllImport("MeCab", EntryPoint="CSharp_delete_Model")]
+  public static extern void delete_Model(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_create__SWIG_0")]
+  public static extern IntPtr Model_create__SWIG_0(int jarg1, HandleRef jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_create__SWIG_1")]
+  public static extern IntPtr Model_create__SWIG_1(string jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_new_Model__SWIG_0")]
+  public static extern IntPtr new_Model__SWIG_0(string jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_new_Model__SWIG_1")]
+  public static extern IntPtr new_Model__SWIG_1();
+
+  [DllImport("MeCab", EntryPoint="CSharp_Tagger_parse__SWIG_0")]
+  public static extern bool Tagger_parse__SWIG_0(HandleRef jarg1, HandleRef jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Tagger_parse__SWIG_1")]
+  public static extern bool Tagger_parse__SWIG_1(HandleRef jarg1, HandleRef jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Tagger_parse__SWIG_2")]
+  public static extern bool Tagger_parse__SWIG_2(HandleRef jarg1, string jarg2, HandleRef jarg3);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Tagger_parse__SWIG_3")]
+  public static extern bool Tagger_parse__SWIG_3(HandleRef jarg1, string jarg2, uint jarg3, HandleRef jarg4);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Tagger_parse__SWIG_4")]
+  public static extern string Tagger_parse__SWIG_4(HandleRef jarg1, string jarg2);
 
   [DllImport("MeCab", EntryPoint="CSharp_Tagger_parseToNode")]
   public static extern IntPtr Tagger_parseToNode(HandleRef jarg1, string jarg2);
@@ -380,17 +530,17 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_Tagger_formatNode")]
   public static extern string Tagger_formatNode(HandleRef jarg1, HandleRef jarg2);
 
+  [DllImport("MeCab", EntryPoint="CSharp_Tagger_set_request_type")]
+  public static extern void Tagger_set_request_type(HandleRef jarg1, int jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Tagger_request_type")]
+  public static extern int Tagger_request_type(HandleRef jarg1);
+
   [DllImport("MeCab", EntryPoint="CSharp_Tagger_partial")]
   public static extern bool Tagger_partial(HandleRef jarg1);
 
   [DllImport("MeCab", EntryPoint="CSharp_Tagger_set_partial")]
   public static extern void Tagger_set_partial(HandleRef jarg1, bool jarg2);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Tagger_theta")]
-  public static extern float Tagger_theta(HandleRef jarg1);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Tagger_set_theta")]
-  public static extern void Tagger_set_theta(HandleRef jarg1, float jarg2);
 
   [DllImport("MeCab", EntryPoint="CSharp_Tagger_lattice_level")]
   public static extern int Tagger_lattice_level(HandleRef jarg1);
@@ -403,6 +553,12 @@ class MeCabPINVOKE {
 
   [DllImport("MeCab", EntryPoint="CSharp_Tagger_set_all_morphs")]
   public static extern void Tagger_set_all_morphs(HandleRef jarg1, bool jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Tagger_theta")]
+  public static extern float Tagger_theta(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Tagger_set_theta")]
+  public static extern void Tagger_set_theta(HandleRef jarg1, float jarg2);
 
   [DllImport("MeCab", EntryPoint="CSharp_Tagger_dictionary_info")]
   public static extern IntPtr Tagger_dictionary_info(HandleRef jarg1);

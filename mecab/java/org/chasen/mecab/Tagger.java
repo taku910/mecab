@@ -35,8 +35,24 @@ public class Tagger {
     }
   }
 
+  public static boolean parse(Model model, Lattice lattice) {
+    return MeCabJNI.Tagger_parse__SWIG_0(Model.getCPtr(model), model, Lattice.getCPtr(lattice), lattice);
+  }
+
+  public boolean parse(Lattice lattice) {
+    return MeCabJNI.Tagger_parse__SWIG_1(swigCPtr, this, Lattice.getCPtr(lattice), lattice);
+  }
+
+  public boolean parse(String str, Lattice lattice) {
+    return MeCabJNI.Tagger_parse__SWIG_2(swigCPtr, this, str, Lattice.getCPtr(lattice), lattice);
+  }
+
+  public boolean parse(String str, long len, Lattice lattice) {
+    return MeCabJNI.Tagger_parse__SWIG_3(swigCPtr, this, str, len, Lattice.getCPtr(lattice), lattice);
+  }
+
   public String parse(String str) {
-    return MeCabJNI.Tagger_parse(swigCPtr, this, str);
+    return MeCabJNI.Tagger_parse__SWIG_4(swigCPtr, this, str);
   }
 
   public Node parseToNode(String str) {
@@ -65,20 +81,20 @@ public class Tagger {
     return MeCabJNI.Tagger_formatNode(swigCPtr, this, Node.getCPtr(node), node);
   }
 
+  public void set_request_type(int request_type) {
+    MeCabJNI.Tagger_set_request_type(swigCPtr, this, request_type);
+  }
+
+  public int request_type() {
+    return MeCabJNI.Tagger_request_type(swigCPtr, this);
+  }
+
   public boolean partial() {
     return MeCabJNI.Tagger_partial(swigCPtr, this);
   }
 
   public void set_partial(boolean partial) {
     MeCabJNI.Tagger_set_partial(swigCPtr, this, partial);
-  }
-
-  public float theta() {
-    return MeCabJNI.Tagger_theta(swigCPtr, this);
-  }
-
-  public void set_theta(float theta) {
-    MeCabJNI.Tagger_set_theta(swigCPtr, this, theta);
   }
 
   public int lattice_level() {
@@ -95,6 +111,14 @@ public class Tagger {
 
   public void set_all_morphs(boolean all_morphs) {
     MeCabJNI.Tagger_set_all_morphs(swigCPtr, this, all_morphs);
+  }
+
+  public float theta() {
+    return MeCabJNI.Tagger_theta(swigCPtr, this);
+  }
+
+  public void set_theta(float theta) {
+    MeCabJNI.Tagger_set_theta(swigCPtr, this, theta);
   }
 
   public DictionaryInfo dictionary_info() {

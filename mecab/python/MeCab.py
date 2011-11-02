@@ -181,8 +181,6 @@ class Node(_object):
     if _newclass:stat = _swig_property(_MeCab.Node_stat_get)
     __swig_getmethods__["isbest"] = _MeCab.Node_isbest_get
     if _newclass:isbest = _swig_property(_MeCab.Node_isbest_get)
-    __swig_getmethods__["sentence_length"] = _MeCab.Node_sentence_length_get
-    if _newclass:sentence_length = _swig_property(_MeCab.Node_sentence_length_get)
     __swig_getmethods__["alpha"] = _MeCab.Node_alpha_get
     if _newclass:alpha = _swig_property(_MeCab.Node_alpha_get)
     __swig_getmethods__["beta"] = _MeCab.Node_beta_get
@@ -198,8 +196,6 @@ class Node(_object):
     if _newclass:token = _swig_property(_MeCab.Node_token_get)
     __swig_getmethods__["surface"] = _MeCab.Node_surface_get
     if _newclass:surface = _swig_property(_MeCab.Node_surface_get)
-    def begin_node_list(self, *args): return _MeCab.Node_begin_node_list(self, *args)
-    def end_node_list(self, *args): return _MeCab.Node_end_node_list(self, *args)
 Node_swigregister = _MeCab.Node_swigregister
 Node_swigregister(Node)
 
@@ -211,6 +207,91 @@ MECAB_EON_NODE = _MeCab.MECAB_EON_NODE
 MECAB_USR_DIC = _MeCab.MECAB_USR_DIC
 MECAB_SYS_DIC = _MeCab.MECAB_SYS_DIC
 MECAB_UNK_DIC = _MeCab.MECAB_UNK_DIC
+MECAB_ONE_BEST = _MeCab.MECAB_ONE_BEST
+MECAB_NBEST = _MeCab.MECAB_NBEST
+MECAB_PARTIAL = _MeCab.MECAB_PARTIAL
+MECAB_MARGINAL_PROB = _MeCab.MECAB_MARGINAL_PROB
+MECAB_ALTERNATIVE = _MeCab.MECAB_ALTERNATIVE
+MECAB_ALL_MORPHS = _MeCab.MECAB_ALL_MORPHS
+MECAB_ALLOCATE_SENTENCE = _MeCab.MECAB_ALLOCATE_SENTENCE
+class Lattice(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Lattice, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Lattice, name)
+    __repr__ = _swig_repr
+    def clear(self): return _MeCab.Lattice_clear(self)
+    def is_available(self): return _MeCab.Lattice_is_available(self)
+    def bos_node(self): return _MeCab.Lattice_bos_node(self)
+    def eos_node(self): return _MeCab.Lattice_eos_node(self)
+    def end_nodes(self, *args): return _MeCab.Lattice_end_nodes(self, *args)
+    def begin_nodes(self, *args): return _MeCab.Lattice_begin_nodes(self, *args)
+    def sentence(self): return _MeCab.Lattice_sentence(self)
+    def set_sentence(self, *args): return _MeCab.Lattice_set_sentence(self, *args)
+    def size(self): return _MeCab.Lattice_size(self)
+    def len(self): return _MeCab.Lattice_len(self)
+    def set_Z(self, *args): return _MeCab.Lattice_set_Z(self, *args)
+    def Z(self): return _MeCab.Lattice_Z(self)
+    def theta(self): return _MeCab.Lattice_theta(self)
+    def set_theta(self, *args): return _MeCab.Lattice_set_theta(self, *args)
+    def next(self): return _MeCab.Lattice_next(self)
+    def request_type(self): return _MeCab.Lattice_request_type(self)
+    def has_request_type(self, *args): return _MeCab.Lattice_has_request_type(self, *args)
+    def set_request_type(self, *args): return _MeCab.Lattice_set_request_type(self, *args)
+    def add_request_type(self, *args): return _MeCab.Lattice_add_request_type(self, *args)
+    def remove_request_type(self, *args): return _MeCab.Lattice_remove_request_type(self, *args)
+    def toString(self, *args): return _MeCab.Lattice_toString(self, *args)
+    def enumNBestAsString(self, *args): return _MeCab.Lattice_enumNBestAsString(self, *args)
+    def what(self): return _MeCab.Lattice_what(self)
+    def set_what(self, *args): return _MeCab.Lattice_set_what(self, *args)
+    __swig_getmethods__["create"] = lambda x: _MeCab.Lattice_create
+    if _newclass:create = staticmethod(_MeCab.Lattice_create)
+    __swig_destroy__ = _MeCab.delete_Lattice
+    __del__ = lambda self : None;
+    def __init__(self): 
+        this = _MeCab.new_Lattice()
+        try: self.this.append(this)
+        except: self.this = this
+Lattice_swigregister = _MeCab.Lattice_swigregister
+Lattice_swigregister(Lattice)
+
+def Lattice_create():
+  return _MeCab.Lattice_create()
+Lattice_create = _MeCab.Lattice_create
+
+class Model(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Model, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Model, name)
+    __repr__ = _swig_repr
+    def open(self, *args): return _MeCab.Model_open(self, *args)
+    def is_available(self): return _MeCab.Model_is_available(self)
+    def dictionary_info(self): return _MeCab.Model_dictionary_info(self)
+    def createTagger(self): return _MeCab.Model_createTagger(self)
+    def createLattice(self): return _MeCab.Model_createLattice(self)
+    def what(self): return _MeCab.Model_what(self)
+    __swig_getmethods__["version"] = lambda x: _MeCab.Model_version
+    if _newclass:version = staticmethod(_MeCab.Model_version)
+    __swig_destroy__ = _MeCab.delete_Model
+    __del__ = lambda self : None;
+    __swig_getmethods__["create"] = lambda x: _MeCab.Model_create
+    if _newclass:create = staticmethod(_MeCab.Model_create)
+    def __init__(self, *args): 
+        this = _MeCab.new_Model(*args)
+        try: self.this.append(this)
+        except: self.this = this
+Model_swigregister = _MeCab.Model_swigregister
+Model_swigregister(Model)
+
+def Model_version():
+  return _MeCab.Model_version()
+Model_version = _MeCab.Model_version
+
+def Model_create(*args):
+  return _MeCab.Model_create(*args)
+Model_create = _MeCab.Model_create
+
 class Tagger(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Tagger, name, value)
@@ -224,14 +305,16 @@ class Tagger(_object):
     def nextNode(self): return _MeCab.Tagger_nextNode(self)
     def next(self): return _MeCab.Tagger_next(self)
     def formatNode(self, *args): return _MeCab.Tagger_formatNode(self, *args)
+    def set_request_type(self, *args): return _MeCab.Tagger_set_request_type(self, *args)
+    def request_type(self): return _MeCab.Tagger_request_type(self)
     def partial(self): return _MeCab.Tagger_partial(self)
     def set_partial(self, *args): return _MeCab.Tagger_set_partial(self, *args)
-    def theta(self): return _MeCab.Tagger_theta(self)
-    def set_theta(self, *args): return _MeCab.Tagger_set_theta(self, *args)
     def lattice_level(self): return _MeCab.Tagger_lattice_level(self)
     def set_lattice_level(self, *args): return _MeCab.Tagger_set_lattice_level(self, *args)
     def all_morphs(self): return _MeCab.Tagger_all_morphs(self)
     def set_all_morphs(self, *args): return _MeCab.Tagger_set_all_morphs(self, *args)
+    def theta(self): return _MeCab.Tagger_theta(self)
+    def set_theta(self, *args): return _MeCab.Tagger_set_theta(self, *args)
     def dictionary_info(self): return _MeCab.Tagger_dictionary_info(self)
     def what(self): return _MeCab.Tagger_what(self)
     __swig_destroy__ = _MeCab.delete_Tagger

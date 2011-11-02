@@ -3,7 +3,7 @@ JAVAC=javac
 JAVA=java
 JAR=jar
 CXX=c++
-INCLUDE=/usr/local/jdk/include
+INCLUDE=/usr/lib/jvm/java-6-openjdk/include
 
 PACKAGE=org/chasen/mecab
 

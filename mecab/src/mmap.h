@@ -1,6 +1,5 @@
 // MeCab -- Yet Another Part-of-Speech and Morphological Analyzer
 //
-//  $Id: mmap.h 173 2009-04-18 08:10:57Z taku-ku $;
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
@@ -122,7 +121,7 @@ template <class T> class Mmap {
     hMap = ::CreateFileMapping(hFile, 0, mode2, 0, 0, 0);
     CHECK_FALSE(hMap) << "CreateFileMapping() failed: " << filename;
 
-    text = reinterpret_cast<T *>(MapViewOfFile(hMap, mode3, 0, 0, 0));
+    text = reinterpret_cast<T *>(::MapViewOfFile(hMap, mode3, 0, 0, 0));
     CHECK_FALSE(text) << "MapViewOfFile() failed: " << filename;
 
     return true;

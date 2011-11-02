@@ -9,22 +9,36 @@ print $MeCab::VERSION, "\n";
 
 my $sentence = "太郎はこの本を二郎を見た女性に渡した。";
 
-my $c = new MeCab::Tagger(join " ", @ARGV);
+my $model = new MeCab::Model(join " ", @ARGV);
+my $c = $model->createTagger();
 
 print $c->parse($sentence);
+
 for (my $m = $c->parseToNode($sentence); $m; $m = $m->{next}) {
     printf("%s\t%s\n", $m->{surface}, $m->{feature});
 }
 
-my $m = $c->parseToNode($sentence);
-my $len = $m->{sentence_length};
-for (my $i = 0; $i <= $len; ++$i) {
-    for (my $b = $m->begin_node_list($i); $b; $b = $b->{bnext}) {
-	printf("B[%d] %s\t%s\n", $i, $b->{surface}, $b->{feature});
+my $lattice = new MeCab::Lattice();
+$lattice->set_sentence($sentence);
+
+if ($c->parse($lattice)) {
+    for (my $i = 0; $i < $lattice->size(); ++$i) {
+	for (my $b = $lattice->begin_nodes($i); $b; $b = $b->{bnext}) {
+	    printf("B[%d] %s\t%s\n", $i, $b->{surface}, $b->{feature});
+	}
+	for (my $e = $lattice->end_nodes($i); $e; $e = $e->{enext}) {
+	    printf("E[%d] %s\t%s\n", $i, $e->{surface}, $e->{feature});
+	}
     }
-    for (my $e = $m->end_node_list($i); $e; $e = $e->{enext}) {
-	printf("E[%d] %s\t%s\n", $i, $e->{surface}, $e->{feature});	
-    }    
+}
+
+$lattice->set_sentence($sentence);
+$lattice->set_request_type($MeCab::MECAB_NBEST);
+if ($c->parse($lattice)) {
+    for (my $i = 0; $i < 10; ++$i) {
+	$lattice->next();
+	print $lattice->toString();
+    }
 }
 
 for (my $d = $c->dictionary_info(); $d; $d = $d->{next}) {

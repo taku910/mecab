@@ -171,14 +171,6 @@ public class Node : IDisposable {
     } 
   }
 
-  public uint sentence_length {
-    get {
-      uint ret = MeCabPINVOKE.Node_sentence_length_get(swigCPtr);
-      if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
   public float alpha {
     get {
       float ret = MeCabPINVOKE.Node_alpha_get(swigCPtr);
@@ -238,20 +230,6 @@ public class Node : IDisposable {
       if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
-  }
-
-  public Node begin_node_list(uint i) {
-    IntPtr cPtr = MeCabPINVOKE.Node_begin_node_list(swigCPtr, i);
-    Node ret = (cPtr == IntPtr.Zero) ? null : new Node(cPtr, false);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public Node end_node_list(uint i) {
-    IntPtr cPtr = MeCabPINVOKE.Node_end_node_list(swigCPtr, i);
-    Node ret = (cPtr == IntPtr.Zero) ? null : new Node(cPtr, false);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
   }
 
 }

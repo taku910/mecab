@@ -1515,18 +1515,20 @@ SWIG_Perl_SetModule(swig_module_info *module) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_MeCab__Tagger swig_types[0]
-#define SWIGTYPE_p_char swig_types[1]
-#define SWIGTYPE_p_mecab_dictionary_info_t swig_types[2]
-#define SWIGTYPE_p_mecab_learner_node_t swig_types[3]
-#define SWIGTYPE_p_mecab_learner_path_t swig_types[4]
-#define SWIGTYPE_p_mecab_node_t swig_types[5]
-#define SWIGTYPE_p_mecab_path_t swig_types[6]
-#define SWIGTYPE_p_mecab_t swig_types[7]
-#define SWIGTYPE_p_mecab_token_t swig_types[8]
-#define SWIGTYPE_p_p_char swig_types[9]
-static swig_type_info *swig_types[11];
-static swig_module_info swig_module = {swig_types, 10, 0, 0, 0, 0};
+#define SWIGTYPE_p_MeCab__Lattice swig_types[0]
+#define SWIGTYPE_p_MeCab__Model swig_types[1]
+#define SWIGTYPE_p_MeCab__Tagger swig_types[2]
+#define SWIGTYPE_p_char swig_types[3]
+#define SWIGTYPE_p_mecab_dictionary_info_t swig_types[4]
+#define SWIGTYPE_p_mecab_learner_node_t swig_types[5]
+#define SWIGTYPE_p_mecab_learner_path_t swig_types[6]
+#define SWIGTYPE_p_mecab_node_t swig_types[7]
+#define SWIGTYPE_p_mecab_path_t swig_types[8]
+#define SWIGTYPE_p_mecab_t swig_types[9]
+#define SWIGTYPE_p_mecab_token_t swig_types[10]
+#define SWIGTYPE_p_p_char swig_types[11]
+static swig_type_info *swig_types[13];
+static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1566,25 +1568,57 @@ SWIGEXPORT void SWIG_init (CV *cv, CPerlObj *);
 
 
 
-void delete_MeCab_Tagger (MeCab::Tagger *t) {
-  delete t;
-  t = 0;
-}
-
 MeCab::Tagger* new_MeCab_Tagger (const char *arg) {
   char *p = new char [strlen(arg) + 4];
   strcpy(p, "-C ");
   strcat(p, arg);
   MeCab::Tagger *tagger = MeCab::createTagger(p);
   delete [] p;
-  if (! tagger) throw MeCab::getTaggerError();
+  if (! tagger) throw MeCab::getLastError();
   return tagger;
 }
 
 MeCab::Tagger* new_MeCab_Tagger () {
   MeCab::Tagger *tagger = MeCab::createTagger("-C");
-  if (! tagger) throw MeCab::getTaggerError();
+  if (! tagger) throw MeCab::getLastError();
   return tagger;
+}
+
+void delete_MeCab_Tagger (MeCab::Tagger *t) {
+  delete t;
+  t = 0;
+}
+
+MeCab::Model* new_MeCab_Model (const char *arg) {
+  char *p = new char [strlen(arg) + 4];
+  strcpy(p, "-C ");
+  strcat(p, arg);
+  MeCab::Model *model = MeCab::createModel(p);
+  delete [] p;
+  if (! model) throw MeCab::getLastError();
+  return model;
+}
+
+MeCab::Model* new_MeCab_Model () {
+  MeCab::Model *model = MeCab::createModel("-C");
+  if (! model) throw MeCab::getLastError();
+  return model;
+}
+
+void delete_MeCab_Model (MeCab::Model *t) {
+  delete t;
+  t = 0;
+}
+
+MeCab::Lattice* new_MeCab_Lattice () {
+  MeCab::Lattice *lattice = MeCab::createLattice();
+  lattice->set_request_type(MECAB_ALLOCATE_SENTENCE);
+  return lattice;
+}
+
+void delete_MeCab_Lattice (MeCab::Lattice *t) {
+  delete t;
+  t = 0;
 }
 
 char* mecab_node_t_surface_get(mecab_node_t *n) {
@@ -1593,7 +1627,6 @@ char* mecab_node_t_surface_get(mecab_node_t *n) {
   s[n->length] = '\0';
   return s;
 }
-
 
 
 SWIGINTERNINLINE SV *
@@ -1733,6 +1766,19 @@ SWIG_From_unsigned_SS_char  SWIG_PERL_DECL_ARGS_1(unsigned char value)
 }
 
 
+SWIGINTERNINLINE SV *
+SWIG_From_bool  SWIG_PERL_DECL_ARGS_1(bool value)
+{    
+  SV *obj = sv_newmortal();
+  if (value) {
+    sv_setsv(obj, &PL_sv_yes);
+  } else {
+    sv_setsv(obj, &PL_sv_no); 
+  }
+  return obj;
+}
+
+
 #include <math.h>
 
 
@@ -1820,22 +1866,6 @@ SWIG_AsVal_size_t SWIG_PERL_DECL_ARGS_2(SV * obj, size_t *val)
   return res;
 }
 
-SWIGINTERN mecab_node_t const *mecab_node_t_begin_node_list(mecab_node_t *self,size_t i){
-     if (self->stat != MECAB_BOS_NODE)
-       throw "begin_node_list is available in BOS node";
-     if (self->sentence_length < i)
-       throw "index is out of range";
-     if (!self->begin_node_list) return 0;
-     return self->begin_node_list[i];
-  }
-SWIGINTERN mecab_node_t const *mecab_node_t_end_node_list(mecab_node_t *self,size_t i){
-     if (self->stat != MECAB_BOS_NODE)
-       throw "end_node_list is available in BOS node";
-     if (self->sentence_length  < i)
-       throw "index is out of range";
-     if (!self->end_node_list) return 0;
-     return self->end_node_list[i];
-  }
 
 SWIGINTERN swig_type_info*
 SWIG_pchar_descriptor(void)
@@ -1894,32 +1924,9 @@ SWIG_AsCharPtrAndSize(SV *obj, char** cptr, size_t* psize, int *alloc)
 
 
 SWIGINTERNINLINE SV *
-SWIG_From_bool  SWIG_PERL_DECL_ARGS_1(bool value)
+SWIG_From_size_t  SWIG_PERL_DECL_ARGS_1(size_t value)
 {    
-  SV *obj = sv_newmortal();
-  if (value) {
-    sv_setsv(obj, &PL_sv_yes);
-  } else {
-    sv_setsv(obj, &PL_sv_no); 
-  }
-  return obj;
-}
-
-
-SWIGINTERN int
-SWIG_AsVal_bool SWIG_PERL_DECL_ARGS_2(SV *obj, bool* val)
-{
-  if (obj == &PL_sv_yes) {
-    if (val) *val = true;
-    return SWIG_OK;
-  } else if (obj == &PL_sv_no) { 
-    if (val) *val = false;
-    return SWIG_OK;
-  } else {
-    if (val) *val = SvTRUE(obj) ? true: false;
-    return SWIG_AddCast(SWIG_OK);    
-  }
-  return SWIG_TypeError;
+  return SWIG_From_unsigned_SS_long  SWIG_PERL_CALL_ARGS_1(static_cast< unsigned long >(value));
 }
 
 
@@ -1983,6 +1990,23 @@ SWIG_AsVal_int SWIG_PERL_DECL_ARGS_2(SV * obj, int *val)
     }
   }  
   return res;
+}
+
+
+SWIGINTERN int
+SWIG_AsVal_bool SWIG_PERL_DECL_ARGS_2(SV *obj, bool* val)
+{
+  if (obj == &PL_sv_yes) {
+    if (val) *val = true;
+    return SWIG_OK;
+  } else if (obj == &PL_sv_no) { 
+    if (val) *val = false;
+    return SWIG_OK;
+  } else {
+    if (val) *val = SvTRUE(obj) ? true: false;
+    return SWIG_AddCast(SWIG_OK);    
+  }
+  return SWIG_TypeError;
 }
 
 SWIGINTERN char const *MeCab_Tagger_parseToString__SWIG_0(MeCab::Tagger *self,char const *str,size_t length=0){
@@ -3127,34 +3151,6 @@ XS(_wrap_Node_isbest_get) {
 }
 
 
-XS(_wrap_Node_sentence_length_get) {
-  {
-    mecab_node_t *arg1 = (mecab_node_t *) 0 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    int argvi = 0;
-    unsigned int result;
-    dXSARGS;
-    
-    if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: Node_sentence_length_get(self);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_mecab_node_t, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Node_sentence_length_get" "', argument " "1"" of type '" "mecab_node_t *""'"); 
-    }
-    arg1 = reinterpret_cast< mecab_node_t * >(argp1);
-    result = (unsigned int) ((arg1)->sentence_length);
-    ST(argvi) = SWIG_From_unsigned_SS_int  SWIG_PERL_CALL_ARGS_1(static_cast< unsigned int >(result)); argvi++ ;
-    
-    XSRETURN(argvi);
-  fail:
-    
-    SWIG_croak_null();
-  }
-}
-
-
 XS(_wrap_Node_alpha_get) {
   {
     mecab_node_t *arg1 = (mecab_node_t *) 0 ;
@@ -3399,34 +3395,185 @@ XS(_wrap_Node_surface_get) {
 }
 
 
-XS(_wrap_Node_begin_node_list) {
+XS(_wrap_Lattice_clear) {
   {
-    mecab_node_t *arg1 = (mecab_node_t *) 0 ;
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_clear(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_clear" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        (arg1)->clear(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_is_available) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_is_available(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_is_available" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (bool)((MeCab::Lattice const *)arg1)->is_available(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_bos_node) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    MeCab::Node *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_bos_node(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_bos_node" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (MeCab::Node *)((MeCab::Lattice const *)arg1)->bos_node(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_mecab_node_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_eos_node) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    MeCab::Node *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_eos_node(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_eos_node" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (MeCab::Node *)((MeCab::Lattice const *)arg1)->eos_node(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_mecab_node_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_end_nodes) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
     size_t arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     size_t val2 ;
     int ecode2 = 0 ;
     int argvi = 0;
-    mecab_node_t *result = 0 ;
+    MeCab::Node *result = 0 ;
     dXSARGS;
     
     if ((items < 2) || (items > 2)) {
-      SWIG_croak("Usage: Node_begin_node_list(self,i);");
+      SWIG_croak("Usage: Lattice_end_nodes(self,pos);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_mecab_node_t, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Node_begin_node_list" "', argument " "1"" of type '" "mecab_node_t *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_end_nodes" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
     }
-    arg1 = reinterpret_cast< mecab_node_t * >(argp1);
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
     ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
     if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Node_begin_node_list" "', argument " "2"" of type '" "size_t""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_end_nodes" "', argument " "2"" of type '" "size_t""'");
     } 
     arg2 = static_cast< size_t >(val2);
     {
       try {
-        result = (mecab_node_t *)mecab_node_t_begin_node_list(arg1,arg2); 
+        result = (MeCab::Node *)((MeCab::Lattice const *)arg1)->end_nodes(arg2); 
       }
       catch (char *e) {
         SWIG_exception (SWIG_RuntimeError, e); 
@@ -3447,34 +3594,34 @@ XS(_wrap_Node_begin_node_list) {
 }
 
 
-XS(_wrap_Node_end_node_list) {
+XS(_wrap_Lattice_begin_nodes) {
   {
-    mecab_node_t *arg1 = (mecab_node_t *) 0 ;
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
     size_t arg2 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     size_t val2 ;
     int ecode2 = 0 ;
     int argvi = 0;
-    mecab_node_t *result = 0 ;
+    MeCab::Node *result = 0 ;
     dXSARGS;
     
     if ((items < 2) || (items > 2)) {
-      SWIG_croak("Usage: Node_end_node_list(self,i);");
+      SWIG_croak("Usage: Lattice_begin_nodes(self,pos);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_mecab_node_t, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Node_end_node_list" "', argument " "1"" of type '" "mecab_node_t *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_begin_nodes" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
     }
-    arg1 = reinterpret_cast< mecab_node_t * >(argp1);
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
     ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
     if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Node_end_node_list" "', argument " "2"" of type '" "size_t""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_begin_nodes" "', argument " "2"" of type '" "size_t""'");
     } 
     arg2 = static_cast< size_t >(val2);
     {
       try {
-        result = (mecab_node_t *)mecab_node_t_end_node_list(arg1,arg2); 
+        result = (MeCab::Node *)((MeCab::Lattice const *)arg1)->begin_nodes(arg2); 
       }
       catch (char *e) {
         SWIG_exception (SWIG_RuntimeError, e); 
@@ -3495,7 +3642,2085 @@ XS(_wrap_Node_end_node_list) {
 }
 
 
-XS(_wrap_Tagger_parse) {
+XS(_wrap_Lattice_sentence) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_sentence(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_sentence" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (char *)((MeCab::Lattice const *)arg1)->sentence(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_set_sentence__SWIG_0) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    char *arg2 = (char *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Lattice_set_sentence(self,sentence);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_set_sentence" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Lattice_set_sentence" "', argument " "2"" of type '" "char const *""'");
+    }
+    arg2 = reinterpret_cast< char * >(buf2);
+    {
+      try {
+        (arg1)->set_sentence((char const *)arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_set_sentence__SWIG_1) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    char *arg2 = (char *) 0 ;
+    size_t arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    size_t val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Lattice_set_sentence(self,sentence,len);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_set_sentence" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Lattice_set_sentence" "', argument " "2"" of type '" "char const *""'");
+    }
+    arg2 = reinterpret_cast< char * >(buf2);
+    ecode3 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Lattice_set_sentence" "', argument " "3"" of type '" "size_t""'");
+    } 
+    arg3 = static_cast< size_t >(val3);
+    {
+      try {
+        (arg1)->set_sentence((char const *)arg2,arg3); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_set_sentence) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsCharPtrAndSize(ST(1), 0, NULL, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsCharPtrAndSize(ST(1), 0, NULL, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Lattice_set_sentence__SWIG_0); return;
+    case 2:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Lattice_set_sentence__SWIG_1); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Lattice_set_sentence'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_Lattice_size) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_size(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_size" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = ((MeCab::Lattice const *)arg1)->size(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_len) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_len(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_len" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = ((MeCab::Lattice const *)arg1)->len(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_set_Z) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Lattice_set_Z(self,Z);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_set_Z" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_set_Z" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    {
+      try {
+        (arg1)->set_Z(arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_Z) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_Z(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_Z" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (double)((MeCab::Lattice const *)arg1)->Z(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_theta) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    float result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_theta(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_theta" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (float)((MeCab::Lattice const *)arg1)->theta(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_float  SWIG_PERL_CALL_ARGS_1(static_cast< float >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_set_theta) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    float arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    float val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Lattice_set_theta(self,theta);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_set_theta" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    ecode2 = SWIG_AsVal_float SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_set_theta" "', argument " "2"" of type '" "float""'");
+    } 
+    arg2 = static_cast< float >(val2);
+    {
+      try {
+        (arg1)->set_theta(arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_next) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_next(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_next" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (bool)(arg1)->next(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_request_type) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    int result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_request_type(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_request_type" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (int)((MeCab::Lattice const *)arg1)->request_type(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_has_request_type) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Lattice_has_request_type(self,request_type);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_has_request_type" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_has_request_type" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    {
+      try {
+        result = (bool)((MeCab::Lattice const *)arg1)->has_request_type(arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_set_request_type) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Lattice_set_request_type(self,request_type);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_set_request_type" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_set_request_type" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    {
+      try {
+        (arg1)->set_request_type(arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_add_request_type) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Lattice_add_request_type(self,request_type);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_add_request_type" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_add_request_type" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    {
+      try {
+        (arg1)->add_request_type(arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_remove_request_type) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Lattice_remove_request_type(self,request_type);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_remove_request_type" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_remove_request_type" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    {
+      try {
+        (arg1)->remove_request_type(arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_toString__SWIG_0) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_toString(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_toString" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (char *)(arg1)->toString(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_toString__SWIG_1) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    MeCab::Node *arg2 = (MeCab::Node *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Lattice_toString(self,node);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_toString" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_mecab_node_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Lattice_toString" "', argument " "2"" of type '" "MeCab::Node const *""'"); 
+    }
+    arg2 = reinterpret_cast< MeCab::Node * >(argp2);
+    {
+      try {
+        result = (char *)(arg1)->toString((MeCab::Node const *)arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_toString) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_mecab_node_t, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Lattice_toString__SWIG_0); return;
+    case 2:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Lattice_toString__SWIG_1); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Lattice_toString'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_Lattice_enumNBestAsString) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Lattice_enumNBestAsString(self,N);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_enumNBestAsString" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_enumNBestAsString" "', argument " "2"" of type '" "size_t""'");
+    } 
+    arg2 = static_cast< size_t >(val2);
+    {
+      try {
+        result = (char *)(arg1)->enumNBestAsString(arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_what) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_what(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_what" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (char *)((MeCab::Lattice const *)arg1)->what(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_set_what) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    char *arg2 = (char *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Lattice_set_what(self,str);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_set_what" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Lattice_set_what" "', argument " "2"" of type '" "char const *""'");
+    }
+    arg2 = reinterpret_cast< char * >(buf2);
+    {
+      try {
+        (arg1)->set_what((char const *)arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_create) {
+  {
+    int argvi = 0;
+    MeCab::Lattice *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: Lattice_create();");
+    }
+    {
+      try {
+        result = (MeCab::Lattice *)MeCab::Lattice::create(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+  fail:
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_delete_Lattice) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_Lattice(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Lattice" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        delete arg1; 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_new_Lattice) {
+  {
+    int argvi = 0;
+    MeCab::Lattice *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_Lattice();");
+    }
+    {
+      try {
+        result = (MeCab::Lattice *)new_MeCab_Lattice(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+  fail:
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_open__SWIG_0) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    int arg2 ;
+    char **arg3 = (char **) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Model_open(self,argc,argv);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_open" "', argument " "1"" of type '" "MeCab::Model *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Model_open" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    res3 = SWIG_ConvertPtr(ST(2), &argp3,SWIGTYPE_p_p_char, 0 |  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Model_open" "', argument " "3"" of type '" "char **""'"); 
+    }
+    arg3 = reinterpret_cast< char ** >(argp3);
+    {
+      try {
+        result = (bool)(arg1)->open(arg2,arg3); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_open__SWIG_1) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    char *arg2 = (char *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Model_open(self,arg);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_open" "', argument " "1"" of type '" "MeCab::Model *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Model_open" "', argument " "2"" of type '" "char const *""'");
+    }
+    arg2 = reinterpret_cast< char * >(buf2);
+    {
+      try {
+        result = (bool)(arg1)->open((char const *)arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_open) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_MeCab__Model, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsCharPtrAndSize(ST(1), 0, NULL, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_MeCab__Model, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_p_char, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Model_open__SWIG_1); return;
+    case 2:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Model_open__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Model_open'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_Model_is_available) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Model_is_available(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_is_available" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    {
+      try {
+        result = (bool)((MeCab::Model const *)arg1)->is_available(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_dictionary_info) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    MeCab::DictionaryInfo *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Model_dictionary_info(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_dictionary_info" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    {
+      try {
+        result = (MeCab::DictionaryInfo *)((MeCab::Model const *)arg1)->dictionary_info(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_mecab_dictionary_info_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_createTagger) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    MeCab::Tagger *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Model_createTagger(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_createTagger" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    {
+      try {
+        result = (MeCab::Tagger *)((MeCab::Model const *)arg1)->createTagger(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Tagger, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_createLattice) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    MeCab::Lattice *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Model_createLattice(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_createLattice" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    {
+      try {
+        result = (MeCab::Lattice *)((MeCab::Model const *)arg1)->createLattice(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_what) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Model_what(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_what" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    {
+      try {
+        result = (char *)((MeCab::Model const *)arg1)->what(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_version) {
+  {
+    int argvi = 0;
+    char *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: Model_version();");
+    }
+    {
+      try {
+        result = (char *)MeCab::Model::version(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_FromCharPtr((const char *)result); argvi++ ;
+    XSRETURN(argvi);
+  fail:
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_delete_Model) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_Model(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Model" "', argument " "1"" of type '" "MeCab::Model *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    {
+      try {
+        delete arg1; 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_create__SWIG_0) {
+  {
+    int arg1 ;
+    char **arg2 = (char **) 0 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    MeCab::Model *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Model_create(argc,argv);");
+    }
+    ecode1 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "Model_create" "', argument " "1"" of type '" "int""'");
+    } 
+    arg1 = static_cast< int >(val1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_p_char, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Model_create" "', argument " "2"" of type '" "char **""'"); 
+    }
+    arg2 = reinterpret_cast< char ** >(argp2);
+    {
+      try {
+        result = (MeCab::Model *)MeCab::Model::create(arg1,arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Model, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_create__SWIG_1) {
+  {
+    char *arg1 = (char *) 0 ;
+    int res1 ;
+    char *buf1 = 0 ;
+    int alloc1 = 0 ;
+    int argvi = 0;
+    MeCab::Model *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Model_create(arg);");
+    }
+    res1 = SWIG_AsCharPtrAndSize(ST(0), &buf1, NULL, &alloc1);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_create" "', argument " "1"" of type '" "char const *""'");
+    }
+    arg1 = reinterpret_cast< char * >(buf1);
+    {
+      try {
+        result = (MeCab::Model *)MeCab::Model::create((char const *)arg1); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Model, 0 | SWIG_SHADOW); argvi++ ;
+    if (alloc1 == SWIG_NEWOBJ) delete[] buf1;
+    XSRETURN(argvi);
+  fail:
+    if (alloc1 == SWIG_NEWOBJ) delete[] buf1;
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_create) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        int res = SWIG_AsCharPtrAndSize(ST(0), 0, NULL, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_p_char, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Model_create__SWIG_1); return;
+    case 2:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Model_create__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Model_create'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_new_Model__SWIG_0) {
+  {
+    char *arg1 = (char *) 0 ;
+    int res1 ;
+    char *buf1 = 0 ;
+    int alloc1 = 0 ;
+    int argvi = 0;
+    MeCab::Model *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: new_Model(argc);");
+    }
+    res1 = SWIG_AsCharPtrAndSize(ST(0), &buf1, NULL, &alloc1);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Model" "', argument " "1"" of type '" "char const *""'");
+    }
+    arg1 = reinterpret_cast< char * >(buf1);
+    {
+      try {
+        result = (MeCab::Model *)new_MeCab_Model((char const *)arg1); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Model, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    if (alloc1 == SWIG_NEWOBJ) delete[] buf1;
+    XSRETURN(argvi);
+  fail:
+    if (alloc1 == SWIG_NEWOBJ) delete[] buf1;
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_new_Model__SWIG_1) {
+  {
+    int argvi = 0;
+    MeCab::Model *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_Model();");
+    }
+    {
+      try {
+        result = (MeCab::Model *)new_MeCab_Model(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Model, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+  fail:
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_new_Model) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 0) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        int res = SWIG_AsCharPtrAndSize(ST(0), 0, NULL, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_new_Model__SWIG_1); return;
+    case 2:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_new_Model__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'new_Model'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_Tagger_parse__SWIG_0) {
+  {
+    MeCab::Model *arg1 = 0 ;
+    MeCab::Lattice *arg2 = (MeCab::Lattice *) 0 ;
+    void *argp1 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Tagger_parse(model,lattice);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_MeCab__Model,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_parse" "', argument " "1"" of type '" "MeCab::Model const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Tagger_parse" "', argument " "1"" of type '" "MeCab::Model const &""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tagger_parse" "', argument " "2"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg2 = reinterpret_cast< MeCab::Lattice * >(argp2);
+    {
+      try {
+        result = (bool)MeCab::Tagger::parse((MeCab::Model const &)*arg1,arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Tagger_parse__SWIG_1) {
+  {
+    MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+    MeCab::Lattice *arg2 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Tagger_parse(self,lattice);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_parse" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tagger_parse" "', argument " "2"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg2 = reinterpret_cast< MeCab::Lattice * >(argp2);
+    {
+      try {
+        result = (bool)((MeCab::Tagger const *)arg1)->parse(arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Tagger_parse__SWIG_2) {
+  {
+    MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+    char *arg2 = (char *) 0 ;
+    MeCab::Lattice *arg3 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Tagger_parse(self,str,lattice);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_parse" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tagger_parse" "', argument " "2"" of type '" "char const *""'");
+    }
+    arg2 = reinterpret_cast< char * >(buf2);
+    res3 = SWIG_ConvertPtr(ST(2), &argp3,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Tagger_parse" "', argument " "3"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg3 = reinterpret_cast< MeCab::Lattice * >(argp3);
+    {
+      try {
+        result = (bool)((MeCab::Tagger const *)arg1)->parse((char const *)arg2,arg3); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Tagger_parse__SWIG_3) {
+  {
+    MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+    char *arg2 = (char *) 0 ;
+    size_t arg3 ;
+    MeCab::Lattice *arg4 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    size_t val3 ;
+    int ecode3 = 0 ;
+    void *argp4 = 0 ;
+    int res4 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: Tagger_parse(self,str,len,lattice);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_parse" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tagger_parse" "', argument " "2"" of type '" "char const *""'");
+    }
+    arg2 = reinterpret_cast< char * >(buf2);
+    ecode3 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Tagger_parse" "', argument " "3"" of type '" "size_t""'");
+    } 
+    arg3 = static_cast< size_t >(val3);
+    res4 = SWIG_ConvertPtr(ST(3), &argp4,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "Tagger_parse" "', argument " "4"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg4 = reinterpret_cast< MeCab::Lattice * >(argp4);
+    {
+      try {
+        result = (bool)((MeCab::Tagger const *)arg1)->parse((char const *)arg2,arg3,arg4); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Tagger_parse__SWIG_4) {
   {
     MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
     char *arg2 = (char *) 0 ;
@@ -3541,6 +5766,207 @@ XS(_wrap_Tagger_parse) {
     if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
     SWIG_croak_null();
   }
+}
+
+
+XS(_wrap_Tagger_parse) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_MeCab__Model, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_MeCab__Tagger, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_MeCab__Tagger, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsCharPtrAndSize(ST(1), 0, NULL, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_MeCab__Tagger, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsCharPtrAndSize(ST(1), 0, NULL, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_MeCab__Tagger, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsCharPtrAndSize(ST(1), 0, NULL, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 5;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_5:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Tagger_parse__SWIG_0); return;
+    case 2:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Tagger_parse__SWIG_1); return;
+    case 3:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Tagger_parse__SWIG_4); return;
+    case 4:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Tagger_parse__SWIG_2); return;
+    case 5:
+      ++PL_markstack_ptr; SWIG_CALLXS(_wrap_Tagger_parse__SWIG_3); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Tagger_parse'");
+  XSRETURN(0);
 }
 
 
@@ -3825,6 +6251,91 @@ XS(_wrap_Tagger_formatNode) {
 }
 
 
+XS(_wrap_Tagger_set_request_type) {
+  {
+    MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Tagger_set_request_type(self,request_type);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_set_request_type" "', argument " "1"" of type '" "MeCab::Tagger *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tagger_set_request_type" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    {
+      try {
+        (arg1)->set_request_type(arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Tagger_request_type) {
+  {
+    MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    int result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Tagger_request_type(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_request_type" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
+    {
+      try {
+        result = (int)((MeCab::Tagger const *)arg1)->request_type(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_Tagger_partial) {
   {
     MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
@@ -3890,91 +6401,6 @@ XS(_wrap_Tagger_set_partial) {
     {
       try {
         (arg1)->set_partial(arg2); 
-      }
-      catch (char *e) {
-        SWIG_exception (SWIG_RuntimeError, e); 
-      }
-      catch (const char *e) {
-        SWIG_exception (SWIG_RuntimeError, (char*)e); 
-      }
-    }
-    ST(argvi) = sv_newmortal();
-    
-    
-    XSRETURN(argvi);
-  fail:
-    
-    
-    SWIG_croak_null();
-  }
-}
-
-
-XS(_wrap_Tagger_theta) {
-  {
-    MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    int argvi = 0;
-    float result;
-    dXSARGS;
-    
-    if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: Tagger_theta(self);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_theta" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
-    }
-    arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
-    {
-      try {
-        result = (float)((MeCab::Tagger const *)arg1)->theta(); 
-      }
-      catch (char *e) {
-        SWIG_exception (SWIG_RuntimeError, e); 
-      }
-      catch (const char *e) {
-        SWIG_exception (SWIG_RuntimeError, (char*)e); 
-      }
-    }
-    ST(argvi) = SWIG_From_float  SWIG_PERL_CALL_ARGS_1(static_cast< float >(result)); argvi++ ;
-    
-    XSRETURN(argvi);
-  fail:
-    
-    SWIG_croak_null();
-  }
-}
-
-
-XS(_wrap_Tagger_set_theta) {
-  {
-    MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-    float arg2 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    float val2 ;
-    int ecode2 = 0 ;
-    int argvi = 0;
-    dXSARGS;
-    
-    if ((items < 2) || (items > 2)) {
-      SWIG_croak("Usage: Tagger_set_theta(self,theta);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_set_theta" "', argument " "1"" of type '" "MeCab::Tagger *""'"); 
-    }
-    arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
-    ecode2 = SWIG_AsVal_float SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
-    if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tagger_set_theta" "', argument " "2"" of type '" "float""'");
-    } 
-    arg2 = static_cast< float >(val2);
-    {
-      try {
-        (arg1)->set_theta(arg2); 
       }
       catch (char *e) {
         SWIG_exception (SWIG_RuntimeError, e); 
@@ -4165,6 +6591,91 @@ XS(_wrap_Tagger_set_all_morphs) {
 }
 
 
+XS(_wrap_Tagger_theta) {
+  {
+    MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    float result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Tagger_theta(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_theta" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
+    {
+      try {
+        result = (float)((MeCab::Tagger const *)arg1)->theta(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_float  SWIG_PERL_CALL_ARGS_1(static_cast< float >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Tagger_set_theta) {
+  {
+    MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+    float arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    float val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Tagger_set_theta(self,theta);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_set_theta" "', argument " "1"" of type '" "MeCab::Tagger *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
+    ecode2 = SWIG_AsVal_float SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tagger_set_theta" "', argument " "2"" of type '" "float""'");
+    } 
+    arg2 = static_cast< float >(val2);
+    {
+      try {
+        (arg1)->set_theta(arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = sv_newmortal();
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_Tagger_dictionary_info) {
   {
     MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
@@ -4217,12 +6728,12 @@ XS(_wrap_Tagger_what) {
     }
     res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_what" "', argument " "1"" of type '" "MeCab::Tagger *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_what" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
     }
     arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
     {
       try {
-        result = (char *)(arg1)->what(); 
+        result = (char *)((MeCab::Tagger const *)arg1)->what(); 
       }
       catch (char *e) {
         SWIG_exception (SWIG_RuntimeError, e); 
@@ -4778,6 +7289,8 @@ XS(_wrap_Tagger_parseToString) {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static swig_type_info _swigt__p_MeCab__Lattice = {"_p_MeCab__Lattice", "MeCab::Lattice *", 0, 0, (void*)"MeCab::Lattice", 0};
+static swig_type_info _swigt__p_MeCab__Model = {"_p_MeCab__Model", "MeCab::Model *", 0, 0, (void*)"MeCab::Model", 0};
 static swig_type_info _swigt__p_MeCab__Tagger = {"_p_MeCab__Tagger", "MeCab::Tagger *", 0, 0, (void*)"MeCab::Tagger", 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_mecab_dictionary_info_t = {"_p_mecab_dictionary_info_t", "MeCab::DictionaryInfo *|mecab_dictionary_info_t *", 0, 0, (void*)"MeCab::DictionaryInfo", 0};
@@ -4790,6 +7303,8 @@ static swig_type_info _swigt__p_mecab_token_t = {"_p_mecab_token_t", "mecab_toke
 static swig_type_info _swigt__p_p_char = {"_p_p_char", "char **", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_MeCab__Lattice,
+  &_swigt__p_MeCab__Model,
   &_swigt__p_MeCab__Tagger,
   &_swigt__p_char,
   &_swigt__p_mecab_dictionary_info_t,
@@ -4802,6 +7317,8 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_p_char,
 };
 
+static swig_cast_info _swigc__p_MeCab__Lattice[] = {  {&_swigt__p_MeCab__Lattice, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_MeCab__Model[] = {  {&_swigt__p_MeCab__Model, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MeCab__Tagger[] = {  {&_swigt__p_MeCab__Tagger, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_mecab_dictionary_info_t[] = {  {&_swigt__p_mecab_dictionary_info_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -4814,6 +7331,8 @@ static swig_cast_info _swigc__p_mecab_token_t[] = {  {&_swigt__p_mecab_token_t, 
 static swig_cast_info _swigc__p_p_char[] = {  {&_swigt__p_p_char, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_MeCab__Lattice,
+  _swigc__p_MeCab__Model,
   _swigc__p_MeCab__Tagger,
   _swigc__p_char,
   _swigc__p_mecab_dictionary_info_t,
@@ -4878,7 +7397,6 @@ static swig_command_info swig_commands[] = {
 {"MeCabc::Node_char_type_get", _wrap_Node_char_type_get},
 {"MeCabc::Node_stat_get", _wrap_Node_stat_get},
 {"MeCabc::Node_isbest_get", _wrap_Node_isbest_get},
-{"MeCabc::Node_sentence_length_get", _wrap_Node_sentence_length_get},
 {"MeCabc::Node_alpha_get", _wrap_Node_alpha_get},
 {"MeCabc::Node_beta_get", _wrap_Node_beta_get},
 {"MeCabc::Node_prob_set", _wrap_Node_prob_set},
@@ -4887,8 +7405,43 @@ static swig_command_info swig_commands[] = {
 {"MeCabc::Node_cost_get", _wrap_Node_cost_get},
 {"MeCabc::Node_token_get", _wrap_Node_token_get},
 {"MeCabc::Node_surface_get", _wrap_Node_surface_get},
-{"MeCabc::Node_begin_node_list", _wrap_Node_begin_node_list},
-{"MeCabc::Node_end_node_list", _wrap_Node_end_node_list},
+{"MeCabc::Lattice_clear", _wrap_Lattice_clear},
+{"MeCabc::Lattice_is_available", _wrap_Lattice_is_available},
+{"MeCabc::Lattice_bos_node", _wrap_Lattice_bos_node},
+{"MeCabc::Lattice_eos_node", _wrap_Lattice_eos_node},
+{"MeCabc::Lattice_end_nodes", _wrap_Lattice_end_nodes},
+{"MeCabc::Lattice_begin_nodes", _wrap_Lattice_begin_nodes},
+{"MeCabc::Lattice_sentence", _wrap_Lattice_sentence},
+{"MeCabc::Lattice_set_sentence", _wrap_Lattice_set_sentence},
+{"MeCabc::Lattice_size", _wrap_Lattice_size},
+{"MeCabc::Lattice_len", _wrap_Lattice_len},
+{"MeCabc::Lattice_set_Z", _wrap_Lattice_set_Z},
+{"MeCabc::Lattice_Z", _wrap_Lattice_Z},
+{"MeCabc::Lattice_theta", _wrap_Lattice_theta},
+{"MeCabc::Lattice_set_theta", _wrap_Lattice_set_theta},
+{"MeCabc::Lattice_next", _wrap_Lattice_next},
+{"MeCabc::Lattice_request_type", _wrap_Lattice_request_type},
+{"MeCabc::Lattice_has_request_type", _wrap_Lattice_has_request_type},
+{"MeCabc::Lattice_set_request_type", _wrap_Lattice_set_request_type},
+{"MeCabc::Lattice_add_request_type", _wrap_Lattice_add_request_type},
+{"MeCabc::Lattice_remove_request_type", _wrap_Lattice_remove_request_type},
+{"MeCabc::Lattice_toString", _wrap_Lattice_toString},
+{"MeCabc::Lattice_enumNBestAsString", _wrap_Lattice_enumNBestAsString},
+{"MeCabc::Lattice_what", _wrap_Lattice_what},
+{"MeCabc::Lattice_set_what", _wrap_Lattice_set_what},
+{"MeCabc::Lattice_create", _wrap_Lattice_create},
+{"MeCabc::delete_Lattice", _wrap_delete_Lattice},
+{"MeCabc::new_Lattice", _wrap_new_Lattice},
+{"MeCabc::Model_open", _wrap_Model_open},
+{"MeCabc::Model_is_available", _wrap_Model_is_available},
+{"MeCabc::Model_dictionary_info", _wrap_Model_dictionary_info},
+{"MeCabc::Model_createTagger", _wrap_Model_createTagger},
+{"MeCabc::Model_createLattice", _wrap_Model_createLattice},
+{"MeCabc::Model_what", _wrap_Model_what},
+{"MeCabc::Model_version", _wrap_Model_version},
+{"MeCabc::delete_Model", _wrap_delete_Model},
+{"MeCabc::Model_create", _wrap_Model_create},
+{"MeCabc::new_Model", _wrap_new_Model},
 {"MeCabc::Tagger_parse", _wrap_Tagger_parse},
 {"MeCabc::Tagger_parseToNode", _wrap_Tagger_parseToNode},
 {"MeCabc::Tagger_parseNBest", _wrap_Tagger_parseNBest},
@@ -4896,14 +7449,16 @@ static swig_command_info swig_commands[] = {
 {"MeCabc::Tagger_nextNode", _wrap_Tagger_nextNode},
 {"MeCabc::Tagger_next", _wrap_Tagger_next},
 {"MeCabc::Tagger_formatNode", _wrap_Tagger_formatNode},
+{"MeCabc::Tagger_set_request_type", _wrap_Tagger_set_request_type},
+{"MeCabc::Tagger_request_type", _wrap_Tagger_request_type},
 {"MeCabc::Tagger_partial", _wrap_Tagger_partial},
 {"MeCabc::Tagger_set_partial", _wrap_Tagger_set_partial},
-{"MeCabc::Tagger_theta", _wrap_Tagger_theta},
-{"MeCabc::Tagger_set_theta", _wrap_Tagger_set_theta},
 {"MeCabc::Tagger_lattice_level", _wrap_Tagger_lattice_level},
 {"MeCabc::Tagger_set_lattice_level", _wrap_Tagger_set_lattice_level},
 {"MeCabc::Tagger_all_morphs", _wrap_Tagger_all_morphs},
 {"MeCabc::Tagger_set_all_morphs", _wrap_Tagger_set_all_morphs},
+{"MeCabc::Tagger_theta", _wrap_Tagger_theta},
+{"MeCabc::Tagger_set_theta", _wrap_Tagger_set_theta},
 {"MeCabc::Tagger_dictionary_info", _wrap_Tagger_dictionary_info},
 {"MeCabc::Tagger_what", _wrap_Tagger_what},
 {"MeCabc::delete_Tagger", _wrap_delete_Tagger},
@@ -5209,50 +7764,87 @@ XS(SWIG_init) {
   SWIG_TypeClientData(SWIGTYPE_p_mecab_path_t, (void*) "MeCab::Path");
   SWIG_TypeClientData(SWIGTYPE_p_mecab_token_t, (void*) "MeCab::Token");
   SWIG_TypeClientData(SWIGTYPE_p_mecab_node_t, (void*) "MeCab::Node");
-  /*@SWIG:/usr/local/share/swig/1.3.40/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "MECAB_NOR_NODE", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((0))));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/usr/local/share/swig/1.3.40/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "MECAB_UNK_NODE", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((1))));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/usr/local/share/swig/1.3.40/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "MECAB_BOS_NODE", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((2))));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/usr/local/share/swig/1.3.40/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "MECAB_EOS_NODE", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((3))));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/usr/local/share/swig/1.3.40/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "MECAB_EON_NODE", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((4))));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/usr/local/share/swig/1.3.40/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "MECAB_USR_DIC", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((1))));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/usr/local/share/swig/1.3.40/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "MECAB_SYS_DIC", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((0))));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
-  /*@SWIG:/usr/local/share/swig/1.3.40/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "MECAB_UNK_DIC", TRUE | 0x2 | GV_ADDMULTI);
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((2))));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "MECAB_ONE_BEST", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((1))));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "MECAB_NBEST", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((2))));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "MECAB_PARTIAL", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((4))));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "MECAB_MARGINAL_PROB", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((8))));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "MECAB_ALTERNATIVE", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((16))));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "MECAB_ALL_MORPHS", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((32))));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "MECAB_ALLOCATE_SENTENCE", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >((64))));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  SWIG_TypeClientData(SWIGTYPE_p_MeCab__Lattice, (void*) "MeCab::Lattice");
+  SWIG_TypeClientData(SWIGTYPE_p_MeCab__Model, (void*) "MeCab::Model");
   SWIG_TypeClientData(SWIGTYPE_p_MeCab__Tagger, (void*) "MeCab::Tagger");
-  /*@SWIG:/usr/local/share/swig/1.3.40/perl5/perltypemaps.swg,65,%set_constant@*/ do {
+  /*@SWIG:/usr/share/swig1.3/perl5/perltypemaps.swg,65,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "VERSION", TRUE | 0x2 | GV_ADDMULTI);
-    sv_setsv(sv, SWIG_FromCharPtr("0.98"));
+    sv_setsv(sv, SWIG_FromCharPtr("0.99pre1"));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
   ST(0) = &PL_sv_yes;

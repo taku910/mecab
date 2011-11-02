@@ -1,6 +1,5 @@
 // MeCab -- Yet Another Part-of-Speech and Morphological Analyzer
 //
-//  $Id: tagger.cpp 173 2009-04-18 08:10:57Z taku-ku $;
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
@@ -370,10 +369,12 @@ bool ModelImpl::open(const Param &param) {
 
 Tagger *ModelImpl::createTagger() const {
   if (!is_available()) {
+    setGlobalError("Model is not available");
     return 0;
   }
   TaggerImpl *tagger = new TaggerImpl;
   if (!tagger->open(*this)) {
+    setGlobalError(tagger->what());
     delete tagger;
     return 0;
   }
@@ -384,6 +385,7 @@ Tagger *ModelImpl::createTagger() const {
 
 Lattice *ModelImpl::createLattice() const {
   if (!is_available()) {
+    setGlobalError("Model is not available");
     return 0;
   }
   return new LatticeImpl(writer_.get());
@@ -868,6 +870,10 @@ void deleteTagger(Tagger *tagger) {
 }
 
 const char *getTaggerError() {
+  return getLastError();
+}
+
+const char *getLastError() {
   return getGlobalError();
 }
 

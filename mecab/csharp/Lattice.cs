@@ -11,20 +11,20 @@ namespace MeCab {
 using System;
 using System.Runtime.InteropServices;
 
-public class Tagger : IDisposable {
+public class Lattice : IDisposable {
   private HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal Tagger(IntPtr cPtr, bool cMemoryOwn) {
+  internal Lattice(IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new HandleRef(this, cPtr);
   }
 
-  internal static HandleRef getCPtr(Tagger obj) {
+  internal static HandleRef getCPtr(Lattice obj) {
     return (obj == null) ? new HandleRef(null, IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~Tagger() {
+  ~Lattice() {
     Dispose();
   }
 
@@ -33,7 +33,7 @@ public class Tagger : IDisposable {
       if (swigCPtr.Handle != IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          MeCabPINVOKE.delete_Tagger(swigCPtr);
+          MeCabPINVOKE.delete_Lattice(swigCPtr);
         }
         swigCPtr = new HandleRef(null, IntPtr.Zero);
       }
@@ -41,180 +41,166 @@ public class Tagger : IDisposable {
     }
   }
 
-  public static bool parse(Model model, Lattice lattice) {
-    bool ret = MeCabPINVOKE.Tagger_parse__SWIG_0(Model.getCPtr(model), Lattice.getCPtr(lattice));
+  public virtual void clear() {
+    MeCabPINVOKE.Lattice_clear(swigCPtr);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public virtual bool is_available() {
+    bool ret = MeCabPINVOKE.Lattice_is_available(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public virtual bool parse(Lattice lattice) {
-    bool ret = MeCabPINVOKE.Tagger_parse__SWIG_1(swigCPtr, Lattice.getCPtr(lattice));
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public virtual bool parse(string str, Lattice lattice) {
-    bool ret = MeCabPINVOKE.Tagger_parse__SWIG_2(swigCPtr, str, Lattice.getCPtr(lattice));
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public virtual bool parse(string str, uint len, Lattice lattice) {
-    bool ret = MeCabPINVOKE.Tagger_parse__SWIG_3(swigCPtr, str, len, Lattice.getCPtr(lattice));
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public virtual string parse(string str) {
-    string ret = MeCabPINVOKE.Tagger_parse__SWIG_4(swigCPtr, str);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public virtual Node parseToNode(string str) {
-    IntPtr cPtr = MeCabPINVOKE.Tagger_parseToNode(swigCPtr, str);
+  public virtual Node bos_node() {
+    IntPtr cPtr = MeCabPINVOKE.Lattice_bos_node(swigCPtr);
     Node ret = (cPtr == IntPtr.Zero) ? null : new Node(cPtr, false);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public virtual string parseNBest(uint N, string str) {
-    string ret = MeCabPINVOKE.Tagger_parseNBest(swigCPtr, N, str);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public virtual bool parseNBestInit(string str) {
-    bool ret = MeCabPINVOKE.Tagger_parseNBestInit(swigCPtr, str);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public virtual Node nextNode() {
-    IntPtr cPtr = MeCabPINVOKE.Tagger_nextNode(swigCPtr);
+  public virtual Node eos_node() {
+    IntPtr cPtr = MeCabPINVOKE.Lattice_eos_node(swigCPtr);
     Node ret = (cPtr == IntPtr.Zero) ? null : new Node(cPtr, false);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public virtual string next() {
-    string ret = MeCabPINVOKE.Tagger_next(swigCPtr);
+  public virtual Node end_nodes(uint pos) {
+    IntPtr cPtr = MeCabPINVOKE.Lattice_end_nodes(swigCPtr, pos);
+    Node ret = (cPtr == IntPtr.Zero) ? null : new Node(cPtr, false);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public virtual string formatNode(Node node) {
-    string ret = MeCabPINVOKE.Tagger_formatNode(swigCPtr, Node.getCPtr(node));
+  public virtual Node begin_nodes(uint pos) {
+    IntPtr cPtr = MeCabPINVOKE.Lattice_begin_nodes(swigCPtr, pos);
+    Node ret = (cPtr == IntPtr.Zero) ? null : new Node(cPtr, false);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public virtual void set_request_type(int request_type) {
-    MeCabPINVOKE.Tagger_set_request_type(swigCPtr, request_type);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public virtual int request_type() {
-    int ret = MeCabPINVOKE.Tagger_request_type(swigCPtr);
+  public virtual string sentence() {
+    string ret = MeCabPINVOKE.Lattice_sentence(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public virtual bool partial() {
-    bool ret = MeCabPINVOKE.Tagger_partial(swigCPtr);
+  public virtual void set_sentence(string sentence) {
+    MeCabPINVOKE.Lattice_set_sentence__SWIG_0(swigCPtr, sentence);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public virtual void set_sentence(string sentence, uint len) {
+    MeCabPINVOKE.Lattice_set_sentence__SWIG_1(swigCPtr, sentence, len);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public virtual uint size() {
+    uint ret = MeCabPINVOKE.Lattice_size(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public virtual void set_partial(bool partial) {
-    MeCabPINVOKE.Tagger_set_partial(swigCPtr, partial);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public virtual int lattice_level() {
-    int ret = MeCabPINVOKE.Tagger_lattice_level(swigCPtr);
+  public virtual uint len() {
+    uint ret = MeCabPINVOKE.Lattice_len(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public virtual void set_lattice_level(int level) {
-    MeCabPINVOKE.Tagger_set_lattice_level(swigCPtr, level);
+  public virtual void set_Z(double Z) {
+    MeCabPINVOKE.Lattice_set_Z(swigCPtr, Z);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public virtual bool all_morphs() {
-    bool ret = MeCabPINVOKE.Tagger_all_morphs(swigCPtr);
+  public virtual double Z() {
+    double ret = MeCabPINVOKE.Lattice_Z(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
-  }
-
-  public virtual void set_all_morphs(bool all_morphs) {
-    MeCabPINVOKE.Tagger_set_all_morphs(swigCPtr, all_morphs);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public virtual float theta() {
-    float ret = MeCabPINVOKE.Tagger_theta(swigCPtr);
+    float ret = MeCabPINVOKE.Lattice_theta(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public virtual void set_theta(float theta) {
-    MeCabPINVOKE.Tagger_set_theta(swigCPtr, theta);
+    MeCabPINVOKE.Lattice_set_theta(swigCPtr, theta);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public virtual DictionaryInfo dictionary_info() {
-    IntPtr cPtr = MeCabPINVOKE.Tagger_dictionary_info(swigCPtr);
-    DictionaryInfo ret = (cPtr == IntPtr.Zero) ? null : new DictionaryInfo(cPtr, false);
+  public virtual bool next() {
+    bool ret = MeCabPINVOKE.Lattice_next(swigCPtr);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual int request_type() {
+    int ret = MeCabPINVOKE.Lattice_request_type(swigCPtr);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool has_request_type(int request_type) {
+    bool ret = MeCabPINVOKE.Lattice_has_request_type(swigCPtr, request_type);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual void set_request_type(int request_type) {
+    MeCabPINVOKE.Lattice_set_request_type(swigCPtr, request_type);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public virtual void add_request_type(int request_type) {
+    MeCabPINVOKE.Lattice_add_request_type(swigCPtr, request_type);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public virtual void remove_request_type(int request_type) {
+    MeCabPINVOKE.Lattice_remove_request_type(swigCPtr, request_type);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public virtual string toString() {
+    string ret = MeCabPINVOKE.Lattice_toString__SWIG_0(swigCPtr);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual string toString(Node node) {
+    string ret = MeCabPINVOKE.Lattice_toString__SWIG_1(swigCPtr, Node.getCPtr(node));
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual string enumNBestAsString(uint N) {
+    string ret = MeCabPINVOKE.Lattice_enumNBestAsString(swigCPtr, N);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public virtual string what() {
-    string ret = MeCabPINVOKE.Tagger_what(swigCPtr);
+    string ret = MeCabPINVOKE.Lattice_what(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public static Tagger create(int argc, SWIGTYPE_p_p_char argv) {
-    IntPtr cPtr = MeCabPINVOKE.Tagger_create__SWIG_0(argc, SWIGTYPE_p_p_char.getCPtr(argv));
-    Tagger ret = (cPtr == IntPtr.Zero) ? null : new Tagger(cPtr, false);
+  public virtual void set_what(string str) {
+    MeCabPINVOKE.Lattice_set_what(swigCPtr, str);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public static Lattice create() {
+    IntPtr cPtr = MeCabPINVOKE.Lattice_create();
+    Lattice ret = (cPtr == IntPtr.Zero) ? null : new Lattice(cPtr, false);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public static Tagger create(string arg) {
-    IntPtr cPtr = MeCabPINVOKE.Tagger_create__SWIG_1(arg);
-    Tagger ret = (cPtr == IntPtr.Zero) ? null : new Tagger(cPtr, false);
+  public Lattice() : this(MeCabPINVOKE.new_Lattice(), true) {
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public static string version() {
-    string ret = MeCabPINVOKE.Tagger_version();
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public Tagger(string argc) : this(MeCabPINVOKE.new_Tagger__SWIG_0(argc), true) {
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public Tagger() : this(MeCabPINVOKE.new_Tagger__SWIG_1(), true) {
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public string parseToString(string str, uint length) {
-    string ret = MeCabPINVOKE.Tagger_parseToString__SWIG_0(swigCPtr, str, length);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public string parseToString(string str) {
-    string ret = MeCabPINVOKE.Tagger_parseToString__SWIG_1(swigCPtr, str);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
   }
 
 }

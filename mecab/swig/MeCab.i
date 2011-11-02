@@ -18,11 +18,15 @@
 %rename(DictionaryInfo) mecab_dictionary_info_t;
 %ignore    mecab_learner_node_t;
 %ignore    mecab_learner_path_t;
+%ignore    mecab_model_t;
+%ignore    mecab_lattice_t;
 %nodefault mecab_path_t;
 %nodefault mecab_node_t;
 %nodefault mecab_token_t;
 
 %feature("notabstract") MeCab::Tagger;
+%feature("notabstract") MeCab::Lattice;
+%feature("notabstract") MeCab::Model;
 
 %immutable mecab_dictionary_info_t::filename;
 %immutable mecab_dictionary_info_t::charset;
@@ -67,31 +71,18 @@
 %immutable mecab_node_t::wcost;
 %immutable mecab_node_t::cost;
 %immutable mecab_node_t::surface;
-%immutable mecab_node_t::begin_node_list;
-%immutable mecab_node_t::end_node_list;
-%immutable mecab_node_t::sentence_length;
 %immutable mecab_node_t::token;
 %ignore MeCab::createTagger;
+%ignore MeCab::createLattice;
+%ignore MeCab::createModel;
+%ignore MeCab::deleteTagger;
+%ignore MeCab::deleteModel;
+%ignore MeCab::deleteLattice;
 %ignore MeCab::getTaggerError;
+%ignore MeCab::getLastError;
 
 %extend mecab_node_t {
   char *surface;
-  const mecab_node_t *begin_node_list(size_t i) {
-     if (self->stat != MECAB_BOS_NODE)
-       throw "begin_node_list is available in BOS node";
-     if (self->sentence_length < i)
-       throw "index is out of range";
-     if (!self->begin_node_list) return 0;
-     return self->begin_node_list[i];
-  }
-  const mecab_node_t *end_node_list(size_t i) {
-     if (self->stat != MECAB_BOS_NODE)
-       throw "end_node_list is available in BOS node";
-     if (self->sentence_length  < i)
-       throw "index is out of range";
-     if (!self->end_node_list) return 0;
-     return self->end_node_list[i];
-  }
 }
 
 %extend MeCab::Tagger {
@@ -102,12 +93,16 @@
    }
 }
 
-%{
-
-void delete_MeCab_Tagger (MeCab::Tagger *t) {
-  delete t;
-  t = 0;
+%extend MeCab::Model {
+   Model(const char *argc);
+   Model();
 }
+
+%extend MeCab::Lattice {
+  Lattice();
+}
+
+%{
 
 MeCab::Tagger* new_MeCab_Tagger (const char *arg) {
   char *p = new char [strlen(arg) + 4];
@@ -115,14 +110,51 @@ MeCab::Tagger* new_MeCab_Tagger (const char *arg) {
   strcat(p, arg);
   MeCab::Tagger *tagger = MeCab::createTagger(p);
   delete [] p;
-  if (! tagger) throw MeCab::getTaggerError();
+  if (! tagger) throw MeCab::getLastError();
   return tagger;
 }
 
 MeCab::Tagger* new_MeCab_Tagger () {
   MeCab::Tagger *tagger = MeCab::createTagger("-C");
-  if (! tagger) throw MeCab::getTaggerError();
+  if (! tagger) throw MeCab::getLastError();
   return tagger;
+}
+
+void delete_MeCab_Tagger (MeCab::Tagger *t) {
+  delete t;
+  t = 0;
+}
+
+MeCab::Model* new_MeCab_Model (const char *arg) {
+  char *p = new char [strlen(arg) + 4];
+  strcpy(p, "-C ");
+  strcat(p, arg);
+  MeCab::Model *model = MeCab::createModel(p);
+  delete [] p;
+  if (! model) throw MeCab::getLastError();
+  return model;
+}
+
+MeCab::Model* new_MeCab_Model () {
+  MeCab::Model *model = MeCab::createModel("-C");
+  if (! model) throw MeCab::getLastError();
+  return model;
+}
+
+void delete_MeCab_Model (MeCab::Model *t) {
+  delete t;
+  t = 0;
+}
+
+MeCab::Lattice* new_MeCab_Lattice () {
+  MeCab::Lattice *lattice = MeCab::createLattice();
+  lattice->set_request_type(MECAB_ALLOCATE_SENTENCE);
+  return lattice;
+}
+
+void delete_MeCab_Lattice (MeCab::Lattice *t) {
+  delete t;
+  t = 0;
 }
 
 char* mecab_node_t_surface_get(mecab_node_t *n) {
@@ -131,7 +163,6 @@ char* mecab_node_t_surface_get(mecab_node_t *n) {
   s[n->length] = '\0';
   return s;
 }
-
 %}
 
 %include ../src/mecab.h

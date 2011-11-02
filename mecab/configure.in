@@ -48,20 +48,10 @@ AC_FUNC_MMAP
 AC_CHECK_LIB(stdc++, main, MECAB_LIBS="-lstdc++")
 AC_CHECK_LIB(pthread,pthread_create)
 AC_CHECK_LIB(pthread,pthread_join)
-AC_CHECK_LIB(pthread,pthread_mutex_lock)
 AC_CHECK_LIB(iconv,iconv_open)
 AC_CHECK_FUNCS(getenv)
 AC_CHECK_FUNCS(opendir)
 AC_LANG(C++)
-
-AC_ARG_ENABLE(mutex,
-[  --disable-mutex            trun off mutex lock [default no]])
-if test "$enable_mutex" = "no"; then
-MECAB_NO_MUTEX_LOCK="-DMECAB_NO_MUTEX_LOCK"
-else
-MECAB_NO_MUTEX_LOCK=""
-MECAB_LIBS="$MECAB_LIBS $PTHREAD_LIB"
-fi
 
 AC_ARG_ENABLE(utf8-only,
 [  --enable-utf8-only            use utf8 only [default no]])
@@ -73,7 +63,6 @@ fi
 
 LIBS="$LIBS $MECAB_LIBS"
 AC_SUBST(MECAB_LIBS)
-AC_SUBST(MECAB_NO_MUTEX_LOCK)
 AC_SUBST(MECAB_USE_UTF8_ONLY)
 
 MECAB_LIBEXEC_DIR="$libexecdir/mecab"
@@ -238,6 +227,8 @@ __thread int a = 0;
 AC_MSG_RESULT([$enable_tls])
 
 if test "$enable_tls" = "no"; then
+AC_MSG_WARN([__thread keyword is not supported on this environment. \
+Error handling of MeCab, e.g., MeCab::getLastError(), is not thread safe.])
 MECAB_NO_TLS="-DMECAB_NO_TLS"
 else
 MECAB_NO_TLS=""

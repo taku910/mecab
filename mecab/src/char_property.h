@@ -1,7 +1,5 @@
 //  MeCab -- Yet Another Part-of-Speech and Morphological Analyzer
 //
-//  $Id: char_property.h 174 2009-05-30 10:15:18Z taku-ku $;
-//
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 #ifndef MECAB_CHARACTER_CATEGORY_H_

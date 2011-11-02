@@ -2,7 +2,7 @@ AUTOMAKE_OPTIONS = no-dependencies
 lib_LTLIBRARIES = libmecab.la
 EXTRA_DIST = Makefile.msvc.in make.bat
 pkglibexecdir = ${libexecdir}/mecab
-INCLUDES = -DDIC_VERSION=$(DIC_VERSION) $(MECAB_NO_TLS) $(MECAB_NO_MUTEX_LOCK) $(MECAB_USE_UTF8_ONLY) -DMECAB_DEFAULT_RC="\"$(MECAB_DEFAULT_RC)\""
+INCLUDES = -DDIC_VERSION=$(DIC_VERSION) $(MECAB_NO_TLS) $(MECAB_USE_UTF8_ONLY) -DMECAB_DEFAULT_RC="\"$(MECAB_DEFAULT_RC)\""
 libmecab_la_LDFLAGS = -no-undefined -version-info $(LTVERSION)
 libmecab_la_SOURCES = viterbi.cpp tagger.cpp  utils.cpp utils.h eval.cpp iconv_utils.cpp iconv_utils.h \
                       dictionary_rewriter.h dictionary_rewriter.cpp dictionary_generator.cpp \
@@ -12,7 +12,7 @@ libmecab_la_SOURCES = viterbi.cpp tagger.cpp  utils.cpp utils.h eval.cpp iconv_u
 	              string_buffer.h string_buffer.cpp viterbisub.h \
 		      tokenizer.h stream_wrapper.h common.h darts.h char_property.h ucstable.h \
 			freelist.h viterbi.h param.cpp tokenizer.cpp \
-			mutex.h ucstable.h char_property.cpp dictionary.h scoped_ptr.h \
+			ucstable.h char_property.cpp dictionary.h scoped_ptr.h \
 			param.h mecab.h dictionary.cpp \
 			feature_index.cpp  feature_index.h  lbfgs.cpp \
 			lbfgs.h  learner_tagger.cpp  learner_tagger.h  learner.cpp  \

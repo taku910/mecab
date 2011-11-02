@@ -2,7 +2,6 @@
 //
 //  MeCab -- Yet Another Part-of-Speech and Morphological Analyzer
 //
-//  $Id: libmecab.cpp 173 2009-04-18 08:10:57Z taku-ku $;
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
@@ -11,7 +10,6 @@
 #endif
 
 #include "mecab.h"
-#include "mutex.h"
 #include "tokenizer.h"
 #include "utils.h"
 
@@ -105,8 +103,7 @@ void setGlobalError(const char *str) {
 mecab_t* mecab_new(int argc, char **argv) {
   MeCab::Tagger *tagger = MeCab::createTagger(argc, argv);
   if (!tagger) {
-    MeCab::deleteTagger(tagger);
-    setGlobalError(MeCab::getTaggerError());
+    MeCab::deleteTagger(tagger);     
     return 0;
   }
   return reinterpret_cast<mecab_t *>(tagger);
@@ -116,7 +113,6 @@ mecab_t* mecab_new2(const char *arg) {
   MeCab::Tagger *tagger = MeCab::createTagger(arg);
   if (!tagger) {
     MeCab::deleteTagger(tagger);
-    setGlobalError(MeCab::getTaggerError());
     return 0;
   }
   return reinterpret_cast<mecab_t *>(tagger);
@@ -370,7 +366,6 @@ mecab_model_t *mecab_model_new(int argc, char **argv) {
   MeCab::Model *model = MeCab::createModel(argc, argv);
   if (!model) {
     MeCab::deleteModel(model);
-    setGlobalError(MeCab::getTaggerError());
     return 0;
   }
   return reinterpret_cast<mecab_model_t *>(model);
@@ -380,7 +375,6 @@ mecab_model_t *mecab_model_new2(const char *arg) {
   MeCab::Model *model = MeCab::createModel(arg);
   if (!model) {
     MeCab::deleteModel(model);
-    setGlobalError(MeCab::getTaggerError());
     return 0;
   }
   return reinterpret_cast<mecab_model_t *>(model);
