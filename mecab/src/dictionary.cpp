@@ -27,7 +27,8 @@ int progress_bar_darts(size_t current, size_t total) {
 bool Dictionary::open(const char *file, const char *mode) {
   close();
   filename_.assign(file);
-  CHECK_FALSE(dmmap_->open(file, mode)) << "no such file or directory: " << file;
+  CHECK_FALSE(dmmap_->open(file, mode))
+      << "no such file or directory: " << file;
 
   CHECK_FALSE(dmmap_->size() >= 100)
       << "dictionary file is broken: " << file;

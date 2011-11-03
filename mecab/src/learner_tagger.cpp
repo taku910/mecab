@@ -386,7 +386,7 @@ double EncoderLearnerTagger::gradient(double *expected) {
   viterbi();
 
   for (int pos = 0;   pos <= static_cast<long>(len_);  ++pos) {
-    for (LearnerNode *node = begin_node_list_[pos]; node; node = node->bnext){
+    for (LearnerNode *node = begin_node_list_[pos]; node; node = node->bnext) {
       calc_alpha(node);
     }
   }

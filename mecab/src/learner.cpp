@@ -543,8 +543,7 @@ class CRFLearner {
           for (size_t k = 0; k < psize; ++k)
             expected[k] += thread[i].expected[k];
         }
-      }
-      else
+      } else
 #endif
       {
         for (size_t i = 0; i < x.size(); ++i) {

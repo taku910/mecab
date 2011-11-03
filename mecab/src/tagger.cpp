@@ -36,9 +36,12 @@ const MeCab::Option long_options[] = {
   { "output-format-type", 'O',  0, "TYPE",
     "set output format type (wakati,none,...)" },
   { "all-morphs",      'a', 0, 0,    "output all morphs(default false)" },
-  { "nbest",              'N', "1",    "INT", "output N best results (default 1)" },
-  { "partial",            'p',  0, 0,      "partial parsing mode (default false)" },
-  { "marginal",           'm',  0, 0,      "output marginal probability (default false)" },
+  { "nbest",              'N', "1",
+    "INT", "output N best results (default 1)" },
+  { "partial",            'p',  0, 0,
+    "partial parsing mode (default false)" },
+  { "marginal",           'm',  0, 0,
+    "output marginal probability (default false)" },
   { "node-format",        'F',  "%m\\t%H\\n", "STR",
     "use STR as the user-defined node format" },
   { "unk-format",        'U',  "%m\\t%H\\n", "STR",
@@ -135,7 +138,8 @@ class TaggerImpl: public Tagger {
 
   bool                  parse(Lattice *lattice) const;
   bool                  parse(const char *str, Lattice *lattice) const;
-  bool                  parse(const char *str, size_t len, Lattice *lattice) const;
+  bool                  parse(const char *str, size_t len,
+                              Lattice *lattice) const;
 
   void                  set_request_type(int request_type);
   int                   request_type() const;
@@ -340,7 +344,8 @@ bool ModelImpl::open(const Param &param) {
   viterbi_.reset(new Viterbi);
   writer_.reset(new Writer);
 
-  if (!tokenizer_->open(param) || !connector_->open(param) || !writer_->open(param) ||
+  if (!tokenizer_->open(param) || !connector_->open(param) ||
+      !writer_->open(param) ||
       !viterbi_->open(param, tokenizer_.get(), connector_.get())) {
     std::string error = tokenizer_->what();
     if (!error.empty()) {
@@ -667,7 +672,7 @@ char *LatticeImpl::alloc(size_t size) {
 char *LatticeImpl::strdup(const char *str) {
   const size_t size = std::strlen(str);
   char *n = alloc(size + 1);
-  std::strcpy(n, str);
+  std::strncpy(n, str, size + 1);
   return n;
 }
 

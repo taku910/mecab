@@ -480,12 +480,12 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
 
   std::vector<char *> key;
   unsigned int size = static_cast<unsigned int>(dic.size());
-  ofs.write(reinterpret_cast<const char*>(&size), sizeof(unsigned int));
+  ofs.write(reinterpret_cast<const char*>(&size), sizeof(size));
 
   for (std::map<std::string, double>::const_iterator
            it = dic.begin(); it != dic.end(); ++it) {
     key.push_back(const_cast<char*>(it->first.c_str()));
-    ofs.write(reinterpret_cast<const char*>(&it->second), sizeof(double));
+    ofs.write(reinterpret_cast<const char*>(&it->second), sizeof(it->second));
   }
 
   Darts::DoubleArray da;

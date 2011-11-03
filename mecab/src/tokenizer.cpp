@@ -48,16 +48,23 @@ template const DictionaryInfo
 *Tokenizer<Node, Path>::dictionary_info() const;
 template Node* Tokenizer<Node, Path>::getBOSNode(Allocator<Node, Path> *) const;
 template Node* Tokenizer<Node, Path>::getEOSNode(Allocator<Node, Path> *) const;
-template Node* Tokenizer<Node, Path>::lookup(const char*, const char*, Allocator<Node, Path> *) const;
+template Node* Tokenizer<Node, Path>::lookup(const char*,
+                                             const char*,
+                                             Allocator<Node, Path> *) const;
 template bool Tokenizer<Node, Path>::open(const Param &);
 template Tokenizer<LearnerNode, LearnerPath>::Tokenizer();
 template void Tokenizer<LearnerNode, LearnerPath>::close();
 template const DictionaryInfo
 *Tokenizer<LearnerNode, LearnerPath>::dictionary_info() const;
-template LearnerNode* Tokenizer<LearnerNode, LearnerPath>::getEOSNode(Allocator<LearnerNode, LearnerPath> *) const;
-template LearnerNode* Tokenizer<LearnerNode, LearnerPath>::getBOSNode(Allocator<LearnerNode, LearnerPath> *) const;
+template LearnerNode* Tokenizer<LearnerNode, LearnerPath>::getEOSNode(
+    Allocator<LearnerNode, LearnerPath> *) const;
+template LearnerNode* Tokenizer<LearnerNode, LearnerPath>::getBOSNode(
+    Allocator<LearnerNode, LearnerPath> *) const;
 template LearnerNode*
-Tokenizer<LearnerNode, LearnerPath>::lookup(const char*, const char*, Allocator<LearnerNode, LearnerPath> *) const;
+Tokenizer<LearnerNode, LearnerPath>::lookup(
+    const char*,
+    const char*,
+    Allocator<LearnerNode, LearnerPath> *) const;
 template bool Tokenizer<LearnerNode, LearnerPath>::open(const Param &);
 #endif
 
