@@ -47,7 +47,7 @@ bool partial_match(const char *f1, const char *f2) {
 
   const size_t n1 = MeCab::tokenizeCSV(buf1, c1, sizeof(c1));
   const size_t n2 = MeCab::tokenizeCSV(buf2, c2, sizeof(c2));
-  const size_t n  = _min(n1, n2);
+  const size_t n  = std::min(n1, n2);
 
   for (size_t i = 0; i < n; ++i) {
     if (std::strcmp(c1[i], "*") != 0 &&

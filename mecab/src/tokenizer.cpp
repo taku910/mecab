@@ -214,9 +214,10 @@ N *Tokenizer<N, P>::lookup(const char *begin, const char *end,
 
   for (std::vector<Dictionary *>::const_iterator it = dic_.begin();
        it != dic_.end(); ++it) {
-    const size_t n = (*it)->commonPrefixSearch(begin2,
-                                               static_cast<size_t>(end - begin2),
-                                               daresults, results_size);
+    const size_t n = (*it)->commonPrefixSearch(
+        begin2,
+        static_cast<size_t>(end - begin2),
+        daresults, results_size);
 
     for (size_t i = 0; i < n; ++i) {
       size_t size = (*it)->token_size(daresults[i]);

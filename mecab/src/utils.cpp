@@ -27,10 +27,10 @@
 extern HINSTANCE DllInstance;
 #endif
 
-#include "mecab.h"
 #include "common.h"
-#include "utils.h"
+#include "mecab.h"
 #include "param.h"
+#include "utils.h"
 
 namespace MeCab {
 
@@ -73,7 +73,6 @@ std::string WideToUtf8(const std::wstring &input) {
 #endif
 
 int decode_charset(const char *charset) {
-
   std::string tmp = charset;
   toLower(&tmp);
   if (tmp == "sjis"  || tmp == "shift-jis" ||
@@ -354,7 +353,8 @@ bool load_dictionary_resource(Param *param) {
       wchar_t drive[_MAX_DRIVE];
       wchar_t dir[_MAX_DIR];
       _wsplitpath(v, drive, dir, NULL, NULL);
-      const std::wstring path = std::wstring(drive) + std::wstring(dir) + L"mecabrc";
+      const std::wstring path =
+          std::wstring(drive) + std::wstring(dir) + L"mecabrc";
       if (::GetFileAttributesW(path.c_str()) != -1) {
         rcfile = WideToUtf8(path);
       }

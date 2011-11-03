@@ -25,7 +25,7 @@ short int tocost(double d, int n, int default_cost) {
   if (d == 0.0) return default_cost;
   static const short max = +32767;
   static const short min = -32767;
-  return static_cast<short>(_max(_min(
+  return static_cast<short>(std::max(std::min(
                                      -n * d,
                                      static_cast<double>(max)),
                                  static_cast<double>(min)) );

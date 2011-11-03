@@ -126,7 +126,8 @@ bool Writer::writeLattice(Lattice *lattice, StringBuffer *os) const {
 }
 
 bool Writer::writeWakati(Lattice *lattice, StringBuffer *os) const {
-  for (const Node *node = lattice->bos_node()->next; node->next; node = node->next) {
+  for (const Node *node = lattice->bos_node()->next;
+       node->next; node = node->next) {
     os->write(node->surface, node->length);
     *os << ' ';
   }
@@ -282,7 +283,8 @@ bool Writer::writeNode(Lattice *lattice,
                                   node->rlength - node->length);
                 break;  // space
                 // start position
-              case 's': *os << static_cast<int>(node->surface - lattice->sentence());
+              case 's': *os << static_cast<int>(
+                  node->surface - lattice->sentence());
                 break;
                 // end position
               case 'e': *os << static_cast<int>

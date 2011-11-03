@@ -103,7 +103,7 @@ void setGlobalError(const char *str) {
 mecab_t* mecab_new(int argc, char **argv) {
   MeCab::Tagger *tagger = MeCab::createTagger(argc, argv);
   if (!tagger) {
-    MeCab::deleteTagger(tagger);     
+    MeCab::deleteTagger(tagger);
     return 0;
   }
   return reinterpret_cast<mecab_t *>(tagger);

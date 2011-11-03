@@ -1017,8 +1017,8 @@ int mecab_do(int argc, char **argv) {
     rest.push_back("-");
   }
 
-  size_t ibufsize = MeCab::_min(MAX_INPUT_BUFFER_SIZE,
-                                MeCab::_max(param.get<int>
+  size_t ibufsize = std::min(MAX_INPUT_BUFFER_SIZE,
+			     std::max(param.get<int>
                                             ("input-buffer-size"),
                                             MIN_INPUT_BUFFER_SIZE));
 

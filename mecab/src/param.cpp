@@ -30,7 +30,7 @@ void init_param(std::string *help,
     size_t l = 1 + std::strlen(opts[i].name);
     if (opts[i].arg_description)
       l += (1 + std::strlen(opts[i].arg_description));
-    max = _max(l, max);
+    max = std::max(l, max);
   }
 
   for (size_t i = 0; opts[i].name; ++i) {

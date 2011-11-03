@@ -20,9 +20,6 @@
 
 namespace MeCab {
 
-template <class T> inline T _min(T x, T y) { return(x < y) ? x : y; }
-template <class T> inline T _max(T x, T y) { return(x > y) ? x : y; }
-
 class Param;
 
 enum { EUC_JP, CP932, UTF8, UTF16, UTF16LE, UTF16BE, ASCII };
@@ -192,8 +189,8 @@ inline double logsumexp(double x, double y, bool flg) {
 #define MINUS_LOG_EPSILON  50
 
   if (flg) return y;  // init mode
-  double vmin = _min(x, y);
-  double vmax = _max(x, y);
+  double vmin = std::min(x, y);
+  double vmax = std::max(x, y);
   if (vmax > vmin + MINUS_LOG_EPSILON) {
     return vmax;
   } else {

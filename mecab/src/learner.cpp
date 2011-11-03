@@ -348,7 +348,7 @@ class OLLearner {
 
         // Passive Aggressive I algorithm
         if (s > 0.0) {
-          const double diff = _max(0.0, 10 - margin) / s;
+          const double diff = std::max(0.0, 10 - margin) / s;
           if (diff > 0.0) {
             for (size_t k = 0; k < feature_index.size(); ++k) {
               alpha[k] += diff * (observed[k] - expected[k]);
