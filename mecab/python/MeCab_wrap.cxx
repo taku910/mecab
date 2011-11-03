@@ -147,6 +147,7 @@ template <typename T> T SwigValueInit() {
 
 /* Python.h has to appear first */
 #include <Python.h>
+#include <stddef.h>
 
 /* -----------------------------------------------------------------------------
  * swigrun.swg
@@ -2843,7 +2844,7 @@ void delete_MeCab_Model (MeCab::Model *t) {
 
 MeCab::Lattice* new_MeCab_Lattice () {
   MeCab::Lattice *lattice = MeCab::createLattice();
-  lattice->set_request_type(MECAB_ALLOCATE_SENTENCE);
+  lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
   return lattice;
 }
 
@@ -3264,6 +3265,16 @@ SWIG_AsVal_int (PyObject * obj, int *val)
   return res;
 }
 
+SWIGINTERN MeCab::Tagger *MeCab_Model_createTagger(MeCab::Model const *self){
+      MeCab::Tagger *tagger = self->createTagger();
+      tagger->set_request_type(MECAB_ALLOCATE_SENTENCE | MECAB_ONE_BEST);
+      return tagger;
+   }
+SWIGINTERN MeCab::Lattice *MeCab_Model_createLattice(MeCab::Model const *self){
+      MeCab::Lattice *lattice = self->createLattice();
+      lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
+      return lattice;
+   }
 
 SWIGINTERN int
 SWIG_AsVal_bool (PyObject *obj, bool *val)
@@ -5728,70 +5739,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Model_createTagger(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  MeCab::Tagger *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Model_createTagger",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_createTagger" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
-  }
-  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
-  {
-    try {
-      result = (MeCab::Tagger *)((MeCab::Model const *)arg1)->createTagger(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Model_createLattice(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  MeCab::Lattice *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Model_createLattice",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_createLattice" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
-  }
-  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
-  {
-    try {
-      result = (MeCab::Lattice *)((MeCab::Model const *)arg1)->createLattice(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_Model_what(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   MeCab::Model *arg1 = (MeCab::Model *) 0 ;
@@ -6082,6 +6029,70 @@ fail:
     "  Possible C/C++ prototypes are:\n"
     "    MeCab::Model(char const *)\n"
     "    MeCab::Model()\n");
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Model_createTagger(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  MeCab::Tagger *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Model_createTagger",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_createTagger" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+  {
+    try {
+      result = (MeCab::Tagger *)MeCab_Model_createTagger((MeCab::Model const *)arg1); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Model_createLattice(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  MeCab::Lattice *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Model_createLattice",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_createLattice" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+  {
+    try {
+      result = (MeCab::Lattice *)MeCab_Model_createLattice((MeCab::Model const *)arg1); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  return resultobj;
+fail:
   return NULL;
 }
 
@@ -7614,13 +7625,13 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Model_open", _wrap_Model_open, METH_VARARGS, NULL},
 	 { (char *)"Model_is_available", _wrap_Model_is_available, METH_VARARGS, NULL},
 	 { (char *)"Model_dictionary_info", _wrap_Model_dictionary_info, METH_VARARGS, NULL},
-	 { (char *)"Model_createTagger", _wrap_Model_createTagger, METH_VARARGS, NULL},
-	 { (char *)"Model_createLattice", _wrap_Model_createLattice, METH_VARARGS, NULL},
 	 { (char *)"Model_what", _wrap_Model_what, METH_VARARGS, NULL},
 	 { (char *)"Model_version", _wrap_Model_version, METH_VARARGS, NULL},
 	 { (char *)"delete_Model", _wrap_delete_Model, METH_VARARGS, NULL},
 	 { (char *)"Model_create", _wrap_Model_create, METH_VARARGS, NULL},
 	 { (char *)"new_Model", _wrap_new_Model, METH_VARARGS, NULL},
+	 { (char *)"Model_createTagger", _wrap_Model_createTagger, METH_VARARGS, NULL},
+	 { (char *)"Model_createLattice", _wrap_Model_createLattice, METH_VARARGS, NULL},
 	 { (char *)"Model_swigregister", Model_swigregister, METH_VARARGS, NULL},
 	 { (char *)"Tagger_parse", _wrap_Tagger_parse, METH_VARARGS, NULL},
 	 { (char *)"Tagger_parseToNode", _wrap_Tagger_parseToNode, METH_VARARGS, NULL},

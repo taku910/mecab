@@ -52,16 +52,6 @@ public class Model {
     return (cPtr == 0) ? null : new DictionaryInfo(cPtr, false);
   }
 
-  public Tagger createTagger() {
-    long cPtr = MeCabJNI.Model_createTagger(swigCPtr, this);
-    return (cPtr == 0) ? null : new Tagger(cPtr, false);
-  }
-
-  public Lattice createLattice() {
-    long cPtr = MeCabJNI.Model_createLattice(swigCPtr, this);
-    return (cPtr == 0) ? null : new Lattice(cPtr, false);
-  }
-
   public String what() {
     return MeCabJNI.Model_what(swigCPtr, this);
   }
@@ -86,6 +76,16 @@ public class Model {
 
   public Model() {
     this(MeCabJNI.new_Model__SWIG_1(), true);
+  }
+
+  public Tagger createTagger() {
+    long cPtr = MeCabJNI.Model_createTagger(swigCPtr, this);
+    return (cPtr == 0) ? null : new Tagger(cPtr, false);
+  }
+
+  public Lattice createLattice() {
+    long cPtr = MeCabJNI.Model_createLattice(swigCPtr, this);
+    return (cPtr == 0) ? null : new Lattice(cPtr, false);
   }
 
 }

@@ -470,12 +470,6 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_Model_dictionary_info")]
   public static extern IntPtr Model_dictionary_info(HandleRef jarg1);
 
-  [DllImport("MeCab", EntryPoint="CSharp_Model_createTagger")]
-  public static extern IntPtr Model_createTagger(HandleRef jarg1);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Model_createLattice")]
-  public static extern IntPtr Model_createLattice(HandleRef jarg1);
-
   [DllImport("MeCab", EntryPoint="CSharp_Model_what")]
   public static extern string Model_what(HandleRef jarg1);
 
@@ -496,6 +490,12 @@ class MeCabPINVOKE {
 
   [DllImport("MeCab", EntryPoint="CSharp_new_Model__SWIG_1")]
   public static extern IntPtr new_Model__SWIG_1();
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_createTagger")]
+  public static extern IntPtr Model_createTagger(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_createLattice")]
+  public static extern IntPtr Model_createLattice(HandleRef jarg1);
 
   [DllImport("MeCab", EntryPoint="CSharp_Tagger_parse__SWIG_0")]
   public static extern bool Tagger_parse__SWIG_0(HandleRef jarg1, HandleRef jarg2);

@@ -82,8 +82,12 @@ class ModelImpl: public Model {
             viterbi_.get() && writer_.get());
   }
 
-  int requesat_type() const {
+  int request_type() const {
     return request_type_;
+  }
+
+  double theta() const {
+    return theta_;
   }
 
   const DictionaryInfo *dictionary_info() const {
@@ -360,10 +364,6 @@ bool ModelImpl::open(const Param &param) {
   request_type_ = load_request_type(param);
   theta_ = param.get<double>("theta");
 
-#if defined(_WIN32) && !defined(__CYGWIN__)
-  std::locale::global(std::locale("C"));
-#endif
-
   return is_available();
 }
 
@@ -409,6 +409,8 @@ bool TaggerImpl::open(int argc, char **argv) {
     return false;
   }
   current_model_ = model_.get();
+  request_type_ = model()->request_type();
+  theta_        = model()->theta();
   return true;
 }
 
@@ -420,6 +422,8 @@ bool TaggerImpl::open(const char *arg) {
     return false;
   }
   current_model_ = model_.get();
+  request_type_ = model()->request_type();
+  theta_        = model()->theta();
   return true;
 }
 
@@ -429,6 +433,8 @@ bool TaggerImpl::open(const ModelImpl &model) {
   }
   model_.reset(0);
   current_model_ = &model;
+  request_type_ = current_model_->request_type();
+  theta_        = current_model_->theta();
   return true;
 }
 

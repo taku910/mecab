@@ -313,7 +313,7 @@ void delete_MeCab_Model (MeCab::Model *t) {
 
 MeCab::Lattice* new_MeCab_Lattice () {
   MeCab::Lattice *lattice = MeCab::createLattice();
-  lattice->set_request_type(MECAB_ALLOCATE_SENTENCE);
+  lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
   return lattice;
 }
 
@@ -329,6 +329,16 @@ char* mecab_node_t_surface_get(mecab_node_t *n) {
   return s;
 }
 
+SWIGINTERN MeCab::Tagger *MeCab_Model_createTagger(MeCab::Model const *self){
+      MeCab::Tagger *tagger = self->createTagger();
+      tagger->set_request_type(MECAB_ALLOCATE_SENTENCE | MECAB_ONE_BEST);
+      return tagger;
+   }
+SWIGINTERN MeCab::Lattice *MeCab_Model_createLattice(MeCab::Model const *self){
+      MeCab::Lattice *lattice = self->createLattice();
+      lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
+      return lattice;
+   }
 SWIGINTERN char const *MeCab_Tagger_parseToString__SWIG_0(MeCab::Tagger *self,char const *str,size_t length=0){
      return self->parse(str, length);
    }
@@ -2218,64 +2228,6 @@ SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1dictionary_1info(
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1createTagger(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  MeCab::Tagger *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Model **)&jarg1; 
-  {
-    try {
-      result = (MeCab::Tagger *)((MeCab::Model const *)arg1)->createTagger(); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  *(MeCab::Tagger **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1createLattice(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  MeCab::Lattice *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Model **)&jarg1; 
-  {
-    try {
-      result = (MeCab::Lattice *)((MeCab::Model const *)arg1)->createLattice(); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  *(MeCab::Lattice **)&jresult = result; 
-  return jresult;
-}
-
-
 SWIGEXPORT jstring JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1what(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   MeCab::Model *arg1 = (MeCab::Model *) 0 ;
@@ -2473,6 +2425,64 @@ SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_new_1Model_1_1SWIG_11(JN
     }
   }
   *(MeCab::Model **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1createTagger(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  MeCab::Tagger *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Model **)&jarg1; 
+  {
+    try {
+      result = (MeCab::Tagger *)MeCab_Model_createTagger((MeCab::Model const *)arg1); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  *(MeCab::Tagger **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1createLattice(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  MeCab::Lattice *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Model **)&jarg1; 
+  {
+    try {
+      result = (MeCab::Lattice *)MeCab_Model_createLattice((MeCab::Model const *)arg1); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  *(MeCab::Lattice **)&jresult = result; 
   return jresult;
 }
 

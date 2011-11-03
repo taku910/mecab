@@ -7,7 +7,7 @@ libmecab_la_LDFLAGS = -no-undefined -version-info $(LTVERSION)
 libmecab_la_SOURCES = viterbi.cpp tagger.cpp  utils.cpp utils.h eval.cpp iconv_utils.cpp iconv_utils.h \
                       dictionary_rewriter.h dictionary_rewriter.cpp dictionary_generator.cpp \
 	              dictionary_compiler.cpp context_id.h context_id.cpp \
-                      mempool.h thread.h connector.cpp nbest_generator.h nbest_generator.cpp connector.h \
+                      winmain.h thread.h connector.cpp nbest_generator.h nbest_generator.cpp connector.h \
                       writer.h writer.cpp mmap.h ucs.h  \
 	              string_buffer.h string_buffer.cpp viterbisub.h \
 		      tokenizer.h stream_wrapper.h common.h darts.h char_property.h ucstable.h \

@@ -305,8 +305,6 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *open = *MeCabc::Model_open;
 *is_available = *MeCabc::Model_is_available;
 *dictionary_info = *MeCabc::Model_dictionary_info;
-*createTagger = *MeCabc::Model_createTagger;
-*createLattice = *MeCabc::Model_createLattice;
 *what = *MeCabc::Model_what;
 *version = *MeCabc::Model_version;
 sub DESTROY {
@@ -327,6 +325,8 @@ sub new {
     bless $self, $pkg if defined($self);
 }
 
+*createTagger = *MeCabc::Model_createTagger;
+*createLattice = *MeCabc::Model_createLattice;
 sub DISOWN {
     my $self = shift;
     my $ptr = tied(%$self);

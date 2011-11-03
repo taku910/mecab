@@ -1612,7 +1612,7 @@ void delete_MeCab_Model (MeCab::Model *t) {
 
 MeCab::Lattice* new_MeCab_Lattice () {
   MeCab::Lattice *lattice = MeCab::createLattice();
-  lattice->set_request_type(MECAB_ALLOCATE_SENTENCE);
+  lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
   return lattice;
 }
 
@@ -1992,6 +1992,16 @@ SWIG_AsVal_int SWIG_PERL_DECL_ARGS_2(SV * obj, int *val)
   return res;
 }
 
+SWIGINTERN MeCab::Tagger *MeCab_Model_createTagger(MeCab::Model const *self){
+      MeCab::Tagger *tagger = self->createTagger();
+      tagger->set_request_type(MECAB_ALLOCATE_SENTENCE | MECAB_ONE_BEST);
+      return tagger;
+   }
+SWIGINTERN MeCab::Lattice *MeCab_Model_createLattice(MeCab::Model const *self){
+      MeCab::Lattice *lattice = self->createLattice();
+      lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
+      return lattice;
+   }
 
 SWIGINTERN int
 SWIG_AsVal_bool SWIG_PERL_DECL_ARGS_2(SV *obj, bool* val)
@@ -5041,82 +5051,6 @@ XS(_wrap_Model_dictionary_info) {
 }
 
 
-XS(_wrap_Model_createTagger) {
-  {
-    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    int argvi = 0;
-    MeCab::Tagger *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: Model_createTagger(self);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_createTagger" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
-    }
-    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
-    {
-      try {
-        result = (MeCab::Tagger *)((MeCab::Model const *)arg1)->createTagger(); 
-      }
-      catch (char *e) {
-        SWIG_exception (SWIG_RuntimeError, e); 
-      }
-      catch (const char *e) {
-        SWIG_exception (SWIG_RuntimeError, (char*)e); 
-      }
-    }
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Tagger, 0 | SWIG_SHADOW); argvi++ ;
-    
-    XSRETURN(argvi);
-  fail:
-    
-    SWIG_croak_null();
-  }
-}
-
-
-XS(_wrap_Model_createLattice) {
-  {
-    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    int argvi = 0;
-    MeCab::Lattice *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: Model_createLattice(self);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_createLattice" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
-    }
-    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
-    {
-      try {
-        result = (MeCab::Lattice *)((MeCab::Model const *)arg1)->createLattice(); 
-      }
-      catch (char *e) {
-        SWIG_exception (SWIG_RuntimeError, e); 
-      }
-      catch (const char *e) {
-        SWIG_exception (SWIG_RuntimeError, (char*)e); 
-      }
-    }
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 | SWIG_SHADOW); argvi++ ;
-    
-    XSRETURN(argvi);
-  fail:
-    
-    SWIG_croak_null();
-  }
-}
-
-
 XS(_wrap_Model_what) {
   {
     MeCab::Model *arg1 = (MeCab::Model *) 0 ;
@@ -5490,6 +5424,82 @@ XS(_wrap_new_Model) {
   
   croak("No matching function for overloaded 'new_Model'");
   XSRETURN(0);
+}
+
+
+XS(_wrap_Model_createTagger) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    MeCab::Tagger *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Model_createTagger(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_createTagger" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    {
+      try {
+        result = (MeCab::Tagger *)MeCab_Model_createTagger((MeCab::Model const *)arg1); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Tagger, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_createLattice) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    MeCab::Lattice *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Model_createLattice(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_createLattice" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    {
+      try {
+        result = (MeCab::Lattice *)MeCab_Model_createLattice((MeCab::Model const *)arg1); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
 }
 
 
@@ -7435,13 +7445,13 @@ static swig_command_info swig_commands[] = {
 {"MeCabc::Model_open", _wrap_Model_open},
 {"MeCabc::Model_is_available", _wrap_Model_is_available},
 {"MeCabc::Model_dictionary_info", _wrap_Model_dictionary_info},
-{"MeCabc::Model_createTagger", _wrap_Model_createTagger},
-{"MeCabc::Model_createLattice", _wrap_Model_createLattice},
 {"MeCabc::Model_what", _wrap_Model_what},
 {"MeCabc::Model_version", _wrap_Model_version},
 {"MeCabc::delete_Model", _wrap_delete_Model},
 {"MeCabc::Model_create", _wrap_Model_create},
 {"MeCabc::new_Model", _wrap_new_Model},
+{"MeCabc::Model_createTagger", _wrap_Model_createTagger},
+{"MeCabc::Model_createLattice", _wrap_Model_createLattice},
 {"MeCabc::Tagger_parse", _wrap_Tagger_parse},
 {"MeCabc::Tagger_parseToNode", _wrap_Tagger_parseToNode},
 {"MeCabc::Tagger_parseNBest", _wrap_Tagger_parseNBest},

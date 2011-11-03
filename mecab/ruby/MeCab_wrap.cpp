@@ -1900,7 +1900,7 @@ void delete_MeCab_Model (MeCab::Model *t) {
 
 MeCab::Lattice* new_MeCab_Lattice () {
   MeCab::Lattice *lattice = MeCab::createLattice();
-  lattice->set_request_type(MECAB_ALLOCATE_SENTENCE);
+  lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
   return lattice;
 }
 
@@ -2212,6 +2212,16 @@ SWIG_AsVal_int (VALUE obj, int *val)
   return res;
 }
 
+SWIGINTERN MeCab::Tagger *MeCab_Model_createTagger(MeCab::Model const *self){
+      MeCab::Tagger *tagger = self->createTagger();
+      tagger->set_request_type(MECAB_ALLOCATE_SENTENCE | MECAB_ONE_BEST);
+      return tagger;
+   }
+SWIGINTERN MeCab::Lattice *MeCab_Model_createLattice(MeCab::Model const *self){
+      MeCab::Lattice *lattice = self->createLattice();
+      lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
+      return lattice;
+   }
 
 SWIGINTERN int
 SWIG_AsVal_bool (VALUE obj, bool *val)
@@ -4779,74 +4789,6 @@ fail:
 
 
 SWIGINTERN VALUE
-_wrap_Model_createTagger(int argc, VALUE *argv, VALUE self) {
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  MeCab::Tagger *result = 0 ;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Model const *","createTagger", 1, self )); 
-  }
-  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
-  {
-    try {
-      result = (MeCab::Tagger *)((MeCab::Model const *)arg1)->createTagger(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
-_wrap_Model_createLattice(int argc, VALUE *argv, VALUE self) {
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  MeCab::Lattice *result = 0 ;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Model const *","createLattice", 1, self )); 
-  }
-  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
-  {
-    try {
-      result = (MeCab::Lattice *)((MeCab::Model const *)arg1)->createLattice(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
 _wrap_Model_what(int argc, VALUE *argv, VALUE self) {
   MeCab::Model *arg1 = (MeCab::Model *) 0 ;
   void *argp1 = 0 ;
@@ -5138,6 +5080,74 @@ fail:
     "    Model.new(char const *argc)\n"
     "    Model.new()\n");
   
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Model_createTagger(int argc, VALUE *argv, VALUE self) {
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  MeCab::Tagger *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Model const *","createTagger", 1, self )); 
+  }
+  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+  {
+    try {
+      result = (MeCab::Tagger *)MeCab_Model_createTagger((MeCab::Model const *)arg1); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Model_createLattice(int argc, VALUE *argv, VALUE self) {
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  MeCab::Lattice *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Model const *","createLattice", 1, self )); 
+  }
+  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+  {
+    try {
+      result = (MeCab::Lattice *)MeCab_Model_createLattice((MeCab::Model const *)arg1); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  return vresult;
+fail:
   return Qnil;
 }
 
@@ -7040,11 +7050,11 @@ SWIGEXPORT void Init_MeCab(void) {
   rb_define_method(SwigClassModel.klass, "open", VALUEFUNC(_wrap_Model_open), -1);
   rb_define_method(SwigClassModel.klass, "is_available", VALUEFUNC(_wrap_Model_is_available), -1);
   rb_define_method(SwigClassModel.klass, "dictionary_info", VALUEFUNC(_wrap_Model_dictionary_info), -1);
-  rb_define_method(SwigClassModel.klass, "createTagger", VALUEFUNC(_wrap_Model_createTagger), -1);
-  rb_define_method(SwigClassModel.klass, "createLattice", VALUEFUNC(_wrap_Model_createLattice), -1);
   rb_define_method(SwigClassModel.klass, "what", VALUEFUNC(_wrap_Model_what), -1);
   rb_define_singleton_method(SwigClassModel.klass, "version", VALUEFUNC(_wrap_Model_version), -1);
   rb_define_singleton_method(SwigClassModel.klass, "create", VALUEFUNC(_wrap_Model_create), -1);
+  rb_define_method(SwigClassModel.klass, "createTagger", VALUEFUNC(_wrap_Model_createTagger), -1);
+  rb_define_method(SwigClassModel.klass, "createLattice", VALUEFUNC(_wrap_Model_createLattice), -1);
   SwigClassModel.mark = 0;
   SwigClassModel.destroy = (void (*)(void *)) free_MeCab_Model;
   SwigClassModel.trackObjects = 0;

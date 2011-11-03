@@ -268,8 +268,6 @@ class Model(_object):
     def open(self, *args): return _MeCab.Model_open(self, *args)
     def is_available(self): return _MeCab.Model_is_available(self)
     def dictionary_info(self): return _MeCab.Model_dictionary_info(self)
-    def createTagger(self): return _MeCab.Model_createTagger(self)
-    def createLattice(self): return _MeCab.Model_createLattice(self)
     def what(self): return _MeCab.Model_what(self)
     __swig_getmethods__["version"] = lambda x: _MeCab.Model_version
     if _newclass:version = staticmethod(_MeCab.Model_version)
@@ -281,6 +279,8 @@ class Model(_object):
         this = _MeCab.new_Model(*args)
         try: self.this.append(this)
         except: self.this = this
+    def createTagger(self): return _MeCab.Model_createTagger(self)
+    def createLattice(self): return _MeCab.Model_createLattice(self)
 Model_swigregister = _MeCab.Model_swigregister
 Model_swigregister(Model)
 

@@ -96,6 +96,16 @@
 %extend MeCab::Model {
    Model(const char *argc);
    Model();
+   MeCab::Tagger *createTagger() const {
+      MeCab::Tagger *tagger = self->createTagger();
+      tagger->set_request_type(MECAB_ALLOCATE_SENTENCE | MECAB_ONE_BEST);
+      return tagger;
+   }
+   MeCab::Lattice *createLattice() const {
+      MeCab::Lattice *lattice = self->createLattice();
+      lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
+      return lattice;
+   }   
 }
 
 %extend MeCab::Lattice {
@@ -148,7 +158,7 @@ void delete_MeCab_Model (MeCab::Model *t) {
 
 MeCab::Lattice* new_MeCab_Lattice () {
   MeCab::Lattice *lattice = MeCab::createLattice();
-  lattice->set_request_type(MECAB_ALLOCATE_SENTENCE);
+  lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
   return lattice;
 }
 

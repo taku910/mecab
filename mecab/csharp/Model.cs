@@ -66,20 +66,6 @@ public class Model : IDisposable {
     return ret;
   }
 
-  public virtual Tagger createTagger() {
-    IntPtr cPtr = MeCabPINVOKE.Model_createTagger(swigCPtr);
-    Tagger ret = (cPtr == IntPtr.Zero) ? null : new Tagger(cPtr, false);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public virtual Lattice createLattice() {
-    IntPtr cPtr = MeCabPINVOKE.Model_createLattice(swigCPtr);
-    Lattice ret = (cPtr == IntPtr.Zero) ? null : new Lattice(cPtr, false);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public virtual string what() {
     string ret = MeCabPINVOKE.Model_what(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
@@ -112,6 +98,20 @@ public class Model : IDisposable {
 
   public Model() : this(MeCabPINVOKE.new_Model__SWIG_1(), true) {
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public Tagger createTagger() {
+    IntPtr cPtr = MeCabPINVOKE.Model_createTagger(swigCPtr);
+    Tagger ret = (cPtr == IntPtr.Zero) ? null : new Tagger(cPtr, false);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public Lattice createLattice() {
+    IntPtr cPtr = MeCabPINVOKE.Model_createLattice(swigCPtr);
+    Lattice ret = (cPtr == IntPtr.Zero) ? null : new Lattice(cPtr, false);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
 }
