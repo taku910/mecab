@@ -227,7 +227,6 @@ class Lattice(_object):
     def end_nodes(self, *args): return _MeCab.Lattice_end_nodes(self, *args)
     def begin_nodes(self, *args): return _MeCab.Lattice_begin_nodes(self, *args)
     def sentence(self): return _MeCab.Lattice_sentence(self)
-    def set_sentence(self, *args): return _MeCab.Lattice_set_sentence(self, *args)
     def size(self): return _MeCab.Lattice_size(self)
     def len(self): return _MeCab.Lattice_len(self)
     def set_Z(self, *args): return _MeCab.Lattice_set_Z(self, *args)
@@ -252,6 +251,7 @@ class Lattice(_object):
         this = _MeCab.new_Lattice()
         try: self.this.append(this)
         except: self.this = this
+    def set_sentence(self, *args): return _MeCab.Lattice_set_sentence(self, *args)
 Lattice_swigregister = _MeCab.Lattice_swigregister
 Lattice_swigregister(Lattice)
 
@@ -265,9 +265,10 @@ class Model(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Model, name)
     __repr__ = _swig_repr
-    def open(self, *args): return _MeCab.Model_open(self, *args)
     def is_available(self): return _MeCab.Model_is_available(self)
     def dictionary_info(self): return _MeCab.Model_dictionary_info(self)
+    def createTagger(self): return _MeCab.Model_createTagger(self)
+    def createLattice(self): return _MeCab.Model_createLattice(self)
     def what(self): return _MeCab.Model_what(self)
     __swig_getmethods__["version"] = lambda x: _MeCab.Model_version
     if _newclass:version = staticmethod(_MeCab.Model_version)
@@ -279,8 +280,6 @@ class Model(_object):
         this = _MeCab.new_Model(*args)
         try: self.this.append(this)
         except: self.this = this
-    def createTagger(self): return _MeCab.Model_createTagger(self)
-    def createLattice(self): return _MeCab.Model_createLattice(self)
 Model_swigregister = _MeCab.Model_swigregister
 Model_swigregister(Model)
 

@@ -312,9 +312,7 @@ void delete_MeCab_Model (MeCab::Model *t) {
 }
 
 MeCab::Lattice* new_MeCab_Lattice () {
-  MeCab::Lattice *lattice = MeCab::createLattice();
-  lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
-  return lattice;
+  return MeCab::createLattice();
 }
 
 void delete_MeCab_Lattice (MeCab::Lattice *t) {
@@ -329,16 +327,10 @@ char* mecab_node_t_surface_get(mecab_node_t *n) {
   return s;
 }
 
-SWIGINTERN MeCab::Tagger *MeCab_Model_createTagger(MeCab::Model const *self){
-      MeCab::Tagger *tagger = self->createTagger();
-      tagger->set_request_type(MECAB_ALLOCATE_SENTENCE | MECAB_ONE_BEST);
-      return tagger;
-   }
-SWIGINTERN MeCab::Lattice *MeCab_Model_createLattice(MeCab::Model const *self){
-      MeCab::Lattice *lattice = self->createLattice();
-      lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
-      return lattice;
-   }
+SWIGINTERN void MeCab_Lattice_set_sentence(MeCab::Lattice *self,char const *sentence){
+    // force to copy the input sentence
+    self->set_sentence(self->strdup(sentence));
+  }
 SWIGINTERN char const *MeCab_Tagger_parseToString__SWIG_0(MeCab::Tagger *self,char const *str,size_t length=0){
      return self->parse(str, length);
    }
@@ -1466,72 +1458,6 @@ SWIGEXPORT jstring JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1sentence(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1sentence_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
-  char *arg2 = (char *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Lattice **)&jarg1; 
-  arg2 = 0;
-  if (jarg2) {
-    arg2 = (char *)jenv->GetStringUTFChars(jarg2, 0);
-    if (!arg2) return ;
-  }
-  {
-    try {
-      (arg1)->set_sentence((char const *)arg2); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return ; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return ; 
-      }; 
-    }
-  }
-  if (arg2) jenv->ReleaseStringUTFChars(jarg2, (const char *)arg2);
-}
-
-
-SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1sentence_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
-  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
-  char *arg2 = (char *) 0 ;
-  size_t arg3 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Lattice **)&jarg1; 
-  arg2 = 0;
-  if (jarg2) {
-    arg2 = (char *)jenv->GetStringUTFChars(jarg2, 0);
-    if (!arg2) return ;
-  }
-  arg3 = (size_t)jarg3; 
-  {
-    try {
-      (arg1)->set_sentence((char const *)arg2,arg3); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return ; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return ; 
-      }; 
-    }
-  }
-  if (arg2) jenv->ReleaseStringUTFChars(jarg2, (const char *)arg2);
-}
-
-
 SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
@@ -2101,72 +2027,35 @@ SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_new_1Lattice(JNIEnv *jen
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1open_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3) {
-  jboolean jresult = 0 ;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  int arg2 ;
-  char **arg3 = (char **) 0 ;
-  bool result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Model **)&jarg1; 
-  arg2 = (int)jarg2; 
-  arg3 = *(char ***)&jarg3; 
-  {
-    try {
-      result = (bool)(arg1)->open(arg2,arg3); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  jresult = (jboolean)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jboolean JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1open_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  jboolean jresult = 0 ;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1sentence(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
   char *arg2 = (char *) 0 ;
-  bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(MeCab::Model **)&jarg1; 
+  arg1 = *(MeCab::Lattice **)&jarg1; 
   arg2 = 0;
   if (jarg2) {
     arg2 = (char *)jenv->GetStringUTFChars(jarg2, 0);
-    if (!arg2) return 0;
+    if (!arg2) return ;
   }
   {
     try {
-      result = (bool)(arg1)->open((char const *)arg2); 
+      MeCab_Lattice_set_sentence(arg1,(char const *)arg2); 
     }
     catch (char *e) {
       {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return ; 
       }; 
     }
     catch (const char *e) {
       {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return ; 
       }; 
     }
   }
-  jresult = (jboolean)result; 
   if (arg2) jenv->ReleaseStringUTFChars(jarg2, (const char *)arg2);
-  return jresult;
 }
 
 
@@ -2224,6 +2113,64 @@ SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1dictionary_1info(
     }
   }
   *(MeCab::DictionaryInfo **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1createTagger(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  MeCab::Tagger *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Model **)&jarg1; 
+  {
+    try {
+      result = (MeCab::Tagger *)((MeCab::Model const *)arg1)->createTagger(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  *(MeCab::Tagger **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1createLattice(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  MeCab::Lattice *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Model **)&jarg1; 
+  {
+    try {
+      result = (MeCab::Lattice *)((MeCab::Model const *)arg1)->createLattice(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  *(MeCab::Lattice **)&jresult = result; 
   return jresult;
 }
 
@@ -2425,64 +2372,6 @@ SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_new_1Model_1_1SWIG_11(JN
     }
   }
   *(MeCab::Model **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1createTagger(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  MeCab::Tagger *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Model **)&jarg1; 
-  {
-    try {
-      result = (MeCab::Tagger *)MeCab_Model_createTagger((MeCab::Model const *)arg1); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  *(MeCab::Tagger **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1createLattice(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  MeCab::Lattice *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Model **)&jarg1; 
-  {
-    try {
-      result = (MeCab::Lattice *)MeCab_Model_createLattice((MeCab::Model const *)arg1); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  *(MeCab::Lattice **)&jresult = result; 
   return jresult;
 }
 

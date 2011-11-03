@@ -22,10 +22,8 @@ public class runme {
       Console.WriteLine (t2.parse(s));
 
       MeCab.Lattice lattice = model.createLattice();
-      lattice.add_request_type(MeCab.MeCab.MECAB_ALLOCATE_SENTENCE);
       Console.WriteLine(s);
       lattice.set_sentence(s);
-      Console.WriteLine("["+lattice.sentence() + "]");
       if (t2.parse(lattice)) {
         Console.WriteLine(lattice.toString());
       }

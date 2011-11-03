@@ -72,14 +72,6 @@
 %immutable mecab_node_t::cost;
 %immutable mecab_node_t::surface;
 %immutable mecab_node_t::token;
-%ignore MeCab::createTagger;
-%ignore MeCab::createLattice;
-%ignore MeCab::createModel;
-%ignore MeCab::deleteTagger;
-%ignore MeCab::deleteModel;
-%ignore MeCab::deleteLattice;
-%ignore MeCab::getTaggerError;
-%ignore MeCab::getLastError;
 
 %extend mecab_node_t {
   char *surface;
@@ -96,20 +88,14 @@
 %extend MeCab::Model {
    Model(const char *argc);
    Model();
-   MeCab::Tagger *createTagger() const {
-      MeCab::Tagger *tagger = self->createTagger();
-      tagger->set_request_type(MECAB_ALLOCATE_SENTENCE | MECAB_ONE_BEST);
-      return tagger;
-   }
-   MeCab::Lattice *createLattice() const {
-      MeCab::Lattice *lattice = self->createLattice();
-      lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
-      return lattice;
-   }   
 }
 
 %extend MeCab::Lattice {
   Lattice();
+  void set_sentence(const char *sentence) {
+    // force to copy the input sentence
+    self->set_sentence(self->strdup(sentence));
+  }
 }
 
 %{
@@ -157,9 +143,7 @@ void delete_MeCab_Model (MeCab::Model *t) {
 }
 
 MeCab::Lattice* new_MeCab_Lattice () {
-  MeCab::Lattice *lattice = MeCab::createLattice();
-  lattice->add_request_type(MECAB_ALLOCATE_SENTENCE);
-  return lattice;
+  return MeCab::createLattice();
 }
 
 void delete_MeCab_Lattice (MeCab::Lattice *t) {

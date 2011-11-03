@@ -78,8 +78,6 @@ class MeCabJNI {
   public final static native long Lattice_end_nodes(long jarg1, Lattice jarg1_, long jarg2);
   public final static native long Lattice_begin_nodes(long jarg1, Lattice jarg1_, long jarg2);
   public final static native String Lattice_sentence(long jarg1, Lattice jarg1_);
-  public final static native void Lattice_set_sentence__SWIG_0(long jarg1, Lattice jarg1_, String jarg2);
-  public final static native void Lattice_set_sentence__SWIG_1(long jarg1, Lattice jarg1_, String jarg2, long jarg3);
   public final static native long Lattice_size(long jarg1, Lattice jarg1_);
   public final static native long Lattice_len(long jarg1, Lattice jarg1_);
   public final static native void Lattice_set_Z(long jarg1, Lattice jarg1_, double jarg2);
@@ -100,10 +98,11 @@ class MeCabJNI {
   public final static native long Lattice_create();
   public final static native void delete_Lattice(long jarg1);
   public final static native long new_Lattice();
-  public final static native boolean Model_open__SWIG_0(long jarg1, Model jarg1_, int jarg2, long jarg3);
-  public final static native boolean Model_open__SWIG_1(long jarg1, Model jarg1_, String jarg2);
+  public final static native void Lattice_set_sentence(long jarg1, Lattice jarg1_, String jarg2);
   public final static native boolean Model_is_available(long jarg1, Model jarg1_);
   public final static native long Model_dictionary_info(long jarg1, Model jarg1_);
+  public final static native long Model_createTagger(long jarg1, Model jarg1_);
+  public final static native long Model_createLattice(long jarg1, Model jarg1_);
   public final static native String Model_what(long jarg1, Model jarg1_);
   public final static native String Model_version();
   public final static native void delete_Model(long jarg1);
@@ -111,8 +110,6 @@ class MeCabJNI {
   public final static native long Model_create__SWIG_1(String jarg1);
   public final static native long new_Model__SWIG_0(String jarg1);
   public final static native long new_Model__SWIG_1();
-  public final static native long Model_createTagger(long jarg1, Model jarg1_);
-  public final static native long Model_createLattice(long jarg1, Model jarg1_);
   public final static native boolean Tagger_parse__SWIG_0(long jarg1, Model jarg1_, long jarg2, Lattice jarg2_);
   public final static native boolean Tagger_parse__SWIG_1(long jarg1, Tagger jarg1_, long jarg2, Lattice jarg2_);
   public final static native boolean Tagger_parse__SWIG_2(long jarg1, Tagger jarg1_, String jarg2, long jarg3, Lattice jarg3_);

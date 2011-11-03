@@ -67,14 +67,6 @@ public class Lattice {
     return MeCabJNI.Lattice_sentence(swigCPtr, this);
   }
 
-  public void set_sentence(String sentence) {
-    MeCabJNI.Lattice_set_sentence__SWIG_0(swigCPtr, this, sentence);
-  }
-
-  public void set_sentence(String sentence, long len) {
-    MeCabJNI.Lattice_set_sentence__SWIG_1(swigCPtr, this, sentence, len);
-  }
-
   public long size() {
     return MeCabJNI.Lattice_size(swigCPtr, this);
   }
@@ -150,6 +142,10 @@ public class Lattice {
 
   public Lattice() {
     this(MeCabJNI.new_Lattice(), true);
+  }
+
+  public void set_sentence(String sentence) {
+    MeCabJNI.Lattice_set_sentence(swigCPtr, this, sentence);
   }
 
 }

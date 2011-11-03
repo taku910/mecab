@@ -86,16 +86,6 @@ public class Lattice : IDisposable {
     return ret;
   }
 
-  public virtual void set_sentence(string sentence) {
-    MeCabPINVOKE.Lattice_set_sentence__SWIG_0(swigCPtr, sentence);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public virtual void set_sentence(string sentence, uint len) {
-    MeCabPINVOKE.Lattice_set_sentence__SWIG_1(swigCPtr, sentence, len);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-  }
-
   public virtual uint size() {
     uint ret = MeCabPINVOKE.Lattice_size(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
@@ -200,6 +190,11 @@ public class Lattice : IDisposable {
   }
 
   public Lattice() : this(MeCabPINVOKE.new_Lattice(), true) {
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void set_sentence(string sentence) {
+    MeCabPINVOKE.Lattice_set_sentence(swigCPtr, sentence);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
   }
 

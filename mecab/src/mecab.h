@@ -296,7 +296,11 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
   // sentence operations
   virtual const char *sentence() const = 0;
   virtual void set_sentence(const char *sentence)             = 0;
+
+#ifndef SWIG
   virtual void set_sentence(const char *sentence, size_t len) = 0;
+#endif
+
   virtual size_t size() const                                 = 0;
   virtual size_t len()  const                                 = 0;
 
@@ -342,8 +346,10 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
 
 class MECAB_DLL_CLASS_EXTERN Model {
  public:
+#ifndef SWIG
   virtual bool open(int argc, char **argv) = 0;
   virtual bool open(const char *arg) = 0;
+#endif
 
   virtual bool is_available() const = 0;
   virtual const DictionaryInfo *dictionary_info() const = 0;
@@ -424,6 +430,7 @@ class MECAB_DLL_CLASS_EXTERN Tagger {
   static const char *version();
 };
 
+#ifndef SWIG
 /* factory method */
 MECAB_DLL_EXTERN Lattice     *createLattice();
 
@@ -441,6 +448,7 @@ MECAB_DLL_EXTERN const char*  getLastError();
 // Keep it for backward compatibility.
 // getTaggerError() is the same as getLastError()
 MECAB_DLL_EXTERN const char*  getTaggerError();
+#endif
 }
 #endif
 #endif  /* MECAB_MECAB_H_ */

@@ -247,7 +247,6 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *end_nodes = *MeCabc::Lattice_end_nodes;
 *begin_nodes = *MeCabc::Lattice_begin_nodes;
 *sentence = *MeCabc::Lattice_sentence;
-*set_sentence = *MeCabc::Lattice_set_sentence;
 *size = *MeCabc::Lattice_size;
 *len = *MeCabc::Lattice_len;
 *set_Z = *MeCabc::Lattice_set_Z;
@@ -282,6 +281,7 @@ sub new {
     bless $self, $pkg if defined($self);
 }
 
+*set_sentence = *MeCabc::Lattice_set_sentence;
 sub DISOWN {
     my $self = shift;
     my $ptr = tied(%$self);
@@ -302,9 +302,10 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 @ISA = qw( MeCab );
 %OWNER = ();
 %ITERATORS = ();
-*open = *MeCabc::Model_open;
 *is_available = *MeCabc::Model_is_available;
 *dictionary_info = *MeCabc::Model_dictionary_info;
+*createTagger = *MeCabc::Model_createTagger;
+*createLattice = *MeCabc::Model_createLattice;
 *what = *MeCabc::Model_what;
 *version = *MeCabc::Model_version;
 sub DESTROY {
@@ -325,8 +326,6 @@ sub new {
     bless $self, $pkg if defined($self);
 }
 
-*createTagger = *MeCabc::Model_createTagger;
-*createLattice = *MeCabc::Model_createLattice;
 sub DISOWN {
     my $self = shift;
     my $ptr = tied(%$self);

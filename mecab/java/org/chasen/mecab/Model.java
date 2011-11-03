@@ -35,14 +35,6 @@ public class Model {
     }
   }
 
-  public boolean open(int argc, SWIGTYPE_p_p_char argv) {
-    return MeCabJNI.Model_open__SWIG_0(swigCPtr, this, argc, SWIGTYPE_p_p_char.getCPtr(argv));
-  }
-
-  public boolean open(String arg) {
-    return MeCabJNI.Model_open__SWIG_1(swigCPtr, this, arg);
-  }
-
   public boolean is_available() {
     return MeCabJNI.Model_is_available(swigCPtr, this);
   }
@@ -50,6 +42,16 @@ public class Model {
   public DictionaryInfo dictionary_info() {
     long cPtr = MeCabJNI.Model_dictionary_info(swigCPtr, this);
     return (cPtr == 0) ? null : new DictionaryInfo(cPtr, false);
+  }
+
+  public Tagger createTagger() {
+    long cPtr = MeCabJNI.Model_createTagger(swigCPtr, this);
+    return (cPtr == 0) ? null : new Tagger(cPtr, false);
+  }
+
+  public Lattice createLattice() {
+    long cPtr = MeCabJNI.Model_createLattice(swigCPtr, this);
+    return (cPtr == 0) ? null : new Lattice(cPtr, false);
   }
 
   public String what() {
@@ -76,16 +78,6 @@ public class Model {
 
   public Model() {
     this(MeCabJNI.new_Model__SWIG_1(), true);
-  }
-
-  public Tagger createTagger() {
-    long cPtr = MeCabJNI.Model_createTagger(swigCPtr, this);
-    return (cPtr == 0) ? null : new Tagger(cPtr, false);
-  }
-
-  public Lattice createLattice() {
-    long cPtr = MeCabJNI.Model_createLattice(swigCPtr, this);
-    return (cPtr == 0) ? null : new Lattice(cPtr, false);
   }
 
 }
