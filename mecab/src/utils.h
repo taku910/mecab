@@ -189,8 +189,8 @@ inline double logsumexp(double x, double y, bool flg) {
 #define MINUS_LOG_EPSILON  50
 
   if (flg) return y;  // init mode
-  double vmin = std::min(x, y);
-  double vmax = std::max(x, y);
+  double vmin = std::min<double>(x, y);
+  double vmax = std::max<double>(x, y);
   if (vmax > vmin + MINUS_LOG_EPSILON) {
     return vmax;
   } else {
