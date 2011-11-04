@@ -239,11 +239,9 @@ extern "C" {
   MECAB_DLL_EXTERN mecab_model_t   *mecab_model_new(int argc, char **argv);
   MECAB_DLL_EXTERN mecab_model_t   *mecab_model_new2(const char *arg);
   MECAB_DLL_EXTERN void             mecab_model_destroy(mecab_model_t *model);
-  MECAB_DLL_EXTERN int              mecab_model_is_available(mecab_model_t *model);
   MECAB_DLL_EXTERN mecab_t         *mecab_model_new_tagger(mecab_model_t *model);
   MECAB_DLL_EXTERN mecab_lattice_t *mecab_model_new_lattice(mecab_model_t *model);
   MECAB_DLL_EXTERN const mecab_dictionary_info_t* mecab_model_dictionary_info(mecab_model_t *model);
-  MECAB_DLL_EXTERN const char      *mecab_model_strerror(mecab_model_t *model);
 
   /* static functions */
   MECAB_DLL_EXTERN int           mecab_do(int argc, char **argv);
@@ -273,35 +271,101 @@ template <typename N, typename P> class Allocator;
 class Tagger;
 class NBestGenerator;
 
+/*
+ * Lattice class
+ */
 class MECAB_DLL_CLASS_EXTERN Lattice {
  public:
+  /**
+   * Clear all internal lattice data.
+   */
   virtual void clear()              = 0;
   virtual bool is_available() const = 0;
 
   // Node operations
   // return bos/eos node
+  /**
+   * return bos (begin of sentence) node
+   * @return bos node object
+   */
+
   virtual Node *bos_node() const              = 0;
+
+  /**
+   * return eos (end of sentence) node
+   * @return eos node object
+   */
   virtual Node *eos_node() const              = 0;
 
 #ifndef SWIG
+  /**
+   * This method is internally used
+   */
   virtual Node **begin_nodes() const          = 0;
+
+  /**
+   * This method is internally used
+   */
   virtual Node **end_nodes() const            = 0;
+
+  /**
+   * This method is internally used
+   */
   virtual char *strdup(const char *str)       = 0;
+
+  /**
+   * This method is internally used
+   */
   virtual char *alloc(size_t len)             = 0;
 #endif
 
+  /**
+   * return node linked list ending at |pos|.
+   * @param pos position of nodes. 0 <= pos < size()
+   * @return node linked list
+   */
   virtual Node *end_nodes(size_t pos) const   = 0;
+
+  /**
+   * return node linked list starting at |pos|.
+   * @param pos position of nodes. 0 <= pos < size()
+   * @return node linked list
+   */
   virtual Node *begin_nodes(size_t pos) const = 0;
 
   // sentence operations
+  /**
+   * return the pointer to the sentence this instance manages.
+   * @return sentence
+   */
   virtual const char *sentence() const = 0;
+
+
+  /**
+   * set sentence. this method does not take the ownership of the object
+   * @param sentence sentence
+   */
   virtual void set_sentence(const char *sentence)             = 0;
 
 #ifndef SWIG
+  /**
+   * set sentence. this method does not take the ownership of the object
+   * @param sentence sentence
+   * @param len length of the sentence
+   */
   virtual void set_sentence(const char *sentence, size_t len) = 0;
 #endif
 
+  /**
+   * return sentence size
+   * @return sentence size
+   */
   virtual size_t size() const                                 = 0;
+
+  /**
+   * return sentence size, the same as size()
+   * @return sentence size
+   */
   virtual size_t len()  const                                 = 0;
 
   virtual void   set_Z(double Z) = 0;
@@ -314,31 +378,122 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
   virtual bool next() = 0;
 
   // request type
+  /**
+   * return the current request type.
+   * @return request type
+   */
   virtual int request_type() const                = 0;
+
+  /**
+   * return true if it has a specified request type
+   * @return boolean
+   */
   virtual bool has_request_type(int request_type) const = 0;
+
+  /**
+   * set request type
+   * @param request_type new request type assigned
+   */
   virtual void set_request_type(int request_type) = 0;
+
+  /**
+   * add request type
+   * @param request_type new request type added
+   */
   virtual void add_request_type(int request_type) = 0;
+
+  /**
+   * remove request type
+   * @param request_type new request type removed
+   */
   virtual void remove_request_type(int request_type) = 0;
 
 #ifndef SWIG
+  /**
+   * This method is internally used
+   */
   virtual Allocator<Node, Path> *allocator() const = 0;
+
+  /**
+   * This method is internally used
+   */
   virtual NBestGenerator *nbest_generator() = 0;
 #endif
 
+  /**
+   * return string representation of the lattice
+   * returned object is managed by this instance. When clear() method
+   * is called, the returned buffer is initialized again.
+   * @return string representation of the lattice
+   */
   virtual const char *toString()                = 0;
+
+  /**
+   * return string representation of the node.
+   * returned object is managed by this instance. When clear() method
+   * is called, the returned buffer is initialized again.
+   * @return string representation of the node
+   * @param node node object
+   */
   virtual const char *toString(const Node *node) = 0;
+
+  /**
+   * return string representation of the N-best results.
+   * returned object is managed by this instance. When clear() method
+   * is called, the returned buffer is initialized again.
+   * @return string representation of the node
+   * @param N how many results you want to obtain
+   */
   virtual const char *enumNBestAsString(size_t N) = 0;
 
 #ifndef SWIG
+  /**
+   * return string representation of the lattice.
+   * result is saved in the specified buffer.
+   * @param buf output buffer
+   * @param size output buffer size
+   * @return string representation of the lattice
+   */
   virtual const char *toString(char *buf, size_t size) = 0;
+
+  /**
+   * return string representation of the node.
+   * result is saved in the specified buffer.
+   * @param node node object
+   * @param buf output buffer
+   * @param size output buffer size
+   * @return string representation of the lattice
+   */
   virtual const char *toString(const Node *node,
                                char *buf, size_t size) = 0;
+
+  /**
+   * return string representation of the N-best result.
+   * result is saved in the specified buffer.
+   * @param N how many results you want to obtain
+   * @param buf output buffer
+   * @param size output buffer size
+   * @return string representation of the lattice
+   */
   virtual const char *enumNBestAsString(size_t N, char *buf, size_t size) = 0;
 #endif
 
+  /**
+   * return error string
+   * return error string
+   */
   virtual const char *what() const              = 0;
+
+  /**
+   * set error string
+   * param str new error string
+   */
   virtual void set_what(const char *str)        = 0;
 
+  /**
+   * create new Lattice object
+   * @return new Lattice object
+   */
   static Lattice *create();
 
   virtual ~Lattice() {}
@@ -346,23 +501,51 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
 
 class MECAB_DLL_CLASS_EXTERN Model {
  public:
-#ifndef SWIG
-  virtual bool open(int argc, char **argv) = 0;
-  virtual bool open(const char *arg) = 0;
-#endif
-
-  virtual bool is_available() const = 0;
+  /**
+   * return DictionaryInfo linked list
+   * @return DictionaryInfo linked list
+   */
   virtual const DictionaryInfo *dictionary_info() const = 0;
-  virtual Tagger  *createTagger() const = 0;
-  virtual Lattice *createLattice() const = 0;
-  virtual const char *what() const = 0;
 
+  /**
+   * create a new Tagger object
+   * @return new Tagger object
+   */
+  virtual Tagger  *createTagger() const = 0;
+
+  /**
+   * create a new Lattice object
+   * @return new Lattice object
+   */
+  virtual Lattice *createLattice() const = 0;
+
+  /**
+   * return a version string
+   * @return version string
+   */
   static const char *version();
 
   virtual ~Model() {}
 
 #ifndef SIWG
+  /**
+   * factory method to create a new Model with a specified main's argc/argv-style parameters
+   * return NULL if new model cannot be initialized. Use MeCab::getLastError() obtain the
+   * cause of the errors.
+   * @return new Model object
+   * @param argc number of parameters
+   * @param argv parameter list
+   */
   static Model* create(int argc, char **argv);
+
+  /**
+   * factory method to create a new Model with a string parameter representation, i.e.,
+   * "-d /user/local/mecab/dic/ipadic -Ochasen".
+   * return NULL if new model cannot be initialized. Use MeCab::getLastError() obtain the
+   * cause of the errors.
+   * @return new Model object
+   * @param arg single string representation of the argment.
+   */
   static Model* create(const char *arg);
 #endif
 };
@@ -370,10 +553,30 @@ class MECAB_DLL_CLASS_EXTERN Model {
 class MECAB_DLL_CLASS_EXTERN Tagger {
  public:
   // New interface
+  /**
+   * handy static method.
+   * return true if lattice is parsed successfully.
+   * This function is equivalent to
+   * {
+   *   Tagger *tagger = model.createModel();
+   *   cosnt bool result = tagger->parse(lattice);
+   *   delete tagger;
+   *   return result;
+   * }
+   * @return boolean
+   */
   static bool  parse(const Model &model, Lattice *lattice);
+
+  /**
+   * parse lattice object.
+   * return true if lattice is parsed successfully.
+   * A sentence must be set to the lattice with Lattice:set_sentence object before calling this method.
+   * Parsed node object can be obtained with Lattice:bos_node.
+   * This method is thread safe.
+   * @return lattice lattice object
+   * @return boolean
+   */
   virtual bool parse(Lattice *lattice) const                = 0;
-  virtual bool parse(const char *str, Lattice *lattice) const = 0;
-  virtual bool parse(const char *str, size_t len, Lattice *lattice) const = 0;
 
   // DEPERECATED: use Lattice class
   virtual const char* parse(const char *str)                = 0;

@@ -137,9 +137,6 @@ class TaggerImpl: public Tagger {
   bool                  open(const ModelImpl &model);
 
   bool                  parse(Lattice *lattice) const;
-  bool                  parse(const char *str, Lattice *lattice) const;
-  bool                  parse(const char *str, size_t len,
-                              Lattice *lattice) const;
 
   void                  set_request_type(int request_type);
   int                   request_type() const;
@@ -508,18 +505,6 @@ bool TaggerImpl::all_morphs() const {
 
 bool TaggerImpl::parse(Lattice *lattice) const {
   return model()->viterbi()->analyze(lattice);
-}
-
-bool TaggerImpl::parse(const char *str, Lattice *lattice) const {
-  return parse(str, std::strlen(str), lattice);
-}
-
-bool TaggerImpl::parse(const char *str, size_t len, Lattice *lattice) const {
-  if (!lattice || !str || len == 0) {
-    return false;
-  }
-  lattice->set_sentence(str, len);
-  return parse(lattice);
 }
 
 const char *TaggerImpl::parse(const char *str) {

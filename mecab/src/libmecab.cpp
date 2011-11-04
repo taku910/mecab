@@ -386,10 +386,6 @@ void mecab_model_destroy(mecab_model_t *model) {
   ptr = 0;
 }
 
-int mecab_model_is_available(mecab_model_t *model) {
-  return static_cast<int>(reinterpret_cast<MeCab::Model *>(model)->is_available());
-}
-
 mecab_t *mecab_model_new_tagger(mecab_model_t *model) {
   return reinterpret_cast<mecab_t *>(reinterpret_cast<MeCab::Model *>(model)->createTagger());
 }
@@ -400,8 +396,4 @@ mecab_lattice_t *mecab_model_new_lattice(mecab_model_t *model) {
 
 const mecab_dictionary_info_t* mecab_model_dictionary_info(mecab_model_t *model) {
   return reinterpret_cast<const mecab_dictionary_info_t *>(reinterpret_cast<MeCab::Model *>(model)->dictionary_info());
-}
-
-const char *mecab_model_strerror(mecab_model_t *model) {
-  return reinterpret_cast<MeCab::Model *>(model)->what();
 }
