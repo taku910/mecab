@@ -41,7 +41,8 @@ public class test {
      tagger2.parse(lattice);
      for (int i = 0; i < 10; ++i) {
        if (lattice.next()) {
-         System.out.println(lattice.toString());
+         System.out.println("nbest:" + i + "\n" +
+                            lattice.toString());
        }
      }
   }

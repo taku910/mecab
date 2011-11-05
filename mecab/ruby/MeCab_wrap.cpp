@@ -2211,8 +2211,8 @@ SWIG_AsCharPtrAndSize(VALUE obj, char** cptr, size_t* psize, int *alloc)
 
 
 SWIGINTERN void MeCab_Lattice_set_sentence(MeCab::Lattice *self,char const *sentence){
-    // force to copy the input sentence
-    self->set_sentence(self->strdup(sentence));
+    self->add_request_type(MECAB_ALLOCATE_SENTENCE);
+    self->set_sentence(sentence);
   }
 
 SWIGINTERN int
@@ -3699,40 +3699,6 @@ fail:
 
 
 SWIGINTERN VALUE
-_wrap_Lattice_len(int argc, VALUE *argv, VALUE self) {
-  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  size_t result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Lattice const *","len", 1, self )); 
-  }
-  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
-  {
-    try {
-      result = ((MeCab::Lattice const *)arg1)->len(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  vresult = SWIG_From_size_t(static_cast< size_t >(result));
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
 _wrap_Lattice_set_Z(int argc, VALUE *argv, VALUE self) {
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
   double arg2 ;
@@ -4461,40 +4427,6 @@ fail:
 swig_class SwigClassModel;
 
 SWIGINTERN VALUE
-_wrap_Model_is_available(int argc, VALUE *argv, VALUE self) {
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  bool result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Model const *","is_available", 1, self )); 
-  }
-  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
-  {
-    try {
-      result = (bool)((MeCab::Model const *)arg1)->is_available(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  vresult = SWIG_From_bool(static_cast< bool >(result));
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
 _wrap_Model_dictionary_info(int argc, VALUE *argv, VALUE self) {
   MeCab::Model *arg1 = (MeCab::Model *) 0 ;
   void *argp1 = 0 ;
@@ -4590,40 +4522,6 @@ _wrap_Model_createLattice(int argc, VALUE *argv, VALUE self) {
     }
   }
   vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
-_wrap_Model_what(int argc, VALUE *argv, VALUE self) {
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  char *result = 0 ;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Model const *","what", 1, self )); 
-  }
-  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
-  {
-    try {
-      result = (char *)((MeCab::Model const *)arg1)->what(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  vresult = SWIG_FromCharPtr((const char *)result);
   return vresult;
 fail:
   return Qnil;
@@ -4985,120 +4883,6 @@ SWIGINTERN VALUE
 _wrap_Tagger_parse__SWIG_2(int argc, VALUE *argv, VALUE self) {
   MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
   char *arg2 = (char *) 0 ;
-  MeCab::Lattice *arg3 = (MeCab::Lattice *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int res2 ;
-  char *buf2 = 0 ;
-  int alloc2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  bool result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 2) || (argc > 2)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Tagger const *","parse", 1, self )); 
-  }
-  arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
-  res2 = SWIG_AsCharPtrAndSize(argv[0], &buf2, NULL, &alloc2);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "char const *","parse", 2, argv[0] ));
-  }
-  arg2 = reinterpret_cast< char * >(buf2);
-  res3 = SWIG_ConvertPtr(argv[1], &argp3,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "MeCab::Lattice *","parse", 3, argv[1] )); 
-  }
-  arg3 = reinterpret_cast< MeCab::Lattice * >(argp3);
-  {
-    try {
-      result = (bool)((MeCab::Tagger const *)arg1)->parse((char const *)arg2,arg3); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  vresult = SWIG_From_bool(static_cast< bool >(result));
-  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
-  return vresult;
-fail:
-  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
-_wrap_Tagger_parse__SWIG_3(int argc, VALUE *argv, VALUE self) {
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  char *arg2 = (char *) 0 ;
-  size_t arg3 ;
-  MeCab::Lattice *arg4 = (MeCab::Lattice *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int res2 ;
-  char *buf2 = 0 ;
-  int alloc2 = 0 ;
-  size_t val3 ;
-  int ecode3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  bool result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 3) || (argc > 3)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Tagger const *","parse", 1, self )); 
-  }
-  arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
-  res2 = SWIG_AsCharPtrAndSize(argv[0], &buf2, NULL, &alloc2);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "char const *","parse", 2, argv[0] ));
-  }
-  arg2 = reinterpret_cast< char * >(buf2);
-  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "size_t","parse", 3, argv[1] ));
-  } 
-  arg3 = static_cast< size_t >(val3);
-  res4 = SWIG_ConvertPtr(argv[2], &argp4,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "MeCab::Lattice *","parse", 4, argv[2] )); 
-  }
-  arg4 = reinterpret_cast< MeCab::Lattice * >(argp4);
-  {
-    try {
-      result = (bool)((MeCab::Tagger const *)arg1)->parse((char const *)arg2,arg3,arg4); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  vresult = SWIG_From_bool(static_cast< bool >(result));
-  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
-  return vresult;
-fail:
-  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
-_wrap_Tagger_parse__SWIG_4(int argc, VALUE *argv, VALUE self) {
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  char *arg2 = (char *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 ;
@@ -5142,12 +4926,12 @@ fail:
 
 SWIGINTERN VALUE _wrap_Tagger_parse(int nargs, VALUE *args, VALUE self) {
   int argc;
-  VALUE argv[5];
+  VALUE argv[3];
   int ii;
   
   argc = nargs + 1;
   argv[0] = self;
-  if (argc > 5) SWIG_fail;
+  if (argc > 3) SWIG_fail;
   for (ii = 1; (ii < argc); ++ii) {
     argv[ii] = args[ii-1];
   }
@@ -5188,59 +4972,15 @@ SWIGINTERN VALUE _wrap_Tagger_parse(int nargs, VALUE *args, VALUE self) {
       int res = SWIG_AsCharPtrAndSize(argv[1], 0, NULL, 0);
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_Tagger_parse__SWIG_4(nargs, args, self);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MeCab__Tagger, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_AsCharPtrAndSize(argv[1], 0, NULL, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
-        _v = SWIG_CheckState(res);
-        if (_v) {
-          return _wrap_Tagger_parse__SWIG_2(nargs, args, self);
-        }
-      }
-    }
-  }
-  if (argc == 4) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MeCab__Tagger, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_AsCharPtrAndSize(argv[1], 0, NULL, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        {
-          int res = SWIG_AsVal_size_t(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
-          _v = SWIG_CheckState(res);
-          if (_v) {
-            return _wrap_Tagger_parse__SWIG_3(nargs, args, self);
-          }
-        }
+        return _wrap_Tagger_parse__SWIG_2(nargs, args, self);
       }
     }
   }
   
 fail:
-  Ruby_Format_OverloadedError( argc, 5, "Tagger.parse", 
+  Ruby_Format_OverloadedError( argc, 3, "Tagger.parse", 
     "    char const * Tagger.parse(MeCab::Lattice *lattice)\n"
     "    char const * Tagger.parse(MeCab::Lattice *lattice)\n"
-    "    char const * Tagger.parse(char const *str, MeCab::Lattice *lattice)\n"
-    "    char const * Tagger.parse(char const *str, size_t len, MeCab::Lattice *lattice)\n"
     "    char const * Tagger.parse(char const *str)\n");
   
   return Qnil;
@@ -6762,7 +6502,6 @@ SWIGEXPORT void Init_MeCab(void) {
   rb_define_method(SwigClassLattice.klass, "begin_nodes", VALUEFUNC(_wrap_Lattice_begin_nodes), -1);
   rb_define_method(SwigClassLattice.klass, "sentence", VALUEFUNC(_wrap_Lattice_sentence), -1);
   rb_define_method(SwigClassLattice.klass, "size", VALUEFUNC(_wrap_Lattice_size), -1);
-  rb_define_method(SwigClassLattice.klass, "len", VALUEFUNC(_wrap_Lattice_len), -1);
   rb_define_method(SwigClassLattice.klass, "set_Z", VALUEFUNC(_wrap_Lattice_set_Z), -1);
   rb_define_method(SwigClassLattice.klass, "Z", VALUEFUNC(_wrap_Lattice_Z), -1);
   rb_define_method(SwigClassLattice.klass, "theta", VALUEFUNC(_wrap_Lattice_theta), -1);
@@ -6787,11 +6526,9 @@ SWIGEXPORT void Init_MeCab(void) {
   SWIG_TypeClientData(SWIGTYPE_p_MeCab__Model, (void *) &SwigClassModel);
   rb_define_alloc_func(SwigClassModel.klass, _wrap_Model_allocate);
   rb_define_method(SwigClassModel.klass, "initialize", VALUEFUNC(_wrap_new_Model), -1);
-  rb_define_method(SwigClassModel.klass, "is_available", VALUEFUNC(_wrap_Model_is_available), -1);
   rb_define_method(SwigClassModel.klass, "dictionary_info", VALUEFUNC(_wrap_Model_dictionary_info), -1);
   rb_define_method(SwigClassModel.klass, "createTagger", VALUEFUNC(_wrap_Model_createTagger), -1);
   rb_define_method(SwigClassModel.klass, "createLattice", VALUEFUNC(_wrap_Model_createLattice), -1);
-  rb_define_method(SwigClassModel.klass, "what", VALUEFUNC(_wrap_Model_what), -1);
   rb_define_singleton_method(SwigClassModel.klass, "version", VALUEFUNC(_wrap_Model_version), -1);
   rb_define_singleton_method(SwigClassModel.klass, "create", VALUEFUNC(_wrap_Model_create), -1);
   SwigClassModel.mark = 0;

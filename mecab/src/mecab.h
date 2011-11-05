@@ -212,13 +212,10 @@ extern "C" {
   MECAB_DLL_EXTERN mecab_node_t   **mecab_lattice_get_end_nodes(mecab_lattice_t *lattice);
   MECAB_DLL_EXTERN mecab_node_t    *mecab_lattice_get_begin_node(mecab_lattice_t *lattice, size_t pos);
   MECAB_DLL_EXTERN mecab_node_t    *mecab_lattice_get_end_node(mecab_lattice_t *lattice, size_t pos);
-  MECAB_DLL_EXTERN char            *mecab_lattice_strdup(mecab_lattice_t *lattice, const char *str);
-  MECAB_DLL_EXTERN char            *mecab_lattice_alloc(mecab_lattice_t *lattice, size_t len);
   MECAB_DLL_EXTERN const char      *mecab_lattice_get_sentence(mecab_lattice_t *lattice);
   MECAB_DLL_EXTERN void             mecab_lattice_set_sentence(mecab_lattice_t *lattice, const char *sentence);
   MECAB_DLL_EXTERN void             mecab_lattice_get_sentence2(mecab_lattice_t *lattice, const char *sentence, size_t len);
   MECAB_DLL_EXTERN size_t           mecab_lattice_get_size(mecab_lattice_t *lattice);
-  MECAB_DLL_EXTERN size_t           mecab_lattice_get_len(mecab_lattice_t *lattice);
   MECAB_DLL_EXTERN double           mecab_lattice_get_z(mecab_lattice_t *lattice);
   MECAB_DLL_EXTERN void             mecab_lattice_set_z(mecab_lattice_t *lattice, double Z);
   MECAB_DLL_EXTERN double           mecab_lattice_get_theta(mecab_lattice_t *lattice);
@@ -280,6 +277,11 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
    * Clear all internal lattice data.
    */
   virtual void clear()              = 0;
+
+  /**
+   * Return true if result object is available.
+   * @return boolean
+   */
   virtual bool is_available() const = 0;
 
   /**
@@ -296,24 +298,14 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
 
 #ifndef SWIG
   /**
-   * This method is internally used.
+   * This method is used internally.
    */
   virtual Node **begin_nodes() const          = 0;
 
   /**
-   * This method is internally used.
+   * This method is used internally.
    */
   virtual Node **end_nodes() const            = 0;
-
-  /**
-   * This method is internally used.
-   */
-  virtual char *strdup(const char *str)       = 0;
-
-  /**
-   * This method is internally used.
-   */
-  virtual char *alloc(size_t len)             = 0;
 #endif
 
   /**
@@ -336,7 +328,6 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
    */
   virtual const char *sentence() const = 0;
 
-
   /**
    * Set sentence. This method does not take the ownership of the object.
    * @param sentence sentence
@@ -358,19 +349,18 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
    */
   virtual size_t size() const                                 = 0;
 
-  /**
-   * Return sentence size, the same as size().
-   * @return sentence size
-   */
-  virtual size_t len()  const                                 = 0;
-
   virtual void   set_Z(double Z) = 0;
   virtual double Z() const = 0;
 
   virtual float theta() const          = 0;
   virtual void  set_theta(float theta) = 0;
 
-  // nbest;
+  /**
+   * Obtain next-best result. The internal linked list structure is updated.
+   * You should set MECAB_NBEST reques_type in advance.
+   * Return false if no more results are available or request_type is invalid.
+   * @return boolean
+   */
   virtual bool next() = 0;
 
   /**
@@ -405,12 +395,12 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
 
 #ifndef SWIG
   /**
-   * This method is internally used.
+   * This method is used internally.
    */
   virtual Allocator<Node, Path> *allocator() const = 0;
 
   /**
-   * This method is internally used.
+   * This method is used internally.
    */
   virtual NBestGenerator *nbest_generator() = 0;
 #endif
@@ -653,15 +643,82 @@ class MECAB_DLL_CLASS_EXTERN Tagger {
   virtual const char* formatNode(const Node *node)          = 0;
 
 #ifndef SWIG
+  /**
+   * The same as parse() method, but input length and output buffer are passed.
+   * Return parsed result as string. The result pointer is the same as |ostr|.
+   * Return NULL, if parsed result string cannot be stored within |olen| bytes.
+   * @param str sentence
+   * @param len sentence length
+   * @param ostr output buffer
+   * @param olen output buffer length
+   * @return parsed result
+   */
   virtual const char* parse(const char *str, size_t len, char *ostr, size_t olen) = 0;
-  virtual const char* parse(const char *str, size_t len)                          = 0;
-  virtual const Node* parseToNode(const char *str, size_t len)                    = 0;
-  virtual const char* parseNBest(size_t N, const char *str, size_t len)           = 0;
-  virtual bool  parseNBestInit(const char *str, size_t len)                       = 0;
 
+  /**
+   * The same as parse() method, but input length can be passed.
+   * @param str sentence
+   * @param len sentence length
+   * @return parsed result
+   */
+  virtual const char* parse(const char *str, size_t len)                          = 0;
+
+  /**
+   * The same as parseToNode(), but input lenth can be passed.
+   * @param str sentence
+   * @param len sentence length
+   * @return node object
+   */
+  virtual const Node* parseToNode(const char *str, size_t len)                    = 0;
+
+  /**
+   * The same as parseNBest(), but input length can be passed.
+   * @param N how many results you want to obtain
+   * @param str sentence
+   * @param len sentence length
+   * @return parsed result
+   */
+  virtual const char* parseNBest(size_t N, const char *str, size_t len)           = 0;
+
+  /**
+   * The same as parseNBestInit(), but input length can be passed.
+   * @param str sentence
+   * @param len sentence length
+   * @return boolean
+   * @return parsed result
+   */
+  virtual bool  parseNBestInit(const char *str, size_t len)                  = 0;
+
+  /**
+   * The same as next(), but output buffer can be passed.
+   * Return NULL if more than |olen| buffer is required to store output string.
+   * @param ostr output buffer
+   * @param olen output buffer length
+   * @return parsed result
+   */
   virtual const char* next(char *ostr , size_t olen)                        = 0;
+
+  /**
+   * The same as parseNBest(), but input length and output buffer can be passed.
+   * Return NULL if more than |olen| buffer is required to store output string.
+   * @param N how many results you want to obtain
+   * @param str input sentence
+   * @param len input sentence length
+   * @param ostr output buffer
+   * @param olen output buffer length
+   * @return parsed result
+   */
   virtual const char* parseNBest(size_t N, const char *str,
                                  size_t len, char *ostr, size_t olen)       = 0;
+
+  /**
+   * The same as formatNode(), but output buffer can be passed.
+   * Return NULL if more than |olen| buffer is required to store output string.
+   * @param node node object
+   * @param ostr output buffer
+   * @param olen output buffer length
+   * @return parsed result
+   */
   virtual const char* formatNode(const Node *node, char *ostr, size_t olen) = 0;
 #endif
 

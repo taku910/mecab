@@ -38,6 +38,19 @@ class Allocator {
     return results_.get();
   }
 
+  char *alloc(size_t size) {
+    if (!char_freelist_.get()) {
+      char_freelist_.reset(new ChunkFreeList<char>(BUF_SIZE));
+    }
+    return char_freelist_->alloc(size + 1);
+  }
+
+  char *strdup(const char *str, size_t size) {
+    char *n = alloc(size + 1);
+    std::strncpy(n, str, size + 1);
+    return n;
+  }
+
   size_t results_size() const {
     return kResultsSize;
   }
@@ -48,12 +61,16 @@ class Allocator {
     if (path_freelist_.get()) {
       path_freelist_->free();
     }
+    if (char_freelist_.get()) {
+      char_freelist_->free();
+    }
   }
 
   Allocator()
       : id_(0),
         node_freelist_(new FreeList<N>(NODE_FREELIST_SIZE)),
         path_freelist_(0),
+        char_freelist_(0),
         results_(new Dictionary::result_type[kResultsSize]) {}
   virtual ~Allocator() {}
 
@@ -62,6 +79,7 @@ class Allocator {
   size_t id_;
   scoped_ptr<FreeList<N> > node_freelist_;
   scoped_ptr<FreeList<P> > path_freelist_;
+  scoped_ptr<ChunkFreeList<char>  >  char_freelist_;
   scoped_array<Dictionary::result_type>  results_;
 };
 

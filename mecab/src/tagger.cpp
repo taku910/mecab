@@ -231,7 +231,6 @@ class LatticeImpl : public Lattice {
   void set_sentence(const char *sentence);
   void set_sentence(const char *sentence, size_t len);
   size_t size() const { return size_; }
-  size_t len()  const { return size_; }
 
   void set_Z(double Z) { Z_ = Z; }
   double Z() const { return Z_; }
@@ -253,9 +252,6 @@ class LatticeImpl : public Lattice {
   void remove_request_type(int request_type) {
     request_type_ &= ~request_type;
   }
-
-  char *alloc(size_t size);
-  char *strdup(const char *str);
 
   Allocator<Node, Path> *allocator() const {
     return allocator_.get();
@@ -293,7 +289,6 @@ class LatticeImpl : public Lattice {
   std::vector<Node *>         begin_nodes_;
   const Writer               *writer_;
   scoped_ptr<StringBuffer>    ostrs_;
-  scoped_ptr<ChunkFreeList<char>  >  char_freelist_;
   scoped_ptr<Allocator<Node, Path> > allocator_;
   scoped_ptr<NBestGenerator>  nbest_generator_;
 
@@ -638,7 +633,6 @@ LatticeImpl::LatticeImpl(const Writer *writer)
       request_type_(MECAB_ONE_BEST),
       writer_(writer),
       ostrs_(0),
-      char_freelist_(0),
       allocator_(new Allocator<Node, Path>),
       nbest_generator_(0) {
   begin_nodes_.reserve(MIN_INPUT_BUFFER_SIZE);
@@ -647,25 +641,8 @@ LatticeImpl::LatticeImpl(const Writer *writer)
 
 LatticeImpl::~LatticeImpl() {}
 
-char *LatticeImpl::alloc(size_t size) {
-  if (!char_freelist_.get()) {
-    char_freelist_.reset(new ChunkFreeList<char>(BUF_SIZE));
-  }
-  return char_freelist_->alloc(size + 1);
-}
-
-char *LatticeImpl::strdup(const char *str) {
-  const size_t size = std::strlen(str);
-  char *n = alloc(size + 1);
-  std::strncpy(n, str, size + 1);
-  return n;
-}
-
 void LatticeImpl::clear() {
   allocator_->free();
-  if (char_freelist_.get()) {
-    char_freelist_->free();
-  }
   if (ostrs_.get()) {
     ostrs_->clear();
   }
@@ -684,7 +661,15 @@ void LatticeImpl::set_sentence(const char *sentence, size_t len) {
   clear();
   end_nodes_.resize(len + 4);
   begin_nodes_.resize(len + 4);
-  sentence_ = sentence;
+
+  if (has_request_type(MECAB_ALLOCATE_SENTENCE) ||
+      has_request_type(MECAB_PARTIAL)) {
+    char *new_sentence = allocator()->strdup(sentence, len);
+    sentence_ = new_sentence;
+  } else {
+    sentence_ = sentence;
+  }
+
   size_ = len;
   std::memset(&end_nodes_[0],   0,
               sizeof(end_nodes_[0]) * (len + 4));

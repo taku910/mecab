@@ -92,12 +92,6 @@ public class Lattice : IDisposable {
     return ret;
   }
 
-  public virtual uint len() {
-    uint ret = MeCabPINVOKE.Lattice_len(swigCPtr);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public virtual void set_Z(double Z) {
     MeCabPINVOKE.Lattice_set_Z(swigCPtr, Z);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();

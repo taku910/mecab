@@ -43,16 +43,8 @@ public class Tagger {
     return MeCabJNI.Tagger_parse__SWIG_1(swigCPtr, this, Lattice.getCPtr(lattice), lattice);
   }
 
-  public boolean parse(String str, Lattice lattice) {
-    return MeCabJNI.Tagger_parse__SWIG_2(swigCPtr, this, str, Lattice.getCPtr(lattice), lattice);
-  }
-
-  public boolean parse(String str, long len, Lattice lattice) {
-    return MeCabJNI.Tagger_parse__SWIG_3(swigCPtr, this, str, len, Lattice.getCPtr(lattice), lattice);
-  }
-
   public String parse(String str) {
-    return MeCabJNI.Tagger_parse__SWIG_4(swigCPtr, this, str);
+    return MeCabJNI.Tagger_parse__SWIG_2(swigCPtr, this, str);
   }
 
   public Node parseToNode(String str) {

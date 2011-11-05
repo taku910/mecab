@@ -328,8 +328,8 @@ char* mecab_node_t_surface_get(mecab_node_t *n) {
 }
 
 SWIGINTERN void MeCab_Lattice_set_sentence(MeCab::Lattice *self,char const *sentence){
-    // force to copy the input sentence
-    self->set_sentence(self->strdup(sentence));
+    self->add_request_type(MECAB_ALLOCATE_SENTENCE);
+    self->set_sentence(sentence);
   }
 SWIGINTERN char const *MeCab_Tagger_parseToString__SWIG_0(MeCab::Tagger *self,char const *str,size_t length=0){
      return self->parse(str, length);
@@ -1487,35 +1487,6 @@ SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1size(JNIEnv *je
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1len(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
-  size_t result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Lattice **)&jarg1; 
-  {
-    try {
-      result = ((MeCab::Lattice const *)arg1)->len(); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  jresult = (jlong)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1Z(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
   double arg2 ;
@@ -2059,35 +2030,6 @@ SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1sentence(JN
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1is_1available(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jboolean jresult = 0 ;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  bool result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Model **)&jarg1; 
-  {
-    try {
-      result = (bool)((MeCab::Model const *)arg1)->is_available(); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  jresult = (jboolean)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1dictionary_1info(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   MeCab::Model *arg1 = (MeCab::Model *) 0 ;
@@ -2171,35 +2113,6 @@ SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1createLattice(JNI
     }
   }
   *(MeCab::Lattice **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jstring JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1what(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jstring jresult = 0 ;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  char *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Model **)&jarg1; 
-  {
-    try {
-      result = (char *)((MeCab::Model const *)arg1)->what(); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  if (result) jresult = jenv->NewStringUTF((const char *)result);
   return jresult;
 }
 
@@ -2444,87 +2357,7 @@ SWIGEXPORT jboolean JNICALL Java_org_chasen_mecab_MeCabJNI_Tagger_1parse_1_1SWIG
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_org_chasen_mecab_MeCabJNI_Tagger_1parse_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jobject jarg3_) {
-  jboolean jresult = 0 ;
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  char *arg2 = (char *) 0 ;
-  MeCab::Lattice *arg3 = (MeCab::Lattice *) 0 ;
-  bool result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg3_;
-  arg1 = *(MeCab::Tagger **)&jarg1; 
-  arg2 = 0;
-  if (jarg2) {
-    arg2 = (char *)jenv->GetStringUTFChars(jarg2, 0);
-    if (!arg2) return 0;
-  }
-  arg3 = *(MeCab::Lattice **)&jarg3; 
-  {
-    try {
-      result = (bool)((MeCab::Tagger const *)arg1)->parse((char const *)arg2,arg3); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  jresult = (jboolean)result; 
-  if (arg2) jenv->ReleaseStringUTFChars(jarg2, (const char *)arg2);
-  return jresult;
-}
-
-
-SWIGEXPORT jboolean JNICALL Java_org_chasen_mecab_MeCabJNI_Tagger_1parse_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jobject jarg4_) {
-  jboolean jresult = 0 ;
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  char *arg2 = (char *) 0 ;
-  size_t arg3 ;
-  MeCab::Lattice *arg4 = (MeCab::Lattice *) 0 ;
-  bool result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg4_;
-  arg1 = *(MeCab::Tagger **)&jarg1; 
-  arg2 = 0;
-  if (jarg2) {
-    arg2 = (char *)jenv->GetStringUTFChars(jarg2, 0);
-    if (!arg2) return 0;
-  }
-  arg3 = (size_t)jarg3; 
-  arg4 = *(MeCab::Lattice **)&jarg4; 
-  {
-    try {
-      result = (bool)((MeCab::Tagger const *)arg1)->parse((char const *)arg2,arg3,arg4); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  jresult = (jboolean)result; 
-  if (arg2) jenv->ReleaseStringUTFChars(jarg2, (const char *)arg2);
-  return jresult;
-}
-
-
-SWIGEXPORT jstring JNICALL Java_org_chasen_mecab_MeCabJNI_Tagger_1parse_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT jstring JNICALL Java_org_chasen_mecab_MeCabJNI_Tagger_1parse_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jstring jresult = 0 ;
   MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
   char *arg2 = (char *) 0 ;

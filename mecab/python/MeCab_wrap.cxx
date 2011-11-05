@@ -3264,8 +3264,8 @@ SWIG_AsCharPtrAndSize(PyObject *obj, char** cptr, size_t* psize, int *alloc)
 
 
 SWIGINTERN void MeCab_Lattice_set_sentence(MeCab::Lattice *self,char const *sentence){
-    // force to copy the input sentence
-    self->set_sentence(self->strdup(sentence));
+    self->add_request_type(MECAB_ALLOCATE_SENTENCE);
+    self->set_sentence(sentence);
   }
 
 SWIGINTERN int
@@ -4656,38 +4656,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Lattice_len(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  size_t result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Lattice_len",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_len" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
-  }
-  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
-  {
-    try {
-      result = ((MeCab::Lattice const *)arg1)->len(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_Lattice_set_Z(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
@@ -5416,38 +5384,6 @@ SWIGINTERN PyObject *Lattice_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObje
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *_wrap_Model_is_available(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Model_is_available",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_is_available" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
-  }
-  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
-  {
-    try {
-      result = (bool)((MeCab::Model const *)arg1)->is_available(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_Model_dictionary_info(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   MeCab::Model *arg1 = (MeCab::Model *) 0 ;
@@ -5538,38 +5474,6 @@ SWIGINTERN PyObject *_wrap_Model_createLattice(PyObject *SWIGUNUSEDPARM(self), P
     }
   }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Model_what(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  char *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Model_what",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_what" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
-  }
-  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
-  {
-    try {
-      result = (char *)((MeCab::Model const *)arg1)->what(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  resultobj = SWIG_FromCharPtr((const char *)result);
   return resultobj;
 fail:
   return NULL;
@@ -5934,121 +5838,6 @@ SWIGINTERN PyObject *_wrap_Tagger_parse__SWIG_2(PyObject *SWIGUNUSEDPARM(self), 
   PyObject *resultobj = 0;
   MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
   char *arg2 = (char *) 0 ;
-  MeCab::Lattice *arg3 = (MeCab::Lattice *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int res2 ;
-  char *buf2 = 0 ;
-  int alloc2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:Tagger_parse",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_parse" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
-  }
-  arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
-  res2 = SWIG_AsCharPtrAndSize(obj1, &buf2, NULL, &alloc2);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tagger_parse" "', argument " "2"" of type '" "char const *""'");
-  }
-  arg2 = reinterpret_cast< char * >(buf2);
-  res3 = SWIG_ConvertPtr(obj2, &argp3,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Tagger_parse" "', argument " "3"" of type '" "MeCab::Lattice *""'"); 
-  }
-  arg3 = reinterpret_cast< MeCab::Lattice * >(argp3);
-  {
-    try {
-      result = (bool)((MeCab::Tagger const *)arg1)->parse((char const *)arg2,arg3); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
-  return resultobj;
-fail:
-  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Tagger_parse__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  char *arg2 = (char *) 0 ;
-  size_t arg3 ;
-  MeCab::Lattice *arg4 = (MeCab::Lattice *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int res2 ;
-  char *buf2 = 0 ;
-  int alloc2 = 0 ;
-  size_t val3 ;
-  int ecode3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  PyObject * obj3 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOOO:Tagger_parse",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_parse" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
-  }
-  arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
-  res2 = SWIG_AsCharPtrAndSize(obj1, &buf2, NULL, &alloc2);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tagger_parse" "', argument " "2"" of type '" "char const *""'");
-  }
-  arg2 = reinterpret_cast< char * >(buf2);
-  ecode3 = SWIG_AsVal_size_t(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Tagger_parse" "', argument " "3"" of type '" "size_t""'");
-  } 
-  arg3 = static_cast< size_t >(val3);
-  res4 = SWIG_ConvertPtr(obj3, &argp4,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "Tagger_parse" "', argument " "4"" of type '" "MeCab::Lattice *""'"); 
-  }
-  arg4 = reinterpret_cast< MeCab::Lattice * >(argp4);
-  {
-    try {
-      result = (bool)((MeCab::Tagger const *)arg1)->parse((char const *)arg2,arg3,arg4); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
-  return resultobj;
-fail:
-  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Tagger_parse__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  char *arg2 = (char *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 ;
@@ -6091,12 +5880,12 @@ fail:
 
 SWIGINTERN PyObject *_wrap_Tagger_parse(PyObject *self, PyObject *args) {
   int argc;
-  PyObject *argv[5];
+  PyObject *argv[3];
   int ii;
   
   if (!PyTuple_Check(args)) SWIG_fail;
   argc = (int)PyObject_Length(args);
-  for (ii = 0; (ii < argc) && (ii < 4); ii++) {
+  for (ii = 0; (ii < argc) && (ii < 2); ii++) {
     argv[ii] = PyTuple_GET_ITEM(args,ii);
   }
   if (argc == 2) {
@@ -6135,49 +5924,7 @@ SWIGINTERN PyObject *_wrap_Tagger_parse(PyObject *self, PyObject *args) {
       int res = SWIG_AsCharPtrAndSize(argv[1], 0, NULL, 0);
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_Tagger_parse__SWIG_4(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MeCab__Tagger, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_AsCharPtrAndSize(argv[1], 0, NULL, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
-        _v = SWIG_CheckState(res);
-        if (_v) {
-          return _wrap_Tagger_parse__SWIG_2(self, args);
-        }
-      }
-    }
-  }
-  if (argc == 4) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MeCab__Tagger, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_AsCharPtrAndSize(argv[1], 0, NULL, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        {
-          int res = SWIG_AsVal_size_t(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          void *vptr = 0;
-          int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_MeCab__Lattice, 0);
-          _v = SWIG_CheckState(res);
-          if (_v) {
-            return _wrap_Tagger_parse__SWIG_3(self, args);
-          }
-        }
+        return _wrap_Tagger_parse__SWIG_2(self, args);
       }
     }
   }
@@ -6187,8 +5934,6 @@ fail:
     "  Possible C/C++ prototypes are:\n"
     "    parse(MeCab::Model const &,MeCab::Lattice *)\n"
     "    parse(MeCab::Tagger const *,MeCab::Lattice *)\n"
-    "    parse(MeCab::Tagger const *,char const *,MeCab::Lattice *)\n"
-    "    parse(MeCab::Tagger const *,char const *,size_t,MeCab::Lattice *)\n"
     "    parse(MeCab::Tagger *,char const *)\n");
   return NULL;
 }
@@ -7343,7 +7088,6 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Lattice_begin_nodes", _wrap_Lattice_begin_nodes, METH_VARARGS, NULL},
 	 { (char *)"Lattice_sentence", _wrap_Lattice_sentence, METH_VARARGS, NULL},
 	 { (char *)"Lattice_size", _wrap_Lattice_size, METH_VARARGS, NULL},
-	 { (char *)"Lattice_len", _wrap_Lattice_len, METH_VARARGS, NULL},
 	 { (char *)"Lattice_set_Z", _wrap_Lattice_set_Z, METH_VARARGS, NULL},
 	 { (char *)"Lattice_Z", _wrap_Lattice_Z, METH_VARARGS, NULL},
 	 { (char *)"Lattice_theta", _wrap_Lattice_theta, METH_VARARGS, NULL},
@@ -7363,11 +7107,9 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"new_Lattice", _wrap_new_Lattice, METH_VARARGS, NULL},
 	 { (char *)"Lattice_set_sentence", _wrap_Lattice_set_sentence, METH_VARARGS, NULL},
 	 { (char *)"Lattice_swigregister", Lattice_swigregister, METH_VARARGS, NULL},
-	 { (char *)"Model_is_available", _wrap_Model_is_available, METH_VARARGS, NULL},
 	 { (char *)"Model_dictionary_info", _wrap_Model_dictionary_info, METH_VARARGS, NULL},
 	 { (char *)"Model_createTagger", _wrap_Model_createTagger, METH_VARARGS, NULL},
 	 { (char *)"Model_createLattice", _wrap_Model_createLattice, METH_VARARGS, NULL},
-	 { (char *)"Model_what", _wrap_Model_what, METH_VARARGS, NULL},
 	 { (char *)"Model_version", _wrap_Model_version, METH_VARARGS, NULL},
 	 { (char *)"delete_Model", _wrap_delete_Model, METH_VARARGS, NULL},
 	 { (char *)"Model_create", _wrap_Model_create, METH_VARARGS, NULL},

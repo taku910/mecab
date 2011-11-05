@@ -73,13 +73,21 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a2fc2b898f391b5c795d900e1bf21f4bb">formatNode</a> (const <a class="el" href="structmecab__node__t.html">Node</a> *node)=0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return formatted node object.  <a href="#a2fc2b898f391b5c795d900e1bf21f4bb"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a5b57bcdeb579b075caa0413d6d8baf97">parse</a> (const char *str, size_t len, char *ostr, size_t olen)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#a03c06efdb260ca0b2553f6fb1a3820f4" title="Handy static method.">parse()</a> method, but input length and output buffer are passed.  <a href="#a5b57bcdeb579b075caa0413d6d8baf97"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#ab0651bf5f61f01f5cda44b02d9c95610">parse</a> (const char *str, size_t len)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#a03c06efdb260ca0b2553f6fb1a3820f4" title="Handy static method.">parse()</a> method, but input length can be passed.  <a href="#ab0651bf5f61f01f5cda44b02d9c95610"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="structmecab__node__t.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a897b4c9d4d442ca71748793a19c5635b">parseToNode</a> (const char *str, size_t len)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#ae657b7c7bdf54eee9d79b6fde3b35277" title="Parse given sentence and return Node object.">parseToNode()</a>, but input lenth can be passed.  <a href="#a897b4c9d4d442ca71748793a19c5635b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a34652ace8ecd1348608e37ee5f3580cf">parseNBest</a> (size_t N, const char *str, size_t len)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#afd166672c71db00171199e0788b06e1d" title="Parse given sentence and obtain N-best results as a string format.">parseNBest()</a>, but input length can be passed.  <a href="#a34652ace8ecd1348608e37ee5f3580cf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#ad5c4e55a4dd12136ee062acdc1ce7419">parseNBestInit</a> (const char *str, size_t len)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#afd166672c71db00171199e0788b06e1d" title="Parse given sentence and obtain N-best results as a string format.">parseNBest()</a>, but input length can be passed.  <a href="#ad5c4e55a4dd12136ee062acdc1ce7419"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a4e59e0ca99f04b422094d4c616799e45">next</a> (char *ostr, size_t olen)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#ac5e73a7e29ad1611f1c4182065bb53a5" title="Return next-best parsed result.">next()</a>, but output buffer can be passed.  <a href="#a4e59e0ca99f04b422094d4c616799e45"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a12f393c2eb70d426b7614e17aad78590">parseNBest</a> (size_t N, const char *str, size_t len, char *ostr, size_t olen)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#afd166672c71db00171199e0788b06e1d" title="Parse given sentence and obtain N-best results as a string format.">parseNBest()</a>, but input length and output buffer can be passed.  <a href="#a12f393c2eb70d426b7614e17aad78590"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a9d9a6db4a1d821824a50456f0e7f6db3">formatNode</a> (const <a class="el" href="structmecab__node__t.html">Node</a> *node, char *ostr, size_t olen)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as parseNode(), but output buffer can be passed.  <a href="#a9d9a6db4a1d821824a50456f0e7f6db3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#aa320c5a940cf6208b4ee4734d14dd805">set_request_type</a> (int request_type)=0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set request type.  <a href="#aa320c5a940cf6208b4ee4734d14dd805"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#ac0cbc3fb68436e9952ca526a83a87c59">request_type</a> () const =0</td></tr>
@@ -267,6 +275,18 @@ Static Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>The same as parseNode(), but output buffer can be passed. </p>
+<p>Return NULL if more than |olen| buffer is required to store output string. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td>node object </td></tr>
+    <tr><td class="paramname">ostr</td><td>output buffer </td></tr>
+    <tr><td class="paramname">olen</td><td>output buffer length </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>parsed result </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="a2fc2b898f391b5c795d900e1bf21f4bb"></a><!-- doxytag: member="MeCab::Tagger::formatNode" ref="a2fc2b898f391b5c795d900e1bf21f4bb" args="(const Node *node)=0" -->
@@ -361,6 +381,17 @@ Static Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>The same as <a class="el" href="classMeCab_1_1Tagger.html#ac5e73a7e29ad1611f1c4182065bb53a5" title="Return next-best parsed result.">next()</a>, but output buffer can be passed. </p>
+<p>Return NULL if more than |olen| buffer is required to store output string. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ostr</td><td>output buffer </td></tr>
+    <tr><td class="paramname">olen</td><td>output buffer length </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>parsed result </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="afcec9edad21189e076a92a5fa371f8b6"></a><!-- doxytag: member="MeCab::Tagger::nextNode" ref="afcec9edad21189e076a92a5fa371f8b6" args="()=0" -->
@@ -443,6 +474,19 @@ boolean </dd></dl>
 </div>
 <div class="memdoc">
 
+<p>The same as <a class="el" href="classMeCab_1_1Tagger.html#a03c06efdb260ca0b2553f6fb1a3820f4" title="Handy static method.">parse()</a> method, but input length and output buffer are passed. </p>
+<p>Return parsed result as string. The result pointer is the same as |ostr|. Return NULL, if parsed result string cannot be stored within |olen| bytes. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>sentence </td></tr>
+    <tr><td class="paramname">len</td><td>sentence length </td></tr>
+    <tr><td class="paramname">ostr</td><td>output buffer </td></tr>
+    <tr><td class="paramname">olen</td><td>output buffer length </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>parsed result </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="ab0651bf5f61f01f5cda44b02d9c95610"></a><!-- doxytag: member="MeCab::Tagger::parse" ref="ab0651bf5f61f01f5cda44b02d9c95610" args="(const char *str, size_t len)=0" -->
@@ -469,6 +513,16 @@ boolean </dd></dl>
       </table>
 </div>
 <div class="memdoc">
+
+<p>The same as <a class="el" href="classMeCab_1_1Tagger.html#a03c06efdb260ca0b2553f6fb1a3820f4" title="Handy static method.">parse()</a> method, but input length can be passed. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>sentence </td></tr>
+    <tr><td class="paramname">len</td><td>sentence length </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>parsed result </dd></dl>
 
 </div>
 </div>
@@ -573,6 +627,20 @@ boolean </dd></dl>
 </div>
 <div class="memdoc">
 
+<p>The same as <a class="el" href="classMeCab_1_1Tagger.html#afd166672c71db00171199e0788b06e1d" title="Parse given sentence and obtain N-best results as a string format.">parseNBest()</a>, but input length and output buffer can be passed. </p>
+<p>Return NULL if more than |olen| buffer is required to store output string. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">N</td><td>how many results you want to obtain </td></tr>
+    <tr><td class="paramname">str</td><td>input sentence </td></tr>
+    <tr><td class="paramname">len</td><td>input sentence length </td></tr>
+    <tr><td class="paramname">ostr</td><td>output buffer </td></tr>
+    <tr><td class="paramname">olen</td><td>output buffer length </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>parsed result </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="afd166672c71db00171199e0788b06e1d"></a><!-- doxytag: member="MeCab::Tagger::parseNBest" ref="afd166672c71db00171199e0788b06e1d" args="(size_t N, const char *str)=0" -->
@@ -644,6 +712,17 @@ boolean </dd></dl>
 </div>
 <div class="memdoc">
 
+<p>The same as <a class="el" href="classMeCab_1_1Tagger.html#afd166672c71db00171199e0788b06e1d" title="Parse given sentence and obtain N-best results as a string format.">parseNBest()</a>, but input length can be passed. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">N</td><td>how many results you want to obtain </td></tr>
+    <tr><td class="paramname">str</td><td>sentence </td></tr>
+    <tr><td class="paramname">len</td><td>sentence length </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>parsed result </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="aa52ae90664736f2e7caa5f9e7cc152a4"></a><!-- doxytag: member="MeCab::Tagger::parseNBestInit" ref="aa52ae90664736f2e7caa5f9e7cc152a4" args="(const char *str)=0" -->
@@ -698,6 +777,18 @@ boolean </dd></dl>
 </div>
 <div class="memdoc">
 
+<p>The same as <a class="el" href="classMeCab_1_1Tagger.html#afd166672c71db00171199e0788b06e1d" title="Parse given sentence and obtain N-best results as a string format.">parseNBest()</a>, but input length can be passed. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>sentence </td></tr>
+    <tr><td class="paramname">len</td><td>sentence length </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>boolean </dd>
+<dd>
+parsed result </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="ae657b7c7bdf54eee9d79b6fde3b35277"></a><!-- doxytag: member="MeCab::Tagger::parseToNode" ref="ae657b7c7bdf54eee9d79b6fde3b35277" args="(const char *str)=0" -->
@@ -751,6 +842,16 @@ boolean </dd></dl>
       </table>
 </div>
 <div class="memdoc">
+
+<p>The same as <a class="el" href="classMeCab_1_1Tagger.html#ae657b7c7bdf54eee9d79b6fde3b35277" title="Parse given sentence and return Node object.">parseToNode()</a>, but input lenth can be passed. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>sentence </td></tr>
+    <tr><td class="paramname">len</td><td>sentence length </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>node object </dd></dl>
 
 </div>
 </div>
@@ -973,7 +1074,7 @@ boolean </dd></dl>
 <li>/home/taku/mecab/mecab/src/<a class="el" href="mecab_8h_source.html">mecab.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Nov 5 2011 03:01:09 for MeCab by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Nov 6 2011 02:51:12 for MeCab by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

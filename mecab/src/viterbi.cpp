@@ -84,12 +84,6 @@ bool Viterbi::analyze(Lattice *lattice) const {
     return false;
   }
 
-  if (lattice->has_request_type(MECAB_ALLOCATE_SENTENCE) ||
-      lattice->has_request_type(MECAB_PARTIAL)) {
-    const char *copied_sentence = lattice->strdup(lattice->sentence());
-    lattice->set_sentence(copied_sentence);
-  }
-
   if (!initPartial(lattice)) {
     return false;
   }
@@ -224,7 +218,11 @@ bool Viterbi::initPartial(Lattice *lattice) const {
   if (!lattice->has_request_type(MECAB_PARTIAL)) {
     return true;
   }
-  char *str = lattice->strdup(lattice->sentence());
+
+  Allocator<Node, Path> *allocator = lattice->allocator();
+  char *str = allocator->strdup(lattice->sentence(),
+                                lattice->size());
+
   std::vector<char *> lines;
   const size_t lsize = tokenize(str, "\n",
                                 std::back_inserter(lines), 0xffff);
@@ -234,7 +232,7 @@ bool Viterbi::initPartial(Lattice *lattice) const {
   }
 
   char* column[2];
-  StringBuffer os(lattice->alloc(lattice->size() + 1),
+  StringBuffer os(allocator->alloc(lattice->size() + 1),
                   lattice->size() + 1);
   os << ' ';
 
@@ -262,7 +260,6 @@ bool Viterbi::initPartial(Lattice *lattice) const {
 
   pos = 1;
   Node **begin_node_list = lattice->begin_nodes();
-  Allocator<Node, Path> *allocator = lattice->allocator();
 
   for (size_t i = 0; i < tokens.size(); ++i) {
     const char *surface = tokens[i].first;

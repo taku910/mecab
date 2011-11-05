@@ -228,7 +228,6 @@ class Lattice(_object):
     def begin_nodes(self, *args): return _MeCab.Lattice_begin_nodes(self, *args)
     def sentence(self): return _MeCab.Lattice_sentence(self)
     def size(self): return _MeCab.Lattice_size(self)
-    def len(self): return _MeCab.Lattice_len(self)
     def set_Z(self, *args): return _MeCab.Lattice_set_Z(self, *args)
     def Z(self): return _MeCab.Lattice_Z(self)
     def theta(self): return _MeCab.Lattice_theta(self)
@@ -265,11 +264,9 @@ class Model(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Model, name)
     __repr__ = _swig_repr
-    def is_available(self): return _MeCab.Model_is_available(self)
     def dictionary_info(self): return _MeCab.Model_dictionary_info(self)
     def createTagger(self): return _MeCab.Model_createTagger(self)
     def createLattice(self): return _MeCab.Model_createLattice(self)
-    def what(self): return _MeCab.Model_what(self)
     __swig_getmethods__["version"] = lambda x: _MeCab.Model_version
     if _newclass:version = staticmethod(_MeCab.Model_version)
     __swig_destroy__ = _MeCab.delete_Model

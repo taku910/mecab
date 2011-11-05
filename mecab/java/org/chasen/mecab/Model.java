@@ -35,10 +35,6 @@ public class Model {
     }
   }
 
-  public boolean is_available() {
-    return MeCabJNI.Model_is_available(swigCPtr, this);
-  }
-
   public DictionaryInfo dictionary_info() {
     long cPtr = MeCabJNI.Model_dictionary_info(swigCPtr, this);
     return (cPtr == 0) ? null : new DictionaryInfo(cPtr, false);
@@ -52,10 +48,6 @@ public class Model {
   public Lattice createLattice() {
     long cPtr = MeCabJNI.Model_createLattice(swigCPtr, this);
     return (cPtr == 0) ? null : new Lattice(cPtr, false);
-  }
-
-  public String what() {
-    return MeCabJNI.Model_what(swigCPtr, this);
   }
 
   public static String version() {

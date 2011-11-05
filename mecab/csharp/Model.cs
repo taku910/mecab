@@ -41,12 +41,6 @@ public class Model : IDisposable {
     }
   }
 
-  public virtual bool is_available() {
-    bool ret = MeCabPINVOKE.Model_is_available(swigCPtr);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public virtual DictionaryInfo dictionary_info() {
     IntPtr cPtr = MeCabPINVOKE.Model_dictionary_info(swigCPtr);
     DictionaryInfo ret = (cPtr == IntPtr.Zero) ? null : new DictionaryInfo(cPtr, false);
@@ -64,12 +58,6 @@ public class Model : IDisposable {
   public virtual Lattice createLattice() {
     IntPtr cPtr = MeCabPINVOKE.Model_createLattice(swigCPtr);
     Lattice ret = (cPtr == IntPtr.Zero) ? null : new Lattice(cPtr, false);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public virtual string what() {
-    string ret = MeCabPINVOKE.Model_what(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

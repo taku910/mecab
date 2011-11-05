@@ -71,10 +71,6 @@ public class Lattice {
     return MeCabJNI.Lattice_size(swigCPtr, this);
   }
 
-  public long len() {
-    return MeCabJNI.Lattice_len(swigCPtr, this);
-  }
-
   public void set_Z(double Z) {
     MeCabJNI.Lattice_set_Z(swigCPtr, this, Z);
   }

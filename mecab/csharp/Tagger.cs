@@ -53,20 +53,8 @@ public class Tagger : IDisposable {
     return ret;
   }
 
-  public virtual bool parse(string str, Lattice lattice) {
-    bool ret = MeCabPINVOKE.Tagger_parse__SWIG_2(swigCPtr, str, Lattice.getCPtr(lattice));
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public virtual bool parse(string str, uint len, Lattice lattice) {
-    bool ret = MeCabPINVOKE.Tagger_parse__SWIG_3(swigCPtr, str, len, Lattice.getCPtr(lattice));
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public virtual string parse(string str) {
-    string ret = MeCabPINVOKE.Tagger_parse__SWIG_4(swigCPtr, str);
+    string ret = MeCabPINVOKE.Tagger_parse__SWIG_2(swigCPtr, str);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

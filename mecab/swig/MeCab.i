@@ -93,8 +93,8 @@
 %extend MeCab::Lattice {
   Lattice();
   void set_sentence(const char *sentence) {
-    // force to copy the input sentence
-    self->set_sentence(self->strdup(sentence));
+    self->add_request_type(MECAB_ALLOCATE_SENTENCE);
+    self->set_sentence(sentence);
   }
 }
 

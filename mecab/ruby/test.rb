@@ -23,7 +23,7 @@ begin
   lattice = MeCab::Lattice.new()
   lattice.set_sentence(sentence)
   tagger.parse(lattice)
-  len = lattice.len()
+  len = lattice.size()
   for i in 0..len
     b = lattice.begin_nodes(i)
     while b do

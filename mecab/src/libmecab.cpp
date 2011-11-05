@@ -276,14 +276,6 @@ mecab_node_t    *mecab_lattice_get_end_node(mecab_lattice_t *lattice, size_t pos
   return reinterpret_cast<mecab_node_t *>(reinterpret_cast<MeCab::Lattice *>(lattice)->end_nodes(pos));
 }
 
-char *mecab_lattice_strdup(mecab_lattice_t *lattice, const char *str) {
-  return reinterpret_cast<MeCab::Lattice *>(lattice)->strdup(str);
-}
-
-char *mecab_lattice_alloc(mecab_lattice_t *lattice, size_t len) {
-  return reinterpret_cast<MeCab::Lattice *>(lattice)->alloc(len);
-}
-
 const char  *mecab_lattice_get_sentence(mecab_lattice_t *lattice) {
   return reinterpret_cast<MeCab::Lattice *>(lattice)->sentence();
 }
@@ -298,10 +290,6 @@ void mecab_lattice_get_sentence2(mecab_lattice_t *lattice, const char *sentence,
 
 size_t mecab_lattice_get_size(mecab_lattice_t *lattice) {
   return reinterpret_cast<MeCab::Lattice *>(lattice)->size();
-}
-
-size_t mecab_lattice_get_len(mecab_lattice_t *lattice) {
-  return reinterpret_cast<MeCab::Lattice *>(lattice)->len();
 }
 
 double mecab_lattice_get_z(mecab_lattice_t *lattice) {
