@@ -1,7 +1,5 @@
-
 //
 //  MeCab -- Yet Another Part-of-Speech and Morphological Analyzer
-//
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
@@ -284,7 +282,7 @@ void  mecab_lattice_set_sentence(mecab_lattice_t *lattice, const char *sentence)
   reinterpret_cast<MeCab::Lattice *>(lattice)->set_sentence(sentence);
 }
 
-void mecab_lattice_get_sentence2(mecab_lattice_t *lattice, const char *sentence, size_t len) {
+void mecab_lattice_set_sentence2(mecab_lattice_t *lattice, const char *sentence, size_t len) {
   reinterpret_cast<MeCab::Lattice *>(lattice)->set_sentence(sentence, len);
 }
 

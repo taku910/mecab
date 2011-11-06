@@ -988,7 +988,7 @@ int mecab_do(int argc, char **argv) {
   }
 
   size_t ibufsize = std::min(MAX_INPUT_BUFFER_SIZE,
-			     std::max(param.get<int>
+                             std::max(param.get<int>
                                             ("input-buffer-size"),
                                             MIN_INPUT_BUFFER_SIZE));
 

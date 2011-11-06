@@ -1,7 +1,6 @@
 /*
   MeCab -- Yet Another Part-of-Speech and Morphological Analyzer
 
-
   Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
   Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 */
@@ -214,7 +213,7 @@ extern "C" {
   MECAB_DLL_EXTERN mecab_node_t    *mecab_lattice_get_end_node(mecab_lattice_t *lattice, size_t pos);
   MECAB_DLL_EXTERN const char      *mecab_lattice_get_sentence(mecab_lattice_t *lattice);
   MECAB_DLL_EXTERN void             mecab_lattice_set_sentence(mecab_lattice_t *lattice, const char *sentence);
-  MECAB_DLL_EXTERN void             mecab_lattice_get_sentence2(mecab_lattice_t *lattice, const char *sentence, size_t len);
+  MECAB_DLL_EXTERN void             mecab_lattice_set_sentence2(mecab_lattice_t *lattice, const char *sentence, size_t len);
   MECAB_DLL_EXTERN size_t           mecab_lattice_get_size(mecab_lattice_t *lattice);
   MECAB_DLL_EXTERN double           mecab_lattice_get_z(mecab_lattice_t *lattice);
   MECAB_DLL_EXTERN void             mecab_lattice_set_z(mecab_lattice_t *lattice, double Z);
@@ -286,6 +285,7 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
 
   /**
    * Return bos (begin of sentence) node.
+   * You can obtain all nodes via "for (const Node *node = lattice->bos_node(); node; node = node->next) {}"
    * @return bos node object
    */
   virtual Node *bos_node() const              = 0;
@@ -310,6 +310,7 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
 
   /**
    * Return node linked list ending at |pos|.
+   * You can obtain all nodes via "for (const Node *node = lattice->end_nodes(pos); node; node = node->enext) {}"
    * @param pos position of nodes. 0 <= pos < size()
    * @return node linked list
    */
@@ -317,6 +318,7 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
 
   /**
    * Return node linked list starting at |pos|.
+   * You can obtain all nodes via "for (const Node *node = lattice->begin_nodes(pos); node; node = node->bnext) {}"
    * @param pos position of nodes. 0 <= pos < size()
    * @return node linked list
    */
@@ -407,7 +409,7 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
 
   /**
    * Return string representation of the lattice.
-   * Returned object is managed by this instance. When clear() method
+   * Returned object is managed by this instance. When clear/set_sentence() method
    * is called, the returned buffer is initialized.
    * @return string representation of the lattice
    */
@@ -415,7 +417,7 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
 
   /**
    * Return string representation of the node.
-   * Returned object is managed by this instance. When clear() method
+   * Returned object is managed by this instance. When clear/set_sentence() method
    * is called, the returned buffer is initialized.
    * @return string representation of the node
    * @param node node object
@@ -424,7 +426,7 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
 
   /**
    * Return string representation of the N-best results.
-   * Returned object is managed by this instance. When clear() method
+   * Returned object is managed by this instance. When clear/set_sentence() method
    * is called, the returned buffer is initialized.
    * @return string representation of the node
    * @param N how many results you want to obtain
@@ -475,11 +477,13 @@ class MECAB_DLL_CLASS_EXTERN Lattice {
    */
   virtual void set_what(const char *str)        = 0;
 
+#ifndef SWIG
   /**
    * Create new Lattice object
    * @return new Lattice object
    */
   static Lattice *create();
+#endif
 
   virtual ~Lattice() {}
 };
@@ -724,7 +728,7 @@ class MECAB_DLL_CLASS_EXTERN Tagger {
 
   /**
    * Set request type.
-   * This method is DEPRECATED. Use Lattice class.
+   * This method is DEPRECATED. Use Lattice::set_request_type(MECAB_PARTIAL).
    * @param request_type new request type assigned
    */
   virtual void set_request_type(int request_type) = 0;
@@ -857,6 +861,7 @@ MECAB_DLL_EXTERN Tagger      *createTagger(const char *arg);
  * @param lattice lattice object
  */
 MECAB_DLL_EXTERN void        deleteLattice(Lattice *lattice);
+
 
 /**
  * delete Model object.
