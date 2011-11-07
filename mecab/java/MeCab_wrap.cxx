@@ -1543,6 +1543,33 @@ SWIGEXPORT jdouble JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1Z(JNIEnv *jen
 }
 
 
+SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1theta(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jfloat jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  float arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Lattice **)&jarg1; 
+  arg2 = (float)jarg2; 
+  {
+    try {
+      (arg1)->set_theta(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
 SWIGEXPORT jfloat JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1theta(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jfloat jresult = 0 ;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
@@ -1569,33 +1596,6 @@ SWIGEXPORT jfloat JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1theta(JNIEnv *
   }
   jresult = (jfloat)result; 
   return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1theta(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jfloat jarg2) {
-  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
-  float arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Lattice **)&jarg1; 
-  arg2 = (float)jarg2; 
-  {
-    try {
-      (arg1)->set_theta(arg2); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return ; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return ; 
-      }; 
-    }
-  }
 }
 
 
@@ -1919,32 +1919,6 @@ SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1what(JNIEnv
     }
   }
   if (arg2) jenv->ReleaseStringUTFChars(jarg2, (const char *)arg2);
-}
-
-
-SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1create(JNIEnv *jenv, jclass jcls) {
-  jlong jresult = 0 ;
-  MeCab::Lattice *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  {
-    try {
-      result = (MeCab::Lattice *)MeCab::Lattice::create(); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  *(MeCab::Lattice **)&jresult = result; 
-  return jresult;
 }
 
 
@@ -2817,6 +2791,33 @@ SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Tagger_1set_1all_1morphs(
 }
 
 
+SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Tagger_1set_1theta(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jfloat jarg2) {
+  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+  float arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Tagger **)&jarg1; 
+  arg2 = (float)jarg2; 
+  {
+    try {
+      (arg1)->set_theta(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
 SWIGEXPORT jfloat JNICALL Java_org_chasen_mecab_MeCabJNI_Tagger_1theta(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jfloat jresult = 0 ;
   MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
@@ -2843,33 +2844,6 @@ SWIGEXPORT jfloat JNICALL Java_org_chasen_mecab_MeCabJNI_Tagger_1theta(JNIEnv *j
   }
   jresult = (jfloat)result; 
   return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Tagger_1set_1theta(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jfloat jarg2) {
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  float arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(MeCab::Tagger **)&jarg1; 
-  arg2 = (float)jarg2; 
-  {
-    try {
-      (arg1)->set_theta(arg2); 
-    }
-    catch (char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return ; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return ; 
-      }; 
-    }
-  }
 }
 
 

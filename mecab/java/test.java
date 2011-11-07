@@ -34,6 +34,10 @@ public class test {
      lattice.set_sentence(str);
      if (tagger2.parse(lattice)) {
        System.out.println(lattice.toString());
+       for (node = lattice.bos_node(); node != null; node = node.getNext()) {
+	  System.out.println(node.getSurface() + "\t" + node.getFeature());
+       }
+       System.out.println("EOS\n");
      }
 
      lattice.add_request_type(MeCab.MECAB_NBEST);

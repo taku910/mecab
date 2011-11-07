@@ -43,6 +43,9 @@
 </div>
 <div class="contents">
 <!-- doxytag: class="mecab_path_t" -->
+<p>Path structure.  
+ <a href="structmecab__path__t.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="mecab_8h_source.html">mecab.h</a>&gt;</code></p>
 
 <p><a href="structmecab__path__t-members.html">List of all members.</a></p>
@@ -50,13 +53,21 @@
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structmecab__node__t.html">mecab_node_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__path__t.html#a841fd29e304894e0a255eebc75274c32">rnode</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to the right node  <a href="#a841fd29e304894e0a255eebc75274c32"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structmecab__path__t.html">mecab_path_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__path__t.html#a159315d824dadee5119d4b1aaf896e11">rnext</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to the next right path  <a href="#a159315d824dadee5119d4b1aaf896e11"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structmecab__node__t.html">mecab_node_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__path__t.html#a374904ea5419398622b30c4857592f45">lnode</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to the left node  <a href="#a374904ea5419398622b30c4857592f45"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structmecab__path__t.html">mecab_path_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__path__t.html#a0a46e81c6e249cded0870f8931ed9d6b">lnext</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to the next left path  <a href="#a0a46e81c6e249cded0870f8931ed9d6b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__path__t.html#a5c96eaf63d628788dc99322c62c785a3">cost</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">local cost  <a href="#a5c96eaf63d628788dc99322c62c785a3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__path__t.html#a6e4c94d86e94fb9328c7231ef8189f3b">prob</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">marginal probability  <a href="#a6e4c94d86e94fb9328c7231ef8189f3b"></a><br/></td></tr>
 </table>
-<hr/><h2>Member Data Documentation</h2>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>Path structure. </p>
+</div><hr/><h2>Member Data Documentation</h2>
 <a class="anchor" id="a5c96eaf63d628788dc99322c62c785a3"></a><!-- doxytag: member="mecab_path_t::cost" ref="a5c96eaf63d628788dc99322c62c785a3" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -67,6 +78,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>local cost </p>
 
 </div>
 </div>
@@ -81,6 +94,8 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>pointer to the next left path </p>
+
 </div>
 </div>
 <a class="anchor" id="a374904ea5419398622b30c4857592f45"></a><!-- doxytag: member="mecab_path_t::lnode" ref="a374904ea5419398622b30c4857592f45" args="" -->
@@ -93,6 +108,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>pointer to the left node </p>
 
 </div>
 </div>
@@ -107,6 +124,8 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>marginal probability </p>
+
 </div>
 </div>
 <a class="anchor" id="a159315d824dadee5119d4b1aaf896e11"></a><!-- doxytag: member="mecab_path_t::rnext" ref="a159315d824dadee5119d4b1aaf896e11" args="" -->
@@ -119,6 +138,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>pointer to the next right path </p>
 
 </div>
 </div>
@@ -133,13 +154,15 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>pointer to the right node </p>
+
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/taku/mecab/mecab/src/<a class="el" href="mecab_8h_source.html">mecab.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Nov 6 2011 02:51:11 for MeCab by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Nov 8 2011 01:14:16 for MeCab by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -230,8 +230,8 @@ class Lattice(_object):
     def size(self): return _MeCab.Lattice_size(self)
     def set_Z(self, *args): return _MeCab.Lattice_set_Z(self, *args)
     def Z(self): return _MeCab.Lattice_Z(self)
-    def theta(self): return _MeCab.Lattice_theta(self)
     def set_theta(self, *args): return _MeCab.Lattice_set_theta(self, *args)
+    def theta(self): return _MeCab.Lattice_theta(self)
     def next(self): return _MeCab.Lattice_next(self)
     def request_type(self): return _MeCab.Lattice_request_type(self)
     def has_request_type(self, *args): return _MeCab.Lattice_has_request_type(self, *args)
@@ -242,8 +242,6 @@ class Lattice(_object):
     def enumNBestAsString(self, *args): return _MeCab.Lattice_enumNBestAsString(self, *args)
     def what(self): return _MeCab.Lattice_what(self)
     def set_what(self, *args): return _MeCab.Lattice_set_what(self, *args)
-    __swig_getmethods__["create"] = lambda x: _MeCab.Lattice_create
-    if _newclass:create = staticmethod(_MeCab.Lattice_create)
     __swig_destroy__ = _MeCab.delete_Lattice
     __del__ = lambda self : None;
     def __init__(self): 
@@ -253,10 +251,6 @@ class Lattice(_object):
     def set_sentence(self, *args): return _MeCab.Lattice_set_sentence(self, *args)
 Lattice_swigregister = _MeCab.Lattice_swigregister
 Lattice_swigregister(Lattice)
-
-def Lattice_create():
-  return _MeCab.Lattice_create()
-Lattice_create = _MeCab.Lattice_create
 
 class Model(_object):
     __swig_setmethods__ = {}
@@ -309,8 +303,8 @@ class Tagger(_object):
     def set_lattice_level(self, *args): return _MeCab.Tagger_set_lattice_level(self, *args)
     def all_morphs(self): return _MeCab.Tagger_all_morphs(self)
     def set_all_morphs(self, *args): return _MeCab.Tagger_set_all_morphs(self, *args)
-    def theta(self): return _MeCab.Tagger_theta(self)
     def set_theta(self, *args): return _MeCab.Tagger_set_theta(self, *args)
+    def theta(self): return _MeCab.Tagger_theta(self)
     def dictionary_info(self): return _MeCab.Tagger_dictionary_info(self)
     def what(self): return _MeCab.Tagger_what(self)
     __swig_destroy__ = _MeCab.delete_Tagger

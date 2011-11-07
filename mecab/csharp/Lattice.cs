@@ -103,15 +103,15 @@ public class Lattice : IDisposable {
     return ret;
   }
 
+  public virtual void set_theta(float theta) {
+    MeCabPINVOKE.Lattice_set_theta(swigCPtr, theta);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public virtual float theta() {
     float ret = MeCabPINVOKE.Lattice_theta(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
-  }
-
-  public virtual void set_theta(float theta) {
-    MeCabPINVOKE.Lattice_set_theta(swigCPtr, theta);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public virtual bool next() {
@@ -174,13 +174,6 @@ public class Lattice : IDisposable {
   public virtual void set_what(string str) {
     MeCabPINVOKE.Lattice_set_what(swigCPtr, str);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public static Lattice create() {
-    IntPtr cPtr = MeCabPINVOKE.Lattice_create();
-    Lattice ret = (cPtr == IntPtr.Zero) ? null : new Lattice(cPtr, false);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
   }
 
   public Lattice() : this(MeCabPINVOKE.new_Lattice(), true) {

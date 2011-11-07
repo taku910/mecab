@@ -1415,6 +1415,30 @@ SWIGEXPORT double SWIGSTDCALL CSharp_Lattice_Z(void * jarg1) {
 }
 
 
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_theta(void * jarg1, float jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  float arg2 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (float)jarg2; 
+  {
+    try {
+      (arg1)->set_theta(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
 SWIGEXPORT float SWIGSTDCALL CSharp_Lattice_theta(void * jarg1) {
   float jresult ;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
@@ -1438,30 +1462,6 @@ SWIGEXPORT float SWIGSTDCALL CSharp_Lattice_theta(void * jarg1) {
   }
   jresult = result; 
   return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_theta(void * jarg1, float jarg2) {
-  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
-  float arg2 ;
-  
-  arg1 = (MeCab::Lattice *)jarg1; 
-  arg2 = (float)jarg2; 
-  {
-    try {
-      (arg1)->set_theta(arg2); 
-    }
-    catch (char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
-      }; 
-    }
-  }
 }
 
 
@@ -1746,30 +1746,6 @@ SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_what(void * jarg1, char * jarg2) 
       }; 
     }
   }
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_Lattice_create() {
-  void * jresult ;
-  MeCab::Lattice *result = 0 ;
-  
-  {
-    try {
-      result = (MeCab::Lattice *)MeCab::Lattice::create(); 
-    }
-    catch (char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
-      }; 
-    }
-  }
-  jresult = (void *)result; 
-  return jresult;
 }
 
 
@@ -2525,6 +2501,30 @@ SWIGEXPORT void SWIGSTDCALL CSharp_Tagger_set_all_morphs(void * jarg1, unsigned 
 }
 
 
+SWIGEXPORT void SWIGSTDCALL CSharp_Tagger_set_theta(void * jarg1, float jarg2) {
+  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+  float arg2 ;
+  
+  arg1 = (MeCab::Tagger *)jarg1; 
+  arg2 = (float)jarg2; 
+  {
+    try {
+      (arg1)->set_theta(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
 SWIGEXPORT float SWIGSTDCALL CSharp_Tagger_theta(void * jarg1) {
   float jresult ;
   MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
@@ -2548,30 +2548,6 @@ SWIGEXPORT float SWIGSTDCALL CSharp_Tagger_theta(void * jarg1) {
   }
   jresult = result; 
   return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_Tagger_set_theta(void * jarg1, float jarg2) {
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  float arg2 ;
-  
-  arg1 = (MeCab::Tagger *)jarg1; 
-  arg2 = (float)jarg2; 
-  {
-    try {
-      (arg1)->set_theta(arg2); 
-    }
-    catch (char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
-      }; 
-    }
-    catch (const char *e) {
-      {
-        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
-      }; 
-    }
-  }
 }
 
 

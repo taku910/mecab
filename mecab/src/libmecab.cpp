@@ -258,19 +258,19 @@ mecab_node_t *mecab_lattice_get_eos_node(mecab_lattice_t *lattice) {
   return reinterpret_cast<mecab_node_t *>(reinterpret_cast<MeCab::Lattice *>(lattice)->eos_node());
 }
 
-mecab_node_t **mecab_lattice_get_begin_nodes(mecab_lattice_t *lattice) {
+mecab_node_t **mecab_lattice_get_all_begin_nodes(mecab_lattice_t *lattice) {
   return reinterpret_cast<mecab_node_t **>(reinterpret_cast<MeCab::Lattice *>(lattice)->begin_nodes());
 }
 
-mecab_node_t **mecab_lattice_get_end_nodes(mecab_lattice_t *lattice) {
+mecab_node_t **mecab_lattice_get_all_end_nodes(mecab_lattice_t *lattice) {
   return reinterpret_cast<mecab_node_t **>(reinterpret_cast<MeCab::Lattice *>(lattice)->end_nodes());
 }
 
-mecab_node_t *mecab_lattice_get_begin_node(mecab_lattice_t *lattice, size_t pos) {
+mecab_node_t *mecab_lattice_get_begin_nodes(mecab_lattice_t *lattice, size_t pos) {
   return reinterpret_cast<mecab_node_t *>(reinterpret_cast<MeCab::Lattice *>(lattice)->begin_nodes(pos));
 }
 
-mecab_node_t    *mecab_lattice_get_end_node(mecab_lattice_t *lattice, size_t pos) {
+mecab_node_t    *mecab_lattice_get_end_nodes(mecab_lattice_t *lattice, size_t pos) {
   return reinterpret_cast<mecab_node_t *>(reinterpret_cast<MeCab::Lattice *>(lattice)->end_nodes(pos));
 }
 

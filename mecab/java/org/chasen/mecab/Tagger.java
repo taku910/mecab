@@ -105,12 +105,12 @@ public class Tagger {
     MeCabJNI.Tagger_set_all_morphs(swigCPtr, this, all_morphs);
   }
 
-  public float theta() {
-    return MeCabJNI.Tagger_theta(swigCPtr, this);
-  }
-
   public void set_theta(float theta) {
     MeCabJNI.Tagger_set_theta(swigCPtr, this, theta);
+  }
+
+  public float theta() {
+    return MeCabJNI.Tagger_theta(swigCPtr, this);
   }
 
   public DictionaryInfo dictionary_info() {

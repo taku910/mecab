@@ -401,11 +401,11 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_Lattice_Z")]
   public static extern double Lattice_Z(HandleRef jarg1);
 
-  [DllImport("MeCab", EntryPoint="CSharp_Lattice_theta")]
-  public static extern float Lattice_theta(HandleRef jarg1);
-
   [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_theta")]
   public static extern void Lattice_set_theta(HandleRef jarg1, float jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_theta")]
+  public static extern float Lattice_theta(HandleRef jarg1);
 
   [DllImport("MeCab", EntryPoint="CSharp_Lattice_next")]
   public static extern bool Lattice_next(HandleRef jarg1);
@@ -439,9 +439,6 @@ class MeCabPINVOKE {
 
   [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_what")]
   public static extern void Lattice_set_what(HandleRef jarg1, string jarg2);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Lattice_create")]
-  public static extern IntPtr Lattice_create();
 
   [DllImport("MeCab", EntryPoint="CSharp_delete_Lattice")]
   public static extern void delete_Lattice(HandleRef jarg1);
@@ -530,11 +527,11 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_Tagger_set_all_morphs")]
   public static extern void Tagger_set_all_morphs(HandleRef jarg1, bool jarg2);
 
-  [DllImport("MeCab", EntryPoint="CSharp_Tagger_theta")]
-  public static extern float Tagger_theta(HandleRef jarg1);
-
   [DllImport("MeCab", EntryPoint="CSharp_Tagger_set_theta")]
   public static extern void Tagger_set_theta(HandleRef jarg1, float jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Tagger_theta")]
+  public static extern float Tagger_theta(HandleRef jarg1);
 
   [DllImport("MeCab", EntryPoint="CSharp_Tagger_dictionary_info")]
   public static extern IntPtr Tagger_dictionary_info(HandleRef jarg1);

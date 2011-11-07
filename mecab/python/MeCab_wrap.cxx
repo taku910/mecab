@@ -4728,38 +4728,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Lattice_theta(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  float result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Lattice_theta",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_theta" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
-  }
-  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
-  {
-    try {
-      result = (float)((MeCab::Lattice const *)arg1)->theta(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  resultobj = SWIG_From_float(static_cast< float >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_Lattice_set_theta(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
@@ -4794,6 +4762,38 @@ SWIGINTERN PyObject *_wrap_Lattice_set_theta(PyObject *SWIGUNUSEDPARM(self), PyO
     }
   }
   resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Lattice_theta(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  float result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Lattice_theta",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_theta" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  {
+    try {
+      result = (float)((MeCab::Lattice const *)arg1)->theta(); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_From_float(static_cast< float >(result));
   return resultobj;
 fail:
   return NULL;
@@ -5253,29 +5253,6 @@ SWIGINTERN PyObject *_wrap_Lattice_set_what(PyObject *SWIGUNUSEDPARM(self), PyOb
   return resultobj;
 fail:
   if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Lattice_create(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  MeCab::Lattice *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)":Lattice_create")) SWIG_fail;
-  {
-    try {
-      result = (MeCab::Lattice *)MeCab::Lattice::create(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  return resultobj;
-fail:
   return NULL;
 }
 
@@ -6473,38 +6450,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Tagger_theta(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  float result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Tagger_theta",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_theta" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
-  }
-  arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
-  {
-    try {
-      result = (float)((MeCab::Tagger const *)arg1)->theta(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  resultobj = SWIG_From_float(static_cast< float >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_Tagger_set_theta(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
@@ -6539,6 +6484,38 @@ SWIGINTERN PyObject *_wrap_Tagger_set_theta(PyObject *SWIGUNUSEDPARM(self), PyOb
     }
   }
   resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Tagger_theta(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  float result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Tagger_theta",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_theta" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
+  {
+    try {
+      result = (float)((MeCab::Tagger const *)arg1)->theta(); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_From_float(static_cast< float >(result));
   return resultobj;
 fail:
   return NULL;
@@ -7090,8 +7067,8 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Lattice_size", _wrap_Lattice_size, METH_VARARGS, NULL},
 	 { (char *)"Lattice_set_Z", _wrap_Lattice_set_Z, METH_VARARGS, NULL},
 	 { (char *)"Lattice_Z", _wrap_Lattice_Z, METH_VARARGS, NULL},
-	 { (char *)"Lattice_theta", _wrap_Lattice_theta, METH_VARARGS, NULL},
 	 { (char *)"Lattice_set_theta", _wrap_Lattice_set_theta, METH_VARARGS, NULL},
+	 { (char *)"Lattice_theta", _wrap_Lattice_theta, METH_VARARGS, NULL},
 	 { (char *)"Lattice_next", _wrap_Lattice_next, METH_VARARGS, NULL},
 	 { (char *)"Lattice_request_type", _wrap_Lattice_request_type, METH_VARARGS, NULL},
 	 { (char *)"Lattice_has_request_type", _wrap_Lattice_has_request_type, METH_VARARGS, NULL},
@@ -7102,7 +7079,6 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Lattice_enumNBestAsString", _wrap_Lattice_enumNBestAsString, METH_VARARGS, NULL},
 	 { (char *)"Lattice_what", _wrap_Lattice_what, METH_VARARGS, NULL},
 	 { (char *)"Lattice_set_what", _wrap_Lattice_set_what, METH_VARARGS, NULL},
-	 { (char *)"Lattice_create", _wrap_Lattice_create, METH_VARARGS, NULL},
 	 { (char *)"delete_Lattice", _wrap_delete_Lattice, METH_VARARGS, NULL},
 	 { (char *)"new_Lattice", _wrap_new_Lattice, METH_VARARGS, NULL},
 	 { (char *)"Lattice_set_sentence", _wrap_Lattice_set_sentence, METH_VARARGS, NULL},
@@ -7130,8 +7106,8 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Tagger_set_lattice_level", _wrap_Tagger_set_lattice_level, METH_VARARGS, NULL},
 	 { (char *)"Tagger_all_morphs", _wrap_Tagger_all_morphs, METH_VARARGS, NULL},
 	 { (char *)"Tagger_set_all_morphs", _wrap_Tagger_set_all_morphs, METH_VARARGS, NULL},
-	 { (char *)"Tagger_theta", _wrap_Tagger_theta, METH_VARARGS, NULL},
 	 { (char *)"Tagger_set_theta", _wrap_Tagger_set_theta, METH_VARARGS, NULL},
+	 { (char *)"Tagger_theta", _wrap_Tagger_theta, METH_VARARGS, NULL},
 	 { (char *)"Tagger_dictionary_info", _wrap_Tagger_dictionary_info, METH_VARARGS, NULL},
 	 { (char *)"Tagger_what", _wrap_Tagger_what, METH_VARARGS, NULL},
 	 { (char *)"delete_Tagger", _wrap_delete_Tagger, METH_VARARGS, NULL},

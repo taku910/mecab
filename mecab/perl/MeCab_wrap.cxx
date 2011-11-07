@@ -3805,44 +3805,6 @@ XS(_wrap_Lattice_Z) {
 }
 
 
-XS(_wrap_Lattice_theta) {
-  {
-    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    int argvi = 0;
-    float result;
-    dXSARGS;
-    
-    if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: Lattice_theta(self);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_theta" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
-    }
-    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
-    {
-      try {
-        result = (float)((MeCab::Lattice const *)arg1)->theta(); 
-      }
-      catch (char *e) {
-        SWIG_exception (SWIG_RuntimeError, e); 
-      }
-      catch (const char *e) {
-        SWIG_exception (SWIG_RuntimeError, (char*)e); 
-      }
-    }
-    ST(argvi) = SWIG_From_float  SWIG_PERL_CALL_ARGS_1(static_cast< float >(result)); argvi++ ;
-    
-    XSRETURN(argvi);
-  fail:
-    
-    SWIG_croak_null();
-  }
-}
-
-
 XS(_wrap_Lattice_set_theta) {
   {
     MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
@@ -3884,6 +3846,44 @@ XS(_wrap_Lattice_set_theta) {
     XSRETURN(argvi);
   fail:
     
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Lattice_theta) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    float result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_theta(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_theta" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (float)((MeCab::Lattice const *)arg1)->theta(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_float  SWIG_PERL_CALL_ARGS_1(static_cast< float >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
     
     SWIG_croak_null();
   }
@@ -4441,34 +4441,6 @@ XS(_wrap_Lattice_set_what) {
   fail:
     
     if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
-    SWIG_croak_null();
-  }
-}
-
-
-XS(_wrap_Lattice_create) {
-  {
-    int argvi = 0;
-    MeCab::Lattice *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 0) || (items > 0)) {
-      SWIG_croak("Usage: Lattice_create();");
-    }
-    {
-      try {
-        result = (MeCab::Lattice *)MeCab::Lattice::create(); 
-      }
-      catch (char *e) {
-        SWIG_exception (SWIG_RuntimeError, e); 
-      }
-      catch (const char *e) {
-        SWIG_exception (SWIG_RuntimeError, (char*)e); 
-      }
-    }
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 | SWIG_SHADOW); argvi++ ;
-    XSRETURN(argvi);
-  fail:
     SWIG_croak_null();
   }
 }
@@ -5919,44 +5891,6 @@ XS(_wrap_Tagger_set_all_morphs) {
 }
 
 
-XS(_wrap_Tagger_theta) {
-  {
-    MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    int argvi = 0;
-    float result;
-    dXSARGS;
-    
-    if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: Tagger_theta(self);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_theta" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
-    }
-    arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
-    {
-      try {
-        result = (float)((MeCab::Tagger const *)arg1)->theta(); 
-      }
-      catch (char *e) {
-        SWIG_exception (SWIG_RuntimeError, e); 
-      }
-      catch (const char *e) {
-        SWIG_exception (SWIG_RuntimeError, (char*)e); 
-      }
-    }
-    ST(argvi) = SWIG_From_float  SWIG_PERL_CALL_ARGS_1(static_cast< float >(result)); argvi++ ;
-    
-    XSRETURN(argvi);
-  fail:
-    
-    SWIG_croak_null();
-  }
-}
-
-
 XS(_wrap_Tagger_set_theta) {
   {
     MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
@@ -5998,6 +5932,44 @@ XS(_wrap_Tagger_set_theta) {
     XSRETURN(argvi);
   fail:
     
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Tagger_theta) {
+  {
+    MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    float result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Tagger_theta(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tagger_theta" "', argument " "1"" of type '" "MeCab::Tagger const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
+    {
+      try {
+        result = (float)((MeCab::Tagger const *)arg1)->theta(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_float  SWIG_PERL_CALL_ARGS_1(static_cast< float >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
     
     SWIG_croak_null();
   }
@@ -6743,8 +6715,8 @@ static swig_command_info swig_commands[] = {
 {"MeCabc::Lattice_size", _wrap_Lattice_size},
 {"MeCabc::Lattice_set_Z", _wrap_Lattice_set_Z},
 {"MeCabc::Lattice_Z", _wrap_Lattice_Z},
-{"MeCabc::Lattice_theta", _wrap_Lattice_theta},
 {"MeCabc::Lattice_set_theta", _wrap_Lattice_set_theta},
+{"MeCabc::Lattice_theta", _wrap_Lattice_theta},
 {"MeCabc::Lattice_next", _wrap_Lattice_next},
 {"MeCabc::Lattice_request_type", _wrap_Lattice_request_type},
 {"MeCabc::Lattice_has_request_type", _wrap_Lattice_has_request_type},
@@ -6755,7 +6727,6 @@ static swig_command_info swig_commands[] = {
 {"MeCabc::Lattice_enumNBestAsString", _wrap_Lattice_enumNBestAsString},
 {"MeCabc::Lattice_what", _wrap_Lattice_what},
 {"MeCabc::Lattice_set_what", _wrap_Lattice_set_what},
-{"MeCabc::Lattice_create", _wrap_Lattice_create},
 {"MeCabc::delete_Lattice", _wrap_delete_Lattice},
 {"MeCabc::new_Lattice", _wrap_new_Lattice},
 {"MeCabc::Lattice_set_sentence", _wrap_Lattice_set_sentence},
@@ -6781,8 +6752,8 @@ static swig_command_info swig_commands[] = {
 {"MeCabc::Tagger_set_lattice_level", _wrap_Tagger_set_lattice_level},
 {"MeCabc::Tagger_all_morphs", _wrap_Tagger_all_morphs},
 {"MeCabc::Tagger_set_all_morphs", _wrap_Tagger_set_all_morphs},
-{"MeCabc::Tagger_theta", _wrap_Tagger_theta},
 {"MeCabc::Tagger_set_theta", _wrap_Tagger_set_theta},
+{"MeCabc::Tagger_theta", _wrap_Tagger_theta},
 {"MeCabc::Tagger_dictionary_info", _wrap_Tagger_dictionary_info},
 {"MeCabc::Tagger_what", _wrap_Tagger_what},
 {"MeCabc::delete_Tagger", _wrap_delete_Tagger},

@@ -43,6 +43,9 @@
 </div>
 <div class="contents">
 <!-- doxytag: class="mecab_dictionary_info_t" -->
+<p>DictionaryInfo structure.  
+ <a href="structmecab__dictionary__info__t.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="mecab_8h_source.html">mecab.h</a>&gt;</code></p>
 
 <p><a href="structmecab__dictionary__info__t-members.html">List of all members.</a></p>
@@ -50,15 +53,25 @@
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__dictionary__info__t.html#ae7a351b220ec92a03a36ad848565d7dc">filename</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">filename of dictionary On Windows, filename is stored in UTF-8 encoding  <a href="#ae7a351b220ec92a03a36ad848565d7dc"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__dictionary__info__t.html#a6db07434bbbc5f50577ea8d5bac51b2d">charset</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">character set of the dictionary.  <a href="#a6db07434bbbc5f50577ea8d5bac51b2d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__dictionary__info__t.html#a9cf0ddf1214dd81623c5810f2080d202">size</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">How many words are registered in this dictionary.  <a href="#a9cf0ddf1214dd81623c5810f2080d202"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__dictionary__info__t.html#a17466811fc66cbd8ceab7c0a3c5c77a4">type</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">dictionary type this value should be MECAB_USR_DIC, MECAB_SYS_DIC, or MECAB_UNK_DIC.  <a href="#a17466811fc66cbd8ceab7c0a3c5c77a4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__dictionary__info__t.html#a8130de6c55183aaa6d3960fbd3bdd1ba">lsize</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">left attributes size  <a href="#a8130de6c55183aaa6d3960fbd3bdd1ba"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__dictionary__info__t.html#a6d02866b8079be92469046d76cdac616">rsize</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">right attributes size  <a href="#a6d02866b8079be92469046d76cdac616"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__dictionary__info__t.html#a84976976efa97c70f521a5adbfe7e967">version</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">version of this dictionary  <a href="#a84976976efa97c70f521a5adbfe7e967"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structmecab__dictionary__info__t.html">mecab_dictionary_info_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmecab__dictionary__info__t.html#a2e64e3134f4b5373c57604a36c9eeb41">next</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to the next dictionary info.  <a href="#a2e64e3134f4b5373c57604a36c9eeb41"></a><br/></td></tr>
 </table>
-<hr/><h2>Member Data Documentation</h2>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>DictionaryInfo structure. </p>
+</div><hr/><h2>Member Data Documentation</h2>
 <a class="anchor" id="a6db07434bbbc5f50577ea8d5bac51b2d"></a><!-- doxytag: member="mecab_dictionary_info_t::charset" ref="a6db07434bbbc5f50577ea8d5bac51b2d" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -69,6 +82,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>character set of the dictionary. </p>
+<p>e.g., "SHIFT-JIS", "UTF-8" </p>
 
 </div>
 </div>
@@ -83,6 +99,8 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>filename of dictionary On Windows, filename is stored in UTF-8 encoding </p>
+
 </div>
 </div>
 <a class="anchor" id="a8130de6c55183aaa6d3960fbd3bdd1ba"></a><!-- doxytag: member="mecab_dictionary_info_t::lsize" ref="a8130de6c55183aaa6d3960fbd3bdd1ba" args="" -->
@@ -95,6 +113,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>left attributes size </p>
 
 </div>
 </div>
@@ -109,6 +129,8 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>pointer to the next dictionary info. </p>
+
 </div>
 </div>
 <a class="anchor" id="a6d02866b8079be92469046d76cdac616"></a><!-- doxytag: member="mecab_dictionary_info_t::rsize" ref="a6d02866b8079be92469046d76cdac616" args="" -->
@@ -121,6 +143,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>right attributes size </p>
 
 </div>
 </div>
@@ -135,6 +159,8 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>How many words are registered in this dictionary. </p>
+
 </div>
 </div>
 <a class="anchor" id="a17466811fc66cbd8ceab7c0a3c5c77a4"></a><!-- doxytag: member="mecab_dictionary_info_t::type" ref="a17466811fc66cbd8ceab7c0a3c5c77a4" args="" -->
@@ -147,6 +173,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>dictionary type this value should be MECAB_USR_DIC, MECAB_SYS_DIC, or MECAB_UNK_DIC. </p>
 
 </div>
 </div>
@@ -161,13 +189,15 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>version of this dictionary </p>
+
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/taku/mecab/mecab/src/<a class="el" href="mecab_8h_source.html">mecab.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Nov 6 2011 02:51:11 for MeCab by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Nov 8 2011 01:14:16 for MeCab by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

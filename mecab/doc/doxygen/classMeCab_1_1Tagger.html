@@ -50,6 +50,9 @@
 </div>
 <div class="contents">
 <!-- doxytag: class="MeCab::Tagger" -->
+<p><a class="el" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> class.  
+ <a href="classMeCab_1_1Tagger.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="mecab_8h_source.html">mecab.h</a>&gt;</code></p>
 
 <p><a href="classMeCab_1_1Tagger-members.html">List of all members.</a></p>
@@ -81,13 +84,13 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a34652ace8ecd1348608e37ee5f3580cf">parseNBest</a> (size_t N, const char *str, size_t len)=0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#afd166672c71db00171199e0788b06e1d" title="Parse given sentence and obtain N-best results as a string format.">parseNBest()</a>, but input length can be passed.  <a href="#a34652ace8ecd1348608e37ee5f3580cf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#ad5c4e55a4dd12136ee062acdc1ce7419">parseNBestInit</a> (const char *str, size_t len)=0</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#afd166672c71db00171199e0788b06e1d" title="Parse given sentence and obtain N-best results as a string format.">parseNBest()</a>, but input length can be passed.  <a href="#ad5c4e55a4dd12136ee062acdc1ce7419"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#aa52ae90664736f2e7caa5f9e7cc152a4" title="Initialize N-best enumeration with a sentence.">parseNBestInit()</a>, but input length can be passed.  <a href="#ad5c4e55a4dd12136ee062acdc1ce7419"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a4e59e0ca99f04b422094d4c616799e45">next</a> (char *ostr, size_t olen)=0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#ac5e73a7e29ad1611f1c4182065bb53a5" title="Return next-best parsed result.">next()</a>, but output buffer can be passed.  <a href="#a4e59e0ca99f04b422094d4c616799e45"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a12f393c2eb70d426b7614e17aad78590">parseNBest</a> (size_t N, const char *str, size_t len, char *ostr, size_t olen)=0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#afd166672c71db00171199e0788b06e1d" title="Parse given sentence and obtain N-best results as a string format.">parseNBest()</a>, but input length and output buffer can be passed.  <a href="#a12f393c2eb70d426b7614e17aad78590"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a9d9a6db4a1d821824a50456f0e7f6db3">formatNode</a> (const <a class="el" href="structmecab__node__t.html">Node</a> *node, char *ostr, size_t olen)=0</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as parseNode(), but output buffer can be passed.  <a href="#a9d9a6db4a1d821824a50456f0e7f6db3"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classMeCab_1_1Tagger.html#a2fc2b898f391b5c795d900e1bf21f4bb" title="Return formatted node object.">formatNode()</a>, but output buffer can be passed.  <a href="#a9d9a6db4a1d821824a50456f0e7f6db3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#aa320c5a940cf6208b4ee4734d14dd805">set_request_type</a> (int request_type)=0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set request type.  <a href="#aa320c5a940cf6208b4ee4734d14dd805"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#ac0cbc3fb68436e9952ca526a83a87c59">request_type</a> () const =0</td></tr>
@@ -99,13 +102,15 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a9bd70e1c67d6bbced9638bb94d816d40">lattice_level</a> () const =0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return lattice level.  <a href="#a9bd70e1c67d6bbced9638bb94d816d40"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a17b77b24aca01af6b3193f40d23934f8">set_lattice_level</a> (int level)=0</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set lattice level This method is DEPRECATED.  <a href="#a17b77b24aca01af6b3193f40d23934f8"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set lattice level.  <a href="#a17b77b24aca01af6b3193f40d23934f8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#af994ffd9dff8f053e6821454376b91e4">all_morphs</a> () const =0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true if all morphs output mode is on.  <a href="#af994ffd9dff8f053e6821454376b91e4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#aad3ce2e7465bf52dbfb84a3fa2c10680">set_all_morphs</a> (bool all_morphs)=0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set all-morphs output mode.  <a href="#aad3ce2e7465bf52dbfb84a3fa2c10680"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#aaa88870244d9acdaa96d216c33538708">theta</a> () const =0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#ad45cc74bbc6f6207ea709b26c0df0cc3">set_theta</a> (float theta)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set temparature parameter theta.  <a href="#ad45cc74bbc6f6207ea709b26c0df0cc3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#aaa88870244d9acdaa96d216c33538708">theta</a> () const =0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return temparature parameter theta.  <a href="#aaa88870244d9acdaa96d216c33538708"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="structmecab__dictionary__info__t.html">DictionaryInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#afbefd333e8e63201f0c71494c71704b1">dictionary_info</a> () const =0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return DictionaryInfo linked list.  <a href="#afbefd333e8e63201f0c71494c71704b1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#abad137de03e11d19bad815c87ab59929">what</a> () const =0</td></tr>
@@ -116,13 +121,15 @@ Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a03c06efdb260ca0b2553f6fb1a3820f4">parse</a> (const <a class="el" href="classMeCab_1_1Model.html">Model</a> &amp;model, <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a> *lattice)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Handy static method.  <a href="#a03c06efdb260ca0b2553f6fb1a3820f4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classMeCab_1_1Tagger.html">Tagger</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#aae59c44447312fa7efb8628bc06f992d">create</a> (int argc, char **argv)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method to create a new <a class="el" href="classMeCab_1_1Tagger.html">Tagger</a> with a specified main's argc/argv-style parameters.  <a href="#aae59c44447312fa7efb8628bc06f992d"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method to create a new <a class="el" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> with a specified main's argc/argv-style parameters.  <a href="#aae59c44447312fa7efb8628bc06f992d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classMeCab_1_1Tagger.html">Tagger</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a7647221f0485b4dc229f3d3f7064010d">create</a> (const char *arg)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method to create a new <a class="el" href="classMeCab_1_1Tagger.html">Tagger</a> with a string parameter representation, i.e., "-d /user/local/mecab/dic/ipadic -Ochasen".  <a href="#a7647221f0485b4dc229f3d3f7064010d"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method to create a new <a class="el" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> with a string parameter representation, i.e., "-d /user/local/mecab/dic/ipadic -Ochasen".  <a href="#a7647221f0485b4dc229f3d3f7064010d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Tagger.html#a4049f623850c49dc1bfceb8b65ddf947">version</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a version string.  <a href="#a4049f623850c49dc1bfceb8b65ddf947"></a><br/></td></tr>
 </table>
-<hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> class. </p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a73821650a97b4ca39a26f833014af516"></a><!-- doxytag: member="MeCab::Tagger::~Tagger" ref="a73821650a97b4ca39a26f833014af516" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -185,9 +192,9 @@ Static Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Factory method to create a new <a class="el" href="classMeCab_1_1Tagger.html">Tagger</a> with a specified main's argc/argv-style parameters. </p>
+<p>Factory method to create a new <a class="el" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> with a specified main's argc/argv-style parameters. </p>
 <p>Return NULL if new model cannot be initialized. Use <a class="el" href="namespaceMeCab.html#af6b513c7789770d47bdf64f9b86f8445" title="Return last error string.">MeCab::getLastError()</a> to obtain the cause of the errors. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>new <a class="el" href="classMeCab_1_1Tagger.html">Tagger</a> object </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>new <a class="el" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> object </dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">argc</td><td>number of parameters </td></tr>
@@ -213,9 +220,9 @@ Static Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Factory method to create a new <a class="el" href="classMeCab_1_1Tagger.html">Tagger</a> with a string parameter representation, i.e., "-d /user/local/mecab/dic/ipadic -Ochasen". </p>
+<p>Factory method to create a new <a class="el" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> with a string parameter representation, i.e., "-d /user/local/mecab/dic/ipadic -Ochasen". </p>
 <p>Return NULL if new model cannot be initialized. Use <a class="el" href="namespaceMeCab.html#af6b513c7789770d47bdf64f9b86f8445" title="Return last error string.">MeCab::getLastError()</a> to obtain the cause of the errors. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>new <a class="el" href="classMeCab_1_1Model.html">Model</a> object </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>new <a class="el" href="classMeCab_1_1Model.html" title="Model class.">Model</a> object </dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">arg</td><td>single string representation of the argment. </td></tr>
@@ -275,7 +282,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>The same as parseNode(), but output buffer can be passed. </p>
+<p>The same as <a class="el" href="classMeCab_1_1Tagger.html#a2fc2b898f391b5c795d900e1bf21f4bb" title="Return formatted node object.">formatNode()</a>, but output buffer can be passed. </p>
 <p>Return NULL if more than |olen| buffer is required to store output string. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
@@ -305,7 +312,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Return formatted node object. </p>
-<p>The format is specified with --unk-format, --bos-format, --eos-format, and --eon-format respectively. You should not delete the returned string. The returned buffer is overwritten when parse method is called again. This method is NOT thread safe. This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a> class. </p>
+<p>The format is specified with --unk-format, --bos-format, --eos-format, and --eon-format respectively. You should not delete the returned string. The returned buffer is overwritten when parse method is called again. This method is NOT thread safe. This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> class. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">node</td><td>node object. </td></tr>
@@ -331,7 +338,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Return lattice level. </p>
-<p>This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a>::*_request_type() </p>
+<p>This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a>::*_request_type() </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>int lattice level </dd></dl>
 
 </div>
@@ -351,7 +358,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Return next-best parsed result. </p>
-<p>You must call <a class="el" href="classMeCab_1_1Tagger.html#aa52ae90664736f2e7caa5f9e7cc152a4" title="Initialize N-best enumeration with a sentence.">parseNBestInit()</a> in advance. Return NULL if no more reuslt is available. This method is NOT thread safe. This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a> class. </p>
+<p>You must call <a class="el" href="classMeCab_1_1Tagger.html#aa52ae90664736f2e7caa5f9e7cc152a4" title="Initialize N-best enumeration with a sentence.">parseNBestInit()</a> in advance. Return NULL if no more reuslt is available. This method is NOT thread safe. This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> class. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>parsed result </dd></dl>
 
 </div>
@@ -409,7 +416,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Return next-best parsed result. </p>
-<p>You must call <a class="el" href="classMeCab_1_1Tagger.html#aa52ae90664736f2e7caa5f9e7cc152a4" title="Initialize N-best enumeration with a sentence.">parseNBestInit()</a> in advance. Return NULL if no more reuslt is available. This method is NOT thread safe. This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a> class. </p>
+<p>You must call <a class="el" href="classMeCab_1_1Tagger.html#aa52ae90664736f2e7caa5f9e7cc152a4" title="Initialize N-best enumeration with a sentence.">parseNBestInit()</a> in advance. Return NULL if no more reuslt is available. This method is NOT thread safe. This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> class. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>node object </dd></dl>
 
 </div>
@@ -430,7 +437,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Parse lattice object. </p>
-<p>Return true if lattice is parsed successfully. A sentence must be set to the lattice with <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a>:set_sentence object before calling this method. Parsed node object can be obtained with <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a>:bos_node. This method is thread safe. </p>
+<p>Return true if lattice is parsed successfully. A sentence must be set to the lattice with <a class="el" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a>:set_sentence object before calling this method. Parsed node object can be obtained with <a class="el" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a>:bos_node. This method is thread safe. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>lattice lattice object </dd>
 <dd>
 boolean </dd></dl>
@@ -552,7 +559,7 @@ boolean </dd></dl>
 <div class="memdoc">
 
 <p>Handy static method. </p>
-<p>Return true if lattice is parsed successfully. This function is equivalent to { <a class="el" href="classMeCab_1_1Tagger.html">Tagger</a> *tagger = <a class="el" href="namespaceMeCab.html#a89b79d176709a3a38ff7618a4d8b73d0" title="Alias of Mode::create(argc, argv)">model.createModel()</a>; cosnt bool result = tagger-&gt;parse(lattice); delete tagger; return result; } </p>
+<p>Return true if lattice is parsed successfully. This function is equivalent to { <a class="el" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> *tagger = <a class="el" href="namespaceMeCab.html#a89b79d176709a3a38ff7618a4d8b73d0" title="Alias of Mode::create(argc, argv)">model.createModel()</a>; cosnt bool result = tagger-&gt;parse(lattice); delete tagger; return result; } </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>boolean </dd></dl>
 
 </div>
@@ -669,7 +676,7 @@ boolean </dd></dl>
 <div class="memdoc">
 
 <p>Parse given sentence and obtain N-best results as a string format. </p>
-<p>Currently, N must be 1 &lt;= N &lt;= 512 due to the limitation of the buffer size. You should not delete the returned string. The returned buffer is overwritten when parse method is called again. This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a> class. </p>
+<p>Currently, N must be 1 &lt;= N &lt;= 512 due to the limitation of the buffer size. You should not delete the returned string. The returned buffer is overwritten when parse method is called again. This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> class. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">N</td><td>how many results you want to obtain </td></tr>
@@ -741,7 +748,7 @@ boolean </dd></dl>
 <div class="memdoc">
 
 <p>Initialize N-best enumeration with a sentence. </p>
-<p>Return true if initialization finishes successfully. N-best result is obtained by calling <a class="el" href="classMeCab_1_1Tagger.html#ac5e73a7e29ad1611f1c4182065bb53a5" title="Return next-best parsed result.">next()</a> or <a class="el" href="classMeCab_1_1Tagger.html#afcec9edad21189e076a92a5fa371f8b6" title="Return next-best parsed result.">nextNode()</a> in sequence. This method is NOT thread safe. This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a> class. </p>
+<p>Return true if initialization finishes successfully. N-best result is obtained by calling <a class="el" href="classMeCab_1_1Tagger.html#ac5e73a7e29ad1611f1c4182065bb53a5" title="Return next-best parsed result.">next()</a> or <a class="el" href="classMeCab_1_1Tagger.html#afcec9edad21189e076a92a5fa371f8b6" title="Return next-best parsed result.">nextNode()</a> in sequence. This method is NOT thread safe. This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> class. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">str</td><td>sentence </td></tr>
@@ -777,7 +784,7 @@ boolean </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>The same as <a class="el" href="classMeCab_1_1Tagger.html#afd166672c71db00171199e0788b06e1d" title="Parse given sentence and obtain N-best results as a string format.">parseNBest()</a>, but input length can be passed. </p>
+<p>The same as <a class="el" href="classMeCab_1_1Tagger.html#aa52ae90664736f2e7caa5f9e7cc152a4" title="Initialize N-best enumeration with a sentence.">parseNBestInit()</a>, but input length can be passed. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">str</td><td>sentence </td></tr>
@@ -807,7 +814,7 @@ parsed result </dd></dl>
 <div class="memdoc">
 
 <p>Parse given sentence and return Node object. </p>
-<p>You should not delete the returned node object. The returned buffer is overwritten when parse method is called again. You can traverse all nodes via <a class="el" href="structmecab__node__t.html#ad2f4b54dd0ee97c528fec86c90d00d2f">Node::next</a> member. This method is NOT thread safe. </p>
+<p>You should not delete the returned node object. The returned buffer is overwritten when parse method is called again. You can traverse all nodes via <a class="el" href="structmecab__node__t.html#ad2f4b54dd0ee97c528fec86c90d00d2f" title="pointer to the next node.">Node::next</a> member. This method is NOT thread safe. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">str</td><td>sentence </td></tr>
@@ -890,7 +897,7 @@ parsed result </dd></dl>
 <div class="memdoc">
 
 <p>Return the current request type. </p>
-<p>This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a> class. </p>
+<p>This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> class. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>request type </dd></dl>
 
 </div>
@@ -936,8 +943,8 @@ parsed result </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Set lattice level This method is DEPRECATED. </p>
-<p>Use <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a>::*_request_type() </p>
+<p>Set lattice level. </p>
+<p>This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a>::*_request_type() </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">level</td><td>lattice level </td></tr>
@@ -989,7 +996,7 @@ parsed result </dd></dl>
 <div class="memdoc">
 
 <p>Set request type. </p>
-<p>This method is DEPRECATED. Use <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a> class. </p>
+<p>This method is DEPRECATED. Use Lattice::set_request_type(MECAB_PARTIAL). </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">request_type</td><td>new request type assigned </td></tr>
@@ -1014,6 +1021,14 @@ parsed result </dd></dl>
 </div>
 <div class="memdoc">
 
+<p>Set temparature parameter theta. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">theta</td><td>temparature parameter. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a class="anchor" id="aaa88870244d9acdaa96d216c33538708"></a><!-- doxytag: member="MeCab::Tagger::theta" ref="aaa88870244d9acdaa96d216c33538708" args="() const =0" -->
@@ -1029,6 +1044,9 @@ parsed result </dd></dl>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Return temparature parameter theta. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>temparature parameter. </dd></dl>
 
 </div>
 </div>
@@ -1074,7 +1092,7 @@ parsed result </dd></dl>
 <li>/home/taku/mecab/mecab/src/<a class="el" href="mecab_8h_source.html">mecab.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Nov 6 2011 02:51:12 for MeCab by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Nov 8 2011 01:14:16 for MeCab by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

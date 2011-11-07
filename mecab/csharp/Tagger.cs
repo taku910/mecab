@@ -141,15 +141,15 @@ public class Tagger : IDisposable {
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public virtual void set_theta(float theta) {
+    MeCabPINVOKE.Tagger_set_theta(swigCPtr, theta);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public virtual float theta() {
     float ret = MeCabPINVOKE.Tagger_theta(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
     return ret;
-  }
-
-  public virtual void set_theta(float theta) {
-    MeCabPINVOKE.Tagger_set_theta(swigCPtr, theta);
-    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public virtual DictionaryInfo dictionary_info() {

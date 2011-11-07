@@ -3772,40 +3772,6 @@ fail:
 
 
 SWIGINTERN VALUE
-_wrap_Lattice_theta(int argc, VALUE *argv, VALUE self) {
-  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  float result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Lattice const *","theta", 1, self )); 
-  }
-  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
-  {
-    try {
-      result = (float)((MeCab::Lattice const *)arg1)->theta(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  vresult = SWIG_From_float(static_cast< float >(result));
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
 _wrap_Lattice_set_theta(int argc, VALUE *argv, VALUE self) {
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
   float arg2 ;
@@ -3839,6 +3805,40 @@ _wrap_Lattice_set_theta(int argc, VALUE *argv, VALUE self) {
     }
   }
   return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Lattice_theta(int argc, VALUE *argv, VALUE self) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  float result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Lattice const *","theta", 1, self )); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  {
+    try {
+      result = (float)((MeCab::Lattice const *)arg1)->theta(); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  vresult = SWIG_From_float(static_cast< float >(result));
+  return vresult;
 fail:
   return Qnil;
 }
@@ -4305,32 +4305,6 @@ _wrap_Lattice_set_what(int argc, VALUE *argv, VALUE self) {
   return Qnil;
 fail:
   if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
-_wrap_Lattice_create(int argc, VALUE *argv, VALUE self) {
-  MeCab::Lattice *result = 0 ;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  {
-    try {
-      result = (MeCab::Lattice *)MeCab::Lattice::create(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
-  return vresult;
-fail:
   return Qnil;
 }
 
@@ -5533,40 +5507,6 @@ fail:
 
 
 SWIGINTERN VALUE
-_wrap_Tagger_theta(int argc, VALUE *argv, VALUE self) {
-  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  float result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Tagger const *","theta", 1, self )); 
-  }
-  arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
-  {
-    try {
-      result = (float)((MeCab::Tagger const *)arg1)->theta(); 
-    }
-    catch (char *e) {
-      SWIG_exception (SWIG_RuntimeError, e); 
-    }
-    catch (const char *e) {
-      SWIG_exception (SWIG_RuntimeError, (char*)e); 
-    }
-  }
-  vresult = SWIG_From_float(static_cast< float >(result));
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
 _wrap_Tagger_set_theta(int argc, VALUE *argv, VALUE self) {
   MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
   float arg2 ;
@@ -5600,6 +5540,40 @@ _wrap_Tagger_set_theta(int argc, VALUE *argv, VALUE self) {
     }
   }
   return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Tagger_theta(int argc, VALUE *argv, VALUE self) {
+  MeCab::Tagger *arg1 = (MeCab::Tagger *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  float result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Tagger, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Tagger const *","theta", 1, self )); 
+  }
+  arg1 = reinterpret_cast< MeCab::Tagger * >(argp1);
+  {
+    try {
+      result = (float)((MeCab::Tagger const *)arg1)->theta(); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  vresult = SWIG_From_float(static_cast< float >(result));
+  return vresult;
 fail:
   return Qnil;
 }
@@ -6504,8 +6478,8 @@ SWIGEXPORT void Init_MeCab(void) {
   rb_define_method(SwigClassLattice.klass, "size", VALUEFUNC(_wrap_Lattice_size), -1);
   rb_define_method(SwigClassLattice.klass, "set_Z", VALUEFUNC(_wrap_Lattice_set_Z), -1);
   rb_define_method(SwigClassLattice.klass, "Z", VALUEFUNC(_wrap_Lattice_Z), -1);
-  rb_define_method(SwigClassLattice.klass, "theta", VALUEFUNC(_wrap_Lattice_theta), -1);
   rb_define_method(SwigClassLattice.klass, "set_theta", VALUEFUNC(_wrap_Lattice_set_theta), -1);
+  rb_define_method(SwigClassLattice.klass, "theta", VALUEFUNC(_wrap_Lattice_theta), -1);
   rb_define_method(SwigClassLattice.klass, "next", VALUEFUNC(_wrap_Lattice_next), -1);
   rb_define_method(SwigClassLattice.klass, "request_type", VALUEFUNC(_wrap_Lattice_request_type), -1);
   rb_define_method(SwigClassLattice.klass, "has_request_type", VALUEFUNC(_wrap_Lattice_has_request_type), -1);
@@ -6516,7 +6490,6 @@ SWIGEXPORT void Init_MeCab(void) {
   rb_define_method(SwigClassLattice.klass, "enumNBestAsString", VALUEFUNC(_wrap_Lattice_enumNBestAsString), -1);
   rb_define_method(SwigClassLattice.klass, "what", VALUEFUNC(_wrap_Lattice_what), -1);
   rb_define_method(SwigClassLattice.klass, "set_what", VALUEFUNC(_wrap_Lattice_set_what), -1);
-  rb_define_singleton_method(SwigClassLattice.klass, "create", VALUEFUNC(_wrap_Lattice_create), -1);
   rb_define_method(SwigClassLattice.klass, "set_sentence", VALUEFUNC(_wrap_Lattice_set_sentence), -1);
   SwigClassLattice.mark = 0;
   SwigClassLattice.destroy = (void (*)(void *)) free_MeCab_Lattice;
@@ -6554,8 +6527,8 @@ SWIGEXPORT void Init_MeCab(void) {
   rb_define_method(SwigClassTagger.klass, "set_lattice_level", VALUEFUNC(_wrap_Tagger_set_lattice_level), -1);
   rb_define_method(SwigClassTagger.klass, "all_morphs", VALUEFUNC(_wrap_Tagger_all_morphs), -1);
   rb_define_method(SwigClassTagger.klass, "set_all_morphs", VALUEFUNC(_wrap_Tagger_set_all_morphs), -1);
-  rb_define_method(SwigClassTagger.klass, "theta", VALUEFUNC(_wrap_Tagger_theta), -1);
   rb_define_method(SwigClassTagger.klass, "set_theta", VALUEFUNC(_wrap_Tagger_set_theta), -1);
+  rb_define_method(SwigClassTagger.klass, "theta", VALUEFUNC(_wrap_Tagger_theta), -1);
   rb_define_method(SwigClassTagger.klass, "dictionary_info", VALUEFUNC(_wrap_Tagger_dictionary_info), -1);
   rb_define_method(SwigClassTagger.klass, "what", VALUEFUNC(_wrap_Tagger_what), -1);
   rb_define_singleton_method(SwigClassTagger.klass, "create", VALUEFUNC(_wrap_Tagger_create), -1);

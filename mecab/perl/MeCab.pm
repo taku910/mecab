@@ -250,8 +250,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *size = *MeCabc::Lattice_size;
 *set_Z = *MeCabc::Lattice_set_Z;
 *Z = *MeCabc::Lattice_Z;
-*theta = *MeCabc::Lattice_theta;
 *set_theta = *MeCabc::Lattice_set_theta;
+*theta = *MeCabc::Lattice_theta;
 *next = *MeCabc::Lattice_next;
 *request_type = *MeCabc::Lattice_request_type;
 *has_request_type = *MeCabc::Lattice_has_request_type;
@@ -262,7 +262,6 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *enumNBestAsString = *MeCabc::Lattice_enumNBestAsString;
 *what = *MeCabc::Lattice_what;
 *set_what = *MeCabc::Lattice_set_what;
-*create = *MeCabc::Lattice_create;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
     my $self = tied(%{$_[0]});
@@ -358,8 +357,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *set_lattice_level = *MeCabc::Tagger_set_lattice_level;
 *all_morphs = *MeCabc::Tagger_all_morphs;
 *set_all_morphs = *MeCabc::Tagger_set_all_morphs;
-*theta = *MeCabc::Tagger_theta;
 *set_theta = *MeCabc::Tagger_set_theta;
+*theta = *MeCabc::Tagger_theta;
 *dictionary_info = *MeCabc::Tagger_dictionary_info;
 *what = *MeCabc::Tagger_what;
 sub DESTROY {

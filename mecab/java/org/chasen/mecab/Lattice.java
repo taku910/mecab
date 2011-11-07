@@ -79,12 +79,12 @@ public class Lattice {
     return MeCabJNI.Lattice_Z(swigCPtr, this);
   }
 
-  public float theta() {
-    return MeCabJNI.Lattice_theta(swigCPtr, this);
-  }
-
   public void set_theta(float theta) {
     MeCabJNI.Lattice_set_theta(swigCPtr, this, theta);
+  }
+
+  public float theta() {
+    return MeCabJNI.Lattice_theta(swigCPtr, this);
   }
 
   public boolean next() {
@@ -129,11 +129,6 @@ public class Lattice {
 
   public void set_what(String str) {
     MeCabJNI.Lattice_set_what(swigCPtr, this, str);
-  }
-
-  public static Lattice create() {
-    long cPtr = MeCabJNI.Lattice_create();
-    return (cPtr == 0) ? null : new Lattice(cPtr, false);
   }
 
   public Lattice() {

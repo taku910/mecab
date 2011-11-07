@@ -81,8 +81,8 @@ class MeCabJNI {
   public final static native long Lattice_size(long jarg1, Lattice jarg1_);
   public final static native void Lattice_set_Z(long jarg1, Lattice jarg1_, double jarg2);
   public final static native double Lattice_Z(long jarg1, Lattice jarg1_);
-  public final static native float Lattice_theta(long jarg1, Lattice jarg1_);
   public final static native void Lattice_set_theta(long jarg1, Lattice jarg1_, float jarg2);
+  public final static native float Lattice_theta(long jarg1, Lattice jarg1_);
   public final static native boolean Lattice_next(long jarg1, Lattice jarg1_);
   public final static native int Lattice_request_type(long jarg1, Lattice jarg1_);
   public final static native boolean Lattice_has_request_type(long jarg1, Lattice jarg1_, int jarg2);
@@ -94,7 +94,6 @@ class MeCabJNI {
   public final static native String Lattice_enumNBestAsString(long jarg1, Lattice jarg1_, long jarg2);
   public final static native String Lattice_what(long jarg1, Lattice jarg1_);
   public final static native void Lattice_set_what(long jarg1, Lattice jarg1_, String jarg2);
-  public final static native long Lattice_create();
   public final static native void delete_Lattice(long jarg1);
   public final static native long new_Lattice();
   public final static native void Lattice_set_sentence(long jarg1, Lattice jarg1_, String jarg2);
@@ -124,8 +123,8 @@ class MeCabJNI {
   public final static native void Tagger_set_lattice_level(long jarg1, Tagger jarg1_, int jarg2);
   public final static native boolean Tagger_all_morphs(long jarg1, Tagger jarg1_);
   public final static native void Tagger_set_all_morphs(long jarg1, Tagger jarg1_, boolean jarg2);
-  public final static native float Tagger_theta(long jarg1, Tagger jarg1_);
   public final static native void Tagger_set_theta(long jarg1, Tagger jarg1_, float jarg2);
+  public final static native float Tagger_theta(long jarg1, Tagger jarg1_);
   public final static native long Tagger_dictionary_info(long jarg1, Tagger jarg1_);
   public final static native String Tagger_what(long jarg1, Tagger jarg1_);
   public final static native void delete_Tagger(long jarg1);
