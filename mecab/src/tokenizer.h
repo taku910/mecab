@@ -51,6 +51,11 @@ class Allocator {
     return n;
   }
 
+  char *partial_buffer(size_t size) {
+    partial_buffer_.resize(size);
+    return &partial_buffer_[0];
+  }
+
   size_t results_size() const {
     return kResultsSize;
   }
@@ -80,6 +85,7 @@ class Allocator {
   scoped_ptr<FreeList<N> > node_freelist_;
   scoped_ptr<FreeList<P> > path_freelist_;
   scoped_ptr<ChunkFreeList<char>  >  char_freelist_;
+  std::vector<char> partial_buffer_;
   scoped_array<Dictionary::result_type>  results_;
 };
 

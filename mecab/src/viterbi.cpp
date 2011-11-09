@@ -220,8 +220,8 @@ bool Viterbi::initPartial(Lattice *lattice) const {
   }
 
   Allocator<Node, Path> *allocator = lattice->allocator();
-  char *str = allocator->strdup(lattice->sentence(),
-                                lattice->size());
+  char *str = allocator->partial_buffer(lattice->size() + 1);
+  strncpy(str, lattice->sentence(), lattice->size() + 1);
 
   std::vector<char *> lines;
   const size_t lsize = tokenize(str, "\n",
@@ -232,8 +232,8 @@ bool Viterbi::initPartial(Lattice *lattice) const {
   }
 
   char* column[2];
-  StringBuffer os(allocator->alloc(lattice->size() + 1),
-                  lattice->size() + 1);
+  scoped_array<char> buf(new char[lattice->size() + 1]);
+  StringBuffer os(buf.get(), lattice->size() + 1);
   os << ' ';
 
   std::vector<std::pair<char *, char *> > tokens;
