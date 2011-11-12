@@ -3,15 +3,55 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#ifndef MECAB_LEARNER_NODE_H
-#define MECAB_LEARNER_NODE_H
+#ifndef MECAB_LEARNER_NODE_H_
+#define MECAB_LEARNER_NODE_H_
 
 #include <cstring>
 #include "mecab.h"
 #include "common.h"
 #include "utils.h"
 
+struct mecab_learner_path_t {
+  struct mecab_learner_node_t*  rnode;
+  struct mecab_learner_path_t*  rnext;
+  struct mecab_learner_node_t*  lnode;
+  struct mecab_learner_path_t*  lnext;
+  double                        cost;
+  const int                     *fvector;
+};
+
+struct mecab_learner_node_t {
+  struct mecab_learner_node_t *prev;
+  struct mecab_learner_node_t *next;
+  struct mecab_learner_node_t *enext;
+  struct mecab_learner_node_t *bnext;
+  struct mecab_learner_path_t *rpath;
+  struct mecab_learner_path_t *lpath;
+  struct mecab_learner_node_t *anext;
+  const char                  *surface;
+  const char                  *feature;
+  unsigned int                 id;
+  unsigned short               length;
+  unsigned short               rlength;
+  unsigned short               rcAttr;
+  unsigned short               lcAttr;
+  unsigned short               posid;
+  unsigned char                char_type;
+  unsigned char                stat;
+  unsigned char                isbest;
+  double                       alpha;
+  double                       beta;
+  short                        wcost2;
+  double                       wcost;
+  double                       cost;
+  const int                    *fvector;
+  struct mecab_token_t         *token;
+};
+
 namespace MeCab {
+
+typedef struct mecab_learner_path_t LearnerPath;
+typedef struct mecab_learner_node_t LearnerNode;
 
 template <class T1, class T2> T1 repeat_find_if(T1 b, T1 e,
                                                 const T2& v, size_t n) {
@@ -102,4 +142,4 @@ inline void calc_beta(LearnerNode *n) {
 }
 }
 
-#endif
+#endif  // MECAB_LEARNER_NODE_H_

@@ -13,6 +13,7 @@
 #include "darts.h"
 #include "freelist.h"
 #include "common.h"
+#include "learner_node.h"
 #include "string_buffer.h"
 #include "dictionary_rewriter.h"
 

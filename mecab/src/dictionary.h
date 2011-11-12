@@ -14,6 +14,16 @@
 namespace MeCab {
 
 class Param;
+
+struct Token {
+  unsigned short lcAttr;
+  unsigned short rcAttr;
+  unsigned short posid;
+  short wcost;
+  unsigned int   feature;
+  unsigned int   compound;
+};
+
 class Dictionary {
  private:
   scoped_ptr<Mmap<char> > dmmap_;

@@ -6,6 +6,7 @@
 #include "common.h"
 #include "connector.h"
 #include "darts.h"
+#include "learner_node.h"
 #include "param.h"
 #include "scoped_ptr.h"
 #include "tokenizer.h"
@@ -22,7 +23,6 @@ void inline read_node_info(const Dictionary &dic,
   (*node)->rcAttr  = token.rcAttr;
   (*node)->posid   = token.posid;
   (*node)->wcost2  = token.wcost;
-  (*node)->token   = const_cast<MeCab::Token *>(&token);
   (*node)->feature = dic.feature(token);
 }
 
@@ -33,7 +33,6 @@ void inline read_node_info(const Dictionary &dic,
   (*node)->rcAttr  = token.rcAttr;
   (*node)->posid   = token.posid;
   (*node)->wcost   = token.wcost;
-  (*node)->token   = const_cast<MeCab::Token *>(&token);
   (*node)->feature = dic.feature(token);
 }
 }  // namespace
@@ -187,7 +186,6 @@ bool Tokenizer<N, P>::open(const Param &param) {
     for (size_t k = 0; k < size; ++k) {                                  \
       N *new_node = allocator->newNode();                                \
       read_node_info(unkdic_, *(token + k), &new_node);                  \
-      new_node->token = (Token *)(token + k);                            \
       new_node->char_type = cinfo.default_type;                          \
       new_node->surface = begin2;                                        \
       new_node->length = begin3 - begin2;                                \
@@ -225,7 +223,7 @@ N *Tokenizer<N, P>::lookup(const char *begin, const char *end,
       for (size_t j = 0; j < size; ++j) {
         N *new_node = allocator->newNode();
         read_node_info(**it, *(token + j), &new_node);
-        new_node->token = (Token *)(token + j);
+//        new_node->token = (Token *)(token + j);
         new_node->length = daresults[i].length;
         new_node->rlength = begin2 - begin + new_node->length;
         new_node->surface = begin2;

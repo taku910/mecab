@@ -93,54 +93,6 @@ struct mecab_path_t {
 };
 
 /**
- * Learner path.
- * This structure is only used in training phase.
- */
-struct mecab_learner_path_t {
-  struct mecab_learner_node_t*  rnode;
-  struct mecab_learner_path_t*  rnext;
-  struct mecab_learner_node_t*  lnode;
-  struct mecab_learner_path_t*  lnext;
-  double                        cost;
-  const int                     *fvector;
-};
-
-/**
- * Token structure
- */
-struct mecab_token_t {
-  /**
-   * left context attribute id.
-   */
-  unsigned short lcAttr;
-
-  /**
-   * right context attribute id.
-   */
-  unsigned short rcAttr;
-
-  /**
-   * unique part of speech id. This value is defined in "pos.def" file.
-   */
-  unsigned short posid;
-
-  /**
-   * word cost.
-   */
-  short wcost;
-
-  /**
-   * offset pointer value to the feature string.
-   */
-  unsigned int   feature;
-
-  /**
-   * compound id. This is not used now. Reserved for future.
-   */
-  unsigned int   compound;
-};
-
-/**
  * Node structure
  */
 struct mecab_node_t {
@@ -177,13 +129,14 @@ struct mecab_node_t {
   struct mecab_path_t  *lpath;
 
   /**
-   * feature string
+   * surface string.
+   * this value is not 0 terminated.
+   * You can get the length with length/rlength members.
    */
   const char           *surface;
 
   /**
-   * surface string.
-   * this value is not 0 terminated. You can get the length with length/rlength members.
+   * feature string
    */
   const char           *feature;
 
@@ -260,43 +213,6 @@ struct mecab_node_t {
    * best accumulative cost from bos node to this node.
    */
   long                  cost;
-
-  /**
-   * pointer to the internal token.
-   */
-  struct mecab_token_t  *token;
-};
-
-/**
- * Learner Node structure.
- * This structure is only used in training phase.
- */
-struct mecab_learner_node_t {
-  struct mecab_learner_node_t *prev;
-  struct mecab_learner_node_t *next;
-  struct mecab_learner_node_t *enext;
-  struct mecab_learner_node_t *bnext;
-  struct mecab_learner_path_t *rpath;
-  struct mecab_learner_path_t *lpath;
-  struct mecab_learner_node_t *anext;
-  const char                  *surface;
-  const char                  *feature;
-  unsigned int                 id;
-  unsigned short               length;
-  unsigned short               rlength;
-  unsigned short               rcAttr;
-  unsigned short               lcAttr;
-  unsigned short               posid;
-  unsigned char                char_type;
-  unsigned char                stat;
-  unsigned char                isbest;
-  double                       alpha;
-  double                       beta;
-  short                        wcost2;
-  double                       wcost;
-  double                       cost;
-  const int                    *fvector;
-  struct mecab_token_t         *token;
 };
 
 #define MECAB_NOR_NODE  (0)
@@ -351,10 +267,7 @@ extern "C" {
   typedef struct mecab_lattice_t         mecab_lattice_t;
   typedef struct mecab_dictionary_info_t mecab_dictionary_info_t;
   typedef struct mecab_node_t            mecab_node_t;
-  typedef struct mecab_learner_node_t    mecab_learner_node_t;
   typedef struct mecab_path_t            mecab_path_t;
-  typedef struct mecab_learner_path_t    mecab_learner_path_t;
-  typedef struct mecab_token_t           mecab_token_t;
 
 #ifndef SWIG
   /* C interface */
@@ -716,9 +629,6 @@ namespace MeCab {
 typedef struct mecab_dictionary_info_t DictionaryInfo;
 typedef struct mecab_path_t            Path;
 typedef struct mecab_node_t            Node;
-typedef struct mecab_learner_path_t    LearnerPath;
-typedef struct mecab_learner_node_t    LearnerNode;
-typedef struct mecab_token_t           Token;
 
 template <typename N, typename P> class Allocator;
 class Tagger;
