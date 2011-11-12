@@ -28,7 +28,6 @@ class Allocator {
 
   P *newPath() {
     if (!path_freelist_.get()) {
-      // lazy evaluation
       path_freelist_.reset(new FreeList<P>(PATH_FREELIST_SIZE));
     }
     return path_freelist_->alloc();

@@ -120,28 +120,6 @@ class Path(_object):
 Path_swigregister = _MeCab.Path_swigregister
 Path_swigregister(Path)
 
-class Token(_object):
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, Token, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, Token, name)
-    def __init__(self, *args, **kwargs): raise AttributeError("No constructor defined")
-    __repr__ = _swig_repr
-    __swig_getmethods__["lcAttr"] = _MeCab.Token_lcAttr_get
-    if _newclass:lcAttr = _swig_property(_MeCab.Token_lcAttr_get)
-    __swig_getmethods__["rcAttr"] = _MeCab.Token_rcAttr_get
-    if _newclass:rcAttr = _swig_property(_MeCab.Token_rcAttr_get)
-    __swig_getmethods__["posid"] = _MeCab.Token_posid_get
-    if _newclass:posid = _swig_property(_MeCab.Token_posid_get)
-    __swig_getmethods__["wcost"] = _MeCab.Token_wcost_get
-    if _newclass:wcost = _swig_property(_MeCab.Token_wcost_get)
-    __swig_getmethods__["feature"] = _MeCab.Token_feature_get
-    if _newclass:feature = _swig_property(_MeCab.Token_feature_get)
-    __swig_getmethods__["compound"] = _MeCab.Token_compound_get
-    if _newclass:compound = _swig_property(_MeCab.Token_compound_get)
-Token_swigregister = _MeCab.Token_swigregister
-Token_swigregister(Token)
-
 class Node(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Node, name, value)
@@ -192,8 +170,6 @@ class Node(_object):
     if _newclass:wcost = _swig_property(_MeCab.Node_wcost_get)
     __swig_getmethods__["cost"] = _MeCab.Node_cost_get
     if _newclass:cost = _swig_property(_MeCab.Node_cost_get)
-    __swig_getmethods__["token"] = _MeCab.Node_token_get
-    if _newclass:token = _swig_property(_MeCab.Node_token_get)
     __swig_getmethods__["surface"] = _MeCab.Node_surface_get
     if _newclass:surface = _swig_property(_MeCab.Node_surface_get)
 Node_swigregister = _MeCab.Node_swigregister

@@ -6,10 +6,10 @@
     mecab_destroy(mecab); \
     return -1; }
 
-int main (int argc, char **argv) 
-{
+int main (int argc, char **argv)  {
   char input[] = "太郎は次郎が持っている本を花子に渡した。";
   mecab_t *mecab;
+  mecab_lattice_t *lattice;
   const mecab_node_t *node;
   const char *result;
   int i;
@@ -40,12 +40,12 @@ int main (int argc, char **argv)
     printf("\t%s\n", node->feature);
   }
 
-  mecab_set_lattice_level(mecab, 2);   
+  mecab_set_lattice_level(mecab, 2);
   node = mecab_sparse_tonode(mecab, input);
   CHECK(node);
   for (;  node; node = node->next) {
     printf("%d ", node->id);
-    
+
     if (node->stat == MECAB_BOS_NODE)
       printf("BOS");
     else if (node->stat == MECAB_EOS_NODE)
@@ -69,11 +69,14 @@ int main (int argc, char **argv)
 	   node->cost);
   }
 
-  node = mecab_sparse_tonode(mecab, input);
-  len = node->sentence_length;
+  lattice = mecab_lattice_new();
+  mecab_lattice_set_sentence(lattice, input);
+  mecab_parse_lattice(mecab, lattice);
+  len = mecab_lattice_get_size(lattice);
   for (i = 0; i <= len; ++i) {
-    mecab_node_t *b = node->begin_node_list[i];
-    mecab_node_t *e = node->end_node_list[i];
+    mecab_node_t *b, *e;
+    b = mecab_lattice_get_begin_nodes(lattice, (size_t)i);
+    e = mecab_lattice_get_end_nodes(lattice, (size_t)i);
     for (; b; b = b->bnext) {
         printf("B[%d] %s\t%s\n", i, b->surface, b->feature);
     }
@@ -82,15 +85,33 @@ int main (int argc, char **argv)
     }
   }
 
+  mecab_lattice_set_sentence(lattice, input);
+  mecab_lattice_set_request_type(lattice, MECAB_NBEST);
+  mecab_parse_lattice(mecab, lattice);
+  for (i = 0; i < 10; ++i) {
+    fprintf(stdout, "%s", mecab_lattice_tostr(lattice));
+    if (!mecab_lattice_next(lattice)) {
+      break;
+    }
+  }
+
+  mecab_lattice_set_sentence(lattice, input);
+  mecab_lattice_set_request_type(lattice, MECAB_MARGINAL_PROB);
+  mecab_parse_lattice(mecab, lattice);
+  node = mecab_lattice_get_bos_node(lattice);
+  for (;  node; node = node->next) {
+    fwrite(node->surface, sizeof(char), node->length, stdout);
+    fprintf(stdout, "\t%s\t%f\n", node->feature, node->prob);
+  }
+
   mecab_set_lattice_level(mecab, 0);
-  mecab_set_all_morphs(mecab, 1); 
+  mecab_set_all_morphs(mecab, 1);
   node = mecab_sparse_tonode(mecab, input);
   CHECK(node);
   for (; node; node = node->next) {
     fwrite (node->surface, sizeof(char), node->length, stdout);
     printf("\t%s\n", node->feature);
   }
-   
 
   const mecab_dictionary_info_t *d = mecab_dictionary_info(mecab);
   for (; d; d = d->next) {

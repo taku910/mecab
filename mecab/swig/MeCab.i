@@ -14,7 +14,6 @@
 
 %rename(Node) mecab_node_t;
 %rename(Path) mecab_path_t;
-%rename(Token) mecab_token_t;
 %rename(DictionaryInfo) mecab_dictionary_info_t;
 %ignore    mecab_learner_node_t;
 %ignore    mecab_learner_path_t;
@@ -22,7 +21,6 @@
 %ignore    mecab_lattice_t;
 %nodefault mecab_path_t;
 %nodefault mecab_node_t;
-%nodefault mecab_token_t;
 
 %feature("notabstract") MeCab::Tagger;
 %feature("notabstract") MeCab::Lattice;
@@ -42,13 +40,6 @@
 %immutable mecab_path_t::rnext;
 %immutable mecab_path_t::lnext;
 %immutable mecab_path_t::cost;
-
-%immutable mecab_token_t::lcAttr;
-%immutable mecab_token_t::rcAttr;
-%immutable mecab_token_t::posid;
-%immutable mecab_token_t::wcost;
-%immutable mecab_token_t::feature;
-%immutable mecab_token_t::compound;
 
 %immutable mecab_node_t::prev;
 %immutable mecab_node_t::next;
@@ -71,7 +62,6 @@
 %immutable mecab_node_t::wcost;
 %immutable mecab_node_t::cost;
 %immutable mecab_node_t::surface;
-%immutable mecab_node_t::token;
 
 %extend mecab_node_t {
   char *surface;

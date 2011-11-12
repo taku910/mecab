@@ -634,78 +634,6 @@ SWIGEXPORT float SWIGSTDCALL CSharp_Path_prob_get(void * jarg1) {
 }
 
 
-SWIGEXPORT unsigned short SWIGSTDCALL CSharp_Token_lcAttr_get(void * jarg1) {
-  unsigned short jresult ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  unsigned short result;
-  
-  arg1 = (mecab_token_t *)jarg1; 
-  result = (unsigned short) ((arg1)->lcAttr);
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT unsigned short SWIGSTDCALL CSharp_Token_rcAttr_get(void * jarg1) {
-  unsigned short jresult ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  unsigned short result;
-  
-  arg1 = (mecab_token_t *)jarg1; 
-  result = (unsigned short) ((arg1)->rcAttr);
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT unsigned short SWIGSTDCALL CSharp_Token_posid_get(void * jarg1) {
-  unsigned short jresult ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  unsigned short result;
-  
-  arg1 = (mecab_token_t *)jarg1; 
-  result = (unsigned short) ((arg1)->posid);
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT short SWIGSTDCALL CSharp_Token_wcost_get(void * jarg1) {
-  short jresult ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  short result;
-  
-  arg1 = (mecab_token_t *)jarg1; 
-  result = (short) ((arg1)->wcost);
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Token_feature_get(void * jarg1) {
-  unsigned int jresult ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  unsigned int result;
-  
-  arg1 = (mecab_token_t *)jarg1; 
-  result = (unsigned int) ((arg1)->feature);
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Token_compound_get(void * jarg1) {
-  unsigned int jresult ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  unsigned int result;
-  
-  arg1 = (mecab_token_t *)jarg1; 
-  result = (unsigned int) ((arg1)->compound);
-  jresult = result; 
-  return jresult;
-}
-
-
 SWIGEXPORT void * SWIGSTDCALL CSharp_Node_prev_get(void * jarg1) {
   void * jresult ;
   mecab_node_t *arg1 = (mecab_node_t *) 0 ;
@@ -964,18 +892,6 @@ SWIGEXPORT long SWIGSTDCALL CSharp_Node_cost_get(void * jarg1) {
   arg1 = (mecab_node_t *)jarg1; 
   result = (long) ((arg1)->cost);
   jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_Node_token_get(void * jarg1) {
-  void * jresult ;
-  mecab_node_t *arg1 = (mecab_node_t *) 0 ;
-  mecab_token_t *result = 0 ;
-  
-  arg1 = (mecab_node_t *)jarg1; 
-  result = (mecab_token_t *) ((arg1)->token);
-  jresult = (void *)result; 
   return jresult;
 }
 

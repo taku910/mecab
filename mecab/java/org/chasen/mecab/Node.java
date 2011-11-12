@@ -125,11 +125,6 @@ public class Node {
     return MeCabJNI.Node_cost_get(swigCPtr, this);
   }
 
-  public Token getToken() {
-    long cPtr = MeCabJNI.Node_token_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Token(cPtr, false);
-  }
-
   public String getSurface() {
     return MeCabJNI.Node_surface_get(swigCPtr, this);
   }

@@ -1818,15 +1818,12 @@ int SWIG_Ruby_arity( VALUE proc, int minimal )
 #define SWIGTYPE_p_MeCab__Tagger swig_types[2]
 #define SWIGTYPE_p_char swig_types[3]
 #define SWIGTYPE_p_mecab_dictionary_info_t swig_types[4]
-#define SWIGTYPE_p_mecab_learner_node_t swig_types[5]
-#define SWIGTYPE_p_mecab_learner_path_t swig_types[6]
-#define SWIGTYPE_p_mecab_node_t swig_types[7]
-#define SWIGTYPE_p_mecab_path_t swig_types[8]
-#define SWIGTYPE_p_mecab_t swig_types[9]
-#define SWIGTYPE_p_mecab_token_t swig_types[10]
-#define SWIGTYPE_p_p_char swig_types[11]
-static swig_type_info *swig_types[13];
-static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
+#define SWIGTYPE_p_mecab_node_t swig_types[5]
+#define SWIGTYPE_p_mecab_path_t swig_types[6]
+#define SWIGTYPE_p_mecab_t swig_types[7]
+#define SWIGTYPE_p_p_char swig_types[8]
+static swig_type_info *swig_types[10];
+static swig_module_info swig_module = {swig_types, 9, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2059,16 +2056,16 @@ SWIG_From_float  (float value)
 
 
 SWIGINTERNINLINE VALUE
-SWIG_From_short  (short value)
+SWIG_From_unsigned_SS_char  (unsigned char value)
 {    
-  return SWIG_From_long  (value);
+  return SWIG_From_unsigned_SS_long  (value);
 }
 
 
 SWIGINTERNINLINE VALUE
-SWIG_From_unsigned_SS_char  (unsigned char value)
+SWIG_From_short  (short value)
 {    
-  return SWIG_From_unsigned_SS_long  (value);
+  return SWIG_From_long  (value);
 }
 
 
@@ -2662,152 +2659,6 @@ fail:
 }
 
 
-swig_class SwigClassToken;
-
-SWIGINTERN VALUE
-_wrap_Token_lcAttr_get(int argc, VALUE *argv, VALUE self) {
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  unsigned short result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "mecab_token_t *","lcAttr", 1, self )); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (unsigned short) ((arg1)->lcAttr);
-  vresult = SWIG_From_unsigned_SS_short(static_cast< unsigned short >(result));
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
-_wrap_Token_rcAttr_get(int argc, VALUE *argv, VALUE self) {
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  unsigned short result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "mecab_token_t *","rcAttr", 1, self )); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (unsigned short) ((arg1)->rcAttr);
-  vresult = SWIG_From_unsigned_SS_short(static_cast< unsigned short >(result));
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
-_wrap_Token_posid_get(int argc, VALUE *argv, VALUE self) {
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  unsigned short result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "mecab_token_t *","posid", 1, self )); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (unsigned short) ((arg1)->posid);
-  vresult = SWIG_From_unsigned_SS_short(static_cast< unsigned short >(result));
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
-_wrap_Token_wcost_get(int argc, VALUE *argv, VALUE self) {
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  short result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "mecab_token_t *","wcost", 1, self )); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (short) ((arg1)->wcost);
-  vresult = SWIG_From_short(static_cast< short >(result));
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
-_wrap_Token_feature_get(int argc, VALUE *argv, VALUE self) {
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  unsigned int result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "mecab_token_t *","feature", 1, self )); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (unsigned int) ((arg1)->feature);
-  vresult = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
-_wrap_Token_compound_get(int argc, VALUE *argv, VALUE self) {
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  unsigned int result;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "mecab_token_t *","compound", 1, self )); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (unsigned int) ((arg1)->compound);
-  vresult = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
 swig_class SwigClassNode;
 
 SWIGINTERN VALUE
@@ -3337,30 +3188,6 @@ _wrap_Node_cost_get(int argc, VALUE *argv, VALUE self) {
   arg1 = reinterpret_cast< mecab_node_t * >(argp1);
   result = (long) ((arg1)->cost);
   vresult = SWIG_From_long(static_cast< long >(result));
-  return vresult;
-fail:
-  return Qnil;
-}
-
-
-SWIGINTERN VALUE
-_wrap_Node_token_get(int argc, VALUE *argv, VALUE self) {
-  mecab_node_t *arg1 = (mecab_node_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  mecab_token_t *result = 0 ;
-  VALUE vresult = Qnil;
-  
-  if ((argc < 0) || (argc > 0)) {
-    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
-  }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_mecab_node_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "mecab_node_t *","token", 1, self )); 
-  }
-  arg1 = reinterpret_cast< mecab_node_t * >(argp1);
-  result = (mecab_token_t *) ((arg1)->token);
-  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_mecab_token_t, 0 |  0 );
   return vresult;
 fail:
   return Qnil;
@@ -6068,12 +5895,9 @@ static swig_type_info _swigt__p_MeCab__Model = {"_p_MeCab__Model", "MeCab::Model
 static swig_type_info _swigt__p_MeCab__Tagger = {"_p_MeCab__Tagger", "MeCab::Tagger *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_mecab_dictionary_info_t = {"_p_mecab_dictionary_info_t", "MeCab::DictionaryInfo *|mecab_dictionary_info_t *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_mecab_learner_node_t = {"_p_mecab_learner_node_t", "mecab_learner_node_t *|MeCab::LearnerNode *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_mecab_learner_path_t = {"_p_mecab_learner_path_t", "mecab_learner_path_t *|MeCab::LearnerPath *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_mecab_node_t = {"_p_mecab_node_t", "mecab_node_t *|MeCab::Node *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_mecab_path_t = {"_p_mecab_path_t", "mecab_path_t *|MeCab::Path *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_mecab_t = {"_p_mecab_t", "mecab_t *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_mecab_token_t = {"_p_mecab_token_t", "mecab_token_t *|MeCab::Token *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_char = {"_p_p_char", "char **", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
@@ -6082,12 +5906,9 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_MeCab__Tagger,
   &_swigt__p_char,
   &_swigt__p_mecab_dictionary_info_t,
-  &_swigt__p_mecab_learner_node_t,
-  &_swigt__p_mecab_learner_path_t,
   &_swigt__p_mecab_node_t,
   &_swigt__p_mecab_path_t,
   &_swigt__p_mecab_t,
-  &_swigt__p_mecab_token_t,
   &_swigt__p_p_char,
 };
 
@@ -6096,12 +5917,9 @@ static swig_cast_info _swigc__p_MeCab__Model[] = {  {&_swigt__p_MeCab__Model, 0,
 static swig_cast_info _swigc__p_MeCab__Tagger[] = {  {&_swigt__p_MeCab__Tagger, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_mecab_dictionary_info_t[] = {  {&_swigt__p_mecab_dictionary_info_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_mecab_learner_node_t[] = {  {&_swigt__p_mecab_learner_node_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_mecab_learner_path_t[] = {  {&_swigt__p_mecab_learner_path_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_mecab_node_t[] = {  {&_swigt__p_mecab_node_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_mecab_path_t[] = {  {&_swigt__p_mecab_path_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_mecab_t[] = {  {&_swigt__p_mecab_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_mecab_token_t[] = {  {&_swigt__p_mecab_token_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_char[] = {  {&_swigt__p_p_char, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
@@ -6110,12 +5928,9 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_MeCab__Tagger,
   _swigc__p_char,
   _swigc__p_mecab_dictionary_info_t,
-  _swigc__p_mecab_learner_node_t,
-  _swigc__p_mecab_learner_path_t,
   _swigc__p_mecab_node_t,
   _swigc__p_mecab_path_t,
   _swigc__p_mecab_t,
-  _swigc__p_mecab_token_t,
   _swigc__p_p_char,
 };
 
@@ -6407,18 +6222,6 @@ SWIGEXPORT void Init_MeCab(void) {
   SwigClassPath.mark = 0;
   SwigClassPath.trackObjects = 0;
   
-  SwigClassToken.klass = rb_define_class_under(mMeCab, "Token", rb_cObject);
-  SWIG_TypeClientData(SWIGTYPE_p_mecab_token_t, (void *) &SwigClassToken);
-  rb_undef_alloc_func(SwigClassToken.klass);
-  rb_define_method(SwigClassToken.klass, "lcAttr", VALUEFUNC(_wrap_Token_lcAttr_get), -1);
-  rb_define_method(SwigClassToken.klass, "rcAttr", VALUEFUNC(_wrap_Token_rcAttr_get), -1);
-  rb_define_method(SwigClassToken.klass, "posid", VALUEFUNC(_wrap_Token_posid_get), -1);
-  rb_define_method(SwigClassToken.klass, "wcost", VALUEFUNC(_wrap_Token_wcost_get), -1);
-  rb_define_method(SwigClassToken.klass, "feature", VALUEFUNC(_wrap_Token_feature_get), -1);
-  rb_define_method(SwigClassToken.klass, "compound", VALUEFUNC(_wrap_Token_compound_get), -1);
-  SwigClassToken.mark = 0;
-  SwigClassToken.trackObjects = 0;
-  
   SwigClassNode.klass = rb_define_class_under(mMeCab, "Node", rb_cObject);
   SWIG_TypeClientData(SWIGTYPE_p_mecab_node_t, (void *) &SwigClassNode);
   rb_undef_alloc_func(SwigClassNode.klass);
@@ -6444,7 +6247,6 @@ SWIGEXPORT void Init_MeCab(void) {
   rb_define_method(SwigClassNode.klass, "prob", VALUEFUNC(_wrap_Node_prob_get), -1);
   rb_define_method(SwigClassNode.klass, "wcost", VALUEFUNC(_wrap_Node_wcost_get), -1);
   rb_define_method(SwigClassNode.klass, "cost", VALUEFUNC(_wrap_Node_cost_get), -1);
-  rb_define_method(SwigClassNode.klass, "token", VALUEFUNC(_wrap_Node_token_get), -1);
   rb_define_method(SwigClassNode.klass, "surface", VALUEFUNC(_wrap_Node_surface_get), -1);
   SwigClassNode.mark = 0;
   SwigClassNode.trackObjects = 0;

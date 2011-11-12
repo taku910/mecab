@@ -26,12 +26,6 @@ class MeCabJNI {
   public final static native int Path_cost_get(long jarg1, Path jarg1_);
   public final static native void Path_prob_set(long jarg1, Path jarg1_, float jarg2);
   public final static native float Path_prob_get(long jarg1, Path jarg1_);
-  public final static native int Token_lcAttr_get(long jarg1, Token jarg1_);
-  public final static native int Token_rcAttr_get(long jarg1, Token jarg1_);
-  public final static native int Token_posid_get(long jarg1, Token jarg1_);
-  public final static native short Token_wcost_get(long jarg1, Token jarg1_);
-  public final static native long Token_feature_get(long jarg1, Token jarg1_);
-  public final static native long Token_compound_get(long jarg1, Token jarg1_);
   public final static native long Node_prev_get(long jarg1, Node jarg1_);
   public final static native long Node_next_get(long jarg1, Node jarg1_);
   public final static native long Node_enext_get(long jarg1, Node jarg1_);
@@ -54,7 +48,6 @@ class MeCabJNI {
   public final static native float Node_prob_get(long jarg1, Node jarg1_);
   public final static native short Node_wcost_get(long jarg1, Node jarg1_);
   public final static native int Node_cost_get(long jarg1, Node jarg1_);
-  public final static native long Node_token_get(long jarg1, Node jarg1_);
   public final static native String Node_surface_get(long jarg1, Node jarg1_);
   public final static native int MECAB_NOR_NODE_get();
   public final static native int MECAB_UNK_NODE_get();

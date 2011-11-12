@@ -2691,15 +2691,12 @@ SWIG_Python_MustGetPtr(PyObject *obj, swig_type_info *ty, int argnum, int flags)
 #define SWIGTYPE_p_MeCab__Tagger swig_types[2]
 #define SWIGTYPE_p_char swig_types[3]
 #define SWIGTYPE_p_mecab_dictionary_info_t swig_types[4]
-#define SWIGTYPE_p_mecab_learner_node_t swig_types[5]
-#define SWIGTYPE_p_mecab_learner_path_t swig_types[6]
-#define SWIGTYPE_p_mecab_node_t swig_types[7]
-#define SWIGTYPE_p_mecab_path_t swig_types[8]
-#define SWIGTYPE_p_mecab_t swig_types[9]
-#define SWIGTYPE_p_mecab_token_t swig_types[10]
-#define SWIGTYPE_p_p_char swig_types[11]
-static swig_type_info *swig_types[13];
-static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
+#define SWIGTYPE_p_mecab_node_t swig_types[5]
+#define SWIGTYPE_p_mecab_path_t swig_types[6]
+#define SWIGTYPE_p_mecab_t swig_types[7]
+#define SWIGTYPE_p_p_char swig_types[8]
+static swig_type_info *swig_types[10];
+static swig_module_info swig_module = {swig_types, 9, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3006,16 +3003,16 @@ SWIG_From_float  (float value)
 
 
 SWIGINTERNINLINE PyObject *
-SWIG_From_short  (short value)
+SWIG_From_unsigned_SS_char  (unsigned char value)
 {    
-  return SWIG_From_long  (value);
+  return SWIG_From_unsigned_SS_long  (value);
 }
 
 
 SWIGINTERNINLINE PyObject *
-SWIG_From_unsigned_SS_char  (unsigned char value)
+SWIG_From_short  (short value)
 {    
-  return SWIG_From_unsigned_SS_long  (value);
+  return SWIG_From_long  (value);
 }
 
 
@@ -3690,145 +3687,6 @@ SWIGINTERN PyObject *Path_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject 
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *_wrap_Token_lcAttr_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  unsigned short result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Token_lcAttr_get",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Token_lcAttr_get" "', argument " "1"" of type '" "mecab_token_t *""'"); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (unsigned short) ((arg1)->lcAttr);
-  resultobj = SWIG_From_unsigned_SS_short(static_cast< unsigned short >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Token_rcAttr_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  unsigned short result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Token_rcAttr_get",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Token_rcAttr_get" "', argument " "1"" of type '" "mecab_token_t *""'"); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (unsigned short) ((arg1)->rcAttr);
-  resultobj = SWIG_From_unsigned_SS_short(static_cast< unsigned short >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Token_posid_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  unsigned short result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Token_posid_get",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Token_posid_get" "', argument " "1"" of type '" "mecab_token_t *""'"); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (unsigned short) ((arg1)->posid);
-  resultobj = SWIG_From_unsigned_SS_short(static_cast< unsigned short >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Token_wcost_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  short result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Token_wcost_get",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Token_wcost_get" "', argument " "1"" of type '" "mecab_token_t *""'"); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (short) ((arg1)->wcost);
-  resultobj = SWIG_From_short(static_cast< short >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Token_feature_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  unsigned int result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Token_feature_get",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Token_feature_get" "', argument " "1"" of type '" "mecab_token_t *""'"); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (unsigned int) ((arg1)->feature);
-  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Token_compound_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  unsigned int result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Token_compound_get",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_mecab_token_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Token_compound_get" "', argument " "1"" of type '" "mecab_token_t *""'"); 
-  }
-  arg1 = reinterpret_cast< mecab_token_t * >(argp1);
-  result = (unsigned int) ((arg1)->compound);
-  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *Token_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *obj;
-  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_mecab_token_t, SWIG_NewClientData(obj));
-  return SWIG_Py_Void();
-}
-
 SWIGINTERN PyObject *_wrap_Node_prev_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   mecab_node_t *arg1 = (mecab_node_t *) 0 ;
@@ -4315,28 +4173,6 @@ SWIGINTERN PyObject *_wrap_Node_cost_get(PyObject *SWIGUNUSEDPARM(self), PyObjec
   arg1 = reinterpret_cast< mecab_node_t * >(argp1);
   result = (long) ((arg1)->cost);
   resultobj = SWIG_From_long(static_cast< long >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Node_token_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  mecab_node_t *arg1 = (mecab_node_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  mecab_token_t *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Node_token_get",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_mecab_node_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Node_token_get" "', argument " "1"" of type '" "mecab_node_t *""'"); 
-  }
-  arg1 = reinterpret_cast< mecab_node_t * >(argp1);
-  result = (mecab_token_t *) ((arg1)->token);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_mecab_token_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -7025,13 +6861,6 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Path_prob_set", _wrap_Path_prob_set, METH_VARARGS, NULL},
 	 { (char *)"Path_prob_get", _wrap_Path_prob_get, METH_VARARGS, NULL},
 	 { (char *)"Path_swigregister", Path_swigregister, METH_VARARGS, NULL},
-	 { (char *)"Token_lcAttr_get", _wrap_Token_lcAttr_get, METH_VARARGS, NULL},
-	 { (char *)"Token_rcAttr_get", _wrap_Token_rcAttr_get, METH_VARARGS, NULL},
-	 { (char *)"Token_posid_get", _wrap_Token_posid_get, METH_VARARGS, NULL},
-	 { (char *)"Token_wcost_get", _wrap_Token_wcost_get, METH_VARARGS, NULL},
-	 { (char *)"Token_feature_get", _wrap_Token_feature_get, METH_VARARGS, NULL},
-	 { (char *)"Token_compound_get", _wrap_Token_compound_get, METH_VARARGS, NULL},
-	 { (char *)"Token_swigregister", Token_swigregister, METH_VARARGS, NULL},
 	 { (char *)"Node_prev_get", _wrap_Node_prev_get, METH_VARARGS, NULL},
 	 { (char *)"Node_next_get", _wrap_Node_next_get, METH_VARARGS, NULL},
 	 { (char *)"Node_enext_get", _wrap_Node_enext_get, METH_VARARGS, NULL},
@@ -7054,7 +6883,6 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Node_prob_get", _wrap_Node_prob_get, METH_VARARGS, NULL},
 	 { (char *)"Node_wcost_get", _wrap_Node_wcost_get, METH_VARARGS, NULL},
 	 { (char *)"Node_cost_get", _wrap_Node_cost_get, METH_VARARGS, NULL},
-	 { (char *)"Node_token_get", _wrap_Node_token_get, METH_VARARGS, NULL},
 	 { (char *)"Node_surface_get", _wrap_Node_surface_get, METH_VARARGS, NULL},
 	 { (char *)"Node_swigregister", Node_swigregister, METH_VARARGS, NULL},
 	 { (char *)"Lattice_clear", _wrap_Lattice_clear, METH_VARARGS, NULL},
@@ -7127,12 +6955,9 @@ static swig_type_info _swigt__p_MeCab__Model = {"_p_MeCab__Model", "MeCab::Model
 static swig_type_info _swigt__p_MeCab__Tagger = {"_p_MeCab__Tagger", "MeCab::Tagger *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_mecab_dictionary_info_t = {"_p_mecab_dictionary_info_t", "MeCab::DictionaryInfo *|mecab_dictionary_info_t *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_mecab_learner_node_t = {"_p_mecab_learner_node_t", "mecab_learner_node_t *|MeCab::LearnerNode *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_mecab_learner_path_t = {"_p_mecab_learner_path_t", "mecab_learner_path_t *|MeCab::LearnerPath *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_mecab_node_t = {"_p_mecab_node_t", "mecab_node_t *|MeCab::Node *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_mecab_path_t = {"_p_mecab_path_t", "mecab_path_t *|MeCab::Path *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_mecab_t = {"_p_mecab_t", "mecab_t *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_mecab_token_t = {"_p_mecab_token_t", "mecab_token_t *|MeCab::Token *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_char = {"_p_p_char", "char **", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
@@ -7141,12 +6966,9 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_MeCab__Tagger,
   &_swigt__p_char,
   &_swigt__p_mecab_dictionary_info_t,
-  &_swigt__p_mecab_learner_node_t,
-  &_swigt__p_mecab_learner_path_t,
   &_swigt__p_mecab_node_t,
   &_swigt__p_mecab_path_t,
   &_swigt__p_mecab_t,
-  &_swigt__p_mecab_token_t,
   &_swigt__p_p_char,
 };
 
@@ -7155,12 +6977,9 @@ static swig_cast_info _swigc__p_MeCab__Model[] = {  {&_swigt__p_MeCab__Model, 0,
 static swig_cast_info _swigc__p_MeCab__Tagger[] = {  {&_swigt__p_MeCab__Tagger, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_mecab_dictionary_info_t[] = {  {&_swigt__p_mecab_dictionary_info_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_mecab_learner_node_t[] = {  {&_swigt__p_mecab_learner_node_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_mecab_learner_path_t[] = {  {&_swigt__p_mecab_learner_path_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_mecab_node_t[] = {  {&_swigt__p_mecab_node_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_mecab_path_t[] = {  {&_swigt__p_mecab_path_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_mecab_t[] = {  {&_swigt__p_mecab_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_mecab_token_t[] = {  {&_swigt__p_mecab_token_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_char[] = {  {&_swigt__p_p_char, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
@@ -7169,12 +6988,9 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_MeCab__Tagger,
   _swigc__p_char,
   _swigc__p_mecab_dictionary_info_t,
-  _swigc__p_mecab_learner_node_t,
-  _swigc__p_mecab_learner_path_t,
   _swigc__p_mecab_node_t,
   _swigc__p_mecab_path_t,
   _swigc__p_mecab_t,
-  _swigc__p_mecab_token_t,
   _swigc__p_p_char,
 };
 

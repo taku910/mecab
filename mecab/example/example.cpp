@@ -7,8 +7,7 @@
    delete tagger; \
    return -1; }
 
-int main (int argc, char **argv) 
-{
+int main (int argc, char **argv) {
   char input[1024] = "太郎は次郎が持っている本を花子に渡した。";
 
   MeCab::Tagger *tagger = MeCab::createTagger("");
@@ -18,16 +17,16 @@ int main (int argc, char **argv)
   CHECK(result);
   std::cout << "INPUT: " << input << std::endl;
   std::cout << "RESULT: " << result << std::endl;
-   
+
   tagger->set_lattice_level(1);
   result = tagger->parseNBest(3, input);
-  CHECK(result); 
+  CHECK(result);
   std::cout << "NBEST: " << std::endl << result;
 
   CHECK(tagger->parseNBestInit(input));
   for (int i = 0; i < 3; ++i) {
     std::cout << i << ":" << std::endl << tagger->next();
-  } 
+  }
 
   const MeCab::Node* node = tagger->parseToNode(input);
   CHECK(node);
@@ -35,7 +34,7 @@ int main (int argc, char **argv)
     std::cout.write(node->surface, node->length);
   }
 
-  tagger->set_lattice_level(2);    
+  tagger->set_lattice_level(2);
   node = tagger->parseToNode(input);
   CHECK(node);
 
@@ -65,10 +64,27 @@ int main (int argc, char **argv)
 
   tagger->set_lattice_level(0);
   node = tagger->parseToNode(input);
-  size_t len = node->sentence_length;
+
+  tagger->set_all_morphs(true);
+  node = tagger->parseToNode(input);
+  for (; node; node = node->next) {
+    if (node->stat == MECAB_BOS_NODE)
+      std::cout << "BOS";
+    else if (node->stat == MECAB_EOS_NODE)
+      std::cout << "EOS";
+    else
+      std::cout.write (node->surface, node->length);
+    std::cout << "\t" << node->feature << std::endl;
+  }
+
+  MeCab::Lattice *lattice = MeCab::createLattice();
+  lattice->set_sentence(input);
+  CHECK(tagger->parse(lattice));
+
+  const size_t len = lattice->size();
   for (int i = 0; i <= len; ++i) {
-    MeCab::Node *b = node->begin_node_list[i];
-    MeCab::Node *e = node->end_node_list[i];
+    MeCab::Node *b = lattice->begin_nodes(i);
+    MeCab::Node *e = lattice->end_nodes(i);
     for (; b; b = b->bnext) {
       printf("B[%d] %s\t%s\n", i, b->surface, b->feature);
     }
@@ -77,16 +93,26 @@ int main (int argc, char **argv)
     }
   }
 
-  tagger->set_all_morphs(true);
-  node = tagger->parseToNode(input);   
-  for (; node; node = node->next) {
-    if (node->stat == MECAB_BOS_NODE)
-      std::cout << "BOS";
-    else if (node->stat == MECAB_EOS_NODE)
-      std::cout << "EOS";
-    else
-      std::cout.write (node->surface, node->length);
-    std::cout << "\t" << node->feature << std::endl; 
+  lattice->set_request_type(MECAB_NBEST);
+  lattice->set_sentence(input);
+  CHECK(tagger->parse(lattice));
+  for (int i = 0; i < 10; ++i) {
+    std::cout << "NBEST: " << i << std::endl;
+    std::cout << lattice->toString();
+    if (!lattice->next()) {
+      break;
+    }
+  }
+
+  lattice->set_request_type(MECAB_MARGINAL_PROB);
+  lattice->set_sentence(input);
+  CHECK(tagger->parse(lattice));
+  std::cout << lattice->theta() << std::endl;
+  for (const MeCab::Node *node = lattice->bos_node();
+       node; node = node->next) {
+    std::cout.write(node->surface, node->length);
+    std::cout << "\t" << node->feature;
+    std::cout << "\t" << node->prob << std::endl;
   }
 
   const MeCab::DictionaryInfo *d = tagger->dictionary_info();
@@ -100,8 +126,8 @@ int main (int argc, char **argv)
     std::cout << "version: " <<  d->version << std::endl;
   }
 
-
+  delete lattice;
   delete tagger;
-   
+
   return 0;
 }

@@ -341,7 +341,7 @@ extern "C" {
   /**
    * C wrapper of MeCab::Tagger::parse(MeCab::Lattice *lattice)
    */
-  MECAB_DLL_EXTERN int           mecab_parse(mecab_t *mecab, mecab_lattice_t *lattice);
+  MECAB_DLL_EXTERN int           mecab_parse_lattice(mecab_t *mecab, mecab_lattice_t *lattice);
 
   /**
    * C wrapper of MeCab::Tagger::parse(const char *str)

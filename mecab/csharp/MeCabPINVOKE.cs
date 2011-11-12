@@ -236,24 +236,6 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_Path_prob_get")]
   public static extern float Path_prob_get(HandleRef jarg1);
 
-  [DllImport("MeCab", EntryPoint="CSharp_Token_lcAttr_get")]
-  public static extern ushort Token_lcAttr_get(HandleRef jarg1);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Token_rcAttr_get")]
-  public static extern ushort Token_rcAttr_get(HandleRef jarg1);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Token_posid_get")]
-  public static extern ushort Token_posid_get(HandleRef jarg1);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Token_wcost_get")]
-  public static extern short Token_wcost_get(HandleRef jarg1);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Token_feature_get")]
-  public static extern uint Token_feature_get(HandleRef jarg1);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Token_compound_get")]
-  public static extern uint Token_compound_get(HandleRef jarg1);
-
   [DllImport("MeCab", EntryPoint="CSharp_Node_prev_get")]
   public static extern IntPtr Node_prev_get(HandleRef jarg1);
 
@@ -319,9 +301,6 @@ class MeCabPINVOKE {
 
   [DllImport("MeCab", EntryPoint="CSharp_Node_cost_get")]
   public static extern int Node_cost_get(HandleRef jarg1);
-
-  [DllImport("MeCab", EntryPoint="CSharp_Node_token_get")]
-  public static extern IntPtr Node_token_get(HandleRef jarg1);
 
   [DllImport("MeCab", EntryPoint="CSharp_Node_surface_get")]
   public static extern string Node_surface_get(HandleRef jarg1);

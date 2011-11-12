@@ -215,15 +215,6 @@ public class Node : IDisposable {
     } 
   }
 
-  public Token token {
-    get {
-      IntPtr cPtr = MeCabPINVOKE.Node_token_get(swigCPtr);
-      Token ret = (cPtr == IntPtr.Zero) ? null : new Token(cPtr, false);
-      if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
   public string surface {
     get {
       string ret = MeCabPINVOKE.Node_surface_get(swigCPtr);

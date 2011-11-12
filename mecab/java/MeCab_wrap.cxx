@@ -612,96 +612,6 @@ SWIGEXPORT jfloat JNICALL Java_org_chasen_mecab_MeCabJNI_Path_1prob_1get(JNIEnv 
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_Token_1lcAttr_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  unsigned short result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mecab_token_t **)&jarg1; 
-  result = (unsigned short) ((arg1)->lcAttr);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_Token_1rcAttr_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  unsigned short result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mecab_token_t **)&jarg1; 
-  result = (unsigned short) ((arg1)->rcAttr);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_Token_1posid_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  unsigned short result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mecab_token_t **)&jarg1; 
-  result = (unsigned short) ((arg1)->posid);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jshort JNICALL Java_org_chasen_mecab_MeCabJNI_Token_1wcost_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jshort jresult = 0 ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  short result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mecab_token_t **)&jarg1; 
-  result = (short) ((arg1)->wcost);
-  jresult = (jshort)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Token_1feature_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  unsigned int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mecab_token_t **)&jarg1; 
-  result = (unsigned int) ((arg1)->feature);
-  jresult = (jlong)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Token_1compound_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  mecab_token_t *arg1 = (mecab_token_t *) 0 ;
-  unsigned int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mecab_token_t **)&jarg1; 
-  result = (unsigned int) ((arg1)->compound);
-  jresult = (jlong)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Node_1prev_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   mecab_node_t *arg1 = (mecab_node_t *) 0 ;
@@ -1026,21 +936,6 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_Node_1cost_1get(JNIEnv *j
   arg1 = *(mecab_node_t **)&jarg1; 
   result = (long) ((arg1)->cost);
   jresult = (jint)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Node_1token_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  mecab_node_t *arg1 = (mecab_node_t *) 0 ;
-  mecab_token_t *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mecab_node_t **)&jarg1; 
-  result = (mecab_token_t *) ((arg1)->token);
-  *(mecab_token_t **)&jresult = result; 
   return jresult;
 }
 

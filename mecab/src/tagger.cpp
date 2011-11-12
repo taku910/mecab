@@ -26,6 +26,8 @@ void setGlobalError(const char *str);
 namespace MeCab {
 namespace {
 
+const float kDefaultTheta = 0.75;
+
 const MeCab::Option long_options[] = {
   { "rcfile",        'r',  0, "FILE",    "use FILE as resource file" },
   { "dicdir",        'd',  0, "DIR",    "set DIR  as a system dicdir" },
@@ -336,7 +338,8 @@ bool ModelImpl::open(const Param &param) {
   viterbi_.reset(new Viterbi);
   writer_.reset(new Writer);
 
-  if (!tokenizer_->open(param) || !connector_->open(param) ||
+  if (!tokenizer_->open(param) ||
+      !connector_->open(param) ||
       !writer_->open(param) ||
       !viterbi_->open(param, tokenizer_.get(), connector_.get())) {
     std::string error = tokenizer_->what();
@@ -355,6 +358,7 @@ bool ModelImpl::open(const Param &param) {
     connector_.reset(0);
     writer_.reset(0);
     viterbi_.reset(0);
+
     return false;
   }
 
@@ -390,7 +394,7 @@ Lattice *ModelImpl::createLattice() const {
 
 TaggerImpl::TaggerImpl()
     : current_model_(0),
-      request_type_(MECAB_ONE_BEST), theta_(0.0) {}
+      request_type_(MECAB_ONE_BEST), theta_(kDefaultTheta) {}
 
 TaggerImpl::~TaggerImpl() {}
 
@@ -629,7 +633,7 @@ const DictionaryInfo *TaggerImpl::dictionary_info() const {
 }
 
 LatticeImpl::LatticeImpl(const Writer *writer)
-    : sentence_(0), size_(0), theta_(0.0), Z_(0.0),
+    : sentence_(0), size_(0), theta_(kDefaultTheta), Z_(0.0),
       request_type_(MECAB_ONE_BEST),
       writer_(writer),
       ostrs_(0),
@@ -649,6 +653,7 @@ void LatticeImpl::clear() {
   begin_nodes_.clear();
   end_nodes_.clear();
   size_ = 0;
+  theta_ = kDefaultTheta;
   Z_ = 0.0;
   sentence_ = 0;
 }
@@ -702,9 +707,7 @@ void writeLattice(Lattice *lattice, StringBuffer *os) {
 }  // namespace
 
 const char *LatticeImpl::toString() {
-  StringBuffer *os = stream();
-  os->clear();
-  return toStringInternal(os);
+  return toStringInternal(stream());
 }
 
 const char *LatticeImpl::toString(char *buf, size_t size) {
@@ -713,6 +716,7 @@ const char *LatticeImpl::toString(char *buf, size_t size) {
 }
 
 const char *LatticeImpl::toStringInternal(StringBuffer *os) {
+  os->clear();
   if (writer_) {
     if (!writer_->write(this, os)) {
       return 0;
@@ -729,9 +733,7 @@ const char *LatticeImpl::toStringInternal(StringBuffer *os) {
 }
 
 const char *LatticeImpl::toString(const Node *node) {
-  StringBuffer *os = stream();
-  os->clear();
-  return toStringInternal(node, os);
+  return toStringInternal(node, stream());
 }
 
 const char *LatticeImpl::toString(const Node *node,
@@ -742,6 +744,7 @@ const char *LatticeImpl::toString(const Node *node,
 
 const char *LatticeImpl::toStringInternal(const Node *node,
                                           StringBuffer *os) {
+  os->clear();
   if (!node) {
     set_what("node is NULL");
     return 0;
@@ -763,9 +766,7 @@ const char *LatticeImpl::toStringInternal(const Node *node,
 }
 
 const char *LatticeImpl::enumNBestAsString(size_t N) {
-  StringBuffer *os = stream();
-  os->clear();
-  return enumNBestAsStringInternal(N, os);
+  return enumNBestAsStringInternal(N, stream());
 }
 
 const char *LatticeImpl::enumNBestAsString(size_t N, char *buf, size_t size) {
@@ -774,6 +775,8 @@ const char *LatticeImpl::enumNBestAsString(size_t N, char *buf, size_t size) {
 }
 
 const char *LatticeImpl::enumNBestAsStringInternal(size_t N, StringBuffer *os) {
+  os->clear();
+
   if (N == 0 || N > NBEST_MAX) {
     set_what("nbest size must be 1 <= nbest <= 512");
     return 0;

@@ -135,38 +135,6 @@ sub ACQUIRE {
 }
 
 
-############# Class : MeCab::Token ##############
-
-package MeCab::Token;
-use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
-@ISA = qw( MeCab );
-%OWNER = ();
-%ITERATORS = ();
-*swig_lcAttr_get = *MeCabc::Token_lcAttr_get;
-*swig_lcAttr_set = *MeCabc::Token_lcAttr_set;
-*swig_rcAttr_get = *MeCabc::Token_rcAttr_get;
-*swig_rcAttr_set = *MeCabc::Token_rcAttr_set;
-*swig_posid_get = *MeCabc::Token_posid_get;
-*swig_posid_set = *MeCabc::Token_posid_set;
-*swig_wcost_get = *MeCabc::Token_wcost_get;
-*swig_wcost_set = *MeCabc::Token_wcost_set;
-*swig_feature_get = *MeCabc::Token_feature_get;
-*swig_feature_set = *MeCabc::Token_feature_set;
-*swig_compound_get = *MeCabc::Token_compound_get;
-*swig_compound_set = *MeCabc::Token_compound_set;
-sub DISOWN {
-    my $self = shift;
-    my $ptr = tied(%$self);
-    delete $OWNER{$ptr};
-}
-
-sub ACQUIRE {
-    my $self = shift;
-    my $ptr = tied(%$self);
-    $OWNER{$ptr} = 1;
-}
-
-
 ############# Class : MeCab::Node ##############
 
 package MeCab::Node;
@@ -216,8 +184,6 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_wcost_set = *MeCabc::Node_wcost_set;
 *swig_cost_get = *MeCabc::Node_cost_get;
 *swig_cost_set = *MeCabc::Node_cost_set;
-*swig_token_get = *MeCabc::Node_token_get;
-*swig_token_set = *MeCabc::Node_token_set;
 *swig_surface_get = *MeCabc::Node_surface_get;
 *swig_surface_set = *MeCabc::Node_surface_set;
 sub DISOWN {

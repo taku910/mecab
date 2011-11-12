@@ -230,7 +230,7 @@ const mecab_dictionary_info_t *mecab_dictionary_info(mecab_t *tagger) {
 
 int mecab_parse_lattice(mecab_t *mecab, mecab_lattice_t *lattice) {
   return static_cast<int>(reinterpret_cast<MeCab::Tagger *>(mecab)->parse(
-      reinterpret_cast<MeCab::Lattice *>(lattice)));
+                              reinterpret_cast<MeCab::Lattice *>(lattice)));
 }
 
 mecab_lattice_t *mecab_lattice_new() {
