@@ -319,7 +319,7 @@ int mecab_lattice_has_request_type(mecab_lattice_t *lattice, int request_type) {
 }
 
 void mecab_lattice_set_request_type(mecab_lattice_t *lattice, int request_type) {
-  reinterpret_cast<MeCab::Lattice *>(lattice)->has_request_type(request_type);
+  reinterpret_cast<MeCab::Lattice *>(lattice)->set_request_type(request_type);
 }
 
 void mecab_lattice_add_request_type(mecab_lattice_t *lattice, int request_type) {

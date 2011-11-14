@@ -15,8 +15,6 @@
 %rename(Node) mecab_node_t;
 %rename(Path) mecab_path_t;
 %rename(DictionaryInfo) mecab_dictionary_info_t;
-%ignore    mecab_learner_node_t;
-%ignore    mecab_learner_path_t;
 %ignore    mecab_model_t;
 %ignore    mecab_lattice_t;
 %nodefault mecab_path_t;

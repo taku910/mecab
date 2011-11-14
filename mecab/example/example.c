@@ -97,6 +97,7 @@ int main (int argc, char **argv)  {
 
   mecab_lattice_set_sentence(lattice, input);
   mecab_lattice_set_request_type(lattice, MECAB_MARGINAL_PROB);
+  mecab_lattice_set_theta(lattice, 0.001); 
   mecab_parse_lattice(mecab, lattice);
   node = mecab_lattice_get_bos_node(lattice);
   for (;  node; node = node->next) {
