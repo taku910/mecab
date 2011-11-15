@@ -942,6 +942,10 @@ int mecab_do(int argc, char **argv) {
     return EXIT_SUCCESS;
   }
 
+  if (param.get<int>("lattice-level") >= 1) {
+    std::cerr << "lattice-level is DEPERCATED. use --marginal or --nbest." << std::endl;
+  }
+
   MeCab::scoped_ptr<MeCab::ModelImpl> model(new MeCab::ModelImpl);
   if (!model->open(param)) {
     std::cout << model->what() << std::endl;
@@ -995,7 +999,7 @@ int mecab_do(int argc, char **argv) {
                                             ("input-buffer-size"),
                                             MIN_INPUT_BUFFER_SIZE));
 
-  bool partial = param.get<bool>("partial");
+  const bool partial = param.get<bool>("partial");
   if (partial) {
     ibufsize *= 8;
   }

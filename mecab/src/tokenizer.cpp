@@ -76,7 +76,6 @@ Tokenizer<N, P>::Tokenizer()
 template <typename N, typename P>
 N *Tokenizer<N, P>::getBOSNode(Allocator<N, P> *allocator) const {
   N *bos_node = allocator->newNode();
-  std::memset(bos_node, 0, sizeof(N));
   bos_node->surface = const_cast<const char *>(BOS_KEY);  // dummy
   bos_node->feature = bos_feature_.get();
   bos_node->isbest = 1;

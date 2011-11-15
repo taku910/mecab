@@ -126,6 +126,7 @@ int main (int argc, char **argv)  {
   }
 
   mecab_destroy(mecab);
+  mecab_lattice_destroy(lattice); 
    
   return 0;
 }
