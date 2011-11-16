@@ -161,28 +161,6 @@ bool Viterbi::forwardbackward(Lattice *lattice) const {
   for (int pos = 0; pos <= static_cast<long>(len); ++pos) {
     for (Node *node = begin_node_list[pos]; node; node = node->bnext) {
       node->prob = std::exp(node->alpha + node->beta - Z);
-    }
-  }
-
-  return true;
-}
-
-bool Viterbi::buildAllLattice(Lattice *lattice) const {
-  if (!lattice->has_request_type(MECAB_ALL_MORPHS)) {
-    return true;
-  }
-
-  Node *prev = lattice->bos_node();
-  const size_t len = lattice->size();
-  Node **begin_node_list = lattice->begin_nodes();
-  const double Z = lattice->Z();
-  const double theta = lattice->theta();
-
-  for (long pos = 0; pos <= static_cast<long>(len); ++pos) {
-    for (Node *node = begin_node_list[pos]; node; node = node->bnext) {
-      prev->next = node;
-      node->prev = prev;
-      prev = node;
       for (Path *path = node->lpath; path; path = path->lnext) {
         path->prob = std::exp(path->lnode->alpha
                               - theta * path->cost
@@ -194,7 +172,34 @@ bool Viterbi::buildAllLattice(Lattice *lattice) const {
   return true;
 }
 
-bool Viterbi::buildBestLattice(Lattice *lattice) const {
+// static
+bool Viterbi::buildResultForNBest(Lattice *lattice) {
+  return buildAllLattice(lattice);
+}
+
+// static
+bool Viterbi::buildAllLattice(Lattice *lattice) {
+  if (!lattice->has_request_type(MECAB_ALL_MORPHS)) {
+    return true;
+  }
+
+  Node *prev = lattice->bos_node();
+  const size_t len = lattice->size();
+  Node **begin_node_list = lattice->begin_nodes();
+
+  for (long pos = 0; pos <= static_cast<long>(len); ++pos) {
+    for (Node *node = begin_node_list[pos]; node; node = node->bnext) {
+      prev->next = node;
+      node->prev = prev;
+      prev = node;
+    }
+  }
+
+  return true;
+}
+
+// static
+bool Viterbi::buildBestLattice(Lattice *lattice) {
   Node *node = lattice->eos_node();
   for (Node *prev_node; node->prev;) {
     node->isbest = 1;
@@ -210,7 +215,7 @@ bool Viterbi::initNBest(Lattice *lattice) const {
   if (!lattice->has_request_type(MECAB_NBEST)) {
     return true;
   }
-  lattice->allocator()->nbest_generator()->set(lattice->bos_node());
+  lattice->allocator()->nbest_generator()->set(lattice);
   return true;
 }
 

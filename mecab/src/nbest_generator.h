@@ -35,8 +35,8 @@ class NBestGenerator {
  public:
   explicit NBestGenerator() : freelist_(512) {}
   virtual ~NBestGenerator() {}
-  bool  set(Node *node);
-  Node* next();
+  bool set(Lattice *lattice);
+  bool next();
 };
 }
 

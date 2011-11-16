@@ -25,18 +25,23 @@ class Viterbi {
 
   bool analyze(Lattice *lattice) const;
 
+  static bool buildResultForNBest(Lattice *lattice);
+
   Viterbi();
   virtual ~Viterbi();
 
  private:
   bool viterbiWithAllPath(Lattice *lattice) const;
   bool viterbi(Lattice *lattice) const;
+  bool forwardbackward(Lattice *lattice) const;
+
   bool initPartial(Lattice *lattice) const;
   bool initNBest(Lattice *lattice) const;
-  bool forwardbackward(Lattice *lattice) const;
-  bool buildBestLattice(Lattice *lattice) const;
-  bool buildAllLattice(Lattice *lattice) const;
+
   Node *filterNode(Node *constrained_node, Node *node) const;
+
+  static bool buildBestLattice(Lattice *lattice);
+  static bool buildAllLattice(Lattice *lattice);
 
   const Tokenizer<Node, Path> *tokenizer_;
   const Connector             *connector_;

@@ -9,19 +9,20 @@
 
 namespace MeCab {
 
-bool NBestGenerator::set(Node *node) {
+bool NBestGenerator::set(Lattice *lattice) {
   freelist_.free();
-  for (; node->next; node = node->next) {}   // seek to EOS;
-  while (!agenda_.empty()) agenda_.pop();   // make empty
+  while (!agenda_.empty()) {
+    agenda_.pop();   // make empty
+  }
   QueueElement *eos = freelist_.alloc();
-  eos->node = node;
+  eos->node = lattice->eos_node();
   eos->next = 0;
   eos->fx = eos->gx = 0;
   agenda_.push(eos);
   return true;
 }
 
-Node* NBestGenerator::next() {
+bool NBestGenerator::next() {
   while (!agenda_.empty()) {
     QueueElement *top = agenda_.top();
     agenda_.pop();
@@ -33,7 +34,7 @@ Node* NBestGenerator::next() {
         n->next->node->prev = n->node;
         // TODO: rewrite costs;
       }
-      return rnode;
+      return true;
     }
 
     for (Path *path = rnode->lpath; path; path = path->lnext) {
@@ -45,6 +46,7 @@ Node* NBestGenerator::next() {
       agenda_.push(n);
     }
   }
-  return 0;
+
+  return false;
 }
 }

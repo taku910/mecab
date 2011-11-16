@@ -681,7 +681,12 @@ bool LatticeImpl::next() {
     return false;
   }
 
-  return allocator()->nbest_generator()->next();
+  if (!allocator()->nbest_generator()->next()) {
+    return false;
+  }
+
+  Viterbi::buildResultForNBest(this);
+  return true;
 }
 
 // default implementation of Lattice formatter.
