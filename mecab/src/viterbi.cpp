@@ -210,7 +210,7 @@ bool Viterbi::initNBest(Lattice *lattice) const {
   if (!lattice->has_request_type(MECAB_NBEST)) {
     return true;
   }
-  lattice->nbest_generator()->set(lattice->bos_node());
+  lattice->allocator()->nbest_generator()->set(lattice->bos_node());
   return true;
 }
 

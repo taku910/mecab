@@ -83,8 +83,10 @@ class ModelImpl: public Model {
   bool open(const Param &param);
 
   bool is_available() const {
-    return (tokenizer_.get() && connector_.get() && connector_.get() &&
-            viterbi_.get() && writer_.get());
+    return (tokenizer_.get() &&
+            connector_.get() &&
+            viterbi_.get() &&
+            writer_.get());
   }
 
   int request_type() const {
@@ -259,13 +261,6 @@ class LatticeImpl : public Lattice {
     return allocator_.get();
   }
 
-  NBestGenerator *nbest_generator() {
-    if (!nbest_generator_.get()) {
-      nbest_generator_.reset(new NBestGenerator);
-    }
-    return nbest_generator_.get();
-  }
-
   const char *what() const { return what_.c_str(); }
 
   void set_what(const char *str) {
@@ -292,7 +287,6 @@ class LatticeImpl : public Lattice {
   const Writer               *writer_;
   scoped_ptr<StringBuffer>    ostrs_;
   scoped_ptr<Allocator<Node, Path> > allocator_;
-  scoped_ptr<NBestGenerator>  nbest_generator_;
 
   StringBuffer *stream() {
     if (!ostrs_.get()) {
@@ -637,8 +631,7 @@ LatticeImpl::LatticeImpl(const Writer *writer)
       request_type_(MECAB_ONE_BEST),
       writer_(writer),
       ostrs_(0),
-      allocator_(new Allocator<Node, Path>),
-      nbest_generator_(0) {
+      allocator_(new Allocator<Node, Path>) {
   begin_nodes_.reserve(MIN_INPUT_BUFFER_SIZE);
   end_nodes_.reserve(MIN_INPUT_BUFFER_SIZE);
 }
@@ -683,17 +676,15 @@ void LatticeImpl::set_sentence(const char *sentence, size_t len) {
 }
 
 bool LatticeImpl::next() {
-  if (!nbest_generator_.get()) {
-    set_what("set MECAB_NBEST flag or --nbest command line flag");
+  if (!has_request_type(MECAB_NBEST)) {
+    set_what("MECAB_NBEST request type is not set");
     return false;
   }
-  if (nbest_generator_->next()) {
-    return true;
-  }
-  set_what("no more results");
-  return false;
+
+  return allocator()->nbest_generator()->next();
 }
 
+// default implementation of Lattice formatter.
 namespace {
 void writeLattice(Lattice *lattice, StringBuffer *os) {
   for (const Node *node = lattice->bos_node()->next;

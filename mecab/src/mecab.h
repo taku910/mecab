@@ -632,7 +632,6 @@ typedef struct mecab_node_t            Node;
 
 template <typename N, typename P> class Allocator;
 class Tagger;
-class NBestGenerator;
 
 /**
  * Lattice class
@@ -786,11 +785,6 @@ public:
    * This method is used internally.
    */
   virtual Allocator<Node, Path> *allocator() const = 0;
-
-  /**
-   * This method is used internally.
-   */
-  virtual NBestGenerator *nbest_generator() = 0;
 #endif
 
   /**

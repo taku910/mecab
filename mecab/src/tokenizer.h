@@ -10,11 +10,13 @@
 #include "freelist.h"
 #include "dictionary.h"
 #include "char_property.h"
+#include "nbest_generator.h"
 #include "scoped_ptr.h"
 
 namespace MeCab {
 
 class Param;
+class NBestGenerator;
 
 template <typename N, typename P>
 class Allocator {
@@ -50,6 +52,13 @@ class Allocator {
     return n;
   }
 
+  NBestGenerator *nbest_generator() {
+    if (!nbest_generator_.get()) {
+      nbest_generator_.reset(new NBestGenerator);
+    }
+    return nbest_generator_.get();
+  }
+
   char *partial_buffer(size_t size) {
     partial_buffer_.resize(size);
     return &partial_buffer_[0];
@@ -75,6 +84,7 @@ class Allocator {
         node_freelist_(new FreeList<N>(NODE_FREELIST_SIZE)),
         path_freelist_(0),
         char_freelist_(0),
+        nbest_generator_(0),
         results_(new Dictionary::result_type[kResultsSize]) {}
   virtual ~Allocator() {}
 
@@ -84,6 +94,7 @@ class Allocator {
   scoped_ptr<FreeList<N> > node_freelist_;
   scoped_ptr<FreeList<P> > path_freelist_;
   scoped_ptr<ChunkFreeList<char>  >  char_freelist_;
+  scoped_ptr<NBestGenerator>  nbest_generator_;
   std::vector<char> partial_buffer_;
   scoped_array<Dictionary::result_type>  results_;
 };

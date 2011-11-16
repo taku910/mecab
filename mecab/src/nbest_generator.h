@@ -33,11 +33,11 @@ class NBestGenerator {
   FreeList <QueueElement> freelist_;
 
  public:
-  explicit NBestGenerator(): freelist_(512) {}
+  explicit NBestGenerator() : freelist_(512) {}
   virtual ~NBestGenerator() {}
-  bool  set(Node *);
+  bool  set(Node *node);
   Node* next();
 };
 }
 
-#endif   // MECAB_NBEST_GENERATOR_H_
+#endif  // MECAB_NBEST_GENERATOR_H_
