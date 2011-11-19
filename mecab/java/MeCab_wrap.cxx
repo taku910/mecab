@@ -976,7 +976,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1NOR_1NODE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (int) (0);
+  {
+    try {
+      result = (int)MECAB_NOR_NODE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -988,7 +1002,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1UNK_1NODE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (int) (1);
+  {
+    try {
+      result = (int)MECAB_UNK_NODE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1000,7 +1028,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1BOS_1NODE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (int) (2);
+  {
+    try {
+      result = (int)MECAB_BOS_NODE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1012,7 +1054,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1EOS_1NODE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (int) (3);
+  {
+    try {
+      result = (int)MECAB_EOS_NODE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1024,19 +1080,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1EON_1NODE_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (int) (4);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1USR_1DIC_1get(JNIEnv *jenv, jclass jcls) {
-  jint jresult = 0 ;
-  int result;
-  
-  (void)jenv;
-  (void)jcls;
-  result = (int) (1);
+  {
+    try {
+      result = (int)MECAB_EON_NODE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1048,7 +1106,47 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1SYS_1DIC_1get(JNIE
   
   (void)jenv;
   (void)jcls;
-  result = (int) (0);
+  {
+    try {
+      result = (int)MECAB_SYS_DIC; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1USR_1DIC_1get(JNIEnv *jenv, jclass jcls) {
+  jint jresult = 0 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  {
+    try {
+      result = (int)MECAB_USR_DIC; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1060,7 +1158,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1UNK_1DIC_1get(JNIE
   
   (void)jenv;
   (void)jcls;
-  result = (int) (2);
+  {
+    try {
+      result = (int)MECAB_UNK_DIC; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1072,7 +1184,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1ONE_1BEST_1get(JNI
   
   (void)jenv;
   (void)jcls;
-  result = (int) (1);
+  {
+    try {
+      result = (int)MECAB_ONE_BEST; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1084,7 +1210,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1NBEST_1get(JNIEnv 
   
   (void)jenv;
   (void)jcls;
-  result = (int) (2);
+  {
+    try {
+      result = (int)MECAB_NBEST; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1096,7 +1236,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1PARTIAL_1get(JNIEn
   
   (void)jenv;
   (void)jcls;
-  result = (int) (4);
+  {
+    try {
+      result = (int)MECAB_PARTIAL; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1108,7 +1262,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1MARGINAL_1PROB_1ge
   
   (void)jenv;
   (void)jcls;
-  result = (int) (8);
+  {
+    try {
+      result = (int)MECAB_MARGINAL_PROB; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1120,7 +1288,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1ALTERNATIVE_1get(J
   
   (void)jenv;
   (void)jcls;
-  result = (int) (16);
+  {
+    try {
+      result = (int)MECAB_ALTERNATIVE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1132,7 +1314,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1ALL_1MORPHS_1get(J
   
   (void)jenv;
   (void)jcls;
-  result = (int) (32);
+  {
+    try {
+      result = (int)MECAB_ALL_MORPHS; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }
@@ -1144,7 +1340,21 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1ALLOCATE_1SENTENCE
   
   (void)jenv;
   (void)jcls;
-  result = (int) (64);
+  {
+    try {
+      result = (int)MECAB_ALLOCATE_SENTENCE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = (jint)result; 
   return jresult;
 }

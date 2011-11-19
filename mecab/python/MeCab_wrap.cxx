@@ -7585,21 +7585,21 @@ SWIG_init(void) {
   SWIG_InstallConstants(d,swig_const_table);
   
   
-  SWIG_Python_SetConstant(d, "MECAB_NOR_NODE",SWIG_From_int(static_cast< int >((0))));
-  SWIG_Python_SetConstant(d, "MECAB_UNK_NODE",SWIG_From_int(static_cast< int >((1))));
-  SWIG_Python_SetConstant(d, "MECAB_BOS_NODE",SWIG_From_int(static_cast< int >((2))));
-  SWIG_Python_SetConstant(d, "MECAB_EOS_NODE",SWIG_From_int(static_cast< int >((3))));
-  SWIG_Python_SetConstant(d, "MECAB_EON_NODE",SWIG_From_int(static_cast< int >((4))));
-  SWIG_Python_SetConstant(d, "MECAB_USR_DIC",SWIG_From_int(static_cast< int >((1))));
-  SWIG_Python_SetConstant(d, "MECAB_SYS_DIC",SWIG_From_int(static_cast< int >((0))));
-  SWIG_Python_SetConstant(d, "MECAB_UNK_DIC",SWIG_From_int(static_cast< int >((2))));
-  SWIG_Python_SetConstant(d, "MECAB_ONE_BEST",SWIG_From_int(static_cast< int >((1))));
-  SWIG_Python_SetConstant(d, "MECAB_NBEST",SWIG_From_int(static_cast< int >((2))));
-  SWIG_Python_SetConstant(d, "MECAB_PARTIAL",SWIG_From_int(static_cast< int >((4))));
-  SWIG_Python_SetConstant(d, "MECAB_MARGINAL_PROB",SWIG_From_int(static_cast< int >((8))));
-  SWIG_Python_SetConstant(d, "MECAB_ALTERNATIVE",SWIG_From_int(static_cast< int >((16))));
-  SWIG_Python_SetConstant(d, "MECAB_ALL_MORPHS",SWIG_From_int(static_cast< int >((32))));
-  SWIG_Python_SetConstant(d, "MECAB_ALLOCATE_SENTENCE",SWIG_From_int(static_cast< int >((64))));
+  SWIG_Python_SetConstant(d, "MECAB_NOR_NODE",SWIG_From_int(static_cast< int >(MECAB_NOR_NODE)));
+  SWIG_Python_SetConstant(d, "MECAB_UNK_NODE",SWIG_From_int(static_cast< int >(MECAB_UNK_NODE)));
+  SWIG_Python_SetConstant(d, "MECAB_BOS_NODE",SWIG_From_int(static_cast< int >(MECAB_BOS_NODE)));
+  SWIG_Python_SetConstant(d, "MECAB_EOS_NODE",SWIG_From_int(static_cast< int >(MECAB_EOS_NODE)));
+  SWIG_Python_SetConstant(d, "MECAB_EON_NODE",SWIG_From_int(static_cast< int >(MECAB_EON_NODE)));
+  SWIG_Python_SetConstant(d, "MECAB_SYS_DIC",SWIG_From_int(static_cast< int >(MECAB_SYS_DIC)));
+  SWIG_Python_SetConstant(d, "MECAB_USR_DIC",SWIG_From_int(static_cast< int >(MECAB_USR_DIC)));
+  SWIG_Python_SetConstant(d, "MECAB_UNK_DIC",SWIG_From_int(static_cast< int >(MECAB_UNK_DIC)));
+  SWIG_Python_SetConstant(d, "MECAB_ONE_BEST",SWIG_From_int(static_cast< int >(MECAB_ONE_BEST)));
+  SWIG_Python_SetConstant(d, "MECAB_NBEST",SWIG_From_int(static_cast< int >(MECAB_NBEST)));
+  SWIG_Python_SetConstant(d, "MECAB_PARTIAL",SWIG_From_int(static_cast< int >(MECAB_PARTIAL)));
+  SWIG_Python_SetConstant(d, "MECAB_MARGINAL_PROB",SWIG_From_int(static_cast< int >(MECAB_MARGINAL_PROB)));
+  SWIG_Python_SetConstant(d, "MECAB_ALTERNATIVE",SWIG_From_int(static_cast< int >(MECAB_ALTERNATIVE)));
+  SWIG_Python_SetConstant(d, "MECAB_ALL_MORPHS",SWIG_From_int(static_cast< int >(MECAB_ALL_MORPHS)));
+  SWIG_Python_SetConstant(d, "MECAB_ALLOCATE_SENTENCE",SWIG_From_int(static_cast< int >(MECAB_ALLOCATE_SENTENCE)));
   SWIG_Python_SetConstant(d, "VERSION",SWIG_FromCharPtr("0.99pre1"));
 #if PY_VERSION_HEX >= 0x03000000
   return m;

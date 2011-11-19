@@ -36,8 +36,10 @@ int main (int argc, char **argv)  {
   node = mecab_sparse_tonode(mecab, input);
   CHECK(node);
   for (; node; node = node->next) {
+    if (node->stat == MECAB_NOR_NODE) {
     fwrite (node->surface, sizeof(char), node->length, stdout);
     printf("\t%s\n", node->feature);
+    }
   }
 
   mecab_set_lattice_level(mecab, 2);

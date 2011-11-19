@@ -320,11 +320,11 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_MECAB_EON_NODE_get")]
   public static extern int MECAB_EON_NODE_get();
 
-  [DllImport("MeCab", EntryPoint="CSharp_MECAB_USR_DIC_get")]
-  public static extern int MECAB_USR_DIC_get();
-
   [DllImport("MeCab", EntryPoint="CSharp_MECAB_SYS_DIC_get")]
   public static extern int MECAB_SYS_DIC_get();
+
+  [DllImport("MeCab", EntryPoint="CSharp_MECAB_USR_DIC_get")]
+  public static extern int MECAB_USR_DIC_get();
 
   [DllImport("MeCab", EntryPoint="CSharp_MECAB_UNK_DIC_get")]
   public static extern int MECAB_UNK_DIC_get();

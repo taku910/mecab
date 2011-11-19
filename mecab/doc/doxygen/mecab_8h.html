@@ -41,6 +41,7 @@
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Defines</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">/home/taku/mecab/mecab/src/mecab.h File Reference</div>  </div>
@@ -69,21 +70,6 @@ Namespaces</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMeCab.html">MeCab</a></td></tr>
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#ab927ad3c9b709104613ddfb3a22a9436">MECAB_NOR_NODE</a>&#160;&#160;&#160;(0)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#ab37e240a7eac9bbada3301433527353f">MECAB_UNK_NODE</a>&#160;&#160;&#160;(1)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a9710636874db2e4779cce7f18a4663c7">MECAB_BOS_NODE</a>&#160;&#160;&#160;(2)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a8615614520f1a6c545467a5c90508606">MECAB_EOS_NODE</a>&#160;&#160;&#160;(3)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a22fe2226c91db955f075198bb7d3f625">MECAB_EON_NODE</a>&#160;&#160;&#160;(4)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a6ecd48e4dab289136d00d1ce502c81db">MECAB_USR_DIC</a>&#160;&#160;&#160;(1)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#adb5ca3d3b6f6b4331b35e2e50f9552df">MECAB_SYS_DIC</a>&#160;&#160;&#160;(0)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a51b63b070068225ad1f084feaf19dd3a">MECAB_UNK_DIC</a>&#160;&#160;&#160;(2)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a2251d740888c8c44520a0341d32bd319">MECAB_ONE_BEST</a>&#160;&#160;&#160;(1)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a85e4347d78a3de209e73859e7f988037">MECAB_NBEST</a>&#160;&#160;&#160;(2)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a5b4f116b2d15c927e19b8e5a6818214d">MECAB_PARTIAL</a>&#160;&#160;&#160;(4)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a5837c6f3f3d5b41dfc993128940ad170">MECAB_MARGINAL_PROB</a>&#160;&#160;&#160;(8)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#ae725e3dd3afe8af9c9fc9c2529c8d32c">MECAB_ALTERNATIVE</a>&#160;&#160;&#160;(16)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a2436ecfd94f7ee758ea3092241a6e820">MECAB_ALL_MORPHS</a>&#160;&#160;&#160;(32)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a7e8c97b6cd38a1bc36d09bfda8e95438">MECAB_ALLOCATE_SENTENCE</a>&#160;&#160;&#160;(64)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">MECAB_DLL_CLASS_EXTERN</a></td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -98,6 +84,35 @@ Typedefs</h2></td></tr>
 <a class="el" href="structmecab__dictionary__info__t.html">mecab_dictionary_info_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMeCab.html#a581b6e7f533add983ea9dabc4a44166b">MeCab::DictionaryInfo</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structmecab__path__t.html">mecab_path_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMeCab.html#adf62d9125f2e4ad9d38f27c59ccb587d">MeCab::Path</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structmecab__node__t.html">mecab_node_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMeCab.html#a3679371b5a373ad35e86a545b5f0d127">MeCab::Node</a></td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br/>
+&#160;&#160;<a class="el" href="mecab_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba444c4320cf0dc77aa1553e85a9656179">MECAB_NOR_NODE</a> =  0, 
+<a class="el" href="mecab_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba112f2838d5e23847a931370186950177">MECAB_UNK_NODE</a> =  1, 
+<a class="el" href="mecab_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba98b1a1f32a25b7ec04d141e1ae9e4a51">MECAB_BOS_NODE</a> =  2, 
+<a class="el" href="mecab_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba12f0241538be311d458f6578ef6d28d0">MECAB_EOS_NODE</a> =  3, 
+<br/>
+&#160;&#160;<a class="el" href="mecab_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba3c73fdaaff1241dd7ee150237c8cdc70">MECAB_EON_NODE</a> =  4
+<br/>
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters for <a class="el" href="structmecab__node__t.html#a8b26293a70a048eb0b88f3213b6d423e" title="statis of this model.">MeCab::Node::stat</a>.  <a href="mecab_8h.html#a06fc87d81c62e9abb8790b6e5713c55b">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="mecab_8h.html#adf764cbdea00d65edcd07bb9953ad2b7a304406ccefd50df5540702f7c97bdfe4">MECAB_SYS_DIC</a> =  0, 
+<a class="el" href="mecab_8h.html#adf764cbdea00d65edcd07bb9953ad2b7acb95c34b5ef68a95618d110fa05f64d0">MECAB_USR_DIC</a> =  1, 
+<a class="el" href="mecab_8h.html#adf764cbdea00d65edcd07bb9953ad2b7a96bd8a50016e1bab8c4818c67f519b0e">MECAB_UNK_DIC</a> =  2
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters for <a class="el" href="structmecab__dictionary__info__t.html#a17466811fc66cbd8ceab7c0a3c5c77a4" title="dictionary type this value should be MECAB_USR_DIC, MECAB_SYS_DIC, or MECAB_UNK_DIC.">MeCab::DictionaryInfo::type</a>.  <a href="mecab_8h.html#adf764cbdea00d65edcd07bb9953ad2b7">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br/>
+&#160;&#160;<a class="el" href="mecab_8h.html#a99fb83031ce9923c84392b4e92f956b5ae77f7dbb0774a68f7267a46783bf393a">MECAB_ONE_BEST</a> =  1, 
+<a class="el" href="mecab_8h.html#a99fb83031ce9923c84392b4e92f956b5a762111ac18156f82aa56799155e92f71">MECAB_NBEST</a> =  2, 
+<a class="el" href="mecab_8h.html#a99fb83031ce9923c84392b4e92f956b5afe63ab5dc5305af8527a2e0c6a60892a">MECAB_PARTIAL</a> =  4, 
+<a class="el" href="mecab_8h.html#a99fb83031ce9923c84392b4e92f956b5ae090f5c3f7791774361aa1a865d0ce34">MECAB_MARGINAL_PROB</a> =  8, 
+<br/>
+&#160;&#160;<a class="el" href="mecab_8h.html#a99fb83031ce9923c84392b4e92f956b5abcf3a2cbff425ddc25ac3e5b06db00d5">MECAB_ALTERNATIVE</a> =  16, 
+<a class="el" href="mecab_8h.html#a99fb83031ce9923c84392b4e92f956b5a3bd1791dfcc23869cd5eaa8dabd4cd07">MECAB_ALL_MORPHS</a> =  32, 
+<a class="el" href="mecab_8h.html#a99fb83031ce9923c84392b4e92f956b5a0b96a1b019eb77f858eaa54b5f7a2886">MECAB_ALLOCATE_SENTENCE</a> =  64
+<br/>
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters for <a class="el" href="classMeCab_1_1Lattice.html#a55cf1787c9eaceb500507870b52b2fe9" title="Return the current request type.">MeCab::Lattice::request_type</a>.  <a href="mecab_8h.html#a99fb83031ce9923c84392b4e92f956b5">More...</a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">MECAB_DLL_EXTERN <a class="el" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a96b09534020ae2d302efc4486dd2aac1">mecab_new</a> (int argc, char **argv)</td></tr>
@@ -261,207 +276,12 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">An alias of getLastError.  <a href="#adb1d3f0f95c4729445a0cd96469041d5"></a><br/></td></tr>
 </table>
 <hr/><h2>Define Documentation</h2>
-<a class="anchor" id="a2436ecfd94f7ee758ea3092241a6e820"></a><!-- doxytag: member="mecab.h::MECAB_ALL_MORPHS" ref="a2436ecfd94f7ee758ea3092241a6e820" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_ALL_MORPHS&#160;&#160;&#160;(32)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a7e8c97b6cd38a1bc36d09bfda8e95438"></a><!-- doxytag: member="mecab.h::MECAB_ALLOCATE_SENTENCE" ref="a7e8c97b6cd38a1bc36d09bfda8e95438" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_ALLOCATE_SENTENCE&#160;&#160;&#160;(64)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ae725e3dd3afe8af9c9fc9c2529c8d32c"></a><!-- doxytag: member="mecab.h::MECAB_ALTERNATIVE" ref="ae725e3dd3afe8af9c9fc9c2529c8d32c" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_ALTERNATIVE&#160;&#160;&#160;(16)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a9710636874db2e4779cce7f18a4663c7"></a><!-- doxytag: member="mecab.h::MECAB_BOS_NODE" ref="a9710636874db2e4779cce7f18a4663c7" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_BOS_NODE&#160;&#160;&#160;(2)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="acd08679cd28701bb998d940fd74887b9"></a><!-- doxytag: member="mecab.h::MECAB_DLL_CLASS_EXTERN" ref="acd08679cd28701bb998d940fd74887b9" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">#define MECAB_DLL_CLASS_EXTERN</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a22fe2226c91db955f075198bb7d3f625"></a><!-- doxytag: member="mecab.h::MECAB_EON_NODE" ref="a22fe2226c91db955f075198bb7d3f625" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_EON_NODE&#160;&#160;&#160;(4)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a8615614520f1a6c545467a5c90508606"></a><!-- doxytag: member="mecab.h::MECAB_EOS_NODE" ref="a8615614520f1a6c545467a5c90508606" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_EOS_NODE&#160;&#160;&#160;(3)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a5837c6f3f3d5b41dfc993128940ad170"></a><!-- doxytag: member="mecab.h::MECAB_MARGINAL_PROB" ref="a5837c6f3f3d5b41dfc993128940ad170" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_MARGINAL_PROB&#160;&#160;&#160;(8)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a85e4347d78a3de209e73859e7f988037"></a><!-- doxytag: member="mecab.h::MECAB_NBEST" ref="a85e4347d78a3de209e73859e7f988037" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_NBEST&#160;&#160;&#160;(2)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ab927ad3c9b709104613ddfb3a22a9436"></a><!-- doxytag: member="mecab.h::MECAB_NOR_NODE" ref="ab927ad3c9b709104613ddfb3a22a9436" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_NOR_NODE&#160;&#160;&#160;(0)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a2251d740888c8c44520a0341d32bd319"></a><!-- doxytag: member="mecab.h::MECAB_ONE_BEST" ref="a2251d740888c8c44520a0341d32bd319" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_ONE_BEST&#160;&#160;&#160;(1)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a5b4f116b2d15c927e19b8e5a6818214d"></a><!-- doxytag: member="mecab.h::MECAB_PARTIAL" ref="a5b4f116b2d15c927e19b8e5a6818214d" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_PARTIAL&#160;&#160;&#160;(4)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="adb5ca3d3b6f6b4331b35e2e50f9552df"></a><!-- doxytag: member="mecab.h::MECAB_SYS_DIC" ref="adb5ca3d3b6f6b4331b35e2e50f9552df" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_SYS_DIC&#160;&#160;&#160;(0)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a51b63b070068225ad1f084feaf19dd3a"></a><!-- doxytag: member="mecab.h::MECAB_UNK_DIC" ref="a51b63b070068225ad1f084feaf19dd3a" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_UNK_DIC&#160;&#160;&#160;(2)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ab37e240a7eac9bbada3301433527353f"></a><!-- doxytag: member="mecab.h::MECAB_UNK_NODE" ref="ab37e240a7eac9bbada3301433527353f" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_UNK_NODE&#160;&#160;&#160;(1)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a6ecd48e4dab289136d00d1ce502c81db"></a><!-- doxytag: member="mecab.h::MECAB_USR_DIC" ref="a6ecd48e4dab289136d00d1ce502c81db" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MECAB_USR_DIC&#160;&#160;&#160;(1)</td>
         </tr>
       </table>
 </div>
@@ -545,6 +365,111 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Enumeration Type Documentation</h2>
+<a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55b"></a><!-- doxytag: member="mecab.h::@0" ref="a06fc87d81c62e9abb8790b6e5713c55b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Parameters for <a class="el" href="structmecab__node__t.html#a8b26293a70a048eb0b88f3213b6d423e" title="statis of this model.">MeCab::Node::stat</a>. </p>
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba444c4320cf0dc77aa1553e85a9656179"></a><!-- doxytag: member="MECAB_NOR_NODE" ref="a06fc87d81c62e9abb8790b6e5713c55ba444c4320cf0dc77aa1553e85a9656179" args="" -->MECAB_NOR_NODE</em>&nbsp;</td><td>
+<p>Normal node defined in the dictionary. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba112f2838d5e23847a931370186950177"></a><!-- doxytag: member="MECAB_UNK_NODE" ref="a06fc87d81c62e9abb8790b6e5713c55ba112f2838d5e23847a931370186950177" args="" -->MECAB_UNK_NODE</em>&nbsp;</td><td>
+<p>Unknown node not defined in the dictionary. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba98b1a1f32a25b7ec04d141e1ae9e4a51"></a><!-- doxytag: member="MECAB_BOS_NODE" ref="a06fc87d81c62e9abb8790b6e5713c55ba98b1a1f32a25b7ec04d141e1ae9e4a51" args="" -->MECAB_BOS_NODE</em>&nbsp;</td><td>
+<p>Virtual node representing a beginning of the sentence. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba12f0241538be311d458f6578ef6d28d0"></a><!-- doxytag: member="MECAB_EOS_NODE" ref="a06fc87d81c62e9abb8790b6e5713c55ba12f0241538be311d458f6578ef6d28d0" args="" -->MECAB_EOS_NODE</em>&nbsp;</td><td>
+<p>Virtual node representing a end of the sentence. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba3c73fdaaff1241dd7ee150237c8cdc70"></a><!-- doxytag: member="MECAB_EON_NODE" ref="a06fc87d81c62e9abb8790b6e5713c55ba3c73fdaaff1241dd7ee150237c8cdc70" args="" -->MECAB_EON_NODE</em>&nbsp;</td><td>
+<p>Virtual node representing a end of the N-best enumeration. </p>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7"></a><!-- doxytag: member="mecab.h::@1" ref="adf764cbdea00d65edcd07bb9953ad2b7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Parameters for <a class="el" href="structmecab__dictionary__info__t.html#a17466811fc66cbd8ceab7c0a3c5c77a4" title="dictionary type this value should be MECAB_USR_DIC, MECAB_SYS_DIC, or MECAB_UNK_DIC.">MeCab::DictionaryInfo::type</a>. </p>
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7a304406ccefd50df5540702f7c97bdfe4"></a><!-- doxytag: member="MECAB_SYS_DIC" ref="adf764cbdea00d65edcd07bb9953ad2b7a304406ccefd50df5540702f7c97bdfe4" args="" -->MECAB_SYS_DIC</em>&nbsp;</td><td>
+<p>This is a system dictionary. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7acb95c34b5ef68a95618d110fa05f64d0"></a><!-- doxytag: member="MECAB_USR_DIC" ref="adf764cbdea00d65edcd07bb9953ad2b7acb95c34b5ef68a95618d110fa05f64d0" args="" -->MECAB_USR_DIC</em>&nbsp;</td><td>
+<p>This is a user dictionary. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7a96bd8a50016e1bab8c4818c67f519b0e"></a><!-- doxytag: member="MECAB_UNK_DIC" ref="adf764cbdea00d65edcd07bb9953ad2b7a96bd8a50016e1bab8c4818c67f519b0e" args="" -->MECAB_UNK_DIC</em>&nbsp;</td><td>
+<p>This is a unknown word dictionary. </p>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5"></a><!-- doxytag: member="mecab.h::@2" ref="a99fb83031ce9923c84392b4e92f956b5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Parameters for <a class="el" href="classMeCab_1_1Lattice.html#a55cf1787c9eaceb500507870b52b2fe9" title="Return the current request type.">MeCab::Lattice::request_type</a>. </p>
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5ae77f7dbb0774a68f7267a46783bf393a"></a><!-- doxytag: member="MECAB_ONE_BEST" ref="a99fb83031ce9923c84392b4e92f956b5ae77f7dbb0774a68f7267a46783bf393a" args="" -->MECAB_ONE_BEST</em>&nbsp;</td><td>
+<p>One best result is obtained (default mode) </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5a762111ac18156f82aa56799155e92f71"></a><!-- doxytag: member="MECAB_NBEST" ref="a99fb83031ce9923c84392b4e92f956b5a762111ac18156f82aa56799155e92f71" args="" -->MECAB_NBEST</em>&nbsp;</td><td>
+<p>Set this flag if you want to obtain N best results. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5afe63ab5dc5305af8527a2e0c6a60892a"></a><!-- doxytag: member="MECAB_PARTIAL" ref="a99fb83031ce9923c84392b4e92f956b5afe63ab5dc5305af8527a2e0c6a60892a" args="" -->MECAB_PARTIAL</em>&nbsp;</td><td>
+<p>Set this flag if you want to enable a partial parsing mode. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5ae090f5c3f7791774361aa1a865d0ce34"></a><!-- doxytag: member="MECAB_MARGINAL_PROB" ref="a99fb83031ce9923c84392b4e92f956b5ae090f5c3f7791774361aa1a865d0ce34" args="" -->MECAB_MARGINAL_PROB</em>&nbsp;</td><td>
+<p>Set this flag if you want to obtain marginal probabilities. </p>
+<p>Marginal probability is set in <a class="el" href="structmecab__node__t.html#abc2ad1e79780c2357be9b7a25555faa5" title="marginal probability.">MeCab::Node::prob</a>. The parsing speed will get 3-5 times slower than the default mode. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5abcf3a2cbff425ddc25ac3e5b06db00d5"></a><!-- doxytag: member="MECAB_ALTERNATIVE" ref="a99fb83031ce9923c84392b4e92f956b5abcf3a2cbff425ddc25ac3e5b06db00d5" args="" -->MECAB_ALTERNATIVE</em>&nbsp;</td><td>
+<p>Set this flag if you want to obtain alternative results. </p>
+<p>Not implemented. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5a3bd1791dfcc23869cd5eaa8dabd4cd07"></a><!-- doxytag: member="MECAB_ALL_MORPHS" ref="a99fb83031ce9923c84392b4e92f956b5a3bd1791dfcc23869cd5eaa8dabd4cd07" args="" -->MECAB_ALL_MORPHS</em>&nbsp;</td><td>
+<p>When this flag is set, the result linked-list (Node::next/prev) traverses all nodes in the lattice. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5a0b96a1b019eb77f858eaa54b5f7a2886"></a><!-- doxytag: member="MECAB_ALLOCATE_SENTENCE" ref="a99fb83031ce9923c84392b4e92f956b5a0b96a1b019eb77f858eaa54b5f7a2886" args="" -->MECAB_ALLOCATE_SENTENCE</em>&nbsp;</td><td>
+<p>When this flag is set, tagger internally copies the body of passed sentence into internal buffer. </p>
+</td></tr>
+</table>
+</dd>
+</dl>
 
 </div>
 </div>
@@ -2354,7 +2279,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Nov 15 2011 12:08:36 for MeCab by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Nov 20 2011 00:30:36 for MeCab by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -79,7 +79,7 @@ class DictionaryComplier {
     if (!userdic.empty()) {
       CHECK_DIE(dic.size()) << "no dictionaries are specified";
 
-      param.set("type", MECAB_USR_DIC);
+      param.set("type", static_cast<int>(MECAB_USR_DIC));
       Dictionary::compile(param, dic,
                           DCONF(MATRIX_DEF_FILE),
                           DCONF(MATRIX_FILE),
@@ -102,7 +102,7 @@ class DictionaryComplier {
       if (opt_unknown) {
         std::vector<std::string> tmp;
         tmp.push_back(DCONF(UNK_DEF_FILE));
-        param.set("type", MECAB_UNK_DIC);
+        param.set("type", static_cast<int>(MECAB_UNK_DIC));
         Dictionary::compile(param, tmp,
                             DCONF(MATRIX_DEF_FILE),
                             DCONF(MATRIX_FILE),
@@ -115,7 +115,7 @@ class DictionaryComplier {
 
       if (opt_sysdic) {
         CHECK_DIE(dic.size()) << "no dictionaries are specified";
-        param.set("type", MECAB_SYS_DIC);
+        param.set("type", static_cast<int>(MECAB_SYS_DIC));
         Dictionary::compile(param, dic,
                             DCONF(MATRIX_DEF_FILE),
                             DCONF(MATRIX_FILE),

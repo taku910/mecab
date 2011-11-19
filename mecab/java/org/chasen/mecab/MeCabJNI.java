@@ -54,8 +54,8 @@ class MeCabJNI {
   public final static native int MECAB_BOS_NODE_get();
   public final static native int MECAB_EOS_NODE_get();
   public final static native int MECAB_EON_NODE_get();
-  public final static native int MECAB_USR_DIC_get();
   public final static native int MECAB_SYS_DIC_get();
+  public final static native int MECAB_USR_DIC_get();
   public final static native int MECAB_UNK_DIC_get();
   public final static native int MECAB_ONE_BEST_get();
   public final static native int MECAB_NBEST_get();

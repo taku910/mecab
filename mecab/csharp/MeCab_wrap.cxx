@@ -927,7 +927,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_NOR_NODE_get() {
   int jresult ;
   int result;
   
-  result = (int) (0);
+  {
+    try {
+      result = (int)MECAB_NOR_NODE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -937,7 +951,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_UNK_NODE_get() {
   int jresult ;
   int result;
   
-  result = (int) (1);
+  {
+    try {
+      result = (int)MECAB_UNK_NODE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -947,7 +975,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_BOS_NODE_get() {
   int jresult ;
   int result;
   
-  result = (int) (2);
+  {
+    try {
+      result = (int)MECAB_BOS_NODE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -957,7 +999,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_EOS_NODE_get() {
   int jresult ;
   int result;
   
-  result = (int) (3);
+  {
+    try {
+      result = (int)MECAB_EOS_NODE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -967,17 +1023,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_EON_NODE_get() {
   int jresult ;
   int result;
   
-  result = (int) (4);
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_USR_DIC_get() {
-  int jresult ;
-  int result;
-  
-  result = (int) (1);
+  {
+    try {
+      result = (int)MECAB_EON_NODE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -987,7 +1047,45 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_SYS_DIC_get() {
   int jresult ;
   int result;
   
-  result = (int) (0);
+  {
+    try {
+      result = (int)MECAB_SYS_DIC; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_USR_DIC_get() {
+  int jresult ;
+  int result;
+  
+  {
+    try {
+      result = (int)MECAB_USR_DIC; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -997,7 +1095,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_UNK_DIC_get() {
   int jresult ;
   int result;
   
-  result = (int) (2);
+  {
+    try {
+      result = (int)MECAB_UNK_DIC; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -1007,7 +1119,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_ONE_BEST_get() {
   int jresult ;
   int result;
   
-  result = (int) (1);
+  {
+    try {
+      result = (int)MECAB_ONE_BEST; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -1017,7 +1143,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_NBEST_get() {
   int jresult ;
   int result;
   
-  result = (int) (2);
+  {
+    try {
+      result = (int)MECAB_NBEST; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -1027,7 +1167,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_PARTIAL_get() {
   int jresult ;
   int result;
   
-  result = (int) (4);
+  {
+    try {
+      result = (int)MECAB_PARTIAL; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -1037,7 +1191,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_MARGINAL_PROB_get() {
   int jresult ;
   int result;
   
-  result = (int) (8);
+  {
+    try {
+      result = (int)MECAB_MARGINAL_PROB; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -1047,7 +1215,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_ALTERNATIVE_get() {
   int jresult ;
   int result;
   
-  result = (int) (16);
+  {
+    try {
+      result = (int)MECAB_ALTERNATIVE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -1057,7 +1239,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_ALL_MORPHS_get() {
   int jresult ;
   int result;
   
-  result = (int) (32);
+  {
+    try {
+      result = (int)MECAB_ALL_MORPHS; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
@@ -1067,7 +1263,21 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_ALLOCATE_SENTENCE_get() {
   int jresult ;
   int result;
   
-  result = (int) (64);
+  {
+    try {
+      result = (int)MECAB_ALLOCATE_SENTENCE; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
   jresult = result; 
   return jresult;
 }
