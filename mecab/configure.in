@@ -1,5 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(src/mecab.cpp)
+AH_TEMPLATE([HAVE_GCC_ATOMIC_OPS], [])
+AH_TEMPLATE([HAVE_TLS_KEYWORD], [])
 AM_INIT_AUTOMAKE(mecab, 0.99pre1)
 
 # DIC_VERSION XXYY
@@ -51,8 +53,6 @@ AC_CHECK_LIB(pthread,pthread_join)
 AC_CHECK_LIB(iconv,iconv_open)
 AC_CHECK_FUNCS(getenv)
 AC_CHECK_FUNCS(opendir)
-AC_CHECK_FUNCS(__sync_val_compare_and_swap)
-AC_CHECK_FUNCS( __sync_add_and_fetch)
 AC_LANG(C++)
 
 AC_ARG_ENABLE(utf8-only,
@@ -93,7 +93,7 @@ fi
 
 dnl
 dnl check Char Code
-dnl 
+dnl
 AC_ARG_WITH(
     charset,
      [  --with-charset=charset  set default charset (euc/sjis/utf8))],
@@ -231,11 +231,42 @@ AC_MSG_RESULT([$enable_tls])
 if test "$enable_tls" = "no"; then
 AC_MSG_WARN([__thread keyword is not supported on this environment. \
 Error handling of MeCab, e.g., MeCab::getLastError(), is not thread safe.])
-MECAB_NO_TLS="-DMECAB_NO_TLS"
 else
-MECAB_NO_TLS=""
+AC_DEFINE([HAVE_TLS_KEYWORD])
 fi
-AC_SUBST(MECAB_NO_TLS)
+
+AC_MSG_CHECKING([if ${CXX-c++} supports template <class T> (required)])
+AC_TRY_COMPILE(
+[
+   template <class T> T foo (T &i) { return i++; };
+],[
+   int i = 0;
+   double d = 0.0;
+   foo(i); foo(d);
+],[
+  ac_template=yes
+],[
+  AC_WARN(${CXX-c++} template <class T> does not work)
+  config_error=yes
+])
+AC_MSG_RESULT([$ac_template])
+
+AC_MSG_CHECKING([if ${CXX-c++} supports GCC native atomic operations (optional)])
+AC_TRY_COMPILE(
+[
+],[
+  int a = 10;
+  __sync_fetch_and_add(&a, 10);
+  __sync_val_compare_and_swap(&a, 0, 10);
+],[
+  enable_gcc_atomic_ops=yes
+],[
+  enable_gcc_atomic_ops=no
+])
+AC_MSG_RESULT([$enable_gcc_atomic_ops])
+if test "$enable_gcc_atomic_ops" = "yes"; then
+AC_DEFINE([HAVE_GCC_ATOMIC_OPS])
+fi
 
 AC_MSG_CHECKING(if ${CXX-c++} environment provides all required features)
 if test "x$config_error" = xyes ; then
@@ -260,7 +291,7 @@ AC_SUBST(DIC_VERSION)
 
 AM_CONFIG_HEADER(config.h)
 AC_OUTPUT([
-            Makefile 
+            Makefile
 	    src/Makefile
 	    src/Makefile.msvc
 	    man/Makefile
