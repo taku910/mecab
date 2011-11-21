@@ -91,7 +91,7 @@ bool Viterbi::viterbi
       if (!connectWithAllPath(pos, right_node,
                               begin_node_list,
                               end_node_list,
-                              connector_,
+                              connector_.get(),
                               allocator)) {
         lattice->set_what("too long sentence.");
         return false;
@@ -100,7 +100,7 @@ bool Viterbi::viterbi
       if (!connect(pos, right_node,
                    begin_node_list,
                    end_node_list,
-                   connector_,
+                   connector_.get(),
                    allocator)) {
         lattice->set_what("too long sentence.");
         return false;
@@ -116,7 +116,7 @@ bool Viterbi::viterbi
       if (!connectWithAllPath(pos, eos_node,
                               begin_node_list,
                               end_node_list,
-                              connector_,
+                              connector_.get(),
                               allocator)) {
         lattice->set_what("too long sentence.");
         return false;
@@ -125,7 +125,7 @@ bool Viterbi::viterbi
       if (!connect(pos, eos_node,
                    begin_node_list,
                    end_node_list,
-                   connector_,
+                   connector_.get(),
                    allocator)) {
         lattice->set_what("too long sentence.");
         return false;

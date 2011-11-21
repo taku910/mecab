@@ -81,6 +81,12 @@
 /* Define to 1 if you have the <windows.h> header file. */
 #undef HAVE_WINDOWS_H
 
+/* Define to 1 if you have the `__sync_add_and_fetch' function. */
+#undef HAVE___SYNC_ADD_AND_FETCH
+
+/* Define to 1 if you have the `__sync_val_compare_and_swap' function. */
+#undef HAVE___SYNC_VAL_COMPARE_AND_SWAP
+
 /* Define as const if the declaration of iconv() needs const. */
 #undef ICONV_CONST
 

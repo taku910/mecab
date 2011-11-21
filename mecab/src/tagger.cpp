@@ -83,10 +83,7 @@ class ModelImpl: public Model {
   bool open(const Param &param);
 
   bool is_available() const {
-    return (tokenizer_.get() &&
-            connector_.get() &&
-            viterbi_.get() &&
-            writer_.get());
+    return (viterbi_.get() && writer_.get());
   }
 
   int request_type() const {
@@ -98,10 +95,7 @@ class ModelImpl: public Model {
   }
 
   const DictionaryInfo *dictionary_info() const {
-    if (!is_available()) {
-      return 0;
-    }
-    return tokenizer_->dictionary_info();
+    return viterbi_->tokenizer() ? viterbi_->tokenizer()->dictionary_info() : 0;
   }
 
   Tagger *createTagger() const;
@@ -125,13 +119,11 @@ class ModelImpl: public Model {
     what_.assign(str);
   }
 
-  scoped_ptr<Tokenizer<Node, Path> > tokenizer_;
-  scoped_ptr<Connector> connector_;
   scoped_ptr<Viterbi> viterbi_;
-  scoped_ptr<Writer> writer_;
-  int request_type_;
-  double theta_;
-  std::string what_;
+  scoped_ptr<Writer>  writer_;
+  int                 request_type_;
+  double              theta_;
+  std::string         what_;
 };
 
 class TaggerImpl: public Tagger {
@@ -301,7 +293,7 @@ class LatticeImpl : public Lattice {
 };
 
 ModelImpl::ModelImpl()
-    : tokenizer_(0), connector_(0), viterbi_(0), writer_(0),
+    : viterbi_(0), writer_(0),
       request_type_(MECAB_ONE_BEST), theta_(0.0) {}
 
 ModelImpl::~ModelImpl() {}
@@ -327,32 +319,19 @@ bool ModelImpl::open(const char *arg) {
 }
 
 bool ModelImpl::open(const Param &param) {
-  tokenizer_.reset(new Tokenizer<Node, Path>);
-  connector_.reset(new Connector);
   viterbi_.reset(new Viterbi);
   writer_.reset(new Writer);
 
-  if (!tokenizer_->open(param) ||
-      !connector_->open(param) ||
-      !writer_->open(param) ||
-      !viterbi_->open(param, tokenizer_.get(), connector_.get())) {
-    std::string error = tokenizer_->what();
-    if (!error.empty()) {
-      error.append(" ");
-    }
-    error.append(connector_->what());
+  if (!writer_->open(param) || !viterbi_->open(param)) {
+    std::string error = viterbi_->what();
     if (!error.empty()) {
       error.append(" ");
     }
     error.append(writer_->what());
-
     set_what(error.c_str());
 
-    tokenizer_.reset(0);
-    connector_.reset(0);
     writer_.reset(0);
     viterbi_.reset(0);
-
     return false;
   }
 

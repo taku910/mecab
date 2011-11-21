@@ -65,11 +65,19 @@ Viterbi::Viterbi()
 
 Viterbi::~Viterbi() {}
 
-bool Viterbi::open(const Param &param,
-                   const Tokenizer<Node, Path> *tokenizer,
-                   const Connector *connector) {
-  tokenizer_ = tokenizer;
-  connector_ = connector;
+bool Viterbi::open(const Param &param) {
+  tokenizer_.reset(new Tokenizer<Node, Path>);
+  CHECK_FALSE(tokenizer_->open(param)) << tokenizer_->what();
+  CHECK_FALSE(tokenizer_->dictionary_info()) << "Dictionary is empty";
+
+  connector_.reset(new Connector);
+  CHECK_FALSE(connector_->open(param)) << connector_->what();
+
+  CHECK_FALSE(tokenizer_->dictionary_info()->lsize ==
+              connector_->left_size() &&
+              tokenizer_->dictionary_info()->rsize ==
+              connector_->right_size())
+      << "Transition table and dictionary are not compatible";
 
   cost_factor_ = param.get<int>("cost-factor");
   if (cost_factor_ == 0) {
@@ -91,23 +99,27 @@ bool Viterbi::analyze(Lattice *lattice) const {
   Node **end_node_list   = lattice->end_nodes();
   Node **begin_node_list = lattice->begin_nodes();
 
-  Node *bos_node = tokenizer_->getBOSNode(lattice->allocator());
-  Node *eos_node = tokenizer_->getEOSNode(lattice->allocator());
+  {
+    scoped_reader_lock l(&mutex_);
 
-  bos_node->surface = lattice->sentence();
-  eos_node->surface = lattice->sentence() + lattice->size();
+    Node *bos_node = tokenizer_->getBOSNode(lattice->allocator());
+    Node *eos_node = tokenizer_->getEOSNode(lattice->allocator());
 
-  end_node_list[0] = bos_node;
-  begin_node_list[lattice->size()] = eos_node;
+    bos_node->surface = lattice->sentence();
+    eos_node->surface = lattice->sentence() + lattice->size();
 
-  if (lattice->has_request_type(MECAB_NBEST) ||
-      lattice->has_request_type(MECAB_MARGINAL_PROB)) {
-    if (!viterbiWithAllPath(lattice)) {
-      return false;
-    }
-  } else {
-    if (!viterbi(lattice)) {
-      return false;
+    end_node_list[0] = bos_node;
+    begin_node_list[lattice->size()] = eos_node;
+
+    if (lattice->has_request_type(MECAB_NBEST) ||
+        lattice->has_request_type(MECAB_MARGINAL_PROB)) {
+      if (!viterbiWithAllPath(lattice)) {
+        return false;
+      }
+    } else {
+      if (!viterbi(lattice)) {
+        return false;
+      }
     }
   }
 
@@ -130,7 +142,12 @@ bool Viterbi::analyze(Lattice *lattice) const {
   return true;
 }
 
-bool Viterbi::forwardbackward(Lattice *lattice) const {
+const Tokenizer<Node, Path> *Viterbi::tokenizer() const {
+  return tokenizer_.get();
+}
+
+// static
+bool Viterbi::forwardbackward(Lattice *lattice) {
   if (!lattice->has_request_type(MECAB_MARGINAL_PROB)) {
     return true;
   }
@@ -211,7 +228,8 @@ bool Viterbi::buildBestLattice(Lattice *lattice) {
   return true;
 }
 
-bool Viterbi::initNBest(Lattice *lattice) const {
+// static
+bool Viterbi::initNBest(Lattice *lattice) {
   if (!lattice->has_request_type(MECAB_NBEST)) {
     return true;
   }
@@ -219,7 +237,8 @@ bool Viterbi::initNBest(Lattice *lattice) const {
   return true;
 }
 
-bool Viterbi::initPartial(Lattice *lattice) const {
+// static
+bool Viterbi::initPartial(Lattice *lattice) {
   if (!lattice->has_request_type(MECAB_PARTIAL)) {
     return true;
   }
@@ -290,7 +309,8 @@ bool Viterbi::initPartial(Lattice *lattice) const {
   return true;
 }
 
-Node *Viterbi::filterNode(Node *constrained_node, Node *node) const {
+// static
+Node *Viterbi::filterNode(Node *constrained_node, Node *node) {
   if (!constrained_node) {
     return node;
   }

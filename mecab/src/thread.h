@@ -34,6 +34,71 @@
 
 namespace MeCab {
 
+namespace {
+const int kWaFlag = 0x1;
+const int kRcIncr = 0x2;
+}
+
+#if (defined(_WIN32) && !defined(__CYGWIN__))
+#define atomic_add(a, b) ::InterlockedExchangeAdd(a, b)
+#define compare_and_swap(a, b, c)  ::InterlockedCompareExchange(a, c, b)
+#define yield_processor() YieldProcessor()
+#else
+#define atomic_add(a, b) __sync_add_and_fetch(a, b)
+#define compare_and_swap(a, b, c)  __sync_val_compare_and_swap(a, b, c)
+#define yield_processor()
+#endif
+
+class read_write_mutex {
+ public:
+  void write_lock() {
+    do {
+      yield_processor();
+    } while (compare_and_swap(&l_, 0, kWaFlag));
+  }
+  void read_lock() {
+    atomic_add(&l_, kRcIncr);
+    do {
+      yield_processor();
+    } while ((l_ & kWaFlag) != 0);
+  }
+  void write_unlock() {
+    atomic_add(&l_, -kWaFlag);
+  }
+  void read_unlock() {
+    atomic_add(&l_, -kRcIncr);
+  }
+
+  read_write_mutex(): l_(0) {}
+
+ private:
+  long l_;
+};
+
+class scoped_writer_lock {
+ public:
+  scoped_writer_lock(read_write_mutex *mutex) : mutex_(mutex) {
+    mutex_->write_lock();
+  }
+  ~scoped_writer_lock() {
+    mutex_->write_unlock();
+  }
+ private:
+  read_write_mutex *mutex_;
+};
+
+class scoped_reader_lock {
+ public:
+  scoped_reader_lock(read_write_mutex *mutex) : mutex_(mutex) {
+    mutex_->read_lock();
+  }
+  ~scoped_reader_lock() {
+    mutex_->read_unlock();
+  }
+ private:
+  read_write_mutex *mutex_;
+};
+
 class thread {
  private:
 #ifdef HAVE_PTHREAD_H

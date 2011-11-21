@@ -8,22 +8,24 @@
 
 #include <vector>
 #include "mecab.h"
+#include "thread.h"
 
 namespace MeCab {
 
 class Lattice;
 class Param;
 class Connector;
-class Model;
 template <typename N, typename P> class Tokenizer;
 
 class Viterbi {
  public:
-  bool open(const Param &param,
-            const Tokenizer<Node, Path> *tokenizer,
-            const Connector *connector);
+  bool open(const Param &param);
 
   bool analyze(Lattice *lattice) const;
+
+  const Tokenizer<Node, Path> *tokenizer() const;
+
+  const char *what() { return what_.str(); }
 
   static bool buildResultForNBest(Lattice *lattice);
 
@@ -33,19 +35,19 @@ class Viterbi {
  private:
   bool viterbiWithAllPath(Lattice *lattice) const;
   bool viterbi(Lattice *lattice) const;
-  bool forwardbackward(Lattice *lattice) const;
 
-  bool initPartial(Lattice *lattice) const;
-  bool initNBest(Lattice *lattice) const;
-
-  Node *filterNode(Node *constrained_node, Node *node) const;
-
+  static bool forwardbackward(Lattice *lattice);
+  static bool initPartial(Lattice *lattice);
+  static bool initNBest(Lattice *lattice);
+  static Node *filterNode(Node *constrained_node, Node *node);
   static bool buildBestLattice(Lattice *lattice);
   static bool buildAllLattice(Lattice *lattice);
 
-  const Tokenizer<Node, Path> *tokenizer_;
-  const Connector             *connector_;
-  int    cost_factor_;
+  scoped_ptr<Tokenizer<Node, Path> > tokenizer_;
+  scoped_ptr<Connector> connector_;
+  int                   cost_factor_;
+  whatlog               what_;
+  mutable read_write_mutex      mutex_;
 };
 }
 #endif  // MECAB_VITERBI_H_
