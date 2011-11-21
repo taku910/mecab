@@ -43,12 +43,17 @@ const int kRcIncr = 0x2;
 #define atomic_add(a, b) ::InterlockedExchangeAdd(a, b)
 #define compare_and_swap(a, b, c)  ::InterlockedCompareExchange(a, c, b)
 #define yield_processor() YieldProcessor()
-#else
+#define HAVE_ATOMIC_OPS 1
+#endif
+
+#ifdef HAVE_GCC_ATOMIC_OPS
 #define atomic_add(a, b) __sync_add_and_fetch(a, b)
 #define compare_and_swap(a, b, c)  __sync_val_compare_and_swap(a, b, c)
 #define yield_processor()
+#define HAVE_ATOMIC_OPS 1
 #endif
 
+#ifdef HAVE_ATOMIC_OPS
 class read_write_mutex {
  public:
   void write_lock() {
@@ -98,6 +103,7 @@ class scoped_reader_lock {
  private:
   read_write_mutex *mutex_;
 };
+#endif  // HAVE_ATOMIC_OPS
 
 class thread {
  private:

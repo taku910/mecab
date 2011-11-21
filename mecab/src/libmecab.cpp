@@ -81,10 +81,10 @@ extern "C" {
 }
 #else  // _WIN32
 namespace {
-#ifdef MECAB_NO_TLS
-char kErrorBuffer[kErrorBufferSize];
-#else
+#ifdef HAVE_TLS_KEYWORD
 __thread char kErrorBuffer[kErrorBufferSize];
+#else
+char kErrorBuffer[kErrorBufferSize];
 #endif
 }
 
