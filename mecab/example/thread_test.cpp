@@ -49,7 +49,7 @@ class ModelUpdater : public thread {
  public:
   void run() {
     const char *kParams[] = {
-      "-d /work/taku/unidic-mecab1312src/",
+      "-d /usr/local/lib/mecab/dic/unidic/",
       "-d /usr/local/lib/mecab/dic/ipadic/",
       "-d /usr/local/lib/mecab/dic/jumandic/"
     };
