@@ -380,6 +380,10 @@ mecab_lattice_t *mecab_model_new_lattice(mecab_model_t *model) {
   return reinterpret_cast<mecab_lattice_t *>(reinterpret_cast<MeCab::Model *>(model)->createLattice());
 }
 
+bool mecab_model_replace(mecab_model_t *model, mecab_model_t *new_model) {
+  return reinterpret_cast<MeCab::Model *>(model)->replace(reinterpret_cast<MeCab::Model *>(new_model));
+}
+
 const mecab_dictionary_info_t* mecab_model_dictionary_info(mecab_model_t *model) {
   return reinterpret_cast<const mecab_dictionary_info_t *>(reinterpret_cast<MeCab::Model *>(model)->dictionary_info());
 }

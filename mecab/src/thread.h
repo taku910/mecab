@@ -19,6 +19,10 @@
 #endif
 #endif
 
+#if defined HAVE_GCC_ATOMIC_OPS || defined HAVE_OSX_ATOMIC_OPS
+#include <sched.h>
+#endif
+
 #if defined HAVE_PTHREAD_H
 #define MECAB_USE_THREAD 1
 #endif
@@ -42,14 +46,24 @@ const int kRcIncr = 0x2;
 #if (defined(_WIN32) && !defined(__CYGWIN__))
 #define atomic_add(a, b) ::InterlockedExchangeAdd(a, b)
 #define compare_and_swap(a, b, c)  ::InterlockedCompareExchange(a, c, b)
-#define yield_processor() YieldProcessor()
+#define yield_processor() ::YieldProcessor()
 #define HAVE_ATOMIC_OPS 1
 #endif
 
 #ifdef HAVE_GCC_ATOMIC_OPS
 #define atomic_add(a, b) __sync_add_and_fetch(a, b)
 #define compare_and_swap(a, b, c)  __sync_val_compare_and_swap(a, b, c)
-#define yield_processor()
+#define yield_processor() sched_yield()
+#define HAVE_ATOMIC_OPS 1
+#endif
+
+#ifdef HAVE_OSX_ATOMIC_OPS
+#undef atomic_add
+#undef compare_and_swap
+#undef yield_processor
+#define atomic_add(a, b) OSAtomicAdd32(b, a)
+#define compare_and_swap(a, b, c) OSAtomicCompareAndSwapInt(b, c, a)
+#define yield_processor() sched_yield()
 #define HAVE_ATOMIC_OPS 1
 #endif
 
@@ -57,15 +71,15 @@ const int kRcIncr = 0x2;
 class read_write_mutex {
  public:
   void write_lock() {
-    do {
+    while (compare_and_swap(&l_, 0, kWaFlag)) {
       yield_processor();
-    } while (compare_and_swap(&l_, 0, kWaFlag));
+    }
   }
   void read_lock() {
     atomic_add(&l_, kRcIncr);
-    do {
+    while ((l_ & kWaFlag) != 0) {
       yield_processor();
-    } while ((l_ & kWaFlag) != 0);
+    }
   }
   void write_unlock() {
     atomic_add(&l_, -kWaFlag);

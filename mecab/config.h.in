@@ -48,6 +48,9 @@
 /* Define to 1 if you have the `opendir' function. */
 #undef HAVE_OPENDIR
 
+/* */
+#undef HAVE_OSX_ATOMIC_OPS
+
 /* Define to 1 if you have the <pthread.h> header file. */
 #undef HAVE_PTHREAD_H
 

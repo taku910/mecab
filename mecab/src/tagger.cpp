@@ -12,6 +12,7 @@
 #include "param.h"
 #include "stream_wrapper.h"
 #include "string_buffer.h"
+#include "thread.h"
 #include "tokenizer.h"
 #include "viterbi.h"
 #include "writer.h"
@@ -82,8 +83,10 @@ class ModelImpl: public Model {
   bool open(const char *arg);
   bool open(const Param &param);
 
+  bool replace(Model *model);
+
   bool is_available() const {
-    return (viterbi_.get() && writer_.get());
+    return (viterbi_ && writer_.get());
   }
 
   int request_type() const {
@@ -103,7 +106,14 @@ class ModelImpl: public Model {
   Lattice *createLattice() const;
 
   const Viterbi *viterbi() const {
-    return viterbi_.get();
+    return viterbi_;
+  }
+
+  // moves the owership.
+  Viterbi *take_viterbi() {
+    Viterbi *result = viterbi_;
+    viterbi_ = 0;
+    return result;
   }
 
   const Writer *writer() const {
@@ -114,16 +124,26 @@ class ModelImpl: public Model {
     return what_.c_str();
   }
 
+#ifdef HAVE_ATOMIC_OPS
+  read_write_mutex *mutex() const {
+    return &mutex_;
+  }
+#endif
+
  private:
   void set_what(const char *str) {
     what_.assign(str);
   }
 
-  scoped_ptr<Viterbi> viterbi_;
+  Viterbi            *viterbi_;
   scoped_ptr<Writer>  writer_;
   int                 request_type_;
   double              theta_;
   std::string         what_;
+
+#ifdef HAVE_ATOMIC_OPS
+  mutable read_write_mutex      mutex_;
+#endif
 };
 
 class TaggerImpl: public Tagger {
@@ -293,10 +313,13 @@ class LatticeImpl : public Lattice {
 };
 
 ModelImpl::ModelImpl()
-    : viterbi_(0), writer_(0),
+    : viterbi_(new Viterbi), writer_(new Writer),
       request_type_(MECAB_ONE_BEST), theta_(0.0) {}
 
-ModelImpl::~ModelImpl() {}
+ModelImpl::~ModelImpl() {
+  delete viterbi_;
+  viterbi_ = 0;
+}
 
 bool ModelImpl::open(int argc, char **argv) {
   Param param;
@@ -319,9 +342,6 @@ bool ModelImpl::open(const char *arg) {
 }
 
 bool ModelImpl::open(const Param &param) {
-  viterbi_.reset(new Viterbi);
-  writer_.reset(new Writer);
-
   if (!writer_->open(param) || !viterbi_->open(param)) {
     std::string error = viterbi_->what();
     if (!error.empty()) {
@@ -329,9 +349,6 @@ bool ModelImpl::open(const Param &param) {
     }
     error.append(writer_->what());
     set_what(error.c_str());
-
-    writer_.reset(0);
-    viterbi_.reset(0);
     return false;
   }
 
@@ -339,6 +356,37 @@ bool ModelImpl::open(const Param &param) {
   theta_ = param.get<double>("theta");
 
   return is_available();
+}
+
+bool ModelImpl::replace(Model *model) {
+#ifndef HAVE_ATOMIC_OPS
+  set_what("atomic model replacement is not supported");
+  return false;
+#else
+  ModelImpl *m = dynamic_cast<ModelImpl *>(model);
+  if (!m) {
+    set_what("Invalid model is passed");
+    return false;
+  }
+
+  if (!m->is_available()) {
+    set_what("Passed model is not available");
+    return false;
+  }
+
+  Viterbi *current_viterbi = viterbi_;
+  {
+    scoped_writer_lock l(mutex());
+    viterbi_ = m->take_viterbi();
+    request_type_ = m->request_type();
+    theta_ = m->theta();
+  }
+
+  delete current_viterbi;
+  delete model;
+
+  return true;
+#endif
 }
 
 Tagger *ModelImpl::createTagger() const {
@@ -476,6 +524,10 @@ bool TaggerImpl::all_morphs() const {
 }
 
 bool TaggerImpl::parse(Lattice *lattice) const {
+#ifdef HAVE_ATOMIC_OPS
+  scoped_reader_lock l(model()->mutex());
+#endif
+
   return model()->viterbi()->analyze(lattice);
 }
 

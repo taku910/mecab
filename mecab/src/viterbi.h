@@ -47,7 +47,6 @@ class Viterbi {
   scoped_ptr<Connector> connector_;
   int                   cost_factor_;
   whatlog               what_;
-  mutable read_write_mutex      mutex_;
 };
 }
 #endif  // MECAB_VITERBI_H_

@@ -663,19 +663,21 @@ extern "C" {
   /**
    * C wapper of MeCab::Model::createTagger()
    */
-
   MECAB_DLL_EXTERN mecab_t         *mecab_model_new_tagger(mecab_model_t *model);
 
   /**
    * C wapper of MeCab::Model::createLattice()
    */
-
   MECAB_DLL_EXTERN mecab_lattice_t *mecab_model_new_lattice(mecab_model_t *model);
+
+  /**
+   * C wrapper of MeCab::Model::replace()
+   */
+  MECAB_DLL_EXTERN bool mecab_model_replace(mecab_model_t *model, mecab_model_t *new_model);
 
   /**
    * C wapper of MeCab::Model::dictionary_info()
    */
-
   MECAB_DLL_EXTERN const mecab_dictionary_info_t* mecab_model_dictionary_info(mecab_model_t *model);
 
   /* static functions */
@@ -961,6 +963,18 @@ public:
    * @return new Lattice object
    */
   virtual Lattice *createLattice() const = 0;
+
+  /**
+   * Replace the instance with |model|.
+   * The ownership moves to this instance.
+   * return true if new model is moved successfully.
+   * if passed model is invalid, the ownership will not move.
+   * This method is thread safe. All taggers created by Model::createTagger() method
+   * will also be updated asynchronously.
+   * @return boolean
+   * @param model new model which is going to be replaced with the current model.
+   */
+  virtual bool replace(Model *model) = 0;
 
   /**
    * Return a version string
