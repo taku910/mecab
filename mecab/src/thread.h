@@ -39,8 +39,6 @@
 namespace MeCab {
 
 namespace {
-const int kWaFlag = 0x1;
-const int kRcIncr = 0x2;
 }
 
 #if (defined(_WIN32) && !defined(__CYGWIN__))
@@ -68,30 +66,42 @@ const int kRcIncr = 0x2;
 #endif
 
 #ifdef HAVE_ATOMIC_OPS
+// This is a simple non-scalable writer-preference lock.
+// Slightly modified the following paper.
+// "Scalable Reader-Writer Synchronization for Shared-Memory Multiprocessors"
+// PPoPP '91. John M. Mellor-Crummey and Michael L. Scott. T
 class read_write_mutex {
  public:
-  void write_lock() {
+  inline void write_lock() {
+    atomic_add(&write_pending_, 1);
     while (compare_and_swap(&l_, 0, kWaFlag)) {
       yield_processor();
     }
   }
-  void read_lock() {
+  inline void read_lock() {
+    while (write_pending_ > 0) {
+      yield_processor();
+    }
     atomic_add(&l_, kRcIncr);
     while ((l_ & kWaFlag) != 0) {
       yield_processor();
     }
   }
-  void write_unlock() {
+  inline void write_unlock() {
     atomic_add(&l_, -kWaFlag);
+    atomic_add(&write_pending_, -1);
   }
-  void read_unlock() {
+  inline void read_unlock() {
     atomic_add(&l_, -kRcIncr);
   }
 
-  read_write_mutex(): l_(0) {}
+  read_write_mutex(): l_(0), write_pending_(0) {}
 
  private:
+  static const int kWaFlag = 0x1;
+  static const int kRcIncr = 0x2;
   long l_;
+  long write_pending_;
 };
 
 class scoped_writer_lock {

@@ -83,7 +83,7 @@ class ModelImpl: public Model {
   bool open(const char *arg);
   bool open(const Param &param);
 
-  bool replace(Model *model);
+  bool swap(Model *model);
 
   bool is_available() const {
     return (viterbi_ && writer_.get());
@@ -120,10 +120,6 @@ class ModelImpl: public Model {
     return writer_.get();
   }
 
-  const char *what() const {
-    return what_.c_str();
-  }
-
 #ifdef HAVE_ATOMIC_OPS
   read_write_mutex *mutex() const {
     return &mutex_;
@@ -131,15 +127,10 @@ class ModelImpl: public Model {
 #endif
 
  private:
-  void set_what(const char *str) {
-    what_.assign(str);
-  }
-
   Viterbi            *viterbi_;
   scoped_ptr<Writer>  writer_;
   int                 request_type_;
   double              theta_;
-  std::string         what_;
 
 #ifdef HAVE_ATOMIC_OPS
   mutable read_write_mutex      mutex_;
@@ -194,9 +185,9 @@ class TaggerImpl: public Tagger {
  private:
   const ModelImpl *model() const { return current_model_; }
 
-  void set_what(const char *str) {
-    what_.assign(str);
-  }
+   void set_what(const char *str) {
+     what_.assign(str);
+   }
 
   void initRequestType() {
     mutable_lattice()->set_request_type(request_type_);
@@ -325,7 +316,7 @@ bool ModelImpl::open(int argc, char **argv) {
   Param param;
   if (!param.open(argc, argv, long_options) ||
       !load_dictionary_resource(&param)) {
-    set_what(param.what());
+    setGlobalError(param.what());
     return false;
   }
   return open(param);
@@ -335,7 +326,7 @@ bool ModelImpl::open(const char *arg) {
   Param param;
   if (!param.open(arg, long_options) ||
       !load_dictionary_resource(&param)) {
-    set_what(param.what());
+    setGlobalError(param.what());
     return false;
   }
   return open(param);
@@ -348,7 +339,7 @@ bool ModelImpl::open(const Param &param) {
       error.append(" ");
     }
     error.append(writer_->what());
-    set_what(error.c_str());
+    setGlobalError(error.c_str());
     return false;
   }
 
@@ -358,28 +349,32 @@ bool ModelImpl::open(const Param &param) {
   return is_available();
 }
 
-bool ModelImpl::replace(Model *model) {
+bool ModelImpl::swap(Model *model) {
+  if (!is_available()) {
+    setGlobalError("curent model is not available");
+    return false;
+  }
 #ifndef HAVE_ATOMIC_OPS
-  set_what("atomic model replacement is not supported");
+  setGlobalError("atomic model replacement is not supported");
   return false;
 #else
   ModelImpl *m = dynamic_cast<ModelImpl *>(model);
   if (!m) {
-    set_what("Invalid model is passed");
+    setGlobalError("Invalid model is passed");
     return false;
   }
 
   if (!m->is_available()) {
-    set_what("Passed model is not available");
+    setGlobalError("Passed model is not available");
     return false;
   }
 
   Viterbi *current_viterbi = viterbi_;
   {
     scoped_writer_lock l(mutex());
-    viterbi_ = m->take_viterbi();
+    viterbi_      = m->take_viterbi();
     request_type_ = m->request_type();
-    theta_ = m->theta();
+    theta_        = m->theta();
   }
 
   delete current_viterbi;
@@ -426,7 +421,6 @@ const char *TaggerImpl::what() const {
 bool TaggerImpl::open(int argc, char **argv) {
   model_.reset(new ModelImpl);
   if (!model_->open(argc, argv)) {
-    set_what(model_->what());
     model_.reset(0);
     return false;
   }
@@ -439,7 +433,6 @@ bool TaggerImpl::open(int argc, char **argv) {
 bool TaggerImpl::open(const char *arg) {
   model_.reset(new ModelImpl);
   if (!model_->open(arg)) {
-    set_what(model_->what());
     model_.reset(0);
     return false;
   }
@@ -891,7 +884,6 @@ const char *getLastError() {
 Model *createModel(int argc, char **argv) {
   ModelImpl *model = new ModelImpl;
   if (!model->open(argc, argv)) {
-    setGlobalError(model->what());
     delete model;
     return 0;
   }
@@ -901,7 +893,6 @@ Model *createModel(int argc, char **argv) {
 Model *createModel(const char *arg) {
   ModelImpl *model = new ModelImpl;
   if (!model->open(arg)) {
-    setGlobalError(model->what());
     delete model;
     return 0;
   }
@@ -975,7 +966,7 @@ int mecab_do(int argc, char **argv) {
 
   MeCab::scoped_ptr<MeCab::ModelImpl> model(new MeCab::ModelImpl);
   if (!model->open(param)) {
-    std::cout << model->what() << std::endl;
+    std::cout << MeCab::getLastError() << std::endl;
     return EXIT_FAILURE;
   }
 

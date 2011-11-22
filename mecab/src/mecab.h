@@ -671,9 +671,9 @@ extern "C" {
   MECAB_DLL_EXTERN mecab_lattice_t *mecab_model_new_lattice(mecab_model_t *model);
 
   /**
-   * C wrapper of MeCab::Model::replace()
+   * C wrapper of MeCab::Model::swap()
    */
-  MECAB_DLL_EXTERN bool mecab_model_replace(mecab_model_t *model, mecab_model_t *new_model);
+  MECAB_DLL_EXTERN bool mecab_model_swap(mecab_model_t *model, mecab_model_t *new_model);
 
   /**
    * C wapper of MeCab::Model::dictionary_info()
@@ -920,7 +920,7 @@ public:
    * Return error string.
    * @return error string
    */
-  virtual const char *what() const              = 0;
+  virtual const char *what() const            = 0;
 
   /**
    * Set error string. given string is copied to the internal buffer.
@@ -965,16 +965,17 @@ public:
   virtual Lattice *createLattice() const = 0;
 
   /**
-   * Replace the instance with |model|.
-   * The ownership moves to this instance.
-   * return true if new model is moved successfully.
-   * if passed model is invalid, the ownership will not move.
+   * Swap the instance with |model|.
+   * The ownership of |model| moves to this instance.
+   * return true if new model is swapped successfully.
+   * if the passed model is invalid, the ownership won't move.
    * This method is thread safe. All taggers created by Model::createTagger() method
-   * will also be updated asynchronously.
+   * will also be updated asynchronously. No need to stop the parsing thread excplicitly before
+   * swapping model object.
    * @return boolean
-   * @param model new model which is going to be replaced with the current model.
+   * @param model new model which is going to be swapped with the current model.
    */
-  virtual bool replace(Model *model) = 0;
+  virtual bool swap(Model *model) = 0;
 
   /**
    * Return a version string
