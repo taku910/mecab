@@ -2196,6 +2196,38 @@ SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1createLattice(JNI
 }
 
 
+SWIGEXPORT jboolean JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jboolean jresult = 0 ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  MeCab::Model *arg2 = (MeCab::Model *) 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(MeCab::Model **)&jarg1; 
+  arg2 = *(MeCab::Model **)&jarg2; 
+  {
+    try {
+      result = (bool)(arg1)->swap(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jstring JNICALL Java_org_chasen_mecab_MeCabJNI_Model_1version(JNIEnv *jenv, jclass jcls) {
   jstring jresult = 0 ;
   char *result = 0 ;

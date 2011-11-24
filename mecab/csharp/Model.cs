@@ -62,6 +62,12 @@ public class Model : IDisposable {
     return ret;
   }
 
+  public virtual bool swap(Model model) {
+    bool ret = MeCabPINVOKE.Model_swap(swigCPtr, Model.getCPtr(model));
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public static string version() {
     string ret = MeCabPINVOKE.Model_version();
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();

@@ -437,6 +437,9 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_Model_createLattice")]
   public static extern IntPtr Model_createLattice(HandleRef jarg1);
 
+  [DllImport("MeCab", EntryPoint="CSharp_Model_swap")]
+  public static extern bool Model_swap(HandleRef jarg1, HandleRef jarg2);
+
   [DllImport("MeCab", EntryPoint="CSharp_Model_version")]
   public static extern string Model_version();
 

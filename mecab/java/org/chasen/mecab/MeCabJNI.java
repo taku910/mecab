@@ -93,6 +93,7 @@ class MeCabJNI {
   public final static native long Model_dictionary_info(long jarg1, Model jarg1_);
   public final static native long Model_createTagger(long jarg1, Model jarg1_);
   public final static native long Model_createLattice(long jarg1, Model jarg1_);
+  public final static native boolean Model_swap(long jarg1, Model jarg1_, long jarg2, Model jarg2_);
   public final static native String Model_version();
   public final static native void delete_Model(long jarg1);
   public final static native long Model_create__SWIG_0(int jarg1, long jarg2);

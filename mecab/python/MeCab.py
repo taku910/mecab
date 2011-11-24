@@ -237,6 +237,7 @@ class Model(_object):
     def dictionary_info(self): return _MeCab.Model_dictionary_info(self)
     def createTagger(self): return _MeCab.Model_createTagger(self)
     def createLattice(self): return _MeCab.Model_createLattice(self)
+    def swap(self, *args): return _MeCab.Model_swap(self, *args)
     __swig_getmethods__["version"] = lambda x: _MeCab.Model_version
     if _newclass:version = staticmethod(_MeCab.Model_version)
     __swig_destroy__ = _MeCab.delete_Model

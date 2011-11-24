@@ -56,11 +56,11 @@ class ModelUpdater : public thread {
 
     int i = 0;
     while (true) {
-      sleep(1);
+      sleep(4);
       MeCab::Model *model = MeCab::createModel(kParams[i % 3]);
       std::cout << "Updating..." << std::endl;
       if (!model_->swap(model)) {
-        std::cerr << "cannot merge:";
+        std::cerr << "cannot swap" << std::endl;
         exit(-1);
       }
       std::cout << "Done!" << std::endl;
@@ -76,7 +76,7 @@ class ModelUpdater : public thread {
 }
 
 int main (int argc, char **argv) {
-  std::ifstream ifs("/work/taku/japanese_sentences.txt");
+  std::ifstream ifs("japanese_sentences.txt");
   std::string line;
   std::vector<std::string> sentences;
   while (std::getline(ifs, line)) {
@@ -91,7 +91,6 @@ int main (int argc, char **argv) {
     std::cerr << "model is NULL" << std::endl;
     return -1;
   }
-
   MeCab::ModelUpdater updater(model);
   updater.start();
 
@@ -101,18 +100,18 @@ int main (int argc, char **argv) {
   for (int i = 0; i < kMaxThreadSize; ++i) {
     threads[i] = new MeCab::TaggerThread(&sentences, model, i);
   }
-
+   
   for (int i = 0; i < kMaxThreadSize; ++i) {
     threads[i]->start();
   }
-
+   
   for (int i = 0; i < kMaxThreadSize; ++i) {
     threads[i]->join();
     delete threads[i];
   }
 
   updater.join();
-
+   
   delete model;
 
   return 0;

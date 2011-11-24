@@ -4474,6 +4474,54 @@ XS(_wrap_Model_createLattice) {
 }
 
 
+XS(_wrap_Model_swap) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    MeCab::Model *arg2 = (MeCab::Model *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Model_swap(self,model);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_swap" "', argument " "1"" of type '" "MeCab::Model *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Model_swap" "', argument " "2"" of type '" "MeCab::Model *""'"); 
+    }
+    arg2 = reinterpret_cast< MeCab::Model * >(argp2);
+    {
+      try {
+        result = (bool)(arg1)->swap(arg2); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_Model_version) {
   {
     int argvi = 0;
@@ -6515,6 +6563,7 @@ static swig_command_info swig_commands[] = {
 {"MeCabc::Model_dictionary_info", _wrap_Model_dictionary_info},
 {"MeCabc::Model_createTagger", _wrap_Model_createTagger},
 {"MeCabc::Model_createLattice", _wrap_Model_createLattice},
+{"MeCabc::Model_swap", _wrap_Model_swap},
 {"MeCabc::Model_version", _wrap_Model_version},
 {"MeCabc::delete_Model", _wrap_delete_Model},
 {"MeCabc::Model_create", _wrap_Model_create},

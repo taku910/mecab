@@ -50,6 +50,10 @@ public class Model {
     return (cPtr == 0) ? null : new Lattice(cPtr, false);
   }
 
+  public boolean swap(Model model) {
+    return MeCabJNI.Model_swap(swigCPtr, this, Model.getCPtr(model), model);
+  }
+
   public static String version() {
     return MeCabJNI.Model_version();
   }

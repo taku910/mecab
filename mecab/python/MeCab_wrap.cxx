@@ -5293,6 +5293,47 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Model_swap(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  MeCab::Model *arg2 = (MeCab::Model *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Model_swap",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_swap" "', argument " "1"" of type '" "MeCab::Model *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Model_swap" "', argument " "2"" of type '" "MeCab::Model *""'"); 
+  }
+  arg2 = reinterpret_cast< MeCab::Model * >(argp2);
+  {
+    try {
+      result = (bool)(arg1)->swap(arg2); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Model_version(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   char *result = 0 ;
@@ -6914,6 +6955,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Model_dictionary_info", _wrap_Model_dictionary_info, METH_VARARGS, NULL},
 	 { (char *)"Model_createTagger", _wrap_Model_createTagger, METH_VARARGS, NULL},
 	 { (char *)"Model_createLattice", _wrap_Model_createLattice, METH_VARARGS, NULL},
+	 { (char *)"Model_swap", _wrap_Model_swap, METH_VARARGS, NULL},
 	 { (char *)"Model_version", _wrap_Model_version, METH_VARARGS, NULL},
 	 { (char *)"delete_Model", _wrap_delete_Model, METH_VARARGS, NULL},
 	 { (char *)"Model_create", _wrap_Model_create, METH_VARARGS, NULL},

@@ -2023,6 +2023,34 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Model_createLattice(void * jarg1) {
 }
 
 
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Model_swap(void * jarg1, void * jarg2) {
+  unsigned int jresult ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  MeCab::Model *arg2 = (MeCab::Model *) 0 ;
+  bool result;
+  
+  arg1 = (MeCab::Model *)jarg1; 
+  arg2 = (MeCab::Model *)jarg2; 
+  {
+    try {
+      result = (bool)(arg1)->swap(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT char * SWIGSTDCALL CSharp_Model_version() {
   char * jresult ;
   char *result = 0 ;

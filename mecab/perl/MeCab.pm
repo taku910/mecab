@@ -269,6 +269,7 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *dictionary_info = *MeCabc::Model_dictionary_info;
 *createTagger = *MeCabc::Model_createTagger;
 *createLattice = *MeCabc::Model_createLattice;
+*swap = *MeCabc::Model_swap;
 *version = *MeCabc::Model_version;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
