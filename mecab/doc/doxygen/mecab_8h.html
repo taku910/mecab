@@ -245,6 +245,8 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">C wapper of <a class="el" href="classMeCab_1_1Model.html#a9d9135a4431adb3a985153cb4ab8f3a1" title="Create a new Tagger object.">MeCab::Model::createTagger()</a>  <a href="#a542243e6629589ca34127e4e556fa096"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">MECAB_DLL_EXTERN <a class="el" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a4a13db757018319057c0881fd4c2a5c5">mecab_model_new_lattice</a> (<a class="el" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">C wapper of <a class="el" href="classMeCab_1_1Model.html#aa70febf1573213287214a1fa626e186d" title="Create a new Lattice object.">MeCab::Model::createLattice()</a>  <a href="#a4a13db757018319057c0881fd4c2a5c5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">MECAB_DLL_EXTERN bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a0b4741042a83dee97b473ed4d0b1edcc">mecab_model_swap</a> (<a class="el" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model, <a class="el" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *new_model)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">C wrapper of <a class="el" href="classMeCab_1_1Model.html#a0423e56cbbec00e974b75bd1dfed3642" title="Swap the instance with |model|.">MeCab::Model::swap()</a>  <a href="#a0b4741042a83dee97b473ed4d0b1edcc"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">MECAB_DLL_EXTERN const <br class="typebreak"/>
 <a class="el" href="structmecab__dictionary__info__t.html">mecab_dictionary_info_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a463bb4f7591289783c832989f0eb8e17">mecab_model_dictionary_info</a> (<a class="el" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">C wapper of <a class="el" href="classMeCab_1_1Model.html#a04a93b36403d155f4cedfb138a7b2b51" title="Return DictionaryInfo linked list.">MeCab::Model::dictionary_info()</a>  <a href="#a463bb4f7591289783c832989f0eb8e17"></a><br/></td></tr>
@@ -1553,6 +1555,35 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a0b4741042a83dee97b473ed4d0b1edcc"></a><!-- doxytag: member="mecab.h::mecab_model_swap" ref="a0b4741042a83dee97b473ed4d0b1edcc" args="(mecab_model_t *model, mecab_model_t *new_model)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MECAB_DLL_EXTERN bool mecab_model_swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *&#160;</td>
+          <td class="paramname"><em>new_model</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>C wrapper of <a class="el" href="classMeCab_1_1Model.html#a0423e56cbbec00e974b75bd1dfed3642" title="Swap the instance with |model|.">MeCab::Model::swap()</a> </p>
+
+</div>
+</div>
 <a class="anchor" id="aa3a4ee7111a45bb09bdd3d552fa366ad"></a><!-- doxytag: member="mecab.h::mecab_nbest_init" ref="aa3a4ee7111a45bb09bdd3d552fa366ad" args="(mecab_t *mecab, const char *str)" -->
 <div class="memitem">
 <div class="memproto">
@@ -2279,7 +2310,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Nov 20 2011 00:30:36 for MeCab by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Nov 27 2011 18:25:50 for MeCab by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

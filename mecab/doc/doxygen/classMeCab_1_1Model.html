@@ -65,6 +65,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new <a class="el" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> object.  <a href="#a9d9135a4431adb3a985153cb4ab8f3a1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classMeCab_1_1Lattice.html">Lattice</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Model.html#aa70febf1573213287214a1fa626e186d">createLattice</a> () const =0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new <a class="el" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> object.  <a href="#aa70febf1573213287214a1fa626e186d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Model.html#a0423e56cbbec00e974b75bd1dfed3642">swap</a> (<a class="el" href="classMeCab_1_1Model.html">Model</a> *model)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap the instance with |model|.  <a href="#a0423e56cbbec00e974b75bd1dfed3642"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Model.html#abccfe166fbb9db7ab5fe8479657dd63c">~Model</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -218,6 +220,33 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a0423e56cbbec00e974b75bd1dfed3642"></a><!-- doxytag: member="MeCab::Model::swap" ref="a0423e56cbbec00e974b75bd1dfed3642" args="(Model *model)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool MeCab::Model::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMeCab_1_1Model.html">Model</a> *&#160;</td>
+          <td class="paramname"><em>model</em></td><td>)</td>
+          <td><code> [pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Swap the instance with |model|. </p>
+<p>The ownership of |model| always moves to this instance, meaning that passed |model| will no longer be accessible after calling this method. return true if new model is swapped successfully. This method is thread safe. All taggers created by <a class="el" href="classMeCab_1_1Model.html#a9d9135a4431adb3a985153cb4ab8f3a1" title="Create a new Tagger object.">Model::createTagger()</a> method will also be updated asynchronously. No need to stop the parsing thread excplicitly before swapping model object. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>boolean </dd></dl>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">model</td><td>new model which is going to be swapped with the current model. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="af6d63f8eb887b8b147bdb87a34b06bee"></a><!-- doxytag: member="MeCab::Model::version" ref="af6d63f8eb887b8b147bdb87a34b06bee" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -241,7 +270,7 @@ Static Public Member Functions</h2></td></tr>
 <li>/home/taku/mecab/mecab/src/<a class="el" href="mecab_8h_source.html">mecab.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Nov 20 2011 00:30:36 for MeCab by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Nov 27 2011 18:25:50 for MeCab by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

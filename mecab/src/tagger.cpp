@@ -350,6 +350,8 @@ bool ModelImpl::open(const Param &param) {
 }
 
 bool ModelImpl::swap(Model *model) {
+  scoped_ptr<Model> model_data(model);
+
   if (!is_available()) {
     setGlobalError("curent model is not available");
     return false;
@@ -358,7 +360,7 @@ bool ModelImpl::swap(Model *model) {
   setGlobalError("atomic model replacement is not supported");
   return false;
 #else
-  ModelImpl *m = dynamic_cast<ModelImpl *>(model);
+  ModelImpl *m = dynamic_cast<ModelImpl *>(model_data.get());
   if (!m) {
     setGlobalError("Invalid model is passed");
     return false;
@@ -378,7 +380,6 @@ bool ModelImpl::swap(Model *model) {
   }
 
   delete current_viterbi;
-  delete model;
 
   return true;
 #endif
