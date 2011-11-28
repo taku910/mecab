@@ -16,7 +16,7 @@ class TaggerThread : public thread {
       for (size_t i = 0; i < sentences_->size(); ++i) {
         lattice_->set_sentence((*sentences_)[i].c_str());
         tagger_->parse(lattice_);
-        if (n % 100000 == 0) {
+        if (n % 100141 == 0) {
           std::cout << id_ << " " << n << " parsed" << std::endl;
 //	  std::cout << lattice_->toString();
         }
@@ -49,14 +49,24 @@ class ModelUpdater : public thread {
  public:
   void run() {
     const char *kParams[] = {
+#ifdef _WIN32
+      "-d unidic",
+      "-d ipadic",
+      "-d jumandic"
+#else
       "-d /usr/local/lib/mecab/dic/unidic/",
       "-d /usr/local/lib/mecab/dic/ipadic/",
       "-d /usr/local/lib/mecab/dic/jumandic/"
+#endif
     };
 
     int i = 0;
     while (true) {
+#ifdef _WIN32
+      ::Sleep(4000);
+#else
       sleep(4);
+#endif
       MeCab::Model *model = MeCab::createModel(kParams[i % 3]);
       std::cout << "Updating..." << std::endl;
       if (!model_->swap(model)) {
@@ -100,11 +110,11 @@ int main (int argc, char **argv) {
   for (int i = 0; i < kMaxThreadSize; ++i) {
     threads[i] = new MeCab::TaggerThread(&sentences, model, i);
   }
-   
+
   for (int i = 0; i < kMaxThreadSize; ++i) {
     threads[i]->start();
   }
-   
+
   for (int i = 0; i < kMaxThreadSize; ++i) {
     threads[i]->join();
     delete threads[i];
