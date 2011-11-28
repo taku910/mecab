@@ -15,13 +15,10 @@ DIR=../../src
 RMODEL=${MODEL}.c${C}.f${FREQ}
 DICDIR=${RMODEL}.dic
 
-for algo in crf hmm
-do
 mkdir ${DICDIR}
-cp -f ${SEEDDIR}/rewrite.def.${algo} ${SEEDDIR}/rewrite.def
 ${DIR}/mecab-dict-index -d ${SEEDDIR} -o ${SEEDDIR}
-${DIR}/mecab-cost-train -a ${algo} -c ${C} -d ${SEEDDIR} -f ${FREQ} ${CORPUS} ${RMODEL}.model
-${DIR}/mecab-dict-gen   -a ${algo} -d ${SEEDDIR} -m ${RMODEL}.model -o ${DICDIR}
+${DIR}/mecab-cost-train -c ${C} -d ${SEEDDIR} -f ${FREQ} ${CORPUS} ${RMODEL}.model
+${DIR}/mecab-dict-gen   -d ${SEEDDIR} -m ${RMODEL}.model -o ${DICDIR}
 ${DIR}/mecab-dict-index -d ${DICDIR} -o ${DICDIR}
 # ${DIR}/mecab-test-gen < ${TEST} | ${DIR}/mecab -r /dev/null -d ${DICDIR}  > ${RMODEL}.result
 # ${DIR}/mecab-system-eval -l "${EVAL}" ${RMODEL}.result ${TEST} | tee ${RMODEL}.score
@@ -31,7 +28,5 @@ rm -fr ${RMODEL}*
 rm -fr ${SEEDDIR}/*.dic
 rm -fr ${SEEDDIR}/*.bin
 rm -fr ${SEEDDIR}/*.dic
-
-done
 
 exit 0
