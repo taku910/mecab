@@ -1,8 +1,8 @@
-#! /bin/sh
+#! /bin/bash
 
 # libtool - Provide generalized library-building support services.
 # Generated automatically by config.status (mecab) 0.99pre1
-# Libtool was configured on host kiwi2.tok.corp.google.com:
+# Libtool was configured on host taku-virtual-machine:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 #
 #   Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005,
@@ -65,19 +65,19 @@ pic_mode=default
 fast_install=yes
 
 # Shell to use when invoking shell scripts.
-SHELL="/bin/sh"
+SHELL="/bin/bash"
 
 # An echo program that protects backslashes.
 ECHO="printf %s\\n"
 
 # The host system.
 host_alias=
-host=x86_64-unknown-linux-gnu
+host=i686-pc-linux-gnu
 host_os=linux-gnu
 
 # The build system.
 build_alias=
-build=x86_64-unknown-linux-gnu
+build=i686-pc-linux-gnu
 build_os=linux-gnu
 
 # A sed program that does not truncate output.
@@ -102,7 +102,7 @@ NM="/usr/bin/nm -B"
 LN_S="ln -s"
 
 # What is the maximum length of a command?
-max_cmd_len=3458764513820540925
+max_cmd_len=805306365
 
 # Object file suffix (normally "o").
 objext=o
@@ -272,10 +272,10 @@ finish_eval=""
 hardcode_into_libs=yes
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/usr/lib/gcc/x86_64-linux-gnu/4.4.3 /usr/lib /lib /usr/lib/x86_64-linux-gnu "
+sys_lib_search_path_spec="/usr/lib/gcc/i686-linux-gnu/4.6.1 /usr/lib/i386-linux-gnu /usr/lib /lib/i386-linux-gnu /lib "
 
 # Run-time system search path for libraries.
-sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/lib/nvidia-current /usr/lib32/nvidia-current /usr/lib32/alsa-lib /usr/lib/alsa-lib /usr/local/lib /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu "
+sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/lib/i386-linux-gnu/mesa /lib/i386-linux-gnu /usr/lib/i386-linux-gnu /lib/i686-linux-gnu /usr/lib/i686-linux-gnu /usr/local/lib /usr/lib/vmware-tools/lib32/libvmGuestLib.so /usr/lib/vmware-tools/lib64/libvmGuestLib.so /usr/lib/vmware-tools/lib32/libvmGuestLibJava.so /usr/lib/vmware-tools/lib64/libvmGuestLibJava.so /usr/lib/vmware-tools/lib32/libDeployPkg.so /usr/lib/vmware-tools/lib64/libDeployPkg.so "
 
 # Whether dlopen is supported.
 dlopen_support=unknown
@@ -292,7 +292,7 @@ striplib="strip --strip-unneeded"
 
 
 # The linker used to build libraries.
-LD="/usr/bin/ld -m elf_x86_64"
+LD="/usr/bin/ld"
 
 # How to create reloadable object files.
 reload_flag=" -r"
@@ -10084,7 +10084,7 @@ build_old_libs=`case $build_libtool_libs in yes) echo no;; *) echo yes;; esac`
 # ### BEGIN LIBTOOL TAG CONFIG: CXX
 
 # The linker used to build libraries.
-LD="/usr/bin/ld -m elf_x86_64"
+LD="/usr/bin/ld"
 
 # How to create reloadable object files.
 reload_flag=" -r"
@@ -10219,17 +10219,17 @@ file_list_spec=""
 hardcode_action=immediate
 
 # The directories searched by this compiler when creating a shared library.
-compiler_lib_search_dirs="/usr/lib/gcc/x86_64-linux-gnu/4.4.3 /usr/lib/gcc/x86_64-linux-gnu/4.4.3 /usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../../../lib /lib/../lib /usr/lib/../lib /usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../.. /usr/lib/x86_64-linux-gnu"
+compiler_lib_search_dirs="/usr/lib/gcc/i686-linux-gnu/4.6.1 /usr/lib/gcc/i686-linux-gnu/4.6.1/../../../i386-linux-gnu /usr/lib/gcc/i686-linux-gnu/4.6.1/../../../../lib /lib/i386-linux-gnu /lib/../lib /usr/lib/i386-linux-gnu /usr/lib/../lib /usr/lib/gcc/i686-linux-gnu/4.6.1/../../.."
 
 # Dependencies to place before and after the objects being linked to
 # create a shared library.
-predep_objects="/usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../../../lib/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.4.3/crtbeginS.o"
-postdep_objects="/usr/lib/gcc/x86_64-linux-gnu/4.4.3/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../../../lib/crtn.o"
+predep_objects="/usr/lib/gcc/i686-linux-gnu/4.6.1/../../../i386-linux-gnu/crti.o /usr/lib/gcc/i686-linux-gnu/4.6.1/crtbeginS.o"
+postdep_objects="/usr/lib/gcc/i686-linux-gnu/4.6.1/crtendS.o /usr/lib/gcc/i686-linux-gnu/4.6.1/../../../i386-linux-gnu/crtn.o"
 predeps=""
 postdeps="-lstdc++ -lm -lgcc_s -lc -lgcc_s"
 
 # The library search path used internally by the compiler when linking
 # a shared library.
-compiler_lib_search_path="-L/usr/lib/gcc/x86_64-linux-gnu/4.4.3 -L/usr/lib/gcc/x86_64-linux-gnu/4.4.3 -L/usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.4.3/../../.. -L/usr/lib/x86_64-linux-gnu"
+compiler_lib_search_path="-L/usr/lib/gcc/i686-linux-gnu/4.6.1 -L/usr/lib/gcc/i686-linux-gnu/4.6.1/../../../i386-linux-gnu -L/usr/lib/gcc/i686-linux-gnu/4.6.1/../../../../lib -L/lib/i386-linux-gnu -L/lib/../lib -L/usr/lib/i386-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/i686-linux-gnu/4.6.1/../../.."
 
 # ### END LIBTOOL TAG CONFIG: CXX
