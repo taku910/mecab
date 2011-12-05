@@ -23,25 +23,28 @@
 #include <sched.h>
 #endif
 
+#if defined HAVE_OSX_ATOMIC_OPS
+#include <libkern/OSAtomic.h>
+#endif
+
 #if defined HAVE_PTHREAD_H
 #define MECAB_USE_THREAD 1
 #endif
 
 #if (defined(_WIN32) && !defined(__CYGWIN__))
 #define MECAB_USE_THREAD 1
-#endif
-
 #define BEGINTHREAD(src, stack, func, arg, flag, id)                    \
   (HANDLE)_beginthreadex((void *)(src), (unsigned)(stack),              \
                          (unsigned(_stdcall *)(void *))(func), (void *)(arg), \
                          (unsigned)(flag), (unsigned *)(id))
+#endif
 
 namespace MeCab {
 
-namespace {
-}
-
 #if (defined(_WIN32) && !defined(__CYGWIN__))
+#undef atomic_add
+#undef compare_and_swap
+#undef yield_processor
 #define atomic_add(a, b) ::InterlockedExchangeAdd(a, b)
 #define compare_and_swap(a, b, c)  ::InterlockedCompareExchange(a, c, b)
 #define yield_processor() ::YieldProcessor()
@@ -49,6 +52,9 @@ namespace {
 #endif
 
 #ifdef HAVE_GCC_ATOMIC_OPS
+#undef atomic_add
+#undef compare_and_swap
+#undef yield_processor
 #define atomic_add(a, b) __sync_add_and_fetch(a, b)
 #define compare_and_swap(a, b, c)  __sync_val_compare_and_swap(a, b, c)
 #define yield_processor() sched_yield()
@@ -100,8 +106,13 @@ class read_write_mutex {
  private:
   static const int kWaFlag = 0x1;
   static const int kRcIncr = 0x2;
+#ifdef HAVE_OSX_ATOMIC_OPS
+  volatile int l_;
+  volatile int write_pending_;
+#else
   long l_;
   long write_pending_;
+#endif
 };
 
 class scoped_writer_lock {

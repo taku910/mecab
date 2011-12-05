@@ -274,9 +274,10 @@ fi
 AC_MSG_CHECKING([if ${CXX-c++} supports OSX native atomic operations (optional)])
 AC_TRY_COMPILE(
 [
+#include <libkern/OSAtomic.h>
 ],[
   int a = 10;
-  OSAtomicAdd32(10, &a)
+  OSAtomicAdd32(10, &a);
   OSAtomicCompareAndSwapInt(10, 0, &a);
 ],[
   enable_osx_atomic_ops=yes
