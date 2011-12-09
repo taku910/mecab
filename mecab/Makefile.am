@@ -81,12 +81,12 @@ dist-all-package:
 	$(MAKE) win-dist
 
 export-package:
-	./upload.pl -p mecab -n mecab        -r @VERSION@ -f mecab-@VERSION@.tar.gz
-	./upload.pl -p mecab -n mecab-win32  -r @VERSION@ -f mecab-@VERSION@.exe
-	./upload.pl -p mecab -n mecab-perl   -r @VERSION@ -f mecab-perl-@VERSION@.tar.gz
-	./upload.pl -p mecab -n mecab-ruby   -r @VERSION@ -f mecab-ruby-@VERSION@.tar.gz
-	./upload.pl -p mecab -n mecab-python -r @VERSION@ -f mecab-python-@VERSION@.tar.gz
-	./upload.pl -p mecab -n mecab-java   -r @VERSION@ -f mecab-java-@VERSION@.tar.gz
-	scp doc/*.html sf:public_html/mecab/
-	scp -r doc/doxygen sf:public_html/mecab/
+	python googlecode_upload.py -p mecab -s mecab        -u taku@chasen.org -w `cat ~/.googlecode_upload_password` mecab-@VERSION@.tar.gz
+	python googlecode_upload.py -p mecab -s mecab-win    -u taku@chasen.org -w `cat ~/.googlecode_upload_password` mecab-@VERSION@.exe
+	python googlecode_upload.py -p mecab -s mecab-perl   -u taku@chasen.org -w `cat ~/.googlecode_upload_password` mecab-perl-@VERSION@.tar.gz
+	python googlecode_upload.py -p mecab -s mecab-ruby   -u taku@chasen.org -w `cat ~/.googlecode_upload_password` mecab-ruby-@VERSION@.tar.gz
+	python googlecode_upload.py -p mecab -s mecab-python -u taku@chasen.org -w `cat ~/.googlecode_upload_password` mecab-python-@VERSION@.tar.gz
+	python googlecode_upload.py -p mecab -s mecab-java   -u taku@chasen.org -w `cat ~/.googlecode_upload_password` mecab-java-@VERSION@.tar.gz
+#	scp doc/*.html sf:public_html/mecab/
+#	scp -r doc/doxygen sf:public_html/mecab/
 	

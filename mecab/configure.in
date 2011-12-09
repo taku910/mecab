@@ -3,7 +3,7 @@ AC_INIT(src/mecab.cpp)
 AH_TEMPLATE([HAVE_GCC_ATOMIC_OPS], [])
 AH_TEMPLATE([HAVE_OSX_ATOMIC_OPS], [])
 AH_TEMPLATE([HAVE_TLS_KEYWORD], [])
-AM_INIT_AUTOMAKE(mecab, 0.99pre1)
+AM_INIT_AUTOMAKE(mecab, 0.99pre2)
 
 # DIC_VERSION XXYY
 DIC_VERSION="102"
@@ -15,7 +15,7 @@ DIC_VERSION="102"
 # - If binary compatibility has been broken (eg removed or changed interfaces)
 #   change to C+1:0:0
 # - If the interface is the same as the previous version, change to C:R+1:A
-LTVERSION="1:0:0"
+LTVERSION="2:0:0"
 AC_SUBST(LTVERSION)
 
 dnl Checks for programs.
