@@ -49,7 +49,9 @@ const char* FeatureIndex::getIndex(char **p, char ** column, size_t max) {
         n = 10 * n + (**p - '0');
         break;
       case ']':
-        CHECK_DIE(n < max) << "given index is out of range: " << n;
+        if (n >= max) {
+          return 0;
+        }
 
         if (flg == true && ((std::strcmp("*", column[n]) == 0)
                             || column[n][0] == '\0')) {
@@ -287,7 +289,7 @@ bool FeatureIndex::buildUnigramFeature(LearnerPath *path,
 
   feature_.clear();
   std::strncpy(ubuf, ufeature, BUFSIZE);
-  size_t usize = tokenizeCSV(ubuf, F, POSSIZE);
+  const size_t usize = tokenizeCSV(ubuf, F, POSSIZE);
 
   for (std::vector<const char*>::const_iterator it = unigram_templs_.begin();
        it != unigram_templs_.end(); ++it) {
@@ -337,8 +339,8 @@ bool FeatureIndex::buildBigramFeature(LearnerPath *path,
   std::strncpy(lbuf,  rfeature, BUFSIZE);
   std::strncpy(rbuf,  lfeature, BUFSIZE);
 
-  size_t lsize = tokenizeCSV(lbuf, L, POSSIZE);
-  size_t rsize = tokenizeCSV(rbuf, R, POSSIZE);
+  const size_t lsize = tokenizeCSV(lbuf, L, POSSIZE);
+  const size_t rsize = tokenizeCSV(rbuf, R, POSSIZE);
 
   for (std::vector<const char*>::const_iterator it = bigram_templs_.begin();
        it != bigram_templs_.end(); ++it) {

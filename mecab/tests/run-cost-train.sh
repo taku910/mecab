@@ -20,8 +20,8 @@ ${DIR}/mecab-dict-index -d ${SEEDDIR} -o ${SEEDDIR}
 ${DIR}/mecab-cost-train -c ${C} -d ${SEEDDIR} -f ${FREQ} ${CORPUS} ${RMODEL}.model
 ${DIR}/mecab-dict-gen   -d ${SEEDDIR} -m ${RMODEL}.model -o ${DICDIR}
 ${DIR}/mecab-dict-index -d ${DICDIR} -o ${DICDIR}
-# ${DIR}/mecab-test-gen < ${TEST} | ${DIR}/mecab -r /dev/null -d ${DICDIR}  > ${RMODEL}.result
-# ${DIR}/mecab-system-eval -l "${EVAL}" ${RMODEL}.result ${TEST} | tee ${RMODEL}.score
+${DIR}/mecab-test-gen < ${TEST} | ${DIR}/mecab -r /dev/null -d ${DICDIR}  > ${RMODEL}.result
+${DIR}/mecab-system-eval -l "${EVAL}" ${RMODEL}.result ${TEST} | tee ${RMODEL}.score
 
 rm -fr ${DICDIR}
 rm -fr ${RMODEL}*
