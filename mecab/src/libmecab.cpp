@@ -17,7 +17,7 @@
 
 namespace {
 const char kUnknownError[] = "Unknown Error";
-const size_t kErrorBufferSize = 1024;
+const size_t kErrorBufferSize = 256;
 }
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
@@ -380,8 +380,8 @@ mecab_lattice_t *mecab_model_new_lattice(mecab_model_t *model) {
   return reinterpret_cast<mecab_lattice_t *>(reinterpret_cast<MeCab::Model *>(model)->createLattice());
 }
 
-bool mecab_model_swap(mecab_model_t *model, mecab_model_t *new_model) {
-  return reinterpret_cast<MeCab::Model *>(model)->swap(reinterpret_cast<MeCab::Model *>(new_model));
+int mecab_model_swap(mecab_model_t *model, mecab_model_t *new_model) {
+  return static_cast<int>(reinterpret_cast<MeCab::Model *>(model)->swap(reinterpret_cast<MeCab::Model *>(new_model)));
 }
 
 const mecab_dictionary_info_t* mecab_model_dictionary_info(mecab_model_t *model) {

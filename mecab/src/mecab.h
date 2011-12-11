@@ -673,7 +673,7 @@ extern "C" {
   /**
    * C wrapper of MeCab::Model::swap()
    */
-  MECAB_DLL_EXTERN bool mecab_model_swap(mecab_model_t *model, mecab_model_t *new_model);
+  MECAB_DLL_EXTERN int mecab_model_swap(mecab_model_t *model, mecab_model_t *new_model);
 
   /**
    * C wapper of MeCab::Model::dictionary_info()
