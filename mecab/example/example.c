@@ -9,21 +9,22 @@
 int main (int argc, char **argv)  {
   char input[] = "太郎は次郎が持っている本を花子に渡した。";
   mecab_t *mecab;
-  mecab_lattice_t *lattice;
   const mecab_node_t *node;
   const char *result;
   int i;
   size_t len;
 
-  mecab = mecab_new2("");
+  // Create tagger object
+  mecab = mecab_new(argc, argv);
   CHECK(mecab);
 
+  // Gets tagged result in string.
   result = mecab_sparse_tostr(mecab, input);
   CHECK(result)
   printf ("INPUT: %s\n", input);
   printf ("RESULT:\n%s", result);
 
-  mecab_set_lattice_level(mecab, 1);
+  // Gets N best results
   result = mecab_nbest_sparse_tostr (mecab, 3, input);
   CHECK(result);
   fprintf (stdout, "NBEST:\n%s", result);
@@ -33,89 +34,17 @@ int main (int argc, char **argv)  {
     printf ("%d:\n%s", i, mecab_nbest_next_tostr (mecab));
   }
 
+  // Gets node object
   node = mecab_sparse_tonode(mecab, input);
   CHECK(node);
   for (; node; node = node->next) {
-    if (node->stat == MECAB_NOR_NODE) {
-    fwrite (node->surface, sizeof(char), node->length, stdout);
-    printf("\t%s\n", node->feature);
-    }
-  }
-
-  mecab_set_lattice_level(mecab, 2);
-  node = mecab_sparse_tonode(mecab, input);
-  CHECK(node);
-  for (;  node; node = node->next) {
-    printf("%d ", node->id);
-
-    if (node->stat == MECAB_BOS_NODE)
-      printf("BOS");
-    else if (node->stat == MECAB_EOS_NODE)
-      printf("EOS");
-    else
+    if (node->stat == MECAB_NOR_NODE || node->stat == MECAB_UNK_NODE) {
       fwrite (node->surface, sizeof(char), node->length, stdout);
-
-    printf(" %s %d %d %d %d %d %d %d %d %f %f %f %ld\n",
-	   node->feature,
-	   (int)(node->surface - input),
-	   (int)(node->surface - input + node->length),
-	   node->rcAttr,
-	   node->lcAttr,
-	   node->posid,
-	   (int)node->char_type,
-	   (int)node->stat,
-	   (int)node->isbest,
-	   node->alpha,
-	   node->beta,
-	   node->prob,
-	   node->cost);
-  }
-
-  lattice = mecab_lattice_new();
-  mecab_lattice_set_sentence(lattice, input);
-  mecab_parse_lattice(mecab, lattice);
-  len = mecab_lattice_get_size(lattice);
-  for (i = 0; i <= len; ++i) {
-    mecab_node_t *b, *e;
-    b = mecab_lattice_get_begin_nodes(lattice, (size_t)i);
-    e = mecab_lattice_get_end_nodes(lattice, (size_t)i);
-    for (; b; b = b->bnext) {
-        printf("B[%d] %s\t%s\n", i, b->surface, b->feature);
-    }
-    for (; e; e = e->enext) {
-        printf("E[%d] %s\t%s\n", i, e->surface, e->feature);
+      printf("\t%s\n", node->feature);
     }
   }
 
-  mecab_lattice_set_sentence(lattice, input);
-  mecab_lattice_set_request_type(lattice, MECAB_NBEST);
-  mecab_parse_lattice(mecab, lattice);
-  for (i = 0; i < 10; ++i) {
-    fprintf(stdout, "%s", mecab_lattice_tostr(lattice));
-    if (!mecab_lattice_next(lattice)) {
-      break;
-    }
-  }
-
-  mecab_lattice_set_sentence(lattice, input);
-  mecab_lattice_set_request_type(lattice, MECAB_MARGINAL_PROB);
-  mecab_lattice_set_theta(lattice, 0.001); 
-  mecab_parse_lattice(mecab, lattice);
-  node = mecab_lattice_get_bos_node(lattice);
-  for (;  node; node = node->next) {
-    fwrite(node->surface, sizeof(char), node->length, stdout);
-    fprintf(stdout, "\t%s\t%f\n", node->feature, node->prob);
-  }
-
-  mecab_set_lattice_level(mecab, 0);
-  mecab_set_all_morphs(mecab, 1);
-  node = mecab_sparse_tonode(mecab, input);
-  CHECK(node);
-  for (; node; node = node->next) {
-    fwrite (node->surface, sizeof(char), node->length, stdout);
-    printf("\t%s\n", node->feature);
-  }
-
+  // Dictionary info
   const mecab_dictionary_info_t *d = mecab_dictionary_info(mecab);
   for (; d; d = d->next) {
     printf("filename: %s\n", d->filename);
@@ -128,7 +57,6 @@ int main (int argc, char **argv)  {
   }
 
   mecab_destroy(mecab);
-  mecab_lattice_destroy(lattice); 
-   
+
   return 0;
 }
