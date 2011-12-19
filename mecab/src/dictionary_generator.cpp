@@ -200,12 +200,6 @@ class DictionaryGenerator {
       { "outdir",  'o',  ".",   "DIR", "set DIR as output dir" },
       { "model",   'm',  0,     "FILE",   "use FILE as model file" },
       { "version", 'v',  0,   0,  "show the version and exit"  },
-      { "training-algorithm", 'a',  "crf",    "(crf|hmm)",
-        "set training algorithm" },
-      { "default-emission-cost", 'E', "4000", "INT",
-        "set default emission cost for HMM" },
-      { "default-transition-cost", 'T', "4000", "INT",
-        "set default transition cost for HMM" },
       { "help",    'h',  0,   0,  "show this help and exit."      },
       { 0, 0, 0, 0 }
     };
@@ -244,21 +238,6 @@ class DictionaryGenerator {
 
     int default_emission_cost = 0;
     int default_transition_cost = 0;
-
-    std::string type = param.get<std::string>("training-algorithm");
-    toLower(&type);
-
-    if (type == "hmm") {
-      default_emission_cost =
-          param.get<int>("default-emission-cost");
-      default_transition_cost =
-          param.get<int>("default-transition-cost");
-      CHECK_DIE(default_transition_cost > 0)
-          << "default transition cost must be > 0";
-      CHECK_DIE(default_emission_cost > 0)
-          << "default transition cost must be > 0";
-      param.set("identity-template", 1);
-    }
 
     CharProperty property;
     CHECK_DIE(property.open(param));
@@ -317,9 +296,7 @@ class DictionaryGenerator {
     copy(DCONF(CHAR_PROPERTY_DEF_FILE), OCONF(CHAR_PROPERTY_DEF_FILE));
     copy(DCONF(REWRITE_FILE), OCONF(REWRITE_FILE));
     copy(DCONF(DICRC), OCONF(DICRC));
-
-    if (type == "crf")
-      copy(DCONF(FEATURE_FILE), OCONF(FEATURE_FILE));
+    copy(DCONF(FEATURE_FILE), OCONF(FEATURE_FILE));
 
 #undef OCONF
 #undef DCONF
