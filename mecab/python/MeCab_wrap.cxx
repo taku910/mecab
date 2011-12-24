@@ -7642,7 +7642,7 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, "MECAB_ALTERNATIVE",SWIG_From_int(static_cast< int >(MECAB_ALTERNATIVE)));
   SWIG_Python_SetConstant(d, "MECAB_ALL_MORPHS",SWIG_From_int(static_cast< int >(MECAB_ALL_MORPHS)));
   SWIG_Python_SetConstant(d, "MECAB_ALLOCATE_SENTENCE",SWIG_From_int(static_cast< int >(MECAB_ALLOCATE_SENTENCE)));
-  SWIG_Python_SetConstant(d, "VERSION",SWIG_FromCharPtr("0.99pre3"));
+  SWIG_Python_SetConstant(d, "VERSION",SWIG_FromCharPtr("0.99"));
 #if PY_VERSION_HEX >= 0x03000000
   return m;
 #else
