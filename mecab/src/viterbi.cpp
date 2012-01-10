@@ -88,25 +88,13 @@ bool Viterbi::open(const Param &param) {
 }
 
 bool Viterbi::analyze(Lattice *lattice) const {
-  if (!lattice || !lattice->sentence() || lattice->size() == 0) {
+  if (!lattice || !lattice->sentence()) {
     return false;
   }
 
   if (!initPartial(lattice)) {
     return false;
   }
-
-  Node **end_node_list   = lattice->end_nodes();
-  Node **begin_node_list = lattice->begin_nodes();
-
-  Node *bos_node = tokenizer_->getBOSNode(lattice->allocator());
-  Node *eos_node = tokenizer_->getEOSNode(lattice->allocator());
-
-  bos_node->surface = lattice->sentence();
-  eos_node->surface = lattice->sentence() + lattice->size();
-
-  end_node_list[0] = bos_node;
-  begin_node_list[lattice->size()] = eos_node;
 
   if (lattice->has_request_type(MECAB_NBEST) ||
       lattice->has_request_type(MECAB_MARGINAL_PROB)) {

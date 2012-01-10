@@ -218,7 +218,7 @@ class LatticeImpl : public Lattice {
   void clear();
 
   bool is_available() const {
-    return (size_ > 0 && sentence_ &&
+    return (sentence_ &&
             !begin_nodes_.empty() &&
             !end_nodes_.empty());
   }

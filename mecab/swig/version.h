@@ -1,3 +1,3 @@
 namespace MeCab {
-#   define VERSION "0.99"
+#   define VERSION "0.991"
 }

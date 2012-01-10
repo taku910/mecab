@@ -80,6 +80,10 @@ bool Viterbi::viterbi
   const char *begin = lattice->sentence();
   const char *end = begin + len;
 
+  Node *bos_node = tokenizer_->getBOSNode(lattice->allocator());
+  bos_node->surface = lattice->sentence();
+  end_node_list[0] = bos_node;
+
   for (size_t pos = 0; pos < len; ++pos) {
     if (end_node_list[pos]) {
       Node *right_node = tokenizer_->lookup(begin + pos, end, allocator);
@@ -109,7 +113,11 @@ bool Viterbi::viterbi
     }
   }
 
-  Node *eos_node = lattice->eos_node();
+
+  Node *eos_node = tokenizer_->getEOSNode(lattice->allocator());
+  eos_node->surface = lattice->sentence() + lattice->size();
+  begin_node_list[lattice->size()] = eos_node;
+
   for (long pos = len; static_cast<long>(pos) >= 0; --pos) {
     if (end_node_list[pos]) {
 #ifdef VITERBI_WITH_ALL_PATH_
@@ -134,6 +142,9 @@ bool Viterbi::viterbi
       break;
     }
   }
+
+  end_node_list[0] = bos_node;
+  begin_node_list[lattice->size()] = eos_node;
 
   return true;
 }
