@@ -49,7 +49,10 @@ void Connector::close() {
 
 bool Connector::openText(const char *filename) {
   std::ifstream ifs(WPATH(filename));
-  CHECK_DIE(ifs) << "no such file or directory: " << filename;
+  if (!ifs) {
+    WHAT << "no such file or directory: " << filename;
+    return false;
+  }
   char *column[2];
   char buf[BUF_SIZE];
   ifs.getline(buf, sizeof(buf));
