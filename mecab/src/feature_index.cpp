@@ -310,7 +310,7 @@ bool FeatureIndex::buildUnigramFeature(LearnerPath *path,
             case 't':  os_ << (size_t)path->rnode->char_type;     break;
             case 'u':  os_ << ufeature; break;
             default:
-              CHECK_DIE(false) << "unkonwn meta char: " <<  *p;
+              CHECK_DIE(false) << "unknown meta char: " <<  *p;
           }
         }
       }
@@ -366,7 +366,7 @@ bool FeatureIndex::buildBigramFeature(LearnerPath *path,
             case 'l':  os_ << lfeature; break;  // use lfeature as it is
             case 'r':  os_ << rfeature; break;
             default:
-              CHECK_DIE(false) << "unkonwn meta char: " <<  *p;
+              CHECK_DIE(false) << "unknown meta char: " <<  *p;
           }
         }
       }

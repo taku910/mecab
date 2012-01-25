@@ -353,7 +353,7 @@ bool ModelImpl::swap(Model *model) {
   scoped_ptr<Model> model_data(model);
 
   if (!is_available()) {
-    setGlobalError("curent model is not available");
+    setGlobalError("current model is not available");
     return false;
   }
 #ifndef HAVE_ATOMIC_OPS
@@ -1062,7 +1062,7 @@ int mecab_do(int argc, char **argv) {
       }
       if (ifs->fail()) {
         std::cerr << "input-buffer overflow. "
-                  << "The line is splitted. use -b #SIZE option." << std::endl;
+                  << "The line is split. use -b #SIZE option." << std::endl;
         ifs->clear();
       }
       const char *r = (nbest >= 2) ? tagger->parseNBest(nbest, ibuf) :
