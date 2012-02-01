@@ -771,7 +771,7 @@ const char *LatticeImpl::toStringInternal(const Node *node,
     return 0;
   }
   if (writer_) {
-    if (!writer_->write(this, os)) {
+    if (!writer_->writeNode(this, node, os)) {
       return 0;
     }
   } else {

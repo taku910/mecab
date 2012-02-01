@@ -2969,7 +2969,7 @@ SWIGEXPORT char * SWIGSTDCALL CSharp_VERSION_get() {
   char * jresult ;
   char *result = 0 ;
   
-  result = (char *) "0.991";
+  result = (char *) "0.992";
   jresult = SWIG_csharp_string_callback((const char *)result); 
   return jresult;
 }
