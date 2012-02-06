@@ -10,6 +10,7 @@
 #include "mecab.h"
 #include "nbest_generator.h"
 #include "param.h"
+#include "scoped_ptr.h"
 #include "stream_wrapper.h"
 #include "string_buffer.h"
 #include "thread.h"
@@ -1043,15 +1044,15 @@ int mecab_do(int argc, char **argv) {
         ifs->getline(ibuf, ibufsize);
       } else {
         std::string sentence;
-        char line[BUF_SIZE];
+        MeCab::scoped_fixed_array<char, BUF_SIZE> line;
         for (;;) {
-          if (!ifs->getline(line, sizeof(line))) {
+          if (!ifs->getline(line.get(), line.size())) {
             ifs->clear(std::ios::eofbit|std::ios::badbit);
             break;
           }
-          sentence += line;
+          sentence += line.get();
           sentence += '\n';
-          if (std::strcmp(line, "EOS") == 0 || line[0] == '\0') {
+          if (std::strcmp(line.get(), "EOS") == 0 || line[0] == '\0') {
             break;
           }
         }

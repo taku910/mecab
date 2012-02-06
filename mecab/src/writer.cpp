@@ -237,8 +237,8 @@ bool Writer::writeNode(Lattice *lattice,
                        const char *p,
                        const Node *node,
                        StringBuffer *os) const {
-  char buf[BUF_SIZE];
-  char *ptr[64];
+  scoped_fixed_array<char, BUF_SIZE> buf;
+  scoped_fixed_array<char *, 64> ptr;
   size_t psize = 0;
 
   for (; *p; p++) {
@@ -349,8 +349,8 @@ bool Writer::writeNode(Lattice *lattice,
               return false;
             }
             if (!psize) {
-              std::strncpy(buf, node->feature, sizeof(buf));
-              psize = tokenizeCSV(buf, ptr, sizeof(ptr));
+              std::strncpy(buf.get(), node->feature, buf.size());
+              psize = tokenizeCSV(buf.get(), ptr.get(), ptr.size());
             }
 
             // separator

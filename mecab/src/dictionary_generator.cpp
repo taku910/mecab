@@ -56,14 +56,14 @@ class DictionaryGenerator {
                      ContextID *cid) {
     std::ifstream ifs(WPATH(filename));
     CHECK_DIE(ifs) << "no such file or directory: " << filename;
-    char line[BUF_SIZE];
+    scoped_fixed_array<char, BUF_SIZE> line;
     std::cout << "reading " << filename << " ... " << std::flush;
     size_t num = 0;
     std::string feature, ufeature, lfeature, rfeature;
     char *col[8];
-    while (ifs.getline(line, sizeof(line))) {
-      const size_t n = tokenizeCSV(line, col, 5);
-      CHECK_DIE(n == 5) << "format error: " << line;
+    while (ifs.getline(line.get(), line.size())) {
+      const size_t n = tokenizeCSV(line.get(), col, 5);
+      CHECK_DIE(n == 5) << "format error: " << line.get();
       feature = col[4];
       rewrite->rewrite2(feature, &ufeature, &lfeature, &rfeature);
       cid->add(lfeature.c_str(), rfeature.c_str());
@@ -147,13 +147,13 @@ class DictionaryGenerator {
     path.lnode  = &lnode;
     path.rnode  = &rnode;
 
-    char line[BUF_SIZE];
+    scoped_fixed_array<char, BUF_SIZE> line;
     char *col[8];
     size_t num = 0;
 
-    while (ifs.getline(line, sizeof(line))) {
-      const size_t n = tokenizeCSV(line, col, 5);
-      CHECK_DIE(n == 5) << "format error: " << line;
+    while (ifs.getline(line.get(), line.size())) {
+      const size_t n = tokenizeCSV(line.get(), col, 5);
+      CHECK_DIE(n == 5) << "format error: " << line.get();
 
       w = std::string(col[0]);
       lid = std::atoi(col[1]);

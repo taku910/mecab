@@ -312,50 +312,50 @@ bool load_dictionary_resource(Param *param) {
 
 #if defined (HAVE_GETENV) && defined(_WIN32) && !defined(__CYGWIN__)
   if (rcfile.empty()) {
-    wchar_t buf[BUF_SIZE];
+    scoped_fixed_array<wchar_t, BUF_SIZE> buf;
     const DWORD len = ::GetEnvironmentVariableW(L"MECABRC",
-                                                buf,
-                                                sizeof(buf));
-    if (len < sizeof(buf) && len > 0) {
-      rcfile = WideToUtf8(buf);
+                                                buf.get(),
+                                                buf.size());
+    if (len < buf.size() && len > 0) {
+      rcfile = WideToUtf8(buf.get());
     }
   }
 #endif
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
   HKEY hKey;
-  wchar_t v[BUF_SIZE];
+  scoped_fixed_array<wchar_t, BUF_SIZE> v;
   DWORD vt;
-  DWORD size = sizeof(v) * sizeof(v[0]);
+  DWORD size = v.size() * sizeof(v[0]);
 
   if (rcfile.empty()) {
     ::RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"software\\mecab", 0, KEY_READ, &hKey);
     ::RegQueryValueExW(hKey, L"mecabrc", 0, &vt,
-                       reinterpret_cast<BYTE *>(v), &size);
+                       reinterpret_cast<BYTE *>(v.get()), &size);
     ::RegCloseKey(hKey);
     if (vt == REG_SZ) {
-      rcfile = WideToUtf8(v);
+      rcfile = WideToUtf8(v.get());
     }
   }
 
   if (rcfile.empty()) {
     ::RegOpenKeyExW(HKEY_CURRENT_USER, L"software\\mecab", 0, KEY_READ, &hKey);
     ::RegQueryValueExW(hKey, L"mecabrc", 0, &vt,
-                      reinterpret_cast<BYTE *>(v), &size);
+                       reinterpret_cast<BYTE *>(v.get()), &size);
     ::RegCloseKey(hKey);
     if (vt == REG_SZ) {
-      rcfile = WideToUtf8(v);
+      rcfile = WideToUtf8(v.get());
     }
   }
 
   if (rcfile.empty()) {
-    vt = ::GetModuleFileNameW(DllInstance, v, size);
+    vt = ::GetModuleFileNameW(DllInstance, v.get(), size);
     if (vt != 0) {
-      wchar_t drive[_MAX_DRIVE];
-      wchar_t dir[_MAX_DIR];
-      _wsplitpath(v, drive, dir, NULL, NULL);
+      scoped_fixed_array<wchar_t, _MAX_DRIVE> drive;
+      scoped_fixed_array<wchar_t, _MAX_DRIVE> dir;
+      _wsplitpath(v.get(), drive.get(), dir.get(), NULL, NULL);
       const std::wstring path =
-          std::wstring(drive) + std::wstring(dir) + L"mecabrc";
+          std::wstring(drive.get()) + std::wstring(dir.get()) + L"mecabrc";
       if (::GetFileAttributesW(path.c_str()) != -1) {
         rcfile = WideToUtf8(path);
       }

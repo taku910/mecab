@@ -10,6 +10,7 @@
 #include "feature_index.h"
 #include "param.h"
 #include "learner_node.h"
+#include "scoped_ptr.h"
 #include "string_buffer.h"
 #include "utils.h"
 
@@ -85,15 +86,15 @@ bool FeatureIndex::openTemplate(const Param &param) {
   std::ifstream ifs(WPATH(filename.c_str()));
   CHECK_DIE(ifs) << "no such file or directory: " << filename;
 
-  char buf[BUF_SIZE];
+  scoped_fixed_array<char, BUF_SIZE> buf;
   char *column[4];
 
   unigram_templs_.clear();
   bigram_templs_.clear();
 
-  while (ifs.getline(buf, sizeof(buf))) {
+  while (ifs.getline(buf.get(), buf.size())) {
     if (buf[0] == '\0' || buf[0] == '#' || buf[0] == ' ') continue;
-    CHECK_DIE(tokenize2(buf, "\t ", column, 2) == 2)
+    CHECK_DIE(tokenize2(buf.get(), "\t ", column, 2) == 2)
         << "format error: " <<filename;
 
     if (std::strcmp(column[0], "UNIGRAM") == 0)
@@ -284,12 +285,12 @@ bool EncoderFeatureIndex::buildFeature(LearnerPath *path) {
 
 bool FeatureIndex::buildUnigramFeature(LearnerPath *path,
                                        const char *ufeature) {
-  char ubuf[BUFSIZE];
-  char *F[POSSIZE];
+  scoped_fixed_array<char, BUFSIZE> ubuf;
+  scoped_fixed_array<char *, POSSIZE> F;
 
   feature_.clear();
-  std::strncpy(ubuf, ufeature, BUFSIZE);
-  const size_t usize = tokenizeCSV(ubuf, F, POSSIZE);
+  std::strncpy(ubuf.get(), ufeature, ubuf.size());
+  const size_t usize = tokenizeCSV(ubuf.get(), F.get(), F.size());
 
   for (std::vector<const char*>::const_iterator it = unigram_templs_.begin();
        it != unigram_templs_.end(); ++it) {
@@ -303,7 +304,7 @@ bool FeatureIndex::buildUnigramFeature(LearnerPath *path,
         case '%': {
           switch (*++p) {
             case 'F':  {
-              const char *r = getIndex(const_cast<char **>(&p), F, usize);
+              const char *r = getIndex(const_cast<char **>(&p), F.get(), usize);
               if (!r) goto NEXT;
               os_ << r;
             } break;
@@ -330,17 +331,17 @@ bool FeatureIndex::buildUnigramFeature(LearnerPath *path,
 bool FeatureIndex::buildBigramFeature(LearnerPath *path,
                                       const char *rfeature,
                                       const char *lfeature) {
-  char rbuf[BUFSIZE];
-  char lbuf[BUFSIZE];
-  char *R[POSSIZE];
-  char *L[POSSIZE];
+  scoped_fixed_array<char, BUFSIZE> rbuf;
+  scoped_fixed_array<char, BUFSIZE> lbuf;
+  scoped_fixed_array<char *, POSSIZE> R;
+  scoped_fixed_array<char *, POSSIZE> L;
 
   feature_.clear();
-  std::strncpy(lbuf,  rfeature, BUFSIZE);
-  std::strncpy(rbuf,  lfeature, BUFSIZE);
+  std::strncpy(lbuf.get(),  rfeature, lbuf.size());
+  std::strncpy(rbuf.get(),  lfeature, rbuf.size());
 
-  const size_t lsize = tokenizeCSV(lbuf, L, POSSIZE);
-  const size_t rsize = tokenizeCSV(rbuf, R, POSSIZE);
+  const size_t lsize = tokenizeCSV(lbuf.get(), L.get(), L.size());
+  const size_t rsize = tokenizeCSV(rbuf.get(), R.get(), R.size());
 
   for (std::vector<const char*>::const_iterator it = bigram_templs_.begin();
        it != bigram_templs_.end(); ++it) {
@@ -354,12 +355,12 @@ bool FeatureIndex::buildBigramFeature(LearnerPath *path,
         case '%': {
           switch (*++p) {
             case 'L': {
-              const char *r = getIndex(const_cast<char **>(&p), L, lsize);
+              const char *r = getIndex(const_cast<char **>(&p), L.get(), lsize);
               if (!r) goto NEXT;
               os_ << r;
             } break;
             case 'R': {
-              const char *r = getIndex(const_cast<char **>(&p), R, rsize);
+              const char *r = getIndex(const_cast<char **>(&p), R.get(), rsize);
               if (!r) goto NEXT;
               os_ << r;
             } break;
@@ -465,13 +466,13 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
 
   CHECK_DIE(ifs) << "no such file or directory: " << txtfile;
 
-  char buf[BUF_SIZE];
+  scoped_fixed_array<char, BUF_SIZE> buf;
   char *column[4];
   std::map<std::string, double> dic;
 
-  while (ifs.getline(buf, sizeof(buf))) {
-    CHECK_DIE(tokenize2(buf, "\t", column, 2) == 2)
-        << "format error: " << buf;
+  while (ifs.getline(buf.get(), buf.size())) {
+    CHECK_DIE(tokenize2(buf.get(), "\t", column, 2) == 2)
+        << "format error: " << buf.get();
 
     dic.insert(std::pair<std::string, double>
                (std::string(column[1]), atof(column[0]) ));

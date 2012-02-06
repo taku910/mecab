@@ -13,6 +13,7 @@
 #include "nbest_generator.h"
 #include "param.h"
 #include "viterbi.h"
+#include "scoped_ptr.h"
 #include "string_buffer.h"
 #include "tokenizer.h"
 
@@ -38,15 +39,16 @@ void calc_beta(Node *n, double beta) {
 }
 
 bool partial_match(const char *f1, const char *f2) {
-  char buf1[BUF_SIZE];
-  char *c1[64];
-  char buf2[BUF_SIZE];
-  char *c2[64];
-  std::strncpy(buf1, f1, sizeof(buf1));
-  std::strncpy(buf2, f2, sizeof(buf2));
+  scoped_fixed_array<char, BUF_SIZE> buf1;
+  scoped_fixed_array<char, BUF_SIZE> buf2;
+  scoped_fixed_array<char *, 64> c1;
+  scoped_fixed_array<char *, 64> c2;
 
-  const size_t n1 = MeCab::tokenizeCSV(buf1, c1, sizeof(c1));
-  const size_t n2 = MeCab::tokenizeCSV(buf2, c2, sizeof(c2));
+  std::strncpy(buf1.get(), f1, buf1.size());
+  std::strncpy(buf2.get(), f2, buf2.size());
+
+  const size_t n1 = MeCab::tokenizeCSV(buf1.get(), c1.get(), c1.size());
+  const size_t n2 = MeCab::tokenizeCSV(buf2.get(), c2.get(), c2.size());
   const size_t n  = std::min(n1, n2);
 
   for (size_t i = 0; i < n; ++i) {

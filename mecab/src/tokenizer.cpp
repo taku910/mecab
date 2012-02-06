@@ -11,6 +11,7 @@
 #include "scoped_ptr.h"
 #include "tokenizer.h"
 #include "utils.h"
+#include "scoped_ptr.h"
 #include "viterbi.h"
 
 namespace MeCab {
@@ -118,10 +119,10 @@ bool Tokenizer<N, P>::open(const Param &param) {
 
   const std::string userdic = param.template get<std::string>("userdic");
   if (!userdic.empty()) {
-    char buf[BUF_SIZE];
-    char *_dic[BUF_SIZE];
-    std::strncpy(buf, userdic.c_str(), sizeof(buf));
-    size_t n = tokenizeCSV(buf, _dic, sizeof(_dic));
+    scoped_fixed_array<char, BUF_SIZE> buf;
+    scoped_fixed_array<char *, BUF_SIZE> _dic;
+    std::strncpy(buf.get(), userdic.c_str(), buf.size());
+    size_t n = tokenizeCSV(buf.get(), _dic.get(), _dic.size());
     for (size_t i = 0; i < n; ++i) {
       Dictionary *d = new Dictionary;
       CHECK_FALSE(d->open(_dic[i], mode)) << d->what();

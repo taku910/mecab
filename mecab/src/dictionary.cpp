@@ -160,13 +160,13 @@ bool Dictionary::compile(const Param &param,
 
     std::cout << "reading " << dics[i] << " ... ";
 
-    char line[BUF_SIZE];
+    scoped_fixed_array<char, BUF_SIZE> line;
     size_t num = 0;
 
-    while (is->getline(line, sizeof(line))) {
+    while (is->getline(line.get(), line.size())) {
       char *col[8];
-      const size_t n = tokenizeCSV(line, col, 5);
-      CHECK_DIE(n == 5) << "format error: " << line;
+      const size_t n = tokenizeCSV(line.get(), col, 5);
+      CHECK_DIE(n == 5) << "format error: " << line.get();
 
       w = col[0];
       lid = std::atoi(col[1]);

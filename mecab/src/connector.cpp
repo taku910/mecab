@@ -54,10 +54,10 @@ bool Connector::openText(const char *filename) {
     return false;
   }
   char *column[2];
-  char buf[BUF_SIZE];
-  ifs.getline(buf, sizeof(buf));
-  CHECK_DIE(tokenize2(buf, "\t ", column, 2) == 2)
-      << "format error: " << buf;
+  scoped_fixed_array<char, BUF_SIZE> buf;
+  ifs.getline(buf.get(), buf.size());
+  CHECK_DIE(tokenize2(buf.get(), "\t ", column, 2) == 2)
+      << "format error: " << buf.get();
   lsize_ = std::atoi(column[0]);
   rsize_ = std::atoi(column[1]);
   return true;
@@ -76,12 +76,12 @@ bool Connector::compile(const char *ifile, const char *ofile) {
 
 
   char *column[4];
-  char buf[BUF_SIZE];
+  scoped_fixed_array<char, BUF_SIZE> buf;
 
-  is->getline(buf, sizeof(buf));
+  is->getline(buf.get(), buf.size());
 
-  CHECK_DIE(tokenize2(buf, "\t ", column, 2) == 2)
-      << "format error: " << buf;
+  CHECK_DIE(tokenize2(buf.get(), "\t ", column, 2) == 2)
+      << "format error: " << buf.get();
 
   const unsigned short lsize = std::atoi(column[0]);
   const unsigned short rsize = std::atoi(column[1]);
@@ -91,9 +91,9 @@ bool Connector::compile(const char *ifile, const char *ofile) {
   std::cout << "reading " << ifile << " ... "
             << lsize << "x" << rsize << std::endl;
 
-  while (is->getline(buf, sizeof(buf))) {
-    CHECK_DIE(tokenize2(buf, "\t ", column, 3) == 3)
-        << "format error: " << buf;
+  while (is->getline(buf.get(), buf.size())) {
+    CHECK_DIE(tokenize2(buf.get(), "\t ", column, 3) == 3)
+        << "format error: " << buf.get();
     const size_t l = std::atoi(column[0]);
     const size_t r = std::atoi(column[1]);
     const int    c = std::atoi(column[2]);

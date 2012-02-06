@@ -52,6 +52,26 @@ template<class T> class scoped_array {
   T & operator[](size_t i) const   { return ptr_[i]; }
 };
 
+template<class T, int N> class scoped_fixed_array {
+ private:
+  T * ptr_;
+  size_t size_;
+  scoped_fixed_array(scoped_fixed_array const &);
+  scoped_fixed_array & operator= (scoped_fixed_array const &);
+  typedef scoped_fixed_array<T, N> this_type;
+
+ public:
+  typedef T element_type;
+  explicit scoped_fixed_array()
+      : ptr_(new T[N]), size_(N) {}
+  virtual ~scoped_fixed_array() { delete [] ptr_; }
+  size_t size() const { return size_; }
+  T & operator*() const   { return *ptr_; }
+  T * operator->() const  { return ptr_;  }
+  T * get() const         { return ptr_;  }
+  T & operator[](size_t i) const   { return ptr_[i]; }
+};
+
 class scoped_string: public scoped_array<char> {
  public:
   explicit scoped_string() { reset_string(""); }

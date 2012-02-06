@@ -190,13 +190,13 @@ void Param::clear() {
 }
 
 bool Param::open(const char *arg, const Option *opts) {
-  char str[BUF_SIZE];
-  std::strncpy(str, arg, sizeof(str));
+  scoped_fixed_array<char, BUF_SIZE> str;
+  std::strncpy(str.get(), arg, str.size());
   char* ptr[64];
   unsigned int size = 1;
   ptr[0] = const_cast<char*>(PACKAGE);
 
-  for (char *p = str; *p;) {
+  for (char *p = str.get(); *p;) {
     while (isspace(*p)) *p++ = '\0';
     if (*p == '\0') break;
     ptr[size++] = p;

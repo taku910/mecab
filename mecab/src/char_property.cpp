@@ -126,7 +126,7 @@ int CharProperty::id(const char *key) const {
 bool CharProperty::compile(const char *cfile,
                            const char *ufile,
                            const char *ofile) {
-  char line[BUF_SIZE];
+  scoped_fixed_array<char, BUF_SIZE> line;
   char *col[512];
   size_t id = 0;
   std::vector<Range> range;
@@ -142,10 +142,10 @@ bool CharProperty::compile(const char *cfile,
     is = &iss;
   }
 
-  while (is->getline(line, sizeof(line))) {
-    if (std::strlen(line) == 0 || line[0] == '#') continue;
-    size_t size = tokenize2(line, "\t ", col, sizeof(col));
-    CHECK_DIE(size >= 2) << "format error: " << line;
+  while (is->getline(line.get(), line.size())) {
+    if (std::strlen(line.get()) == 0 || line[0] == '#') continue;
+    size_t size = tokenize2(line.get(), "\t ", col, sizeof(col));
+    CHECK_DIE(size >= 2) << "format error: " << line.get();
 
     // 0xFFFF..0xFFFF hoge hoge hgoe #
     if (std::strncmp(col[0], "0x", 2) == 0) {
@@ -177,7 +177,7 @@ bool CharProperty::compile(const char *cfile,
       }
       range.push_back(r);
     } else {
-      CHECK_DIE(size >= 4) << "format error: " << line;
+      CHECK_DIE(size >= 4) << "format error: " << line.get();
 
       std::string key = col[0];
       CHECK_DIE(category.find(key) == category.end())
@@ -214,9 +214,9 @@ bool CharProperty::compile(const char *cfile,
   }
 
   std::set<std::string> unk;
-  while (is2->getline(line, sizeof(line))) {
-    size_t n = tokenizeCSV(line, col, 2);
-    CHECK_DIE(n >= 1) << "format error: " << line;
+  while (is2->getline(line.get(), line.size())) {
+    size_t n = tokenizeCSV(line.get(), col, 2);
+    CHECK_DIE(n >= 1) << "format error: " << line.get();
     const std::string key = col[0];
     CHECK_DIE(category.find(key) != category.end())
         << "category [" << key << "] is undefined in " << cfile;

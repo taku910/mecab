@@ -12,6 +12,7 @@
 #include "mecab.h"
 #include "param.h"
 #include "stream_wrapper.h"
+#include "scoped_ptr.h"
 #include "utils.h"
 
 namespace MeCab {
@@ -21,24 +22,31 @@ class Eval {
   static bool read(std::istream *is,
                    std::vector<std::vector<std::string> > *r,
                    const std::vector<int> &level) {
-    if (!*is) return false;
-    char buf[BUF_SIZE];
+    if (!*is) {
+      return false;
+    }
+
     char *col[2];
-    char *cvs[BUF_SIZE];
+    scoped_fixed_array<char, BUF_SIZE> buf;
+    scoped_fixed_array<char *, BUF_SIZE> csv;
     r->clear();
-    while (is->getline(buf, sizeof(buf))) {
-      if (std::strcmp(buf, "EOS") == 0) break;
-      CHECK_DIE(tokenize(buf, "\t", col,  2) == 2) << "format error";
-      cvs[0] = col[0];
-      size_t n = tokenizeCSV(col[1], cvs + 1, sizeof(cvs) - 1);
+    while (is->getline(buf.get(), buf.size())) {
+      if (std::strcmp(buf.get(), "EOS") == 0) {
+        break;
+      }
+      CHECK_DIE(tokenize(buf.get(), "\t", col,  2) == 2) << "format error";
+      csv[0] = col[0];
+      size_t n = tokenizeCSV(col[1], csv.get() + 1, csv.size() - 1);
       std::vector<std::string> tmp;
       for (size_t i = 0; i < level.size(); ++i) {
         size_t m = level[i] < 0 ? n : level[i];
         CHECK_DIE(m <= n) << " out of range " << level[i];
         std::string output;
         for (size_t j = 0; j <= m; ++j) {
-          output += cvs[j];
-          if (j != 0) output += "\t";
+          output += csv[j];
+          if (j != 0) {
+            output += "\t";
+          }
         }
         tmp.push_back(output);
       }
@@ -50,11 +58,11 @@ class Eval {
 
   static bool parseLevel(const char *level_str,
                          std::vector<int> *level) {
-    char buf[BUF_SIZE];
-    char *col[512];
-    std::strncpy(buf, level_str, sizeof(buf));
+    scoped_fixed_array<char, BUF_SIZE> buf;
+    scoped_fixed_array<char *, 512> col;
+    std::strncpy(buf.get(), level_str, buf.size());
     level->clear();
-    size_t n = tokenize2(buf, "\t ", col, sizeof(col));
+    size_t n = tokenize2(buf.get(), "\t ", col.get(), col.size());
     for (size_t i = 0; i < n; ++i) {
       level->push_back(std::atoi(col[i]));
     }
@@ -65,8 +73,8 @@ class Eval {
     double pr = (p == 0) ? 0 : 100.0 * c/p;
     double re = (r == 0) ? 0 : 100.0 * c/r;
     double F = ((pr + re) == 0.0) ? 0 : 2 * pr * re /(pr + re);
-    char buf[8192];
-    sprintf(buf, "%4.4f(%d/%d) %4.4f(%d/%d) %4.4f\n",
+    scoped_fixed_array<char, BUF_SIZE> buf;
+    sprintf(buf.get(), "%4.4f(%d/%d) %4.4f(%d/%d) %4.4f\n",
             pr,
             static_cast<int>(c),
             static_cast<int>(p),
@@ -74,7 +82,7 @@ class Eval {
             static_cast<int>(c),
             static_cast<int>(r),
             F);
-    *os << buf;
+    *os << buf.get();
   }
 
  public:
@@ -212,27 +220,30 @@ class TestSentenceGenerator {
       return -1;
     }
 
-    if (!param.help_version()) return 0;
+    if (!param.help_version()) {
+      return 0;
+    }
 
     const std::vector<std::string> &tmp = param.rest_args();
     std::vector<std::string> files = tmp;
-    if (files.empty())
+    if (files.empty()) {
       files.push_back("-");
+    }
 
     std::string output = param.get<std::string>("output");
     if (output.empty()) output = "-";
     MeCab::ostream_wrapper ofs(output.c_str());
     CHECK_DIE(*ofs) << "permission denied: " << output;
 
-    char buf[BUF_SIZE];
+    scoped_fixed_array<char, BUF_SIZE> buf;
     char *col[2];
     std::string str;
     for (size_t i = 0; i < files.size(); ++i) {
       MeCab::istream_wrapper ifs(files[i].c_str());
       CHECK_DIE(*ifs) << "no such file or directory: " << files[i];
-      while (ifs->getline(buf, sizeof(buf))) {
-        size_t n = tokenize(buf, "\t ", col, 2);
-        CHECK_DIE(n <= 2) << "format error: " << buf;
+      while (ifs->getline(buf.get(), buf.size())) {
+        const size_t n = tokenize(buf.get(), "\t ", col, 2);
+        CHECK_DIE(n <= 2) << "format error: " << buf.get();
         if (std::strcmp(col[0], "EOS") == 0 && !str.empty()) {
           *ofs << str << std::endl;
           str.clear();
