@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import MeCab
 import sys
@@ -12,19 +13,21 @@ try:
 
     t = MeCab.Tagger (" ".join(sys.argv))
 
-    print t.parse (sentence)
+    print t.parse(sentence)
 
-    m = t.parseToNode (sentence)
+    m = t.parseToNode(sentence)
     while m:
 	print m.surface, "\t", m.feature
 	m = m.next
     print "EOS"
-
-    n = t.parseToNode(sentence)
-    len = n.sentence_length;
+    
+    lattice = MeCab.Lattice()
+    t.parse(lattice)
+    lattice.set_sentence(sentence)
+    len = lattice.size()
     for i in range(len + 1):
-        b = n.begin_node_list(i)
-        e = n.end_node_list(i)
+        b = lattice.begin_nodes(i)
+        e = lattice.end_nodes(i)
         while b:
             print "B[%d] %s\t%s" % (i, b.surface, b.feature)
             b = b.bnext 
