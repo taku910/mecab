@@ -87,6 +87,4 @@ export-package:
 	python googlecode_upload.py -p mecab -s mecab-ruby   -u taku@chasen.org -w `cat ~/.googlecode_upload_password` mecab-ruby-@VERSION@.tar.gz
 	python googlecode_upload.py -p mecab -s mecab-python -u taku@chasen.org -w `cat ~/.googlecode_upload_password` mecab-python-@VERSION@.tar.gz
 	python googlecode_upload.py -p mecab -s mecab-java   -u taku@chasen.org -w `cat ~/.googlecode_upload_password` mecab-java-@VERSION@.tar.gz
-	scp doc/*.html sf:mecab/htdocs/
-	scp -r doc/doxygen sf:mecab/htdocs/
 	
