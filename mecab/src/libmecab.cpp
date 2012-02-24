@@ -121,6 +121,9 @@ const char *mecab_version() {
 }
 
 const char* mecab_strerror(mecab_t *tagger) {
+  if (!tagger) {
+    return MeCab::getLastError();
+  }
   return reinterpret_cast<MeCab::Tagger *>(tagger)->what();
 }
 
