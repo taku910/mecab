@@ -158,7 +158,8 @@ void mecab_set_lattice_level(mecab_t *tagger, int level) {
 }
 
 int mecab_get_all_morphs(mecab_t *tagger) {
-  return static_cast<int>(reinterpret_cast<MeCab::Tagger *>(tagger)->all_morphs());
+  return static_cast<int>(
+      reinterpret_cast<MeCab::Tagger *>(tagger)->all_morphs());
 }
 
 void mecab_set_all_morphs(mecab_t *tagger, int all_morphs) {
@@ -175,16 +176,20 @@ const char* mecab_sparse_tostr2(mecab_t *tagger, const char *str, size_t len) {
 
 char* mecab_sparse_tostr3(mecab_t *tagger, const char *str, size_t len,
                           char *out, size_t len2) {
-  return const_cast<char *>(reinterpret_cast<MeCab::Tagger *>(tagger)->parse(str, len, out, len2));
+  return const_cast<char *>(
+      reinterpret_cast<MeCab::Tagger *>(tagger)->parse(
+          str, len, out, len2));
 }
 
 const mecab_node_t* mecab_sparse_tonode(mecab_t *tagger, const char *str) {
-  return reinterpret_cast<const mecab_node_t *>(reinterpret_cast<MeCab::Tagger *>(tagger)->parseToNode(str));
+  return reinterpret_cast<const mecab_node_t *>(
+      reinterpret_cast<MeCab::Tagger *>(tagger)->parseToNode(str));
 }
 
 const mecab_node_t* mecab_sparse_tonode2(mecab_t *tagger,
                                          const char *str, size_t len) {
-  return reinterpret_cast<const mecab_node_t *>(reinterpret_cast<MeCab::Tagger *>(tagger)->parseToNode(str, len));
+  return reinterpret_cast<const mecab_node_t *>(
+      reinterpret_cast<MeCab::Tagger *>(tagger)->parseToNode(str, len));
 }
 
 const char* mecab_nbest_sparse_tostr(mecab_t *tagger, size_t N,
@@ -194,21 +199,26 @@ const char* mecab_nbest_sparse_tostr(mecab_t *tagger, size_t N,
 
 const char* mecab_nbest_sparse_tostr2(mecab_t *tagger, size_t N,
                                       const char* str, size_t len) {
-  return reinterpret_cast<MeCab::Tagger *>(tagger)->parseNBest(N, str, len);
+  return reinterpret_cast<MeCab::Tagger *>(
+      tagger)->parseNBest(N, str, len);
 }
 
 char* mecab_nbest_sparse_tostr3(mecab_t *tagger, size_t N,
                                 const char *str, size_t len,
                                 char *out, size_t len2) {
-  return const_cast<char *>(reinterpret_cast<MeCab::Tagger *>(tagger)->parseNBest(N, str, len, out, len2));
+  return const_cast<char *>(
+      reinterpret_cast<MeCab::Tagger *>(
+          tagger)->parseNBest(N, str, len, out, len2));
 }
 
 int mecab_nbest_init(mecab_t *tagger, const char *str) {
-  return reinterpret_cast<MeCab::Tagger *>(tagger)->parseNBestInit(str);
+  return reinterpret_cast<
+      MeCab::Tagger *>(tagger)->parseNBestInit(str);
 }
 
 int mecab_nbest_init2(mecab_t *tagger, const char *str, size_t len) {
-  return reinterpret_cast<MeCab::Tagger *>(tagger)->parseNBestInit(str, len);
+  return reinterpret_cast<
+      MeCab::Tagger *>(tagger)->parseNBestInit(str, len);
 }
 
 const char* mecab_nbest_next_tostr(mecab_t *tagger) {
@@ -216,11 +226,13 @@ const char* mecab_nbest_next_tostr(mecab_t *tagger) {
 }
 
 char* mecab_nbest_next_tostr2(mecab_t *tagger, char *out, size_t len2) {
-  return const_cast<char *>(reinterpret_cast<MeCab::Tagger *>(tagger)->next(out, len2));
+  return const_cast<char *>(
+      reinterpret_cast<MeCab::Tagger *>(tagger)->next(out, len2));
 }
 
 const mecab_node_t* mecab_nbest_next_tonode(mecab_t *tagger) {
-  return reinterpret_cast<const mecab_node_t *>(reinterpret_cast<MeCab::Tagger *>(tagger)->nextNode());
+  return reinterpret_cast<const mecab_node_t *>(
+      reinterpret_cast<MeCab::Tagger *>(tagger)->nextNode());
 }
 
 const char* mecab_format_node(mecab_t *tagger, const mecab_node_t* n) {
@@ -228,12 +240,14 @@ const char* mecab_format_node(mecab_t *tagger, const mecab_node_t* n) {
 }
 
 const mecab_dictionary_info_t *mecab_dictionary_info(mecab_t *tagger) {
-  return (const mecab_dictionary_info_t *)(reinterpret_cast<MeCab::Tagger *>(tagger)->dictionary_info());
+  return reinterpret_cast<const mecab_dictionary_info_t *>(
+      reinterpret_cast<MeCab::Tagger *>(tagger)->dictionary_info());
 }
 
 int mecab_parse_lattice(mecab_t *mecab, mecab_lattice_t *lattice) {
-  return static_cast<int>(reinterpret_cast<MeCab::Tagger *>(mecab)->parse(
-                              reinterpret_cast<MeCab::Lattice *>(lattice)));
+  return static_cast<int>(
+      reinterpret_cast<MeCab::Tagger *>(mecab)->parse(
+          reinterpret_cast<MeCab::Lattice *>(lattice)));
 }
 
 mecab_lattice_t *mecab_lattice_new() {
@@ -251,42 +265,54 @@ void mecab_lattice_clear(mecab_lattice_t *lattice) {
 }
 
 int mecab_lattice_is_available(mecab_lattice_t *lattice) {
-  return static_cast<int>(reinterpret_cast<MeCab::Lattice *>(lattice)->is_available());
+  return static_cast<int>(
+      reinterpret_cast<MeCab::Lattice *>(lattice)->is_available());
 }
 mecab_node_t *mecab_lattice_get_bos_node(mecab_lattice_t *lattice) {
-  return reinterpret_cast<mecab_node_t *>(reinterpret_cast<MeCab::Lattice *>(lattice)->bos_node());
+  return reinterpret_cast<mecab_node_t *>(
+      reinterpret_cast<MeCab::Lattice *>(lattice)->bos_node());
 }
 
 mecab_node_t *mecab_lattice_get_eos_node(mecab_lattice_t *lattice) {
-  return reinterpret_cast<mecab_node_t *>(reinterpret_cast<MeCab::Lattice *>(lattice)->eos_node());
+  return reinterpret_cast<mecab_node_t *>(
+      reinterpret_cast<MeCab::Lattice *>(lattice)->eos_node());
 }
 
 mecab_node_t **mecab_lattice_get_all_begin_nodes(mecab_lattice_t *lattice) {
-  return reinterpret_cast<mecab_node_t **>(reinterpret_cast<MeCab::Lattice *>(lattice)->begin_nodes());
+  return reinterpret_cast<mecab_node_t **>(
+      reinterpret_cast<MeCab::Lattice *>(lattice)->begin_nodes());
 }
 
 mecab_node_t **mecab_lattice_get_all_end_nodes(mecab_lattice_t *lattice) {
-  return reinterpret_cast<mecab_node_t **>(reinterpret_cast<MeCab::Lattice *>(lattice)->end_nodes());
+  return reinterpret_cast<mecab_node_t **>(
+      reinterpret_cast<MeCab::Lattice *>(lattice)->end_nodes());
 }
 
-mecab_node_t *mecab_lattice_get_begin_nodes(mecab_lattice_t *lattice, size_t pos) {
-  return reinterpret_cast<mecab_node_t *>(reinterpret_cast<MeCab::Lattice *>(lattice)->begin_nodes(pos));
+mecab_node_t *mecab_lattice_get_begin_nodes(mecab_lattice_t *lattice,
+                                            size_t pos) {
+  return reinterpret_cast<mecab_node_t *>(
+      reinterpret_cast<MeCab::Lattice *>(lattice)->begin_nodes(pos));
 }
 
-mecab_node_t    *mecab_lattice_get_end_nodes(mecab_lattice_t *lattice, size_t pos) {
-  return reinterpret_cast<mecab_node_t *>(reinterpret_cast<MeCab::Lattice *>(lattice)->end_nodes(pos));
+mecab_node_t    *mecab_lattice_get_end_nodes(mecab_lattice_t *lattice,
+                                             size_t pos) {
+  return reinterpret_cast<mecab_node_t *>(
+      reinterpret_cast<MeCab::Lattice *>(lattice)->end_nodes(pos));
 }
 
 const char  *mecab_lattice_get_sentence(mecab_lattice_t *lattice) {
   return reinterpret_cast<MeCab::Lattice *>(lattice)->sentence();
 }
 
-void  mecab_lattice_set_sentence(mecab_lattice_t *lattice, const char *sentence) {
+void  mecab_lattice_set_sentence(mecab_lattice_t *lattice,
+                                 const char *sentence) {
   reinterpret_cast<MeCab::Lattice *>(lattice)->set_sentence(sentence);
 }
 
-void mecab_lattice_set_sentence2(mecab_lattice_t *lattice, const char *sentence, size_t len) {
-  reinterpret_cast<MeCab::Lattice *>(lattice)->set_sentence(sentence, len);
+void mecab_lattice_set_sentence2(mecab_lattice_t *lattice,
+                                 const char *sentence, size_t len) {
+  reinterpret_cast<MeCab::Lattice *>(lattice)->set_sentence(
+      sentence, len);
 }
 
 size_t mecab_lattice_get_size(mecab_lattice_t *lattice) {
@@ -310,41 +336,56 @@ void mecab_lattice_set_theta(mecab_lattice_t *lattice, double theta) {
 }
 
 int mecab_lattice_next(mecab_lattice_t *lattice) {
-  return static_cast<int>(reinterpret_cast<MeCab::Lattice *>(lattice)->next());
+  return static_cast<int>(
+      reinterpret_cast<MeCab::Lattice *>(lattice)->next());
 }
 
 int mecab_lattice_get_request_type(mecab_lattice_t *lattice) {
   return reinterpret_cast<MeCab::Lattice *>(lattice)->request_type();
 }
 
-int mecab_lattice_has_request_type(mecab_lattice_t *lattice, int request_type) {
-  return reinterpret_cast<MeCab::Lattice *>(lattice)->has_request_type(request_type);
+int mecab_lattice_has_request_type(mecab_lattice_t *lattice,
+                                   int request_type) {
+  return reinterpret_cast<MeCab::Lattice *>(
+      lattice)->has_request_type(request_type);
 }
 
-void mecab_lattice_set_request_type(mecab_lattice_t *lattice, int request_type) {
-  reinterpret_cast<MeCab::Lattice *>(lattice)->set_request_type(request_type);
+void mecab_lattice_set_request_type(mecab_lattice_t *lattice,
+                                    int request_type) {
+  reinterpret_cast<MeCab::Lattice *>(
+      lattice)->set_request_type(request_type);
 }
 
-void mecab_lattice_add_request_type(mecab_lattice_t *lattice, int request_type) {
-  reinterpret_cast<MeCab::Lattice *>(lattice)->add_request_type(request_type);
+void mecab_lattice_add_request_type(mecab_lattice_t *lattice,
+                                    int request_type) {
+  reinterpret_cast<MeCab::Lattice *>(
+      lattice)->add_request_type(request_type);
 }
 
-void mecab_lattice_remove_request_type(mecab_lattice_t *lattice, int request_type) {
-  return reinterpret_cast<MeCab::Lattice *>(lattice)->remove_request_type(request_type);
+void mecab_lattice_remove_request_type(mecab_lattice_t *lattice,
+                                       int request_type) {
+  return reinterpret_cast<MeCab::Lattice *>(
+      lattice)->remove_request_type(request_type);
 }
 
 const char *mecab_lattice_tostr(mecab_lattice_t *lattice) {
   return reinterpret_cast<MeCab::Lattice *>(lattice)->toString();
 }
 
-const char *mecab_lattice_tostr2(mecab_lattice_t *lattice, char *buf, size_t size) {
-  return reinterpret_cast<MeCab::Lattice *>(lattice)->toString(buf, size);
+const char *mecab_lattice_tostr2(mecab_lattice_t *lattice,
+                                 char *buf, size_t size) {
+  return reinterpret_cast<MeCab::Lattice *>(
+      lattice)->toString(buf, size);
 }
-const char *mecab_lattice_nbest_tostr(mecab_lattice_t *lattice, size_t N) {
-  return reinterpret_cast<MeCab::Lattice *>(lattice)->enumNBestAsString(N);
+const char *mecab_lattice_nbest_tostr(mecab_lattice_t *lattice,
+                                      size_t N) {
+  return reinterpret_cast<MeCab::Lattice *>(
+      lattice)->enumNBestAsString(N);
 }
-const char *mecab_lattice_nbest_tostr2(mecab_lattice_t *lattice, size_t N, char *buf, size_t size) {
-  return reinterpret_cast<MeCab::Lattice *>(lattice)->enumNBestAsString(N, buf, size);
+const char *mecab_lattice_nbest_tostr2(mecab_lattice_t *lattice,
+                                       size_t N, char *buf, size_t size) {
+  return reinterpret_cast<MeCab::Lattice *>(
+      lattice)->enumNBestAsString(N, buf, size);
 }
 
 const char *mecab_lattice_strerror(mecab_lattice_t *lattice) {
@@ -376,17 +417,23 @@ void mecab_model_destroy(mecab_model_t *model) {
 }
 
 mecab_t *mecab_model_new_tagger(mecab_model_t *model) {
-  return reinterpret_cast<mecab_t *>(reinterpret_cast<MeCab::Model *>(model)->createTagger());
+  return reinterpret_cast<mecab_t *>(
+      reinterpret_cast<MeCab::Model *>(model)->createTagger());
 }
 
 mecab_lattice_t *mecab_model_new_lattice(mecab_model_t *model) {
-  return reinterpret_cast<mecab_lattice_t *>(reinterpret_cast<MeCab::Model *>(model)->createLattice());
+  return reinterpret_cast<mecab_lattice_t *>(
+      reinterpret_cast<MeCab::Model *>(model)->createLattice());
 }
 
 int mecab_model_swap(mecab_model_t *model, mecab_model_t *new_model) {
-  return static_cast<int>(reinterpret_cast<MeCab::Model *>(model)->swap(reinterpret_cast<MeCab::Model *>(new_model)));
+  return static_cast<int>(
+      reinterpret_cast<MeCab::Model *>(model)->swap(
+          reinterpret_cast<MeCab::Model *>(new_model)));
 }
 
-const mecab_dictionary_info_t* mecab_model_dictionary_info(mecab_model_t *model) {
-  return reinterpret_cast<const mecab_dictionary_info_t *>(reinterpret_cast<MeCab::Model *>(model)->dictionary_info());
+const mecab_dictionary_info_t* mecab_model_dictionary_info(
+    mecab_model_t *model) {
+  return reinterpret_cast<const mecab_dictionary_info_t *>(
+      reinterpret_cast<MeCab::Model *>(model)->dictionary_info());
 }

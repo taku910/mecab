@@ -11,7 +11,6 @@
 #include "scoped_ptr.h"
 #include "tokenizer.h"
 #include "utils.h"
-#include "scoped_ptr.h"
 #include "viterbi.h"
 
 namespace MeCab {

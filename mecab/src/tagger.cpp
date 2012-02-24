@@ -99,7 +99,8 @@ class ModelImpl: public Model {
   }
 
   const DictionaryInfo *dictionary_info() const {
-    return viterbi_->tokenizer() ? viterbi_->tokenizer()->dictionary_info() : 0;
+    return viterbi_->tokenizer() ?
+        viterbi_->tokenizer()->dictionary_info() : 0;
   }
 
   Tagger *createTagger() const;
@@ -538,7 +539,12 @@ const char *TaggerImpl::parse(const char *str, size_t len) {
     set_what(lattice->what());
     return 0;
   }
-  return lattice->toString();
+  const char *result = lattice->toString();
+  if (!result) {
+    set_what(lattice->what());
+    return 0;
+  }
+  return result;
 }
 
 const char *TaggerImpl::parse(const char *str, size_t len,
@@ -550,7 +556,12 @@ const char *TaggerImpl::parse(const char *str, size_t len,
     set_what(lattice->what());
     return 0;
   }
-  return lattice->toString(out, len2);
+  const char *result = lattice->toString();
+  if (!result) {
+    set_what(lattice->what());
+    return 0;
+  }
+  return result;
 }
 
 const Node *TaggerImpl::parseToNode(const char *str) {
@@ -577,7 +588,11 @@ bool TaggerImpl::parseNBestInit(const char *str, size_t len) {
   lattice->set_sentence(str, len);
   initRequestType();
   lattice->add_request_type(MECAB_NBEST);
-  return parse(lattice);
+  if (!parse(lattice)) {
+    set_what(lattice->what());
+    return false;
+  }
+  return true;
 }
 
 const Node* TaggerImpl::nextNode() {
@@ -595,7 +610,12 @@ const char* TaggerImpl::next() {
     lattice->set_what("no more results");
     return 0;
   }
-  return lattice->toString();
+  const char *result = lattice->toString();
+  if (!result) {
+    set_what(lattice->what());
+    return 0;
+  }
+  return result;
 }
 
 const char* TaggerImpl::next(char *out, size_t len2) {
@@ -604,7 +624,12 @@ const char* TaggerImpl::next(char *out, size_t len2) {
     lattice->set_what("no more results");
     return 0;
   }
-  return lattice->toString(out, len2);
+  const char *result = lattice->toString(out, len2);
+  if (!result) {
+    set_what(lattice->what());
+    return 0;
+  }
+  return result;
 }
 
 const char* TaggerImpl::parseNBest(size_t N, const char* str) {
@@ -619,10 +644,16 @@ const char* TaggerImpl::parseNBest(size_t N,
   lattice->add_request_type(MECAB_NBEST);
 
   if (!parse(lattice)) {
+    set_what(lattice->what());
     return 0;
   }
 
-  return lattice->enumNBestAsString(N);
+  const char *result = lattice->enumNBestAsString(N);
+  if (!result) {
+    set_what(lattice->what());
+    return 0;
+  }
+  return result;
 }
 
 const char* TaggerImpl::parseNBest(size_t N, const char* str, size_t len,
@@ -633,19 +664,35 @@ const char* TaggerImpl::parseNBest(size_t N, const char* str, size_t len,
   lattice->add_request_type(MECAB_NBEST);
 
   if (!parse(lattice)) {
+    set_what(lattice->what());
     return 0;
   }
 
-  return lattice->enumNBestAsString(N, out, len2);
+  const char *result = lattice->enumNBestAsString(N, out, len2);
+  if (!result) {
+    set_what(lattice->what());
+    return 0;
+  }
+  return result;
 }
 
 const char* TaggerImpl::formatNode(const Node* node) {
-  return mutable_lattice()->toString(node);
+  const char *result = mutable_lattice()->toString(node);
+  if (!result) {
+    set_what(mutable_lattice()->what());
+    return 0;
+  }
+  return result;
 }
 
 const char* TaggerImpl::formatNode(const Node* node,
                                    char *out, size_t len) {
-  return mutable_lattice()->toString(node, out, len);
+  const char *result = mutable_lattice()->toString(node, out, len);
+  if (!result) {
+    set_what(mutable_lattice()->what());
+    return 0;
+  }
+  return result;
 }
 
 const DictionaryInfo *TaggerImpl::dictionary_info() const {
@@ -796,7 +843,8 @@ const char *LatticeImpl::enumNBestAsString(size_t N, char *buf, size_t size) {
   return enumNBestAsStringInternal(N, &os);
 }
 
-const char *LatticeImpl::enumNBestAsStringInternal(size_t N, StringBuffer *os) {
+const char *LatticeImpl::enumNBestAsStringInternal(size_t N,
+                                                   StringBuffer *os) {
   os->clear();
 
   if (N == 0 || N > NBEST_MAX) {
@@ -963,7 +1011,8 @@ int mecab_do(int argc, char **argv) {
   }
 
   if (param.get<int>("lattice-level") >= 1) {
-    std::cerr << "lattice-level is DEPERCATED. use --marginal or --nbest." << std::endl;
+    std::cerr << "lattice-level is DEPERCATED. "
+              << "use --marginal or --nbest." << std::endl;
   }
 
   MeCab::scoped_ptr<MeCab::ModelImpl> model(new MeCab::ModelImpl);
