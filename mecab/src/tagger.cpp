@@ -556,7 +556,7 @@ const char *TaggerImpl::parse(const char *str, size_t len,
     set_what(lattice->what());
     return 0;
   }
-  const char *result = lattice->toString();
+  const char *result = lattice->toString(out, len2);
   if (!result) {
     set_what(lattice->what());
     return 0;
