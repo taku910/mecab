@@ -859,6 +859,12 @@ public:
 #endif
 
   /**
+   * Return new node. Lattice objects has the ownership of the node.
+   * @return new node object
+   */
+  virtual Node *newNode() = 0;
+
+  /**
    * Return string representation of the lattice.
    * Returned object is managed by this instance. When clear/set_sentence() method
    * is called, the returned buffer is initialized.

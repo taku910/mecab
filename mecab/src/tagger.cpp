@@ -266,6 +266,10 @@ class LatticeImpl : public Lattice {
     return allocator_.get();
   }
 
+  Node *newNode() {
+    return allocator_->newNode();
+  }
+
   const char *what() const { return what_.c_str(); }
 
   void set_what(const char *str) {

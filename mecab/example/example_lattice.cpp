@@ -8,7 +8,7 @@
    return -1; }
 
 int main (int argc, char **argv) {
-  char input[1024] = "太郎は次郎が持っている本を花子に渡した。";
+  char input[] = "太郎は次郎が持っている本を花子に渡した。";
 
   // Create model object.
   MeCab::Model *model = MeCab::createModel(argc, argv);

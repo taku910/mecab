@@ -9,7 +9,7 @@
 
 // Sample of MeCab::Tagger class.
 int main (int argc, char **argv) {
-  char input[1024] = "太郎は次郎が持っている本を花子に渡した。";
+  char input[] = "太郎は次郎が持っている本を花子に渡した。";
 
   MeCab::Tagger *tagger = MeCab::createTagger("");
   CHECK(tagger);
