@@ -82,6 +82,7 @@ class MeCabJNI {
   public final static native void Lattice_set_request_type(long jarg1, Lattice jarg1_, int jarg2);
   public final static native void Lattice_add_request_type(long jarg1, Lattice jarg1_, int jarg2);
   public final static native void Lattice_remove_request_type(long jarg1, Lattice jarg1_, int jarg2);
+  public final static native long Lattice_newNode(long jarg1, Lattice jarg1_);
   public final static native String Lattice_toString__SWIG_0(long jarg1, Lattice jarg1_);
   public final static native String Lattice_toString__SWIG_1(long jarg1, Lattice jarg1_, long jarg2, Node jarg2_);
   public final static native String Lattice_enumNBestAsString(long jarg1, Lattice jarg1_, long jarg2);

@@ -617,6 +617,11 @@ extern "C" {
   MECAB_DLL_EXTERN void             mecab_lattice_remove_request_type(mecab_lattice_t *lattice, int request_type);
 
   /**
+   * C wrapper of MeCab::Lattice::newNode();
+   */
+  MECAB_DLL_EXTERN mecab_node_t    *mecab_lattice_new_node(mecab_lattice_t *lattice);
+
+  /**
    * C wrapper of MeCab::Lattice::toString()
    */
   MECAB_DLL_EXTERN const char      *mecab_lattice_tostr(mecab_lattice_t *lattice);

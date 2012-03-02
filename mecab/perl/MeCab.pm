@@ -224,6 +224,7 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *set_request_type = *MeCabc::Lattice_set_request_type;
 *add_request_type = *MeCabc::Lattice_add_request_type;
 *remove_request_type = *MeCabc::Lattice_remove_request_type;
+*newNode = *MeCabc::Lattice_newNode;
 *toString = *MeCabc::Lattice_toString;
 *enumNBestAsString = *MeCabc::Lattice_enumNBestAsString;
 *what = *MeCabc::Lattice_what;

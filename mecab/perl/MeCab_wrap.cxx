@@ -3956,6 +3956,44 @@ XS(_wrap_Lattice_remove_request_type) {
 }
 
 
+XS(_wrap_Lattice_newNode) {
+  {
+    MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    MeCab::Node *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Lattice_newNode(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_newNode" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+    {
+      try {
+        result = (MeCab::Node *)(arg1)->newNode(); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_mecab_node_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_Lattice_toString__SWIG_0) {
   {
     MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
@@ -6553,6 +6591,7 @@ static swig_command_info swig_commands[] = {
 {"MeCabc::Lattice_set_request_type", _wrap_Lattice_set_request_type},
 {"MeCabc::Lattice_add_request_type", _wrap_Lattice_add_request_type},
 {"MeCabc::Lattice_remove_request_type", _wrap_Lattice_remove_request_type},
+{"MeCabc::Lattice_newNode", _wrap_Lattice_newNode},
 {"MeCabc::Lattice_toString", _wrap_Lattice_toString},
 {"MeCabc::Lattice_enumNBestAsString", _wrap_Lattice_enumNBestAsString},
 {"MeCabc::Lattice_what", _wrap_Lattice_what},

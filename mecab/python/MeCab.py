@@ -214,6 +214,7 @@ class Lattice(_object):
     def set_request_type(self, *args): return _MeCab.Lattice_set_request_type(self, *args)
     def add_request_type(self, *args): return _MeCab.Lattice_add_request_type(self, *args)
     def remove_request_type(self, *args): return _MeCab.Lattice_remove_request_type(self, *args)
+    def newNode(self): return _MeCab.Lattice_newNode(self)
     def toString(self, *args): return _MeCab.Lattice_toString(self, *args)
     def enumNBestAsString(self, *args): return _MeCab.Lattice_enumNBestAsString(self, *args)
     def what(self): return _MeCab.Lattice_what(self)

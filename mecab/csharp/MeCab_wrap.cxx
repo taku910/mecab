@@ -1743,6 +1743,32 @@ SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_remove_request_type(void * jarg1, int
 }
 
 
+SWIGEXPORT void * SWIGSTDCALL CSharp_Lattice_newNode(void * jarg1) {
+  void * jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  MeCab::Node *result = 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (MeCab::Node *)(arg1)->newNode(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT char * SWIGSTDCALL CSharp_Lattice_toString__SWIG_0(void * jarg1) {
   char * jresult ;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;

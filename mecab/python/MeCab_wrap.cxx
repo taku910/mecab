@@ -4861,6 +4861,38 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Lattice_newNode(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  MeCab::Node *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Lattice_newNode",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_newNode" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  {
+    try {
+      result = (MeCab::Node *)(arg1)->newNode(); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_mecab_node_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Lattice_toString__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
@@ -6944,6 +6976,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Lattice_set_request_type", _wrap_Lattice_set_request_type, METH_VARARGS, NULL},
 	 { (char *)"Lattice_add_request_type", _wrap_Lattice_add_request_type, METH_VARARGS, NULL},
 	 { (char *)"Lattice_remove_request_type", _wrap_Lattice_remove_request_type, METH_VARARGS, NULL},
+	 { (char *)"Lattice_newNode", _wrap_Lattice_newNode, METH_VARARGS, NULL},
 	 { (char *)"Lattice_toString", _wrap_Lattice_toString, METH_VARARGS, NULL},
 	 { (char *)"Lattice_enumNBestAsString", _wrap_Lattice_enumNBestAsString, METH_VARARGS, NULL},
 	 { (char *)"Lattice_what", _wrap_Lattice_what, METH_VARARGS, NULL},

@@ -368,6 +368,11 @@ void mecab_lattice_remove_request_type(mecab_lattice_t *lattice,
       lattice)->remove_request_type(request_type);
 }
 
+mecab_node_t    *mecab_lattice_new_node(mecab_lattice_t *lattice) {
+  return reinterpret_cast<mecab_node_t *>(
+      reinterpret_cast<MeCab::Lattice *>(lattice)->newNode());
+}
+
 const char *mecab_lattice_tostr(mecab_lattice_t *lattice) {
   return reinterpret_cast<MeCab::Lattice *>(lattice)->toString();
 }

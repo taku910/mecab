@@ -404,6 +404,9 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_Lattice_remove_request_type")]
   public static extern void Lattice_remove_request_type(HandleRef jarg1, int jarg2);
 
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_newNode")]
+  public static extern IntPtr Lattice_newNode(HandleRef jarg1);
+
   [DllImport("MeCab", EntryPoint="CSharp_Lattice_toString__SWIG_0")]
   public static extern string Lattice_toString__SWIG_0(HandleRef jarg1);
 

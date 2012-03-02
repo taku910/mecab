@@ -1874,6 +1874,35 @@ SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1remove_1request_
 }
 
 
+SWIGEXPORT jlong JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1newNode(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  MeCab::Node *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Lattice **)&jarg1; 
+  {
+    try {
+      result = (MeCab::Node *)(arg1)->newNode(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  *(MeCab::Node **)&jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jstring JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1toString_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;

@@ -111,6 +111,11 @@ public class Lattice {
     MeCabJNI.Lattice_remove_request_type(swigCPtr, this, request_type);
   }
 
+  public Node newNode() {
+    long cPtr = MeCabJNI.Lattice_newNode(swigCPtr, this);
+    return (cPtr == 0) ? null : new Node(cPtr, false);
+  }
+
   public String toString() {
     return MeCabJNI.Lattice_toString__SWIG_0(swigCPtr, this);
   }

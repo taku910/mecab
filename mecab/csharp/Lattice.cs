@@ -147,6 +147,13 @@ public class Lattice : IDisposable {
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public virtual Node newNode() {
+    IntPtr cPtr = MeCabPINVOKE.Lattice_newNode(swigCPtr);
+    Node ret = (cPtr == IntPtr.Zero) ? null : new Node(cPtr, false);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual string toString() {
     string ret = MeCabPINVOKE.Lattice_toString__SWIG_0(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
