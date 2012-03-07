@@ -233,8 +233,8 @@ class LatticeImpl : public Lattice {
   Node *eos_node() const { return begin_nodes_[size()]; }
   Node **begin_nodes() const { return const_cast<Node **>(&begin_nodes_[0]); }
   Node **end_nodes() const   { return const_cast<Node **>(&end_nodes_[0]); }
-  Node *end_nodes(size_t pos) const { return begin_nodes_[pos]; }
-  Node *begin_nodes(size_t pos) const { return end_nodes_[pos]; }
+  Node *begin_nodes(size_t pos) const { return begin_nodes_[pos]; }
+  Node *end_nodes(size_t pos) const { return end_nodes_[pos]; }
 
   const char *sentence() const { return sentence_; }
   void set_sentence(const char *sentence);
