@@ -685,6 +685,21 @@ extern "C" {
    */
   MECAB_DLL_EXTERN const mecab_dictionary_info_t* mecab_model_dictionary_info(mecab_model_t *model);
 
+  /**
+   * C wrapper of MeCab::Model::transition_cost()
+   */
+  MECAB_DLL_EXTERN int mecab_model_transition_cost(mecab_model_t *model,
+                                                   unsigned short rcAttr,
+                                                   unsigned short lcAttr);
+
+  /**
+   * C wrapper of MeCab::Model::lookup()
+   */
+  MECAB_DLL_EXTERN mecab_node_t *mecab_model_lookup(mecab_model_t *model,
+                                                    const char *begin,
+                                                    const char *end,
+                                                    mecab_lattice_t *lattice);
+
   /* static functions */
   MECAB_DLL_EXTERN int           mecab_do(int argc, char **argv);
   MECAB_DLL_EXTERN int           mecab_dict_index(int argc, char **argv);
@@ -960,6 +975,21 @@ public:
    * @return DictionaryInfo linked list
    */
   virtual const DictionaryInfo *dictionary_info() const = 0;
+
+  /**
+   * Return transtion cost from rcAttr to lcAttr.
+   * @return transtion cost
+   */
+  virtual int transition_cost(unsigned short rcAttr,
+                              unsigned short lcAttr) const = 0;
+
+  /**
+   * perform common prefix search from the range [begin, end).
+   * |lattice| takes the ownership of return value.
+   * @return node linked list.
+   */
+  virtual Node *lookup(const char *begin, const char *end,
+                       Lattice *lattice) const = 0;
 
   /**
    * Create a new Tagger object.

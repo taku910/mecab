@@ -25,6 +25,8 @@ class Viterbi {
 
   const Tokenizer<Node, Path> *tokenizer() const;
 
+  const Connector *connector() const;
+
   const char *what() { return what_.str(); }
 
   static bool buildResultForNBest(Lattice *lattice);

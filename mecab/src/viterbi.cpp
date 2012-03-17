@@ -132,6 +132,10 @@ const Tokenizer<Node, Path> *Viterbi::tokenizer() const {
   return tokenizer_.get();
 }
 
+const Connector *Viterbi::connector() const {
+  return connector_.get();
+}
+
 // static
 bool Viterbi::forwardbackward(Lattice *lattice) {
   if (!lattice->has_request_type(MECAB_MARGINAL_PROB)) {

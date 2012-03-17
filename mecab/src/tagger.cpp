@@ -103,6 +103,17 @@ class ModelImpl: public Model {
         viterbi_->tokenizer()->dictionary_info() : 0;
   }
 
+  int transition_cost(unsigned short rcAttr,
+                      unsigned short lcAttr) const {
+    return viterbi_->connector()->transition_cost(rcAttr, lcAttr);
+  }
+
+  Node *lookup(const char *begin, const char *end,
+               Lattice *lattice) const {
+    return viterbi_->tokenizer()->lookup(begin, end,
+                                         lattice->allocator());
+  }
+
   Tagger *createTagger() const;
 
   Lattice *createLattice() const;
