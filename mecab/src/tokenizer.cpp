@@ -222,7 +222,6 @@ N *Tokenizer<N, P>::lookup(const char *begin, const char *end,
       for (size_t j = 0; j < size; ++j) {
         N *new_node = allocator->newNode();
         read_node_info(**it, *(token + j), &new_node);
-//        new_node->token = (Token *)(token + j);
         new_node->length = daresults[i].length;
         new_node->rlength = begin2 - begin + new_node->length;
         new_node->surface = begin2;
