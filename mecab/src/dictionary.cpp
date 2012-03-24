@@ -6,9 +6,11 @@
 #include <fstream>
 #include "connector.h"
 #include "context_id.h"
+#include "char_property.h"
 #include "common.h"
 #include "dictionary.h"
 #include "dictionary_rewriter.h"
+#include "feature_index.h"
 #include "iconv_utils.h"
 #include "mmap.h"
 #include "param.h"
@@ -19,6 +21,34 @@
 namespace MeCab {
 
 static const unsigned int DictionaryMagicID = 0xef718f77u;
+
+int calcCost(const std::string &w, const std::string &feature,
+             int factor,
+             DecoderFeatureIndex *fi, DictionaryRewriter *rewrite,
+             CharProperty *property) {
+  CHECK_DIE(fi);
+  CHECK_DIE(rewrite);
+  CHECK_DIE(property);
+
+  LearnerPath path;
+  LearnerNode rnode;
+  LearnerNode lnode;
+  rnode.stat  = lnode.stat = MECAB_NOR_NODE;
+  rnode.rpath = &path;
+  lnode.lpath = &path;
+  path.lnode  = &lnode;
+  path.rnode  = &rnode;
+
+  size_t mblen;
+  CharInfo cinfo = property->getCharInfo(w.c_str(),
+                                         w.c_str() + w.size(), &mblen);
+  path.rnode->char_type = cinfo.default_type;
+  std::string ufeature, lfeature, rfeature;
+  rewrite->rewrite2(feature, &ufeature, &lfeature, &rfeature);
+  fi->buildUnigramFeature(&path, ufeature.c_str());
+  fi->calcCost(&rnode);
+  return tocost(rnode.wcost, factor);
+}
 
 int progress_bar_darts(size_t current, size_t total) {
   return progress_bar("emitting double-array", current, total);
@@ -92,10 +122,12 @@ bool Dictionary::compile(const Param &param,
   Connector matrix;
   scoped_ptr<DictionaryRewriter> rewrite(0);
   scoped_ptr<POSIDGenerator> posid(0);
+  scoped_ptr<DecoderFeatureIndex> fi(0);
   scoped_ptr<ContextID> cid(0);
   scoped_ptr<Writer> writer(0);
   scoped_ptr<Lattice> lattice(0);
   scoped_ptr<StringBuffer> os(0);
+  scoped_ptr<CharProperty> property(0);
   Node node;
 
   std::vector<std::pair<std::string, Token*> > dic;
@@ -107,9 +139,11 @@ bool Dictionary::compile(const Param &param,
 
   const std::string from = param.get<std::string>("dictionary-charset");
   const std::string to = param.get<std::string>("charset");
+  const std::string model = param.get<std::string>("model");
   const bool wakati = param.get<bool>("wakati");
   const int type = param.get<int>("type");
   const std::string node_format = param.get<std::string>("node-format");
+  const int factor = param.get<int>("cost-factor");
 
   // for backward compatibility
   std::string config_charset = param.get<std::string>("config-charset");
@@ -174,6 +208,21 @@ bool Dictionary::compile(const Param &param,
       cost = std::atoi(col[3]);
       feature = col[4];
       int pid = posid->id(feature.c_str());
+
+      if (!model.empty()) {
+        if (!rewrite.get()) {
+          rewrite.reset(new DictionaryRewriter);
+          rewrite->open(rewrite_file, &config_iconv);
+          fi.reset(new DecoderFeatureIndex);
+          CHECK_DIE(fi->open(param)) << "cannot open feature index";
+          property.reset(new CharProperty);
+          CHECK_DIE(property->open(param));
+          property->set_charset(from.c_str());
+        }
+        CHECK_DIE(factor > 0)   << "cost factor needs to be positive value";
+        cost = calcCost(w, feature, factor,
+                        fi.get(), rewrite.get(), property.get());
+      }
 
       if (lid < 0  || rid < 0) {
         if (!rewrite.get()) {

@@ -21,16 +21,6 @@
 
 namespace MeCab {
 
-short int tocost(double d, int n, int default_cost) {
-  if (d == 0.0) return default_cost;
-  static const short max = +32767;
-  static const short min = -32767;
-  return static_cast<short>(std::max<double>(std::min<double>(
-                                     -n * d,
-                                     static_cast<double>(max)),
-                                 static_cast<double>(min)) );
-}
-
 void copy(const char *src, const char *dst) {
   std::cout << "copying " << src << " to " <<  dst << std::endl;
   Mmap<char> mmap;
@@ -76,8 +66,7 @@ class DictionaryGenerator {
   static bool genmatrix(const char *filename,
                         const ContextID &cid,
                         DecoderFeatureIndex *fi,
-                        int factor,
-                        int default_cost) {
+                        int factor) {
     std::ofstream ofs(WPATH(filename));
     CHECK_DIE(ofs) << "permission denied: " << filename;
 
@@ -111,7 +100,7 @@ class DictionaryGenerator {
         fi->buildBigramFeature(&path, rit->first.c_str(), lit->first.c_str());
         fi->calcCost(&path);
         ofs << rit->second << ' ' << lit->second << ' '
-            << tocost(path.cost, factor, default_cost) << std::endl;
+            << tocost(path.cost, factor) << std::endl;
       }
     }
 
@@ -125,8 +114,7 @@ class DictionaryGenerator {
                      const ContextID &cid,
                      DecoderFeatureIndex *fi,
                      bool unk,
-                     int factor,
-                     int default_cost) {
+                     int factor) {
     std::ifstream ifs(WPATH(ifile));
     CHECK_DIE(ifs) << "no such file or directory: " << ifile;
 
@@ -134,7 +122,7 @@ class DictionaryGenerator {
     CHECK_DIE(ofs) << "permission denied: " << ofile;
 
     std::string w, feature, ufeature, lfeature, rfeature;
-    int cost, lid, rid;
+    int lid, rid;
 
     std::cout <<  "emitting " << ofile << " ... " << std::flush;
 
@@ -158,7 +146,7 @@ class DictionaryGenerator {
       w = std::string(col[0]);
       lid = std::atoi(col[1]);
       rid = std::atoi(col[2]);
-      cost = std::atoi(col[3]);
+      //      cost = std::atoi(col[3]);
       feature = std::string(col[4]);
 
       rewrite->rewrite2(feature, &ufeature, &lfeature, &rfeature);
@@ -184,7 +172,7 @@ class DictionaryGenerator {
       CHECK_DIE(escape_csv_element(&w)) << "invalid character found: " << w;
 
       ofs << w << ',' << lid << ',' << rid << ','
-          << tocost(rnode.wcost, factor, default_cost)
+          << tocost(rnode.wcost, factor)
           << ',' << feature << std::endl;
       ++num;
     }
@@ -236,9 +224,6 @@ class DictionaryGenerator {
       CHECK_DIE(!charset.empty());
     }
 
-    int default_emission_cost = 0;
-    int default_transition_cost = 0;
-
     CharProperty property;
     CHECK_DIE(property.open(param));
     property.set_charset(charset.c_str());
@@ -279,7 +264,7 @@ class DictionaryGenerator {
     cid.save(OCONF(LEFT_ID_FILE), OCONF(RIGHT_ID_FILE));
 
     gendic(DCONF(UNK_DEF_FILE), OCONF(UNK_DEF_FILE), property,
-           &rewrite, cid, &fi, true, factor, default_emission_cost);
+           &rewrite, cid, &fi, true, factor);
 
     for (std::vector<std::string>::const_iterator it = dic.begin();
          it != dic.end();
@@ -287,11 +272,10 @@ class DictionaryGenerator {
       std::string file =  *it;
       remove_pathname(&file);
       gendic(it->c_str(), OCONF(file.c_str()), property,
-             &rewrite, cid, &fi, false, factor, default_emission_cost);
+             &rewrite, cid, &fi, false, factor);
     }
 
-    genmatrix(OCONF(MATRIX_DEF_FILE), cid, &fi,
-              factor, default_transition_cost);
+    genmatrix(OCONF(MATRIX_DEF_FILE), cid, &fi, factor);
 
     copy(DCONF(CHAR_PROPERTY_DEF_FILE), OCONF(CHAR_PROPERTY_DEF_FILE));
     copy(DCONF(REWRITE_FILE), OCONF(REWRITE_FILE));

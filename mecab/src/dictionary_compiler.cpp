@@ -23,10 +23,11 @@ class DictionaryComplier {
  public:
   static int run(int argc, char **argv) {
     static const MeCab::Option long_options[] = {
-      { "dicdir",   'd',   ".",   "DIR", "set DIR as dicdi (default \".\")" },
+      { "dicdir",   'd',   ".",   "DIR", "set DIR as dic dir (default \".\")" },
       { "outdir",   'o',   ".",   "DIR",
         "set DIR as output dir (default \".\")" },
       { "unknown",  'U',   0,   0,   "build parameters for unknown words" },
+      { "model",   'm',  0,     "FILE",   "use FILE as model file" },
       { "userdic",  'u',   0,   "FILE",   "build user dictionary" },
       { "charcategory", 'C', 0, 0,   "build character category maps" },
       { "matrix",    'm',  0,   0,   "build connection matrix" },
@@ -71,10 +72,11 @@ class DictionaryComplier {
         << "no such file or directory: " << DCONF(DICRC);
 
     std::vector<std::string> dic;
-    if (userdic.empty())
+    if (userdic.empty()) {
       enum_csv_dictionaries(dicdir.c_str(), &dic);
-    else
+    } else {
       dic = param.rest_args();
+    }
 
     if (!userdic.empty()) {
       CHECK_DIE(dic.size()) << "no dictionaries are specified";

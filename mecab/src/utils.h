@@ -198,6 +198,16 @@ inline double logsumexp(double x, double y, bool flg) {
   }
 }
 
+inline short int tocost(double d, int n) {
+  static const short max = +32767;
+  static const short min = -32767;
+  return static_cast<short>(std::max<double>(
+                                std::min<double>(
+                                    -n * d,
+                                    static_cast<double>(max)),
+                                static_cast<double>(min)) );
+}
+
 inline char getEscapedChar(const char p) {
   switch (p) {
     case '0':  return '\0';
