@@ -28,6 +28,8 @@ class DictionaryComplier {
         "set DIR as output dir (default \".\")" },
       { "unknown",  'U',   0,   0,   "build parameters for unknown words" },
       { "model",   'm',  0,     "FILE",   "use FILE as model file" },
+      { "userdic-cost-mode", 'M', "-1", "INT",
+         "0: use dic cost, 1: replace with CRF cost, 2: add CRF cost to the dic cost" },
       { "userdic",  'u',   0,   "FILE",   "build user dictionary" },
       { "charcategory", 'C', 0, 0,   "build character category maps" },
       { "matrix",    'm',  0,   0,   "build connection matrix" },

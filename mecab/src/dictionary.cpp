@@ -144,6 +144,13 @@ bool Dictionary::compile(const Param &param,
   const int type = param.get<int>("type");
   const std::string node_format = param.get<std::string>("node-format");
   const int factor = param.get<int>("cost-factor");
+  CHECK_DIE(factor > 0)   << "cost factor needs to be positive value";
+  int userdic_cost_mode = param.get<int>("userdic-cost-mode");
+  if (userdic_cost_mode == -1) {
+    userdic_cost_mode = model.empty() ? 0 : 1;
+  }
+  CHECK_DIE(userdic_cost_mode >= 0 && userdic_cost_mode <= 2)
+      << "userdic-cost-mode must be 0, 1, or 2";
 
   // for backward compatibility
   std::string config_charset = param.get<std::string>("config-charset");
@@ -209,7 +216,7 @@ bool Dictionary::compile(const Param &param,
       feature = col[4];
       int pid = posid->id(feature.c_str());
 
-      if (!model.empty()) {
+      if (!model.empty() && userdic_cost_mode >= 1) {
         if (!rewrite.get()) {
           rewrite.reset(new DictionaryRewriter);
           rewrite->open(rewrite_file, &config_iconv);
@@ -219,9 +226,14 @@ bool Dictionary::compile(const Param &param,
           CHECK_DIE(property->open(param));
           property->set_charset(from.c_str());
         }
-        CHECK_DIE(factor > 0)   << "cost factor needs to be positive value";
-        cost = calcCost(w, feature, factor,
-                        fi.get(), rewrite.get(), property.get());
+        const short int crf_cost =
+            calcCost(w, feature, factor,
+                     fi.get(), rewrite.get(), property.get());
+        if (userdic_cost_mode == 1) {
+          cost = crf_cost;
+        } else {
+          cost += crf_cost;
+        }
       }
 
       if (lid < 0  || rid < 0) {
