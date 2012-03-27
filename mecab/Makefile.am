@@ -10,6 +10,7 @@ conf_DATA = mecabrc
 EXTRA_DIST = LGPL GPL BSD Makefile.train
 EXTRA_DIR = swig example
 bin_SCRIPTS = mecab-config
+ACLOCAL_AMFLAGS=-I m4
 
 dist-hook:
 	for subdir in $(EXTRA_DIR); do \

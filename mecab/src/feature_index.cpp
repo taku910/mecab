@@ -73,14 +73,6 @@ void FeatureIndex::set_alpha(const double *alpha) {
 }
 
 bool FeatureIndex::openTemplate(const Param &param) {
-  if (param.get<bool>("identity-template")) {
-    unigram_templs_.clear();
-    bigram_templs_.clear();
-    unigram_templs_.push_back("U:%u");
-    bigram_templs_.push_back("B:%r/%l");
-    return true;
-  }
-
   std::string filename = create_filename(param.get<std::string>("dicdir"),
                                          FEATURE_FILE);
   std::ifstream ifs(WPATH(filename.c_str()));
@@ -126,6 +118,8 @@ bool DecoderFeatureIndex::open(const Param &param) {
   unsigned int maxid;
   read_static<unsigned int>(&ptr, maxid);
   maxid_ = static_cast<size_t>(maxid);
+  charset_ = ptr;
+  ptr += 32;
   alpha_ = reinterpret_cast<const double *>(ptr);
   ptr += (sizeof(alpha_[0]) * maxid_);
   da_.set_array(reinterpret_cast<void *>(const_cast<char *>(ptr)));
@@ -469,6 +463,20 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
   scoped_fixed_array<char, BUF_SIZE> buf;
   char *column[4];
   std::map<std::string, double> dic;
+  std::string charset;
+
+  while (ifs.getline(buf.get(), buf.size())) {
+    if (std::strlen(buf.get()) == 0) {
+      break;
+    }
+    CHECK_DIE(tokenize2(buf.get(), ":", column, 2) == 2)
+        << "format error: " << buf.get();
+    if (std::string(column[0]) == "charset") {
+      charset = column[1] + 1;
+    }
+  }
+
+  CHECK_DIE(!charset.empty()) << "charset: is not found in this model";
 
   while (ifs.getline(buf.get(), buf.size())) {
     CHECK_DIE(tokenize2(buf.get(), "\t", column, 2) == 2)
@@ -484,6 +492,11 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
   std::vector<char *> key;
   unsigned int size = static_cast<unsigned int>(dic.size());
   ofs.write(reinterpret_cast<const char*>(&size), sizeof(size));
+
+  char charset_buf[32];
+  std::fill(charset_buf, charset_buf + sizeof(charset_buf), '\0');
+  std::strncpy(charset_buf, charset.c_str(), 31);
+  ofs.write(reinterpret_cast<const char *>(charset_buf),  sizeof(charset_buf));
 
   for (std::map<std::string, double>::const_iterator
            it = dic.begin(); it != dic.end(); ++it) {
@@ -501,17 +514,22 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
   return true;
 }
 
-bool EncoderFeatureIndex::save(const char *filename) {
+bool EncoderFeatureIndex::save(const char *filename, const char *header) {
   std::ofstream ofs(WPATH(filename));
 
+  CHECK_DIE(header);
   CHECK_DIE(ofs) << "permission denied: " << filename;
 
   ofs.setf(std::ios::fixed, std::ios::floatfield);
   ofs.precision(24);
 
+  ofs << header;
+  ofs << std::endl;
+
   for (std::map<std::string, int>::const_iterator it = dic_.begin();
-       it != dic_.end(); ++it)
-    ofs << alpha_[it->second] << "\t" << it->first << std::endl;
+       it != dic_.end(); ++it) {
+    ofs << alpha_[it->second] << "\t" << it->first << "\n";
+  }
 
   return true;
 }

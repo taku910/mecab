@@ -150,6 +150,8 @@ class CRFLearner {
 #ifdef MECAB_USE_THREAD
     std::cout << "threads:             " << thread_num << std::endl;
 #endif
+    std::cout << "charset:             " <<
+        tokenizer.dictionary_info()->charset << std::endl;
     std::cout << "C(sigma^2):          " << C          << std::endl
               << std::endl;
 
@@ -242,7 +244,16 @@ class CRFLearner {
     std::string txtfile = model;
     txtfile += ".txt";
 
-    CHECK_DIE(feature_index.save(txtfile.c_str()));
+    std::ostringstream oss;
+    oss << "Number of sentences: " << x.size() << std::endl;
+    oss << "Number of features: " << psize     << std::endl;
+    oss << "eta: " << eta       << std::endl;
+    oss << "freq: " << freq      << std::endl;
+    oss << "C: " << C          << std::endl;
+    oss << "charset: " <<  tokenizer.dictionary_info()->charset << std::endl;
+    const std::string header = oss.str();
+
+    CHECK_DIE(feature_index.save(txtfile.c_str(), header.c_str()));
 
     if (!text_only) {
       CHECK_DIE(feature_index.convert(txtfile.c_str(), model.c_str()));

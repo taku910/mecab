@@ -75,7 +75,7 @@ class EncoderFeatureIndex: public FeatureIndex {
   void close();
   void clear();
 
-  bool save(const char *filename);
+  bool save(const char *filename, const char *header);
   void shrink(size_t, std::vector<double> *) ;
   bool buildFeature(LearnerPath *path);
   void clearcache();
@@ -86,11 +86,16 @@ class DecoderFeatureIndex: public FeatureIndex {
   Mmap<char>         mmap_;
   Darts::DoubleArray da_;
   int id(const char *key);
+  const char *charset_;
  public:
   bool open(const Param &param);
   void clear();
   void close();
   bool buildFeature(LearnerPath *path);
+
+  const char *charset() const {
+    return charset_;
+  }
 };
 }
 
