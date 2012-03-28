@@ -118,8 +118,11 @@ void CharProperty::set_charset(const char *ct) {
 }
 
 int CharProperty::id(const char *key) const {
-  for (int i = 0; i < static_cast<long>(clist_.size()); ++i)
-    if (std::strcmp(key, clist_[i]) == 0) return i;
+  for (int i = 0; i < static_cast<long>(clist_.size()); ++i) {
+    if (std::strcmp(key, clist_[i]) == 0) {
+      return i;
+    }
+  }
   return -1;
 }
 
@@ -127,7 +130,7 @@ bool CharProperty::compile(const char *cfile,
                            const char *ufile,
                            const char *ofile) {
   scoped_fixed_array<char, BUF_SIZE> line;
-  char *col[512];
+  scoped_fixed_array<char *, 512> col;
   size_t id = 0;
   std::vector<Range> range;
   std::map<std::string, CharInfo> category;
@@ -143,8 +146,10 @@ bool CharProperty::compile(const char *cfile,
   }
 
   while (is->getline(line.get(), line.size())) {
-    if (std::strlen(line.get()) == 0 || line[0] == '#') continue;
-    size_t size = tokenize2(line.get(), "\t ", col, sizeof(col));
+    if (std::strlen(line.get()) == 0 || line[0] == '#') {
+      continue;
+    }
+    const size_t size = tokenize2(line.get(), "\t ", col.get(), col.size());
     CHECK_DIE(size >= 2) << "format error: " << line.get();
 
     // 0xFFFF..0xFFFF hoge hoge hgoe #
@@ -170,7 +175,9 @@ bool CharProperty::compile(const char *cfile,
           << "range error: low=" << r.low << " high=" << r.high;
 
       for (size_t i = 1; i < size; ++i) {
-        if (col[i][0] == '#') break;  // skip comments
+        if (col[i][0] == '#') {
+          break;  // skip comments
+        }
         CHECK_DIE(category.find(std::string(col[i])) != category.end())
             << "category [" << col[i] << "] is undefined";
         r.c.push_back(col[i]);
@@ -215,7 +222,7 @@ bool CharProperty::compile(const char *cfile,
 
   std::set<std::string> unk;
   while (is2->getline(line.get(), line.size())) {
-    size_t n = tokenizeCSV(line.get(), col, 2);
+    const size_t n = tokenizeCSV(line.get(), col.get(), 2);
     CHECK_DIE(n >= 1) << "format error: " << line.get();
     const std::string key = col[0];
     CHECK_DIE(category.find(key) != category.end())
@@ -234,16 +241,17 @@ bool CharProperty::compile(const char *cfile,
   {
     std::vector<std::string> tmp;
     tmp.push_back("DEFAULT");
-    CharInfo c = encode(tmp, &category);
+    const CharInfo c = encode(tmp, &category);
     std::fill(table.begin(), table.end(), c);
   }
 
   for (std::vector<Range>::const_iterator it = range.begin();
        it != range.end();
        ++it) {
-    CharInfo c = encode(it->c, &category);
-    for (int i = it->low; i <= it->high; ++i)
+    const CharInfo c = encode(it->c, &category);
+    for (int i = it->low; i <= it->high; ++i) {
       table[i] = c;
+    }
   }
 
   // output binary table

@@ -143,16 +143,18 @@ bool EncoderLearnerTagger::read(std::istream *is,
     LearnerNode *rNode = 0;
     for (LearnerNode *node = begin_node_list_[pos]; node; node = node->bnext) {
       if (corpus[i]->stat == MECAB_EOS_NODE ||
-          node_cmp_eq(*(corpus[i]), *node, eval_size_, unk_eval_size_) )
+          node_cmp_eq(*(corpus[i]), *node, eval_size_, unk_eval_size_)) {
         rNode = node;  // take last node
+      }
     }
 
     LearnerPath *lpath = 0;
-    for (LearnerPath *path = rNode->lpath; path; path = path->lnext)
+    for (LearnerPath *path = rNode->lpath; path; path = path->lnext) {
       if (prev == path->lnode) {
         lpath = path;
         break;
       }
+    }
 
     CHECK_DIE(lpath->fvector) << "lpath is NULL";
     for (const int *f = lpath->fvector; *f != -1; ++f) {
@@ -412,22 +414,5 @@ double EncoderLearnerTagger::gradient(double *expected) {
   }
 
   return Z;
-}
-
-double EncoderLearnerTagger::online_update(double *expected) {
-  viterbi();
-
-  LearnerNode *prev = end_node_list_[0];
-  for (LearnerNode *node = prev->next; node; node = node->next) {
-    for (LearnerPath *path = node->lpath; path; path = path->lnext) {
-      if (prev == path->lnode) {
-        calc_online_update(path, expected);
-        break;
-      }
-    }
-    prev = node;
-  }
-
-  return 0.0;
 }
 }

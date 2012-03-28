@@ -100,7 +100,7 @@ class DictionaryGenerator {
         fi->buildBigramFeature(&path, rit->first.c_str(), lit->first.c_str());
         fi->calcCost(&path);
         ofs << rit->second << ' ' << lit->second << ' '
-            << tocost(path.cost, factor) << std::endl;
+            << tocost(path.cost, factor) << '\n';
       }
     }
 
@@ -157,13 +157,14 @@ class DictionaryGenerator {
       CHECK_DIE(rid > 0) << "CID is not found for " << rfeature;
 
       if (unk) {
-        int c = property.id(w.c_str());
+        const int c = property.id(w.c_str());
         CHECK_DIE(c >= 0) << "unknown property [" << w << "]";
-        path.rnode->char_type = (unsigned char)c;
+        path.rnode->char_type = static_cast<unsigned char>(c);
       } else {
-        size_t mblen;
-        CharInfo cinfo = property.getCharInfo(w.c_str(),
-                                              w.c_str() + w.size(), &mblen);
+        size_t mblen = 0;
+        const CharInfo cinfo = property.getCharInfo(w.c_str(),
+                                                    w.c_str() + w.size(),
+                                                    &mblen);
         path.rnode->char_type = cinfo.default_type;
       }
 
@@ -173,7 +174,7 @@ class DictionaryGenerator {
 
       ofs << w << ',' << lid << ',' << rid << ','
           << tocost(rnode.wcost, factor)
-          << ',' << feature << std::endl;
+          << ',' << feature << '\n';
       ++num;
     }
 

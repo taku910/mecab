@@ -17,7 +17,7 @@
 #define BUFSIZE 2048
 #define POSSIZE 64
 
-#define ADDB(b) do { int id = this->id((b));            \
+#define ADDB(b) do { const int id = this->id((b));  \
     if (id != -1) feature_.push_back(id); } while (0)
 
 #define COPY_FEATURE(ptr) do {                                          \
@@ -158,15 +158,17 @@ void DecoderFeatureIndex::close() {
 void FeatureIndex::calcCost(LearnerNode *node) {
   node->wcost = 0.0;
   if (node->stat == MECAB_EOS_NODE) return;
-  for (const int *f = node->fvector; *f != -1; ++f)
+  for (const int *f = node->fvector; *f != -1; ++f) {
     node->wcost += alpha_[*f];
+  }
 }
 
 void FeatureIndex::calcCost(LearnerPath *path) {
   if (is_empty(path)) return;
   path->cost = path->rnode->wcost;
-  for (const int *f = path->fvector; *f != -1; ++f)
+  for (const int *f = path->fvector; *f != -1; ++f) {
     path->cost += alpha_[*f];
+  }
 }
 
 const char *FeatureIndex::strdup(const char *p) {

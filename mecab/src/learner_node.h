@@ -88,16 +88,18 @@ inline bool node_cmp_eq(const LearnerNode &node1,
 }
 
 inline bool is_empty(LearnerPath *path) {
-  return((!path->rnode->rpath && path->rnode->stat != MECAB_EOS_NODE) ||
-         (!path->lnode->lpath && path->lnode->stat != MECAB_BOS_NODE) );
+  return ((!path->rnode->rpath && path->rnode->stat != MECAB_EOS_NODE) ||
+          (!path->lnode->lpath && path->lnode->stat != MECAB_BOS_NODE) );
 }
 
 inline void calc_expectation(LearnerPath *path, double *expected, double Z) {
-  if ( is_empty(path) ) return;
+  if (is_empty(path)) {
+    return;
+  }
 
-  double c = std::exp(path->lnode->alpha +
-                      path->cost +
-                      path->rnode->beta - Z);
+  const double c = std::exp(path->lnode->alpha +
+                            path->cost +
+                            path->rnode->beta - Z);
 
   for (const int *f = path->fvector; *f != -1; ++f) {
     expected[*f] += c;
@@ -110,35 +112,22 @@ inline void calc_expectation(LearnerPath *path, double *expected, double Z) {
   }
 }
 
-inline void calc_online_update(LearnerPath *path, double *expected) {
-  if ( is_empty(path) ) return;
-
-  for (const int *f = path->fvector; *f != -1; ++f) {
-    expected[*f] += 1.0;
-  }
-
-  if (path->rnode->stat != MECAB_EOS_NODE) {
-    for (const int *f = path->rnode->fvector; *f != -1; ++f) {
-      expected[*f] += 1.0;
-    }
-  }
-}
-
-
 inline void calc_alpha(LearnerNode *n) {
   n->alpha = 0.0;
-  for (LearnerPath *path = n->lpath; path; path = path->lnext)
+  for (LearnerPath *path = n->lpath; path; path = path->lnext) {
     n->alpha = logsumexp(n->alpha,
                          path->cost + path->lnode->alpha,
                          path == n->lpath);
+  }
 }
 
 inline void calc_beta(LearnerNode *n) {
   n->beta = 0.0;
-  for (LearnerPath *path = n->rpath; path; path = path->rnext)
+  for (LearnerPath *path = n->rpath; path; path = path->rnext) {
     n->beta = logsumexp(n->beta,
                         path->cost + path->rnode->beta,
                         path == n->rpath);
+  }
 }
 }
 

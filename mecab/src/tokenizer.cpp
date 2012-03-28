@@ -119,16 +119,16 @@ bool Tokenizer<N, P>::open(const Param &param) {
   const std::string userdic = param.template get<std::string>("userdic");
   if (!userdic.empty()) {
     scoped_fixed_array<char, BUF_SIZE> buf;
-    scoped_fixed_array<char *, BUF_SIZE> _dic;
+    scoped_fixed_array<char *, BUF_SIZE> dicfile;
     std::strncpy(buf.get(), userdic.c_str(), buf.size());
-    size_t n = tokenizeCSV(buf.get(), _dic.get(), _dic.size());
+    const size_t n = tokenizeCSV(buf.get(), dicfile.get(), dicfile.size());
     for (size_t i = 0; i < n; ++i) {
       Dictionary *d = new Dictionary;
-      CHECK_FALSE(d->open(_dic[i], mode)) << d->what();
+      CHECK_FALSE(d->open(dicfile[i], mode)) << d->what();
       CHECK_FALSE(d->type() == 1)
-          << "not a user dictionary: " << _dic[i];
+          << "not a user dictionary: " << dicfile[i];
       CHECK_FALSE(sysdic->isCompatible(*d))
-          << "incompatible dictionary: " << _dic[i];
+          << "incompatible dictionary: " << dicfile[i];
       dic_.push_back(d);
     }
   }
@@ -151,10 +151,10 @@ bool Tokenizer<N, P>::open(const Param &param) {
   unk_tokens_.clear();
   for (size_t i = 0; i < property_.size(); ++i) {
     const char *key = property_.name(i);
-    Dictionary::result_type n = unkdic_.exactMatchSearch(key);
+    const Dictionary::result_type n = unkdic_.exactMatchSearch(key);
     CHECK_FALSE(n.value != -1) << "cannot find UNK category: " << key;
     const Token *token = unkdic_.token(n);
-    size_t size  = unkdic_.token_size(n);
+    size_t size = unkdic_.token_size(n);
     unk_tokens_.push_back(std::make_pair(token, size));
   }
 

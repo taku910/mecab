@@ -39,9 +39,10 @@ int calcCost(const std::string &w, const std::string &feature,
   path.lnode  = &lnode;
   path.rnode  = &rnode;
 
-  size_t mblen;
-  CharInfo cinfo = property->getCharInfo(w.c_str(),
-                                         w.c_str() + w.size(), &mblen);
+  size_t mblen = 0;
+  const CharInfo cinfo = property->getCharInfo(w.c_str(),
+                                               w.c_str() + w.size(),
+                                               &mblen);
   path.rnode->char_type = cinfo.default_type;
   std::string ufeature, lfeature, rfeature;
   rewrite->rewrite2(feature, &ufeature, &lfeature, &rfeature);

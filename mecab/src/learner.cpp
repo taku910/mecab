@@ -16,12 +16,6 @@
 #include "thread.h"
 #include "utils.h"
 
-namespace {
-double toLogProb(double f1, double f2) {
-  return std::log(1.0 * f1 / f2) - VERY_SMALL_LOGPROB;  // avoid 0
-}
-}  // namespace
-
 namespace MeCab {
 
 #define DCONF(file) create_filename(dicdir, std::string(file)).c_str()

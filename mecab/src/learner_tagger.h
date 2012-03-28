@@ -55,7 +55,6 @@ class EncoderLearnerTagger: public LearnerTagger {
   bool read(std::istream *, std::vector<double> *);
   int eval(size_t *, size_t *, size_t *) const;
   double gradient(double *expected);
-  double online_update(double *expected);
   explicit EncoderLearnerTagger(): eval_size_(1024), unk_eval_size_(1024) {}
   virtual ~EncoderLearnerTagger() { close(); }
 

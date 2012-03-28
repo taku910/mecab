@@ -19,7 +19,7 @@ struct CharInfo {
   unsigned int length:       4;
   unsigned int group:        1;
   unsigned int invoke:       1;
-  bool isKindOf(CharInfo c) { return type & c.type; }
+  bool isKindOf(CharInfo c) const { return type & c.type; }
 };
 
 class CharProperty {
