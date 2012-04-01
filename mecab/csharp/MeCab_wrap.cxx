@@ -1997,6 +1997,68 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Model_dictionary_info(void * jarg1) {
 }
 
 
+SWIGEXPORT int SWIGSTDCALL CSharp_Model_transition_cost(void * jarg1, unsigned short jarg2, unsigned short jarg3) {
+  int jresult ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  unsigned short arg2 ;
+  unsigned short arg3 ;
+  int result;
+  
+  arg1 = (MeCab::Model *)jarg1; 
+  arg2 = (unsigned short)jarg2; 
+  arg3 = (unsigned short)jarg3; 
+  {
+    try {
+      result = (int)((MeCab::Model const *)arg1)->transition_cost(arg2,arg3); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Model_lookup(void * jarg1, char * jarg2, char * jarg3, void * jarg4) {
+  void * jresult ;
+  MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *arg3 = (char *) 0 ;
+  MeCab::Lattice *arg4 = (MeCab::Lattice *) 0 ;
+  MeCab::Node *result = 0 ;
+  
+  arg1 = (MeCab::Model *)jarg1; 
+  arg2 = (char *)jarg2; 
+  arg3 = (char *)jarg3; 
+  arg4 = (MeCab::Lattice *)jarg4; 
+  {
+    try {
+      result = (MeCab::Node *)((MeCab::Model const *)arg1)->lookup((char const *)arg2,(char const *)arg3,arg4); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void * SWIGSTDCALL CSharp_Model_createTagger(void * jarg1) {
   void * jresult ;
   MeCab::Model *arg1 = (MeCab::Model *) 0 ;

@@ -92,6 +92,8 @@ class MeCabJNI {
   public final static native long new_Lattice();
   public final static native void Lattice_set_sentence(long jarg1, Lattice jarg1_, String jarg2);
   public final static native long Model_dictionary_info(long jarg1, Model jarg1_);
+  public final static native int Model_transition_cost(long jarg1, Model jarg1_, int jarg2, int jarg3);
+  public final static native long Model_lookup(long jarg1, Model jarg1_, String jarg2, String jarg3, long jarg4, Lattice jarg4_);
   public final static native long Model_createTagger(long jarg1, Model jarg1_);
   public final static native long Model_createLattice(long jarg1, Model jarg1_);
   public final static native boolean Model_swap(long jarg1, Model jarg1_, long jarg2, Model jarg2_);

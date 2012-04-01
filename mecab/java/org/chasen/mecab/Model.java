@@ -40,6 +40,15 @@ public class Model {
     return (cPtr == 0) ? null : new DictionaryInfo(cPtr, false);
   }
 
+  public int transition_cost(int rcAttr, int lcAttr) {
+    return MeCabJNI.Model_transition_cost(swigCPtr, this, rcAttr, lcAttr);
+  }
+
+  public Node lookup(String begin, String end, Lattice lattice) {
+    long cPtr = MeCabJNI.Model_lookup(swigCPtr, this, begin, end, Lattice.getCPtr(lattice), lattice);
+    return (cPtr == 0) ? null : new Node(cPtr, false);
+  }
+
   public Tagger createTagger() {
     long cPtr = MeCabJNI.Model_createTagger(swigCPtr, this);
     return (cPtr == 0) ? null : new Tagger(cPtr, false);

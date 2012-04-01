@@ -48,6 +48,19 @@ public class Model : IDisposable {
     return ret;
   }
 
+  public virtual int transition_cost(ushort rcAttr, ushort lcAttr) {
+    int ret = MeCabPINVOKE.Model_transition_cost(swigCPtr, rcAttr, lcAttr);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual Node lookup(string begin, string end, Lattice lattice) {
+    IntPtr cPtr = MeCabPINVOKE.Model_lookup(swigCPtr, begin, end, Lattice.getCPtr(lattice));
+    Node ret = (cPtr == IntPtr.Zero) ? null : new Node(cPtr, false);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual Tagger createTagger() {
     IntPtr cPtr = MeCabPINVOKE.Model_createTagger(swigCPtr);
     Tagger ret = (cPtr == IntPtr.Zero) ? null : new Tagger(cPtr, false);

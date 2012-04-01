@@ -35,7 +35,7 @@ AC_LANG(C)
 AC_HEADER_STDC
 AC_C_CONST
 AC_C_BIGENDIAN
-AC_CHECK_HEADERS(string.h stdlib.h unistd.h fcntl.h \
+AC_CHECK_HEADERS(string.h stdlib.h unistd.h fcntl.h stdint.h \
 		sys/stat.h sys/mman.h sys/times.h sys/types.h dirent.h \
 	        ctype.h sys/types.h io.h windows.h pthread.h)
 AC_TYPE_OFF_T

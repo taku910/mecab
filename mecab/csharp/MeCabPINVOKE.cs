@@ -434,6 +434,12 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_Model_dictionary_info")]
   public static extern IntPtr Model_dictionary_info(HandleRef jarg1);
 
+  [DllImport("MeCab", EntryPoint="CSharp_Model_transition_cost")]
+  public static extern int Model_transition_cost(HandleRef jarg1, ushort jarg2, ushort jarg3);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Model_lookup")]
+  public static extern IntPtr Model_lookup(HandleRef jarg1, string jarg2, string jarg3, HandleRef jarg4);
+
   [DllImport("MeCab", EntryPoint="CSharp_Model_createTagger")]
   public static extern IntPtr Model_createTagger(HandleRef jarg1);
 

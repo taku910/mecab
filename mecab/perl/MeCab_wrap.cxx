@@ -1993,6 +1993,22 @@ SWIGINTERN void MeCab_Lattice_set_sentence(MeCab::Lattice *self,char const *sent
   }
 
 SWIGINTERN int
+SWIG_AsVal_unsigned_SS_short SWIG_PERL_DECL_ARGS_2(SV * obj, unsigned short *val)
+{
+  unsigned long v;
+  int res = SWIG_AsVal_unsigned_SS_long SWIG_PERL_CALL_ARGS_2(obj, &v);
+  if (SWIG_IsOK(res)) {
+    if ((v > USHRT_MAX)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = static_cast< unsigned short >(v);
+    }
+  }  
+  return res;
+}
+
+
+SWIGINTERN int
 SWIG_AsVal_bool SWIG_PERL_DECL_ARGS_2(SV *obj, bool* val)
 {
   if (obj == &PL_sv_yes) {
@@ -4436,6 +4452,134 @@ XS(_wrap_Model_dictionary_info) {
 }
 
 
+XS(_wrap_Model_transition_cost) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    unsigned short arg2 ;
+    unsigned short arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned short val2 ;
+    int ecode2 = 0 ;
+    unsigned short val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    int result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Model_transition_cost(self,rcAttr,lcAttr);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_transition_cost" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    ecode2 = SWIG_AsVal_unsigned_SS_short SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Model_transition_cost" "', argument " "2"" of type '" "unsigned short""'");
+    } 
+    arg2 = static_cast< unsigned short >(val2);
+    ecode3 = SWIG_AsVal_unsigned_SS_short SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Model_transition_cost" "', argument " "3"" of type '" "unsigned short""'");
+    } 
+    arg3 = static_cast< unsigned short >(val3);
+    {
+      try {
+        result = (int)((MeCab::Model const *)arg1)->transition_cost(arg2,arg3); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(result)); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
+XS(_wrap_Model_lookup) {
+  {
+    MeCab::Model *arg1 = (MeCab::Model *) 0 ;
+    char *arg2 = (char *) 0 ;
+    char *arg3 = (char *) 0 ;
+    MeCab::Lattice *arg4 = (MeCab::Lattice *) 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 ;
+    char *buf2 = 0 ;
+    int alloc2 = 0 ;
+    int res3 ;
+    char *buf3 = 0 ;
+    int alloc3 = 0 ;
+    void *argp4 = 0 ;
+    int res4 = 0 ;
+    int argvi = 0;
+    MeCab::Node *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: Model_lookup(self,begin,end,lattice);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_MeCab__Model, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Model_lookup" "', argument " "1"" of type '" "MeCab::Model const *""'"); 
+    }
+    arg1 = reinterpret_cast< MeCab::Model * >(argp1);
+    res2 = SWIG_AsCharPtrAndSize(ST(1), &buf2, NULL, &alloc2);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Model_lookup" "', argument " "2"" of type '" "char const *""'");
+    }
+    arg2 = reinterpret_cast< char * >(buf2);
+    res3 = SWIG_AsCharPtrAndSize(ST(2), &buf3, NULL, &alloc3);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Model_lookup" "', argument " "3"" of type '" "char const *""'");
+    }
+    arg3 = reinterpret_cast< char * >(buf3);
+    res4 = SWIG_ConvertPtr(ST(3), &argp4,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "Model_lookup" "', argument " "4"" of type '" "MeCab::Lattice *""'"); 
+    }
+    arg4 = reinterpret_cast< MeCab::Lattice * >(argp4);
+    {
+      try {
+        result = (MeCab::Node *)((MeCab::Model const *)arg1)->lookup((char const *)arg2,(char const *)arg3,arg4); 
+      }
+      catch (char *e) {
+        SWIG_exception (SWIG_RuntimeError, e); 
+      }
+      catch (const char *e) {
+        SWIG_exception (SWIG_RuntimeError, (char*)e); 
+      }
+    }
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_mecab_node_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    if (alloc3 == SWIG_NEWOBJ) delete[] buf3;
+    
+    XSRETURN(argvi);
+  fail:
+    
+    if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+    if (alloc3 == SWIG_NEWOBJ) delete[] buf3;
+    
+    SWIG_croak_null();
+  }
+}
+
+
 XS(_wrap_Model_createTagger) {
   {
     MeCab::Model *arg1 = (MeCab::Model *) 0 ;
@@ -6600,6 +6744,8 @@ static swig_command_info swig_commands[] = {
 {"MeCabc::new_Lattice", _wrap_new_Lattice},
 {"MeCabc::Lattice_set_sentence", _wrap_Lattice_set_sentence},
 {"MeCabc::Model_dictionary_info", _wrap_Model_dictionary_info},
+{"MeCabc::Model_transition_cost", _wrap_Model_transition_cost},
+{"MeCabc::Model_lookup", _wrap_Model_lookup},
 {"MeCabc::Model_createTagger", _wrap_Model_createTagger},
 {"MeCabc::Model_createLattice", _wrap_Model_createLattice},
 {"MeCabc::Model_swap", _wrap_Model_swap},

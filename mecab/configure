@@ -17248,7 +17248,7 @@ $as_echo "#define AC_APPLE_UNIVERSAL_BUILD 1" >>confdefs.h
  presetting ac_cv_c_bigendian=no (or yes) will help" "$LINENO" 5 ;;
  esac
 
-for ac_header in string.h stdlib.h unistd.h fcntl.h \
+for ac_header in string.h stdlib.h unistd.h fcntl.h stdint.h \
 		sys/stat.h sys/mman.h sys/times.h sys/types.h dirent.h \
 	        ctype.h sys/types.h io.h windows.h pthread.h
 do :

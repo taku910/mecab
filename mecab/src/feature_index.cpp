@@ -3,6 +3,7 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
+#include <algorithm>
 #include <cstring>
 #include <fstream>
 #include <string>
@@ -122,7 +123,8 @@ bool DecoderFeatureIndex::open(const Param &param) {
   ptr += 32;
   alpha_ = reinterpret_cast<const double *>(ptr);
   ptr += (sizeof(alpha_[0]) * maxid_);
-  da_.set_array(reinterpret_cast<void *>(const_cast<char *>(ptr)));
+  //  da_.set_array(reinterpret_cast<void *>(const_cast<char *>(ptr)));
+  key_ = reinterpret_cast<const uint64_t *>(ptr);
 
   if (!openTemplate(param)) {
     close();
@@ -150,7 +152,7 @@ void EncoderFeatureIndex::close() {
 }
 
 void DecoderFeatureIndex::close() {
-  da_.clear();
+  //  da_.clear();
   mmap_.close();
   maxid_ = 0;
 }
@@ -202,11 +204,13 @@ bool DecoderFeatureIndex::buildFeature(LearnerPath *path) {
       << " cannot rewrite pattern: "
       << path->rnode->feature;
 
-  if (!buildUnigramFeature(path, ufeature2.c_str()))
+  if (!buildUnigramFeature(path, ufeature2.c_str())) {
     return false;
+  }
 
-  if (!buildBigramFeature(path, rfeature1.c_str(), lfeature2.c_str()))
+  if (!buildBigramFeature(path, rfeature1.c_str(), lfeature2.c_str())) {
     return false;
+  }
 
   return true;
 }
@@ -245,7 +249,9 @@ bool EncoderFeatureIndex::buildFeature(LearnerPath *path) {
       path->rnode->fvector = it->second.first;
       it->second.second++;
     } else {
-      if (!buildUnigramFeature(path, ufeature2.c_str())) return false;
+      if (!buildUnigramFeature(path, ufeature2.c_str())) {
+        return false;
+      }
       feature_cache_.insert(std::pair
                             <std::string, std::pair<const int *, size_t> >
                             (key,
@@ -382,7 +388,16 @@ bool FeatureIndex::buildBigramFeature(LearnerPath *path,
 }
 
 int DecoderFeatureIndex::id(const char *key) {
-  return da_.exactMatchSearch<Darts::DoubleArray::result_type>(key);
+  const uint64_t fp = fingerprint(key, std::strlen(key));
+  const uint64_t *result = std::lower_bound(key_,
+                                            key_ + maxid_,
+                                            fp);
+  if (result == key_ + maxid_ || *result != fp) {
+    return -1;
+  }
+  const int n = static_cast<int>(result - key_);
+  CHECK_DIE(key_[n] == fp);
+  return n;
 }
 
 int EncoderFeatureIndex::id(const char *key) {
@@ -398,7 +413,9 @@ int EncoderFeatureIndex::id(const char *key) {
 
 void EncoderFeatureIndex::shrink(size_t freq,
                                  std::vector<double> *observed) {
-  if (freq <= 1) return;
+  if (freq <= 1) {
+    return;
+  }
 
   // count fvector
   std::vector<size_t> freqv(maxid_);
@@ -464,7 +481,7 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
 
   scoped_fixed_array<char, BUF_SIZE> buf;
   char *column[4];
-  std::map<std::string, double> dic;
+  std::vector<std::pair<uint64_t, double> > dic;
   std::string charset;
 
   while (ifs.getline(buf.get(), buf.size())) {
@@ -483,15 +500,14 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
   while (ifs.getline(buf.get(), buf.size())) {
     CHECK_DIE(tokenize2(buf.get(), "\t", column, 2) == 2)
         << "format error: " << buf.get();
-
-    dic.insert(std::pair<std::string, double>
-               (std::string(column[1]), atof(column[0]) ));
+    const uint64_t fp = fingerprint(std::string(column[1]));
+    const double alpha = atof(column[0]);
+    dic.push_back(std::pair<uint64_t, double>(fp, alpha));
   }
 
   std::ofstream ofs(WPATH(binfile), std::ios::out | std::ios::binary);
   CHECK_DIE(ofs) << "permission denied: " << binfile;
 
-  std::vector<char *> key;
   unsigned int size = static_cast<unsigned int>(dic.size());
   ofs.write(reinterpret_cast<const char*>(&size), sizeof(size));
 
@@ -500,18 +516,17 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
   std::strncpy(charset_buf, charset.c_str(), 31);
   ofs.write(reinterpret_cast<const char *>(charset_buf),  sizeof(charset_buf));
 
-  for (std::map<std::string, double>::const_iterator
-           it = dic.begin(); it != dic.end(); ++it) {
-    key.push_back(const_cast<char*>(it->first.c_str()));
-    ofs.write(reinterpret_cast<const char*>(&it->second), sizeof(it->second));
+  std::sort(dic.begin(), dic.end());
+
+  for (size_t i = 0; i < dic.size(); ++i) {
+    const double alpha = dic[i].second;
+    ofs.write(reinterpret_cast<const char *>(&alpha), sizeof(alpha));
   }
 
-  Darts::DoubleArray da;
-  CHECK_DIE(da.build(key.size(), &key[0], 0, 0, 0) == 0)
-      << "unkown error in building double array: " << binfile;
-
-  ofs.write(reinterpret_cast<const char*>(da.array()),
-            da.unit_size() * da.size());
+  for (size_t i = 0; i < dic.size(); ++i) {
+    const uint64_t fp = dic[i].first;
+    ofs.write(reinterpret_cast<const char *>(&fp), sizeof(fp));
+  }
 
   return true;
 }

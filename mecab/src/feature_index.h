@@ -82,11 +82,6 @@ class EncoderFeatureIndex: public FeatureIndex {
 };
 
 class DecoderFeatureIndex: public FeatureIndex {
- private:
-  Mmap<char>         mmap_;
-  Darts::DoubleArray da_;
-  int id(const char *key);
-  const char *charset_;
  public:
   bool open(const Param &param);
   void clear();
@@ -96,6 +91,12 @@ class DecoderFeatureIndex: public FeatureIndex {
   const char *charset() const {
     return charset_;
   }
+
+ private:
+  Mmap<char>  mmap_;
+  const uint64_t *key_;
+  int id(const char *key);
+  const char *charset_;
 };
 }
 

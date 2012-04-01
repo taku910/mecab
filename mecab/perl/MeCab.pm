@@ -268,6 +268,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 %OWNER = ();
 %ITERATORS = ();
 *dictionary_info = *MeCabc::Model_dictionary_info;
+*transition_cost = *MeCabc::Model_transition_cost;
+*lookup = *MeCabc::Model_lookup;
 *createTagger = *MeCabc::Model_createTagger;
 *createLattice = *MeCabc::Model_createLattice;
 *swap = *MeCabc::Model_swap;

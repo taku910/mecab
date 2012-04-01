@@ -18,6 +18,24 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#else  // HAVE_STDINT_H
+#if defined(_WIN32) && !defined(__CYGWIN__)
+#if defined(_MSC_VER) && (_MSC_VER <= 1500)
+typedef unsigned char uint8_t;
+typedef unsigned long uint32_t;
+typedef unsigned long long uint64_t;
+#else  // _MSC_VER
+#include <stdint.h>
+#endif  // _MSC_VER
+#else   // _WIN32
+typedef unsigned char uint8_t;
+typedef unsigned long uint32_t;
+typedef unsigned __int64 uint64_t;
+#endif  // _WIN32
+#endif  // HAVE_STDINT_H
+
 namespace MeCab {
 
 class Param;
@@ -225,6 +243,10 @@ inline char getEscapedChar(const char p) {
 
   return '\0';  // never be here
 }
+
+// return 64 bit hash
+uint64_t fingerprint(const char *str, size_t size);
+uint64_t fingerprint(const std::string &str);
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
 std::wstring Utf8ToWide(const std::string &input);

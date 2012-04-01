@@ -236,6 +236,8 @@ class Model(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, Model, name)
     __repr__ = _swig_repr
     def dictionary_info(self): return _MeCab.Model_dictionary_info(self)
+    def transition_cost(self, *args): return _MeCab.Model_transition_cost(self, *args)
+    def lookup(self, *args): return _MeCab.Model_lookup(self, *args)
     def createTagger(self): return _MeCab.Model_createTagger(self)
     def createLattice(self): return _MeCab.Model_createLattice(self)
     def swap(self, *args): return _MeCab.Model_swap(self, *args)
