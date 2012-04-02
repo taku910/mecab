@@ -158,8 +158,8 @@ bool Iconv::convert(std::string *str) {
 
   if (to_cp_ == 1200 || to_cp_ == 1201) {
     str->resize(2 * wide_len);
-    memcpy(const_cast<char *>(str->data()),
-           reinterpret_cast<char *>(wide_str.get()), wide_len * 2);
+    std::memcpy(const_cast<char *>(str->data()),
+                reinterpret_cast<char *>(wide_str.get()), wide_len * 2);
     if (to_cp_ == 1201) {
       char *buf = const_cast<char *>(str->data());
       for (size_t i = 0; i < 2 * wide_len; i += 2) {

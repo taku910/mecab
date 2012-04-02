@@ -401,7 +401,6 @@ namespace {
 #define FORCE_INLINE    __forceinline
 
 #define ROTL32(x,y)     _rotl(x,y)
-#define ROTL64(x,y)     _rotl64(x,y)
 
 #define BIG_CONSTANT(x) (x)
 
@@ -411,20 +410,11 @@ namespace {
 
 #define FORCE_INLINE __attribute__((always_inline))
 
-inline uint32_t rotl32 ( uint32_t x, int8_t r )
-{
+inline uint32_t rotl32 ( uint32_t x, uint8_t r ) {
   return (x << r) | (x >> (32 - r));
 }
 
-inline uint64_t rotl64 ( uint64_t x, int8_t r )
-{
-  return (x << r) | (x >> (64 - r));
-}
-
 #define ROTL32(x,y)     rotl32(x,y)
-#define ROTL64(x,y)     rotl64(x,y)
-
-#define BIG_CONSTANT(x) (x##LLU)
 
 #endif // !defined(_MSC_VER)
 
@@ -433,10 +423,6 @@ inline uint64_t rotl64 ( uint64_t x, int8_t r )
 // handle aligned reads, do the conversion here
 
 FORCE_INLINE uint32_t getblock ( const uint32_t * p, int i ) {
-  return p[i];
-}
-
-FORCE_INLINE uint64_t getblock ( const uint64_t * p, int i ) {
   return p[i];
 }
 
@@ -453,20 +439,8 @@ FORCE_INLINE uint32_t fmix (uint32_t h) {
   return h;
 }
 
-//----------
-
-FORCE_INLINE uint64_t fmix (uint64_t k){
-  k ^= k >> 33;
-  k *= BIG_CONSTANT(0xff51afd7ed558ccd);
-  k ^= k >> 33;
-  k *= BIG_CONSTANT(0xc4ceb9fe1a85ec53);
-  k ^= k >> 33;
-
-  return k;
-}
-
 void MurmurHash3_x86_128(const void * key, const int len,
-                         uint32_t seed, void * out) {
+                         uint32_t seed, char *out) {
   const uint8_t * data = (const uint8_t*)key;
   const int nblocks = len / 16;
 
@@ -513,7 +487,6 @@ void MurmurHash3_x86_128(const void * key, const int len,
   // tail
 
   const uint8_t * tail = (const uint8_t*)(data + nblocks*16);
-
   uint32_t k1 = 0;
   uint32_t k2 = 0;
   uint32_t k3 = 0;
@@ -561,17 +534,18 @@ void MurmurHash3_x86_128(const void * key, const int len,
   h1 += h2; h1 += h3; h1 += h4;
   h2 += h1; h3 += h1; h4 += h1;
 
-  ((uint32_t*)out)[0] = h1;
-  ((uint32_t*)out)[1] = h2;
-  ((uint32_t*)out)[2] = h3;
-  ((uint32_t*)out)[3] = h4;
+  std::memcpy(out, reinterpret_cast<char *>(&h1), 4);
+  std::memcpy(out + 4, reinterpret_cast<char *>(&h2), 4);
+  std::memcpy(out + 8, reinterpret_cast<char *>(&h3), 4);
+  std::memcpy(out+ 12, reinterpret_cast<char *>(&h4), 4);
 }
 }
 
 uint64_t fingerprint(const char *str, size_t size) {
   uint64_t result[2] = { 0 };
   const uint32_t kFingerPrint32Seed = 0xfd14deff;
-  MurmurHash3_x86_128(str, size, kFingerPrint32Seed, result);
+  MurmurHash3_x86_128(str, size, kFingerPrint32Seed,
+		      reinterpret_cast<char *>(result));
   return result[0];
 }
 
