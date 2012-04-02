@@ -471,16 +471,6 @@ Filler.csv       Noun.nai.csv       Noun.proper.csv  Suffix.csv       feature.de
 </ul>
 
 <p>
-mecab-cost-train はバイナリモデルの作成の時に大量のメモリを消費します. 
-以下のようにバイナリモデルの作成を別プロセスで行うことでメモリ消費を
-抑えることができます. 
-<pre>
-% /usr/local/libexec/mecab/mecab-cost-train -y -c 1.0 corpus model
-% /usr/local/libexec/mecab/mecab-cost-train -b model.txt model
-</pre>
-</p>
-
-<p>
 ハイパーパラメータCは, 学習の「強さ」を決めます. 
 C を大きくすると, 学習データにできるだけフィットしようとしますが, 
 過学習する可能性があります.  小さくすると, 過学習を避けようとしますが, 十分な学習ができない可能性があります. 
