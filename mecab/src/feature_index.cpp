@@ -113,18 +113,13 @@ bool EncoderFeatureIndex::open(const Param &param) {
 bool DecoderFeatureIndex::open(const Param &param) {
   const std::string modelfile = param.get<std::string>("model");
 
-  CHECK_DIE(mmap_.open(modelfile.c_str())) << mmap_.what();
-
-  const char *ptr = mmap_.begin();
-  unsigned int maxid;
-  read_static<unsigned int>(&ptr, maxid);
-  maxid_ = static_cast<size_t>(maxid);
-  charset_ = ptr;
-  ptr += 32;
-  alpha_ = reinterpret_cast<const double *>(ptr);
-  ptr += (sizeof(alpha_[0]) * maxid_);
-  //  da_.set_array(reinterpret_cast<void *>(const_cast<char *>(ptr)));
-  key_ = reinterpret_cast<const uint64_t *>(ptr);
+  // open the file as binary mode again and fallback to text file
+  if (!openBinaryModel(modelfile.c_str())) {
+    std::cout << modelfile
+              << " is not a binary model. reopen it as text mode..." << std::endl;
+    CHECK_DIE(openTextModel(modelfile.c_str())) <<
+        "no such file or directory: " << modelfile;
+  }
 
   if (!openTemplate(param)) {
     close();
@@ -132,6 +127,40 @@ bool DecoderFeatureIndex::open(const Param &param) {
   }
 
   return true;
+}
+
+bool DecoderFeatureIndex::openFromArray(const char *begin, const char *end) {
+  const char *ptr = begin;
+  unsigned int maxid = 0;
+  read_static<unsigned int>(&ptr, maxid);
+  maxid_ = static_cast<size_t>(maxid);
+  const size_t file_size = static_cast<size_t>(end - begin);
+  const size_t expected_file_size =
+      (sizeof(double) + sizeof(uint64_t)) * maxid_ + sizeof(maxid) + 32;
+  if (expected_file_size != file_size) {
+    return false;
+  }
+  charset_ = ptr;
+  ptr += 32;
+  alpha_ = reinterpret_cast<const double *>(ptr);
+  ptr += (sizeof(alpha_[0]) * maxid_);
+  key_ = reinterpret_cast<const uint64_t *>(ptr);
+  return true;
+}
+
+bool DecoderFeatureIndex::openBinaryModel(const char *filename) {
+  CHECK_DIE(mmap_.open(filename)) << mmap_.what();
+  if (!openFromArray(mmap_.begin(), mmap_.end())) {
+    mmap_.close();
+    return false;
+  }
+  return true;
+}
+
+bool DecoderFeatureIndex::openTextModel(const char *filename) {
+  FeatureIndex::convert(filename, &model_buffer_);
+  return openFromArray(model_buffer_.data(),
+                       model_buffer_.data() + model_buffer_.size());
 }
 
 void DecoderFeatureIndex::clear() {
@@ -152,8 +181,8 @@ void EncoderFeatureIndex::close() {
 }
 
 void DecoderFeatureIndex::close() {
-  //  da_.clear();
   mmap_.close();
+  model_buffer_.clear();
   maxid_ = 0;
 }
 
@@ -423,16 +452,18 @@ void EncoderFeatureIndex::shrink(size_t freq,
   for (std::map<std::string, std::pair<const int*, size_t> >::const_iterator
            it = feature_cache_.begin();
        it != feature_cache_.end(); ++it) {
-    for (const int *f = it->second.first; *f != -1; ++f)
+    for (const int *f = it->second.first; *f != -1; ++f) {
       freqv[*f] += it->second.second;  // freq
+    }
   }
 
   // make old2new map
   maxid_ = 0;
   std::map<int, int> old2new;
   for (size_t i = 0; i < freqv.size(); ++i) {
-    if (freqv[i] >= freq)
+    if (freqv[i] >= freq) {
       old2new.insert(std::pair<int, int>(i, maxid_++));
+    }
   }
 
   // update dic_
@@ -465,8 +496,9 @@ void EncoderFeatureIndex::shrink(size_t freq,
   std::vector<double> observed_new(maxid_);
   for (size_t i = 0; i < observed->size(); ++i) {
     std::map<int, int>::const_iterator it = old2new.find(static_cast<int>(i));
-    if (it != old2new.end())
+    if (it != old2new.end()) {
       observed_new[it->second] = (*observed)[i];
+    }
   }
 
   *observed = observed_new;  // copy
@@ -474,7 +506,7 @@ void EncoderFeatureIndex::shrink(size_t freq,
   return;
 }
 
-bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
+bool FeatureIndex::convert(const char* txtfile, std::string *output) {
   std::ifstream ifs(WPATH(txtfile));
 
   CHECK_DIE(ifs) << "no such file or directory: " << txtfile;
@@ -505,27 +537,25 @@ bool FeatureIndex::convert(const char* txtfile, const char *binfile) {
     dic.push_back(std::pair<uint64_t, double>(fp, alpha));
   }
 
-  std::ofstream ofs(WPATH(binfile), std::ios::out | std::ios::binary);
-  CHECK_DIE(ofs) << "permission denied: " << binfile;
-
+  output->clear();
   unsigned int size = static_cast<unsigned int>(dic.size());
-  ofs.write(reinterpret_cast<const char*>(&size), sizeof(size));
+  output->append(reinterpret_cast<const char*>(&size), sizeof(size));
 
   char charset_buf[32];
   std::fill(charset_buf, charset_buf + sizeof(charset_buf), '\0');
   std::strncpy(charset_buf, charset.c_str(), 31);
-  ofs.write(reinterpret_cast<const char *>(charset_buf),  sizeof(charset_buf));
+  output->append(reinterpret_cast<const char *>(charset_buf),  sizeof(charset_buf));
 
   std::sort(dic.begin(), dic.end());
 
   for (size_t i = 0; i < dic.size(); ++i) {
     const double alpha = dic[i].second;
-    ofs.write(reinterpret_cast<const char *>(&alpha), sizeof(alpha));
+    output->append(reinterpret_cast<const char *>(&alpha), sizeof(alpha));
   }
 
   for (size_t i = 0; i < dic.size(); ++i) {
     const uint64_t fp = dic[i].first;
-    ofs.write(reinterpret_cast<const char *>(&fp), sizeof(fp));
+    output->append(reinterpret_cast<const char *>(&fp), sizeof(fp));
   }
 
   return true;

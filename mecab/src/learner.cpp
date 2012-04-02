@@ -64,7 +64,6 @@ class CRFLearner {
 
     const double C = param->get<double>("cost");
     const double eta = param->get<double>("eta");
-    const bool text_only = param->get<bool>("text-only");
     const size_t eval_size = param->get<size_t>("eval-size");
     const size_t unk_eval_size = param->get<size_t>("unk-eval-size");
     const size_t freq = param->get<size_t>("freq");
@@ -235,9 +234,6 @@ class CRFLearner {
 
     std::cout << "\nDone! writing model file ... " << std::endl;
 
-    std::string txtfile = model;
-    txtfile += ".txt";
-
     std::ostringstream oss;
     oss << "Number of sentences: " << x.size() << std::endl;
     oss << "Number of features: " << psize     << std::endl;
@@ -247,11 +243,7 @@ class CRFLearner {
     oss << "charset: " <<  tokenizer.dictionary_info()->charset << std::endl;
     const std::string header = oss.str();
 
-    CHECK_DIE(feature_index.save(txtfile.c_str(), header.c_str()));
-
-    if (!text_only) {
-      CHECK_DIE(feature_index.convert(txtfile.c_str(), model.c_str()));
-    }
+    CHECK_DIE(feature_index.save(model.c_str(), header.c_str()));
 
     return 0;
   }
@@ -270,8 +262,6 @@ class Learner {
       { "eta",      'e',  "0.001", "DIR",
         "set FLOAT for tolerance of termination criterion" },
       { "thread",   'p',  "1",     "INT",    "number of threads(default 1)" },
-      { "build",    'b',  0,  0,   "build binary model from text model"},
-      { "text-only", 'y',  0,  0,   "output text model only" },
       { "version",  'v',  0,   0,  "show the version and exit"  },
       { "help",     'h',  0,   0,  "show this help and exit."      },
       { 0, 0, 0, 0 }
@@ -289,6 +279,7 @@ class Learner {
       return 0;
     }
 
+#if 0
     // build mode
     {
       const bool build = param.get<bool>("build");
@@ -306,6 +297,7 @@ class Learner {
         return 0;
       }
     }
+#endif
 
     return CRFLearner::run(&param);
   }
