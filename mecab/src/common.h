@@ -45,6 +45,7 @@
 #define LEFT_ID_FILE            "left-id.def"
 #define RIGHT_ID_FILE           "right-id.def"
 #define POS_ID_FILE             "pos-id.def"
+#define CRF_MODEL_FILE          "crf-model.bin"
 #define DICRC                   "dicrc"
 #define BOS_KEY                 "BOS/EOS"
 
@@ -53,8 +54,6 @@
 #define CHAR_PROPERTY_DEF_DEFAULT "DEFAULT 1 0 0\nSPACE   0 1 0\n0x0020 SPACE\n"
 #define UNK_DEF_DEFAULT           "DEFAULT,0,0,0,*\nSPACE,0,0,0,*\n"
 #define MATRIX_DEF_DEFAULT        "1 1\n0 0 0\n"
-
-#define VERY_SMALL_LOGPROB      0.0001
 
 #ifdef MECAB_USE_UTF8_ONLY
 #define MECAB_DEFAULT_CHARSET "UTF-8"
