@@ -81,13 +81,7 @@ class Dictionary {
 
   static bool compile(const Param &param,
                       const std::vector<std::string> &dics,
-                      const char *matrix_file,
-                      const char *matrix_bin_file,
-                      const char *left_id_file,
-                      const char *right_id_file,
-                      const char *rewrite_file,
-                      const char* pos_id_file,
-                      const char* output);  // outputs
+                      const char *output);  // outputs
 
   const char *what() { return what_.str(); }
 

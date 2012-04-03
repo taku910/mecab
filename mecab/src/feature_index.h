@@ -33,12 +33,12 @@ class FeatureIndex {
   size_t               maxid_;
   const double         *alpha_;
 
-  virtual int id(const char *) = 0;
+  virtual int id(const char *key) = 0;
   const char* getIndex(char **, char **, size_t);
-  bool openTemplate(const Param &);
+  bool openTemplate(const Param &param);
 
  public:
-  virtual bool open(const Param &) = 0;
+  virtual bool open(const Param &param) = 0;
   virtual void clear() = 0;
   virtual void close() = 0;
   virtual bool buildFeature(LearnerPath *path) = 0;
@@ -56,6 +56,7 @@ class FeatureIndex {
   const char *strdup(const char *str);
 
   static bool convert(const char *text_filename, std::string *output);
+  static bool compile(const char *text_filename, const char *binary_filename);
 
   explicit FeatureIndex(): feature_freelist_(8192 * 32),
                            char_freelist_(8192 * 32),
@@ -83,6 +84,7 @@ class EncoderFeatureIndex: public FeatureIndex {
 class DecoderFeatureIndex: public FeatureIndex {
  public:
   bool open(const Param &param);
+
   void clear();
   void close();
   bool buildFeature(LearnerPath *path);

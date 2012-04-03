@@ -121,9 +121,6 @@ class DictionaryGenerator {
     std::ofstream ofs(WPATH(ofile));
     CHECK_DIE(ofs) << "permission denied: " << ofile;
 
-    std::string w, feature, ufeature, lfeature, rfeature;
-    int lid, rid;
-
     std::cout <<  "emitting " << ofile << " ... " << std::flush;
 
     LearnerPath path;
@@ -143,15 +140,13 @@ class DictionaryGenerator {
       const size_t n = tokenizeCSV(line.get(), col, 5);
       CHECK_DIE(n == 5) << "format error: " << line.get();
 
-      w = std::string(col[0]);
-      lid = std::atoi(col[1]);
-      rid = std::atoi(col[2]);
-      //      cost = std::atoi(col[3]);
-      feature = std::string(col[4]);
+      std::string w = std::string(col[0]);
+      const std::string feature = std::string(col[4]);
 
+      std::string ufeature, lfeature, rfeature;
       rewrite->rewrite2(feature, &ufeature, &lfeature, &rfeature);
-      lid = cid.lid(lfeature.c_str());
-      rid = cid.rid(rfeature.c_str());
+      const int lid = cid.lid(lfeature.c_str());
+      const int rid = cid.rid(rfeature.c_str());
 
       CHECK_DIE(lid > 0) << "CID is not found for " << lfeature;
       CHECK_DIE(rid > 0) << "CID is not found for " << rfeature;
@@ -282,6 +277,7 @@ class DictionaryGenerator {
     copy(DCONF(REWRITE_FILE), OCONF(REWRITE_FILE));
     copy(DCONF(DICRC), OCONF(DICRC));
     copy(DCONF(FEATURE_FILE), OCONF(FEATURE_FILE));
+    copy(model.c_str(), OCONF(MODEL_DEF_FILE));
 
 #undef OCONF
 #undef DCONF

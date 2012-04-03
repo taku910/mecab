@@ -45,7 +45,8 @@
 #define LEFT_ID_FILE            "left-id.def"
 #define RIGHT_ID_FILE           "right-id.def"
 #define POS_ID_FILE             "pos-id.def"
-#define CRF_MODEL_FILE          "crf-model.bin"
+#define MODEL_DEF_FILE          "model.def"
+#define MODEL_FILE              "model.bin"
 #define DICRC                   "dicrc"
 #define BOS_KEY                 "BOS/EOS"
 

@@ -86,16 +86,19 @@ bool FeatureIndex::openTemplate(const Param &param) {
   bigram_templs_.clear();
 
   while (ifs.getline(buf.get(), buf.size())) {
-    if (buf[0] == '\0' || buf[0] == '#' || buf[0] == ' ') continue;
+    if (buf[0] == '\0' || buf[0] == '#' || buf[0] == ' ') {
+      continue;
+    }
     CHECK_DIE(tokenize2(buf.get(), "\t ", column, 2) == 2)
         << "format error: " <<filename;
 
-    if (std::strcmp(column[0], "UNIGRAM") == 0)
+    if (std::strcmp(column[0], "UNIGRAM") == 0) {
       unigram_templs_.push_back(this->strdup(column[1]));
-    else if (std::strcmp(column[0], "BIGRAM") == 0 )
+    } else if (std::strcmp(column[0], "BIGRAM") == 0 ) {
       bigram_templs_.push_back(this->strdup(column[1]));
-    else
+    } else {
       CHECK_DIE(false) << "format error: " <<  filename;
+    }
   }
 
   // second, open rewrite rules
@@ -129,6 +132,7 @@ bool DecoderFeatureIndex::open(const Param &param) {
   return true;
 }
 
+
 bool DecoderFeatureIndex::openFromArray(const char *begin, const char *end) {
   const char *ptr = begin;
   unsigned int maxid = 0;
@@ -158,7 +162,7 @@ bool DecoderFeatureIndex::openBinaryModel(const char *filename) {
 }
 
 bool DecoderFeatureIndex::openTextModel(const char *filename) {
-  FeatureIndex::convert(filename, &model_buffer_);
+  CHECK_DIE(FeatureIndex::convert(filename, &model_buffer_));
   return openFromArray(model_buffer_.data(),
                        model_buffer_.data() + model_buffer_.size());
 }
@@ -506,10 +510,22 @@ void EncoderFeatureIndex::shrink(size_t freq,
   return;
 }
 
+bool FeatureIndex::compile(const char* txtfile, const char *binfile) {
+  std::string buf;
+  if (!FeatureIndex::convert(txtfile, &buf)) {
+    return false;
+  }
+  std::ofstream ofs(WPATH(binfile), std::ios::binary|std::ios::out);
+  CHECK_DIE(ofs) << "permission denied: " << binfile;
+  ofs.write(buf.data(), buf.size());
+  return true;
+}
+
 bool FeatureIndex::convert(const char* txtfile, std::string *output) {
   std::ifstream ifs(WPATH(txtfile));
-
-  CHECK_DIE(ifs) << "no such file or directory: " << txtfile;
+  if (!ifs) {
+    return false;
+  }
 
   scoped_fixed_array<char, BUF_SIZE> buf;
   char *column[4];

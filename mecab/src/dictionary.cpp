@@ -4,6 +4,7 @@
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 #include <fstream>
+#include <climits>
 #include "connector.h"
 #include "context_id.h"
 #include "char_property.h"
@@ -20,7 +21,14 @@
 
 namespace MeCab {
 
-static const unsigned int DictionaryMagicID = 0xef718f77u;
+const unsigned int DictionaryMagicID = 0xef718f77u;
+
+int toInt(const char *str) {
+  if (!str || std::strlen(str) == 0) {
+    return INT_MAX;
+  }
+  return std::atoi(str);
+}
 
 int calcCost(const std::string &w, const std::string &feature,
              int factor,
@@ -113,45 +121,47 @@ void Dictionary::close() {
 
 bool Dictionary::compile(const Param &param,
                          const std::vector<std::string> &dics,
-                         const char *matrix_file,
-                         const char *matrix_bin_file,
-                         const char *left_id_file,
-                         const char *right_id_file,
-                         const char *rewrite_file,
-                         const char *pos_id_file,
                          const char *output) {
   Connector matrix;
-  scoped_ptr<DictionaryRewriter> rewrite(0);
-  scoped_ptr<POSIDGenerator> posid(0);
-  scoped_ptr<DecoderFeatureIndex> fi(0);
-  scoped_ptr<ContextID> cid(0);
-  scoped_ptr<Writer> writer(0);
-  scoped_ptr<Lattice> lattice(0);
-  scoped_ptr<StringBuffer> os(0);
-  scoped_ptr<CharProperty> property(0);
+  scoped_ptr<DictionaryRewriter> rewrite;
+  scoped_ptr<POSIDGenerator> posid;
+  scoped_ptr<DecoderFeatureIndex> fi;
+  scoped_ptr<ContextID> cid;
+  scoped_ptr<Writer> writer;
+  scoped_ptr<Lattice> lattice;
+  scoped_ptr<StringBuffer> os;
+  scoped_ptr<CharProperty> property;
   Node node;
+
+  const std::string dicdir = param.get<std::string>("dicdir");
+
+#define DCONF(file) create_filename(dicdir, std::string(file));
+
+  const std::string matrix_file     = DCONF(MATRIX_DEF_FILE);
+  const std::string matrix_bin_file = DCONF(MATRIX_FILE);
+  const std::string left_id_file    = DCONF(LEFT_ID_FILE);
+  const std::string right_id_file   = DCONF(RIGHT_ID_FILE);
+  const std::string rewrite_file    = DCONF(REWRITE_FILE);
+  const std::string pos_id_file     = DCONF(POS_ID_FILE);
 
   std::vector<std::pair<std::string, Token*> > dic;
 
   size_t offset  = 0;
   unsigned int lexsize = 0;
-  std::string w, feature, ufeature, lfeature, rfeature, fbuf, key;
-  int lid, rid, cost;
+  std::string fbuf;
 
   const std::string from = param.get<std::string>("dictionary-charset");
   const std::string to = param.get<std::string>("charset");
-  const std::string model = param.get<std::string>("model");
   const bool wakati = param.get<bool>("wakati");
   const int type = param.get<int>("type");
   const std::string node_format = param.get<std::string>("node-format");
   const int factor = param.get<int>("cost-factor");
   CHECK_DIE(factor > 0)   << "cost factor needs to be positive value";
-  int userdic_cost_mode = param.get<int>("userdic-cost-mode");
-  if (userdic_cost_mode == -1) {
-    userdic_cost_mode = model.empty() ? 0 : 1;
+
+  std::string model_file = param.get<std::string>("model");
+  if (model_file.empty()) {
+    model_file = DCONF(MODEL_FILE);
   }
-  CHECK_DIE(userdic_cost_mode >= 0 && userdic_cost_mode <= 2)
-      << "userdic-cost-mode must be 0, 1, or 2";
 
   // for backward compatibility
   std::string config_charset = param.get<std::string>("config-charset");
@@ -177,13 +187,14 @@ bool Dictionary::compile(const Param &param,
     memset(&node, 0, sizeof(node));
   }
 
-  if (!matrix.openText(matrix_file) && !matrix.open(matrix_bin_file)) {
+  if (!matrix.openText(matrix_file.c_str()) &&
+      !matrix.open(matrix_bin_file.c_str())) {
     matrix.set_left_size(1);
     matrix.set_right_size(1);
   }
 
   posid.reset(new POSIDGenerator);
-  posid->open(pos_id_file, &config_iconv);
+  posid->open(pos_id_file.c_str(), &config_iconv);
 
   std::istringstream iss(UNK_DEF_DEFAULT);
 
@@ -210,45 +221,45 @@ bool Dictionary::compile(const Param &param,
       const size_t n = tokenizeCSV(line.get(), col, 5);
       CHECK_DIE(n == 5) << "format error: " << line.get();
 
-      w = col[0];
-      lid = std::atoi(col[1]);
-      rid = std::atoi(col[2]);
-      cost = std::atoi(col[3]);
-      feature = col[4];
-      int pid = posid->id(feature.c_str());
+      std::string w = col[0];
+      int lid = toInt(col[1]);
+      int rid = toInt(col[2]);
+      int cost = toInt(col[3]);
+      std::string feature = col[4];
+      const int pid = posid->id(feature.c_str());
 
-      if (!model.empty() && userdic_cost_mode >= 1) {
+      if (cost == INT_MAX) {
+        CHECK_DIE(type == MECAB_USR_DIC)
+            << "cost field should not be empty in sys/unk dic.";
         if (!rewrite.get()) {
           rewrite.reset(new DictionaryRewriter);
-          rewrite->open(rewrite_file, &config_iconv);
+          rewrite->open(rewrite_file.c_str(), &config_iconv);
           fi.reset(new DecoderFeatureIndex);
           CHECK_DIE(fi->open(param)) << "cannot open feature index";
           property.reset(new CharProperty);
           CHECK_DIE(property->open(param));
           property->set_charset(from.c_str());
         }
-        const short int crf_cost =
-            calcCost(w, feature, factor,
-                     fi.get(), rewrite.get(), property.get());
-        if (userdic_cost_mode == 1) {
-          cost = crf_cost;
-        } else {
-          cost += crf_cost;
-        }
+        cost = calcCost(w, feature, factor,
+                        fi.get(), rewrite.get(), property.get());
       }
 
-      if (lid < 0  || rid < 0) {
+      if (lid < 0  || rid < 0 || lid == INT_MAX || rid == INT_MAX) {
+        CHECK_DIE(type == MECAB_USR_DIC)
+            << "lid/rid fields should not be empty in sys/unk dic.";
         if (!rewrite.get()) {
           rewrite.reset(new DictionaryRewriter);
-          rewrite->open(rewrite_file, &config_iconv);
+          rewrite->open(rewrite_file.c_str(), &config_iconv);
         }
 
+        std::string ufeature, lfeature, rfeature;
         CHECK_DIE(rewrite->rewrite(feature, &ufeature, &lfeature, &rfeature))
             << "rewrite failed: " << feature;
 
         if (!cid.get()) {
           cid.reset(new ContextID);
-          cid->open(left_id_file, right_id_file, &config_iconv);
+          cid->open(left_id_file.c_str(),
+                    right_id_file.c_str(), &config_iconv);
           CHECK_DIE(cid->left_size()  == matrix.left_size() &&
                     cid->right_size() == matrix.right_size())
               << "Context ID files("
@@ -300,7 +311,7 @@ bool Dictionary::compile(const Param &param,
         feature = os->str();
       }
 
-      key.clear();
+      std::string key;
       if (!wakati) {
         key = feature + '\0';
       }

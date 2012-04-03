@@ -10,6 +10,7 @@
 #include "connector.h"
 #include "dictionary.h"
 #include "dictionary_rewriter.h"
+#include "feature_index.h"
 #include "mecab.h"
 #include "param.h"
 
@@ -26,13 +27,13 @@ class DictionaryComplier {
       { "dicdir",   'd',   ".",   "DIR", "set DIR as dic dir (default \".\")" },
       { "outdir",   'o',   ".",   "DIR",
         "set DIR as output dir (default \".\")" },
-      { "unknown",  'U',   0,   0,   "build parameters for unknown words" },
-      { "model",   'm',  0,     "FILE",   "use FILE as model file" },
-      { "userdic-cost-mode", 'M', "-1", "INT",
-         "0: use dic cost, 1: replace with CRF cost, 2: add CRF cost to the dic cost" },
+      { "model",   'm',  0,     "FILE", "use FILE as model file" },
       { "userdic",  'u',   0,   "FILE",   "build user dictionary" },
-      { "charcategory", 'C', 0, 0,   "build character category maps" },
-      { "matrix",    'm',  0,   0,   "build connection matrix" },
+      { "build-unknown",  'U',   0,   0,   "build parameters for unknown words" },
+      { "build-model", 'M', 0, 0,   "build model file" },
+      { "build-charcategory", 'C', 0, 0,   "build character category maps" },
+      { "build-sysdic",  's', 0, 0,   "build system dictionary" },
+      { "build-matrix",    'm',  0,   0,   "build connection matrix" },
       { "charset",   'c',  MECAB_DEFAULT_CHARSET, "ENC",
         "make charset of binary dictionary ENC (default "
         MECAB_DEFAULT_CHARSET ")"  },
@@ -57,7 +58,9 @@ class DictionaryComplier {
       return -1;
     }
 
-    if (!param.help_version()) return 0;
+    if (!param.help_version()) {
+      return 0;
+    }
 
     const std::string dicdir = param.get<std::string>("dicdir");
     const std::string outdir = param.get<std::string>("outdir");
@@ -65,6 +68,7 @@ class DictionaryComplier {
     bool opt_matrix = param.get<bool>("matrix");
     bool opt_charcategory = param.get<bool>("charcategory");
     bool opt_sysdic = param.get<bool>("sysdic");
+    bool opt_model = param.get<bool>("model");
     const std::string userdic = param.get<std::string>("userdic");
 
 #define DCONF(file) create_filename(dicdir, std::string(file)).c_str()
@@ -82,19 +86,13 @@ class DictionaryComplier {
 
     if (!userdic.empty()) {
       CHECK_DIE(dic.size()) << "no dictionaries are specified";
-
       param.set("type", static_cast<int>(MECAB_USR_DIC));
-      Dictionary::compile(param, dic,
-                          DCONF(MATRIX_DEF_FILE),
-                          DCONF(MATRIX_FILE),
-                          DCONF(LEFT_ID_FILE),
-                          DCONF(RIGHT_ID_FILE),
-                          DCONF(REWRITE_FILE),
-                          DCONF(POS_ID_FILE),
-                          userdic.c_str());
+      Dictionary::compile(param, dic, userdic.c_str());
     } else {
-      if (!opt_unknown && !opt_matrix && !opt_charcategory && !opt_sysdic) {
-        opt_unknown = opt_matrix = opt_charcategory = opt_sysdic = true;
+      if (!opt_unknown && !opt_matrix && !opt_charcategory &&
+          !opt_sysdic && !opt_model) {
+        opt_unknown = opt_matrix = opt_charcategory =
+            opt_sysdic = opt_model = true;
       }
 
       if (opt_charcategory || opt_unknown) {
@@ -107,27 +105,17 @@ class DictionaryComplier {
         std::vector<std::string> tmp;
         tmp.push_back(DCONF(UNK_DEF_FILE));
         param.set("type", static_cast<int>(MECAB_UNK_DIC));
-        Dictionary::compile(param, tmp,
-                            DCONF(MATRIX_DEF_FILE),
-                            DCONF(MATRIX_FILE),
-                            DCONF(LEFT_ID_FILE),
-                            DCONF(RIGHT_ID_FILE),
-                            DCONF(REWRITE_FILE),
-                            DCONF(POS_ID_FILE),
-                            OCONF(UNK_DIC_FILE));
+        Dictionary::compile(param, tmp, OCONF(UNK_DIC_FILE));
+      }
+
+      if (opt_model) {
+        FeatureIndex::compile(DCONF(MODEL_DEF_FILE), OCONF(MODEL_FILE));
       }
 
       if (opt_sysdic) {
         CHECK_DIE(dic.size()) << "no dictionaries are specified";
         param.set("type", static_cast<int>(MECAB_SYS_DIC));
-        Dictionary::compile(param, dic,
-                            DCONF(MATRIX_DEF_FILE),
-                            DCONF(MATRIX_FILE),
-                            DCONF(LEFT_ID_FILE),
-                            DCONF(RIGHT_ID_FILE),
-                            DCONF(REWRITE_FILE),
-                            DCONF(POS_ID_FILE),
-                            OCONF(SYS_DIC_FILE));
+        Dictionary::compile(param, dic, OCONF(SYS_DIC_FILE));
       }
 
       if (opt_matrix) {
