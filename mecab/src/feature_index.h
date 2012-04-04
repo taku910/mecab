@@ -22,28 +22,13 @@ namespace MeCab {
 class Param;
 
 class FeatureIndex {
- protected:
-  std::vector<int>     feature_;
-  ChunkFreeList<int>   feature_freelist_;
-  ChunkFreeList<char>  char_freelist_;
-  std::vector<const char*>   unigram_templs_;
-  std::vector<const char*>   bigram_templs_;
-  DictionaryRewriter   rewrite_;
-  StringBuffer         os_;
-  size_t               maxid_;
-  const double         *alpha_;
-
-  virtual int id(const char *key) = 0;
-  const char* getIndex(char **, char **, size_t);
-  bool openTemplate(const Param &param);
-
  public:
   virtual bool open(const Param &param) = 0;
   virtual void clear() = 0;
   virtual void close() = 0;
   virtual bool buildFeature(LearnerPath *path) = 0;
 
-  void set_alpha(const double *);
+  void set_alpha(const double *alpha);
 
   size_t size() const { return maxid_; }
 
@@ -62,14 +47,25 @@ class FeatureIndex {
                            char_freelist_(8192 * 32),
                            maxid_(0), alpha_(0) {}
   virtual ~FeatureIndex() {}
+
+ protected:
+  std::vector<int>     feature_;
+  ChunkFreeList<int>   feature_freelist_;
+  ChunkFreeList<char>  char_freelist_;
+  std::vector<const char*>   unigram_templs_;
+  std::vector<const char*>   bigram_templs_;
+  DictionaryRewriter   rewrite_;
+  StringBuffer         os_;
+  size_t               maxid_;
+  const double         *alpha_;
+  std::vector<size_t>  freqv_;
+
+  virtual int id(const char *key) = 0;
+  const char* getIndex(char **, char **, size_t);
+  bool openTemplate(const Param &param);
 };
 
 class EncoderFeatureIndex: public FeatureIndex {
- private:
-  std::map<std::string, int> dic_;
-  std::map<std::string, std::pair<const int*, size_t> > feature_cache_;
-  int id(const char *key);
-
  public:
   bool open(const Param &param);
   void close();
@@ -79,6 +75,11 @@ class EncoderFeatureIndex: public FeatureIndex {
   void shrink(size_t, std::vector<double> *) ;
   bool buildFeature(LearnerPath *path);
   void clearcache();
+
+ private:
+  std::map<std::string, int> dic_;
+  std::map<std::string, std::pair<const int*, size_t> > feature_cache_;
+  int id(const char *key);
 };
 
 class DecoderFeatureIndex: public FeatureIndex {

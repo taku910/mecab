@@ -446,26 +446,26 @@ int EncoderFeatureIndex::id(const char *key) {
 
 void EncoderFeatureIndex::shrink(size_t freq,
                                  std::vector<double> *observed) {
-  if (freq <= 1) {
-    return;
-  }
-
   // count fvector
-  std::vector<size_t> freqv(maxid_);
-  std::fill(freqv.begin(), freqv.end(), 0);
+  freqv_.resize(maxid_);
+  std::fill(freqv_.begin(), freqv_.end(), 0);
   for (std::map<std::string, std::pair<const int*, size_t> >::const_iterator
            it = feature_cache_.begin();
        it != feature_cache_.end(); ++it) {
     for (const int *f = it->second.first; *f != -1; ++f) {
-      freqv[*f] += it->second.second;  // freq
+      freqv_[*f] += it->second.second;  // freq
     }
+  }
+
+  if (freq <= 1) {
+    return;
   }
 
   // make old2new map
   maxid_ = 0;
   std::map<int, int> old2new;
-  for (size_t i = 0; i < freqv.size(); ++i) {
-    if (freqv[i] >= freq) {
+  for (size_t i = 0; i < freqv_.size(); ++i) {
+    if (freqv_[i] >= freq) {
       old2new.insert(std::pair<int, int>(i, maxid_++));
     }
   }
@@ -498,14 +498,17 @@ void EncoderFeatureIndex::shrink(size_t freq,
 
   // update observed vector
   std::vector<double> observed_new(maxid_);
+  std::vector<size_t> freqv_new(maxid_);
   for (size_t i = 0; i < observed->size(); ++i) {
     std::map<int, int>::const_iterator it = old2new.find(static_cast<int>(i));
     if (it != old2new.end()) {
       observed_new[it->second] = (*observed)[i];
+      freqv_new[it->second] = freqv_[i];
     }
   }
 
   *observed = observed_new;  // copy
+  freqv_ = freqv_new;
 
   return;
 }
@@ -584,14 +587,16 @@ bool EncoderFeatureIndex::save(const char *filename, const char *header) {
   CHECK_DIE(ofs) << "permission denied: " << filename;
 
   ofs.setf(std::ios::fixed, std::ios::floatfield);
-  ofs.precision(24);
+  ofs.precision(16);
 
   ofs << header;
   ofs << std::endl;
 
   for (std::map<std::string, int>::const_iterator it = dic_.begin();
        it != dic_.end(); ++it) {
-    ofs << alpha_[it->second] << "\t" << it->first << "\n";
+    ofs << alpha_[it->second] << '\t'
+        << it->first << '\t'
+        << freqv_[it->second] << '\n';
   }
 
   return true;
