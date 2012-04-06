@@ -68,19 +68,27 @@ class CRFLearner {
     const size_t unk_eval_size = param->get<size_t>("unk-eval-size");
     const size_t freq = param->get<size_t>("freq");
     const size_t thread_num = param->get<size_t>("thread");
+    const std::string old_model = param->get<std::string>("old-model");
 
     EncoderFeatureIndex feature_index;
     Tokenizer<LearnerNode, LearnerPath> tokenizer;
     Allocator<LearnerNode, LearnerPath> allocator;
+    std::vector<double> old_expected;
     std::vector<double> expected;
     std::vector<double> observed;
     std::vector<double> alpha;
     std::vector<EncoderLearnerTagger *> x;
 
+    if (!old_model.empty()) {
+      feature_index.reopen(old_model.c_str(),
+                           &alpha, &observed, &old_expected);
+    }
+
     std::cout.setf(std::ios::fixed, std::ios::floatfield);
     std::cout.precision(5);
 
     std::ifstream ifs(WPATH(ifile.c_str()));
+
     {
       CHECK_DIE(C > 0) << "cost parameter is out of range: " << C;
       CHECK_DIE(eta > 0) "eta is out of range: " << eta;
@@ -123,17 +131,13 @@ class CRFLearner {
     feature_index.shrink(freq, &observed);
     feature_index.clearcache();
 
-    int converge = 0;
-    double old_f = 0.0;
     const size_t psize = feature_index.size();
     observed.resize(psize);
-    LBFGS lbfgs;
-
     alpha.resize(psize);
     expected.resize(psize);
-    std::fill(alpha.begin(), alpha.end(), 0.0);
+    old_expected.resize(psize);
 
-    feature_index.set_alpha(&alpha[0]);
+    feature_index.set_parameters(&alpha[0], &observed[0], &expected[0]);
 
     std::cout << std::endl;
     std::cout << "Number of sentences: " << x.size() << std::endl;
@@ -161,6 +165,10 @@ class CRFLearner {
       }
     }
 #endif
+
+    int converge = 0;
+    double old_f = 0.0;
+    LBFGS lbfgs;
 
     for (size_t itr = 0; ;  ++itr) {
       std::fill(expected.begin(), expected.end(), 0.0);
@@ -205,7 +213,7 @@ class CRFLearner {
 
       for (size_t i = 0; i < psize; ++i) {
         f += (alpha[i] * alpha[i]/(2.0 * C));
-        expected[i] = expected[i] - observed[i] + alpha[i]/C;
+        expected[i] = old_expected[i] + expected[i] - observed[i] + alpha[i]/C;
       }
 
       const double diff = (itr == 0 ? 1.0 : std::fabs(1.0 *(old_f - f) )/old_f);
@@ -255,6 +263,8 @@ class Learner {
     static const MeCab::Option long_options[] = {
       { "dicdir",   'd',  ".",     "DIR",
         "set DIR as dicdir(default \".\" )" },
+      { "old-model",   'M',  0,     "FILE",
+        "set FILE as old CRF model file" },
       { "cost",     'c',  "1.0",   "FLOAT",
         "set FLOAT for cost C for constraints violatoin" },
       { "freq",     'f',  "1",     "INT",

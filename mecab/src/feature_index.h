@@ -3,8 +3,8 @@
 //
 //  Copyright(C) 2001-2006 Taku Kudo <taku@chasen.org>
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
-#ifndef MECAB_FEATUREINDEX_H
-#define MECAB_FEATUREINDEX_H
+#ifndef MECAB_FEATUREINDEX_H_
+#define MECAB_FEATUREINDEX_H_
 
 #include <map>
 #include <vector>
@@ -28,7 +28,9 @@ class FeatureIndex {
   virtual void close() = 0;
   virtual bool buildFeature(LearnerPath *path) = 0;
 
-  void set_alpha(const double *alpha);
+  void set_parameters(const double *alpha,
+                      const double *observed,
+                      const double *expected);
 
   size_t size() const { return maxid_; }
 
@@ -45,7 +47,8 @@ class FeatureIndex {
 
   explicit FeatureIndex(): feature_freelist_(8192 * 32),
                            char_freelist_(8192 * 32),
-                           maxid_(0), alpha_(0) {}
+                           maxid_(0),
+                           alpha_(0), observed_(0), expected_(0) {}
   virtual ~FeatureIndex() {}
 
  protected:
@@ -58,6 +61,8 @@ class FeatureIndex {
   StringBuffer         os_;
   size_t               maxid_;
   const double         *alpha_;
+  const double         *observed_;
+  const double         *expected_;
   std::vector<size_t>  freqv_;
 
   virtual int id(const char *key) = 0;
@@ -71,8 +76,13 @@ class EncoderFeatureIndex: public FeatureIndex {
   void close();
   void clear();
 
+  bool reopen(const char *filename,
+              std::vector<double> *alpha,
+              std::vector<double> *expected,
+              std::vector<double> *observed);
+
   bool save(const char *filename, const char *header);
-  void shrink(size_t, std::vector<double> *) ;
+  void shrink(size_t freq, std::vector<double> *observed) ;
   bool buildFeature(LearnerPath *path);
   void clearcache();
 
@@ -98,12 +108,12 @@ class DecoderFeatureIndex: public FeatureIndex {
   bool openFromArray(const char *begin, const char *end);
   bool openBinaryModel(const char *binary_file);
   bool openTextModel(const char *text_file);
+  int id(const char *key);
+
   Mmap<char>  mmap_;
   std::string model_buffer_;
   const uint64_t *key_;
-  int id(const char *key);
   const char *charset_;
 };
 }
-
 #endif
