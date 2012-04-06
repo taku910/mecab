@@ -61,50 +61,58 @@ class CRFLearner {
 
     const std::string ifile = files[0];
     const std::string model = files[1];
+    const std::string old_model = param->get<std::string>("old-model");
+
+    double old_obj = 0.0;
+    EncoderFeatureIndex feature_index;
+    std::vector<double> old_expected;
+    std::vector<double> expected;
+    std::vector<double> observed;
+    std::vector<double> alpha;
+    std::vector<size_t> freqv;
+    std::vector<EncoderLearnerTagger *> x;
+    Tokenizer<LearnerNode, LearnerPath> tokenizer;
+    Allocator<LearnerNode, LearnerPath> allocator;
+
+    CHECK_DIE(tokenizer.open(*param)) << "cannot open tokenizer";
+    CHECK_DIE(feature_index.open(*param)) << "cannot open feature index";
+
+    if (!old_model.empty()) {
+      std::cout << "Using previous model: " << old_model << std::endl;
+      std::cout << "--cost --freq and --eta options are overwritten."
+                << std::endl;
+      CHECK_DIE(tokenizer.dictionary_info());
+      const char *dic_charset = tokenizer.dictionary_info()->charset;
+      feature_index.reopen(old_model.c_str(),
+                           dic_charset,
+                           &alpha, &observed, &old_expected,
+                           &freqv, &old_obj, param);
+    }
 
     const double C = param->get<double>("cost");
     const double eta = param->get<double>("eta");
     const size_t eval_size = param->get<size_t>("eval-size");
     const size_t unk_eval_size = param->get<size_t>("unk-eval-size");
-    const size_t freq = param->get<size_t>("freq");
     const size_t thread_num = param->get<size_t>("thread");
-    const std::string old_model = param->get<std::string>("old-model");
+    const size_t freq = param->get<size_t>("freq");
 
-    EncoderFeatureIndex feature_index;
-    Tokenizer<LearnerNode, LearnerPath> tokenizer;
-    Allocator<LearnerNode, LearnerPath> allocator;
-    std::vector<double> old_expected;
-    std::vector<double> expected;
-    std::vector<double> observed;
-    std::vector<double> alpha;
-    std::vector<EncoderLearnerTagger *> x;
-
-    if (!old_model.empty()) {
-      feature_index.reopen(old_model.c_str(),
-                           &alpha, &observed, &old_expected);
-    }
+    CHECK_DIE(C > 0) << "cost parameter is out of range: " << C;
+    CHECK_DIE(eta > 0) "eta is out of range: " << eta;
+    CHECK_DIE(eval_size > 0) << "eval-size is out of range: " << eval_size;
+    CHECK_DIE(unk_eval_size > 0) <<
+        "unk-eval-size is out of range: " << unk_eval_size;
+    CHECK_DIE(freq > 0) <<
+        "freq is out of range: " << unk_eval_size;
+    CHECK_DIE(thread_num > 0 && thread_num <= 512)
+        << "# thread is invalid: " << thread_num;
 
     std::cout.setf(std::ios::fixed, std::ios::floatfield);
     std::cout.precision(5);
 
-    std::ifstream ifs(WPATH(ifile.c_str()));
-
-    {
-      CHECK_DIE(C > 0) << "cost parameter is out of range: " << C;
-      CHECK_DIE(eta > 0) "eta is out of range: " << eta;
-      CHECK_DIE(eval_size > 0) << "eval-size is out of range: " << eval_size;
-      CHECK_DIE(unk_eval_size > 0) <<
-          "unk-eval-size is out of range: " << unk_eval_size;
-      CHECK_DIE(freq > 0) <<
-          "freq is out of range: " << unk_eval_size;
-      CHECK_DIE(thread_num > 0 && thread_num <= 512)
-          << "# thread is invalid: " << thread_num;
-      CHECK_DIE(tokenizer.open(*param)) << "cannot open tokenizer";
-      CHECK_DIE(feature_index.open(*param)) << "cannot open feature index";
-      CHECK_DIE(ifs) << "no such file or directory: " << ifile;
-    }
-
     std::cout << "reading corpus ..." << std::flush;
+
+    std::ifstream ifs(WPATH(ifile.c_str()));
+    CHECK_DIE(ifs) << "no such file or directory: " << ifile;
 
     while (ifs) {
       EncoderLearnerTagger *tagger = new EncoderLearnerTagger();
@@ -128,7 +136,7 @@ class CRFLearner {
       }
     }
 
-    feature_index.shrink(freq, &observed);
+    feature_index.shrink(freq, &observed, &freqv);
     feature_index.clearcache();
 
     const size_t psize = feature_index.size();
@@ -136,14 +144,18 @@ class CRFLearner {
     alpha.resize(psize);
     expected.resize(psize);
     old_expected.resize(psize);
+    freqv.resize(psize);
 
-    feature_index.set_parameters(&alpha[0], &observed[0], &expected[0]);
+    feature_index.set_parameters(&alpha[0], &observed[0],
+                                 &expected[0], &freqv[0]);
 
     std::cout << std::endl;
-    std::cout << "Number of sentences: " << x.size() << std::endl;
+    std::cout << "Number of sentences: " << x.size()  << std::endl;
     std::cout << "Number of features:  " << psize     << std::endl;
     std::cout << "eta:                 " << eta       << std::endl;
     std::cout << "freq:                " << freq      << std::endl;
+    std::cout << "eval-size:           " << eval_size << std::endl;
+    std::cout << "unk-eval-size:       " << unk_eval_size << std::endl;
 #ifdef MECAB_USE_THREAD
     std::cout << "threads:             " << thread_num << std::endl;
 #endif
@@ -167,13 +179,13 @@ class CRFLearner {
 #endif
 
     int converge = 0;
-    double old_f = 0.0;
+    double obj = 0.0;
+    double prev_obj = 0.0;
     LBFGS lbfgs;
 
     for (size_t itr = 0; ;  ++itr) {
       std::fill(expected.begin(), expected.end(), 0.0);
-
-      double f = 0.0;
+      obj = old_obj;
       size_t err = 0;
       size_t micro_p = 0;
       size_t micro_r = 0;
@@ -190,39 +202,41 @@ class CRFLearner {
         }
 
         for (size_t i = 0; i < thread_num; ++i) {
-          f += thread[i].f;
+          obj += thread[i].f;
           err += thread[i].err;
           micro_r += thread[i].micro_r;
           micro_p += thread[i].micro_p;
           micro_c += thread[i].micro_c;
-          for (size_t k = 0; k < psize; ++k)
+          for (size_t k = 0; k < psize; ++k) {
             expected[k] += thread[i].expected[k];
+          }
         }
       } else
 #endif
       {
         for (size_t i = 0; i < x.size(); ++i) {
-          f += x[i]->gradient(&expected[0]);
+          obj += x[i]->gradient(&expected[0]);
           err += x[i]->eval(&micro_c, &micro_p, &micro_r);
         }
       }
 
       const double p = 1.0 * micro_c / micro_p;
       const double r = 1.0 * micro_c / micro_r;
-      const double micro_f = 2 * p * r /(p + r);
+      const double micro_f = 2 * p * r / (p + r);
 
       for (size_t i = 0; i < psize; ++i) {
-        f += (alpha[i] * alpha[i]/(2.0 * C));
+        obj += (alpha[i] * alpha[i] / (2.0 * C));
         expected[i] = old_expected[i] + expected[i] - observed[i] + alpha[i]/C;
       }
 
-      const double diff = (itr == 0 ? 1.0 : std::fabs(1.0 *(old_f - f) )/old_f);
+      const double diff = (itr == 0 ? 1.0 :
+                           std::fabs(1.0 * (prev_obj - obj)) / prev_obj);
       std::cout << "iter="    << itr
                 << " err="    << 1.0 * err/x.size()
                 << " F="      << micro_f
-                << " target=" << f
+                << " target=" << obj
                 << " diff="   << diff << std::endl;
-      old_f = f;
+      prev_obj = obj;
 
       if (diff < eta) {
         converge++;
@@ -234,7 +248,8 @@ class CRFLearner {
         break;  // 3 is ad-hoc
       }
 
-      const int ret = lbfgs.optimize(psize, &alpha[0], f,
+      const int ret = lbfgs.optimize(psize,
+                                     &alpha[0], obj,
                                      &expected[0], false, C);
 
       CHECK_DIE(ret > 0) << "unexpected error in LBFGS routin";
@@ -243,12 +258,17 @@ class CRFLearner {
     std::cout << "\nDone! writing model file ... " << std::endl;
 
     std::ostringstream oss;
-    oss << "Number of sentences: " << x.size() << std::endl;
-    oss << "Number of features: " << psize     << std::endl;
-    oss << "eta: " << eta       << std::endl;
-    oss << "freq: " << freq      << std::endl;
-    oss << "C: " << C          << std::endl;
+
+    oss << "eta: "  << eta   << std::endl;
+    oss << "freq: " << freq  << std::endl;
+    oss << "C: "    << C     << std::endl;
+    oss.setf(std::ios::fixed, std::ios::floatfield);
+    oss.precision(16);
+    oss << "obj: "  << obj   << std::endl;
+    oss << "eval-size: " << eval_size << std::endl;
+    oss << "unk-eval-size: " << unk_eval_size << std::endl;
     oss << "charset: " <<  tokenizer.dictionary_info()->charset << std::endl;
+
     const std::string header = oss.str();
 
     CHECK_DIE(feature_index.save(model.c_str(), header.c_str()));
@@ -288,26 +308,6 @@ class Learner {
     if (!param.help_version()) {
       return 0;
     }
-
-#if 0
-    // build mode
-    {
-      const bool build = param.get<bool>("build");
-      if (build) {
-        const std::vector<std::string> files = param.rest_args();
-        if (files.size() != 2) {
-          std::cout << "Usage: " <<
-              param.program_name() << " corpus model" << std::endl;
-          return -1;
-        }
-        const std::string ifile = files[0];
-        const std::string model = files[1];
-        EncoderFeatureIndex feature_index;
-        CHECK_DIE(feature_index.convert(ifile.c_str(), model.c_str()));
-        return 0;
-      }
-    }
-#endif
 
     return CRFLearner::run(&param);
   }
