@@ -25,13 +25,13 @@
 
 // tricky macro for MSVC
 #if defined(_MSC_VER) || defined(__CYGWIN__)
-#define for if (0); else for
+// #define for if (0); else for
 #define NOMINMAX
 #define snprintf _snprintf
 #endif
 
 #define COPYRIGHT "MeCab: Yet Another Part-of-Speech and Morphological Analyzer\n\
-\nCopyright(C) 2001-2011 Taku Kudo \nCopyright(C) 2004-2008 Nippon Telegraph and Telephone Corporation\n"
+\nCopyright(C) 2001-2012 Taku Kudo \nCopyright(C) 2004-2008 Nippon Telegraph and Telephone Corporation\n"
 
 #define SYS_DIC_FILE            "sys.dic"
 #define UNK_DEF_FILE            "unk.def"

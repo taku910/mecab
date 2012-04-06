@@ -69,6 +69,7 @@ class CRFLearner {
     std::vector<double> expected;
     std::vector<double> observed;
     std::vector<double> alpha;
+    std::vector<double> gradient;
     std::vector<size_t> freqv;
     std::vector<EncoderLearnerTagger *> x;
     Tokenizer<LearnerNode, LearnerPath> tokenizer;
@@ -145,6 +146,7 @@ class CRFLearner {
     expected.resize(psize);
     old_expected.resize(psize);
     freqv.resize(psize);
+    gradient.resize(psize);
 
     feature_index.set_parameters(&alpha[0], &observed[0],
                                  &expected[0], &freqv[0]);
@@ -225,8 +227,12 @@ class CRFLearner {
       const double micro_f = 2 * p * r / (p + r);
 
       for (size_t i = 0; i < psize; ++i) {
+        expected[i] += old_expected[i];
+      }
+
+      for (size_t i = 0; i < psize; ++i) {
         obj += (alpha[i] * alpha[i] / (2.0 * C));
-        expected[i] = old_expected[i] + expected[i] - observed[i] + alpha[i]/C;
+        gradient[i] = expected[i] - observed[i] + alpha[i]/C;
       }
 
       const double diff = (itr == 0 ? 1.0 :
@@ -250,7 +256,7 @@ class CRFLearner {
 
       const int ret = lbfgs.optimize(psize,
                                      &alpha[0], obj,
-                                     &expected[0], false, C);
+                                     &gradient[0], false, C);
 
       CHECK_DIE(ret > 0) << "unexpected error in LBFGS routin";
     }

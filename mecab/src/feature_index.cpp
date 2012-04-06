@@ -592,8 +592,8 @@ bool FeatureIndex::convert(const char* txtfile, std::string *output) {
 bool EncoderFeatureIndex::reopen(const char *filename,
                                  const char *dic_charset,
                                  std::vector<double> *alpha,
-                                 std::vector<double> *expected,
                                  std::vector<double> *observed,
+                                 std::vector<double> *expected,
                                  std::vector<size_t> *freqv,
                                  double *obj,
                                  Param *param) {
@@ -672,6 +672,7 @@ bool EncoderFeatureIndex::save(const char *filename, const char *header) const {
 
   for (std::map<std::string, int>::const_iterator it = dic_.begin();
        it != dic_.end(); ++it) {
+    CHECK_DIE(observed_[it->second] >= 0.0);
     // TODO(taku): currently, we assume that observed_ is an integer.
     ofs << it->first << '\t'
         << alpha_[it->second] << '\t'
