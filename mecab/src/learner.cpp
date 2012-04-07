@@ -63,14 +63,11 @@ class CRFLearner {
     const std::string model = files[1];
     const std::string old_model = param->get<std::string>("old-model");
 
-    double old_obj = 0.0;
     EncoderFeatureIndex feature_index;
-    std::vector<double> old_expected;
     std::vector<double> expected;
     std::vector<double> observed;
     std::vector<double> alpha;
-    std::vector<double> gradient;
-    std::vector<size_t> freqv;
+    std::vector<double> old_alpha;
     std::vector<EncoderLearnerTagger *> x;
     Tokenizer<LearnerNode, LearnerPath> tokenizer;
     Allocator<LearnerNode, LearnerPath> allocator;
@@ -85,9 +82,7 @@ class CRFLearner {
       CHECK_DIE(tokenizer.dictionary_info());
       const char *dic_charset = tokenizer.dictionary_info()->charset;
       feature_index.reopen(old_model.c_str(),
-                           dic_charset,
-                           &alpha, &observed, &old_expected,
-                           &freqv, &old_obj, param);
+                           dic_charset, &old_alpha, param);
     }
 
     const double C = param->get<double>("cost");
@@ -137,19 +132,17 @@ class CRFLearner {
       }
     }
 
-    feature_index.shrink(freq, &observed, &freqv);
+    feature_index.shrink(freq, &observed);
     feature_index.clearcache();
 
     const size_t psize = feature_index.size();
     observed.resize(psize);
-    alpha.resize(psize);
     expected.resize(psize);
-    old_expected.resize(psize);
-    freqv.resize(psize);
-    gradient.resize(psize);
+    alpha.resize(psize);
+    old_alpha.resize(psize);
+    alpha = old_alpha;
 
-    feature_index.set_parameters(&alpha[0], &observed[0],
-                                 &expected[0], &freqv[0]);
+    feature_index.set_alpha(&alpha[0]);
 
     std::cout << std::endl;
     std::cout << "Number of sentences: " << x.size()  << std::endl;
@@ -181,13 +174,12 @@ class CRFLearner {
 #endif
 
     int converge = 0;
-    double obj = 0.0;
     double prev_obj = 0.0;
     LBFGS lbfgs;
 
     for (size_t itr = 0; ;  ++itr) {
       std::fill(expected.begin(), expected.end(), 0.0);
-      obj = old_obj;
+      double obj = 0.0;
       size_t err = 0;
       size_t micro_p = 0;
       size_t micro_r = 0;
@@ -227,12 +219,9 @@ class CRFLearner {
       const double micro_f = 2 * p * r / (p + r);
 
       for (size_t i = 0; i < psize; ++i) {
-        expected[i] += old_expected[i];
-      }
-
-      for (size_t i = 0; i < psize; ++i) {
-        obj += (alpha[i] * alpha[i] / (2.0 * C));
-        gradient[i] = expected[i] - observed[i] + alpha[i]/C;
+        const double penalty = (alpha[i] - old_alpha[i]);
+        obj += (penalty * penalty / (2.0 * C));
+        expected[i] = expected[i] - observed[i] + penalty / C;
       }
 
       const double diff = (itr == 0 ? 1.0 :
@@ -256,7 +245,7 @@ class CRFLearner {
 
       const int ret = lbfgs.optimize(psize,
                                      &alpha[0], obj,
-                                     &gradient[0], false, C);
+                                     &expected[0], false, C);
 
       CHECK_DIE(ret > 0) << "unexpected error in LBFGS routin";
     }
@@ -270,7 +259,6 @@ class CRFLearner {
     oss << "C: "    << C     << std::endl;
     oss.setf(std::ios::fixed, std::ios::floatfield);
     oss.precision(16);
-    oss << "obj: "  << obj   << std::endl;
     oss << "eval-size: " << eval_size << std::endl;
     oss << "unk-eval-size: " << unk_eval_size << std::endl;
     oss << "charset: " <<  tokenizer.dictionary_info()->charset << std::endl;

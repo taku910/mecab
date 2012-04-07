@@ -28,10 +28,7 @@ class FeatureIndex {
   virtual void close() = 0;
   virtual bool buildFeature(LearnerPath *path) = 0;
 
-  void set_parameters(const double *alpha,
-                      const double *observed,
-                      const double *expected,
-                      const size_t *freqv);
+  void set_alpha(const double *alpha);
 
   size_t size() const { return maxid_; }
 
@@ -48,9 +45,7 @@ class FeatureIndex {
 
   explicit FeatureIndex(): feature_freelist_(8192 * 32),
                            char_freelist_(8192 * 32),
-                           maxid_(0),
-                           alpha_(0),
-                           observed_(0), expected_(0), freqv_(0) {}
+                           maxid_(0), alpha_(0) {}
   virtual ~FeatureIndex() {}
 
  protected:
@@ -62,11 +57,7 @@ class FeatureIndex {
   DictionaryRewriter   rewrite_;
   StringBuffer         os_;
   size_t               maxid_;
-
   const double         *alpha_;
-  const double         *observed_;
-  const double         *expected_;
-  const size_t         *freqv_;
 
   virtual int id(const char *key) = 0;
   const char* getIndex(char **, char **, size_t);
@@ -82,16 +73,11 @@ class EncoderFeatureIndex: public FeatureIndex {
   bool reopen(const char *filename,
               const char *charset,
               std::vector<double> *alpha,
-              std::vector<double> *expected,
-              std::vector<double> *observed,
-              std::vector<size_t> *freqv,
-              double *obj,
               Param *param);
 
   bool save(const char *filename, const char *header) const;
   void shrink(size_t freq,
-              std::vector<double> *observed,
-              std::vector<size_t> *freqv);
+              std::vector<double> *observed);
   bool buildFeature(LearnerPath *path);
   void clearcache();
 

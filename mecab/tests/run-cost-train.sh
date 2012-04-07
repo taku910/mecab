@@ -23,6 +23,7 @@ ${DIR}/mecab-dict-index -d ${DICDIR} -o ${DICDIR}
 ${DIR}/mecab-test-gen < ${TEST} | ${DIR}/mecab -r /dev/null -d ${DICDIR}  > ${RMODEL}.result
 ${DIR}/mecab-system-eval -l "${EVAL}" ${RMODEL}.result ${TEST} | tee ${RMODEL}.score
 
+exit 0
 rm -fr ${DICDIR}
 rm -fr ${RMODEL}*
 rm -fr ${SEEDDIR}/*.dic

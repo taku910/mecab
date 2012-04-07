@@ -16,8 +16,8 @@
 #include "string_buffer.h"
 #include "utils.h"
 
-#define BUFSIZE 2048
-#define POSSIZE 64
+#define BUFSIZE (2048)
+#define POSSIZE (64)
 
 #define ADDB(b) do { const int id = this->id((b));  \
     if (id != -1) feature_.push_back(id); } while (0)
@@ -70,14 +70,8 @@ const char* FeatureIndex::getIndex(char **p, char **column, size_t max) {
   return 0;
 }
 
-void FeatureIndex::set_parameters(const double *alpha,
-                                  const double *observed,
-                                  const double *expected,
-                                  const size_t *freqv) {
+void FeatureIndex::set_alpha(const double *alpha) {
   alpha_ = alpha;
-  observed_ = observed;
-  expected_ = expected;
-  freqv_ = freqv;
 }
 
 bool FeatureIndex::openTemplate(const Param &param) {
@@ -452,15 +446,15 @@ int EncoderFeatureIndex::id(const char *key) {
 }
 
 void EncoderFeatureIndex::shrink(size_t freq,
-                                 std::vector<double> *observed,
-                                 std::vector<size_t> *freqv) {
+                                 std::vector<double> *observed) {
+  std::vector<size_t> freqv;
   // count fvector
-  freqv->resize(maxid_);
+  freqv.resize(maxid_);
   for (std::map<std::string, std::pair<const int*, size_t> >::const_iterator
            it = feature_cache_.begin();
        it != feature_cache_.end(); ++it) {
     for (const int *f = it->second.first; *f != -1; ++f) {
-      (*freqv)[*f] += it->second.second;  // freq
+      freqv[*f] += it->second.second;  // freq
     }
   }
 
@@ -471,8 +465,8 @@ void EncoderFeatureIndex::shrink(size_t freq,
   // make old2new map
   maxid_ = 0;
   std::map<int, int> old2new;
-  for (size_t i = 0; i < freqv->size(); ++i) {
-    if ((*freqv)[i] >= freq) {
+  for (size_t i = 0; i < freqv.size(); ++i) {
+    if (freqv[i] >= freq) {
       old2new.insert(std::pair<int, int>(i, maxid_++));
     }
   }
@@ -505,18 +499,15 @@ void EncoderFeatureIndex::shrink(size_t freq,
 
   // update observed vector
   std::vector<double> observed_new(maxid_);
-  std::vector<size_t> freqv_new(maxid_);
   for (size_t i = 0; i < observed->size(); ++i) {
     std::map<int, int>::const_iterator it = old2new.find(static_cast<int>(i));
     if (it != old2new.end()) {
       observed_new[it->second] = (*observed)[i];
-      freqv_new[it->second] = (*freqv)[i];
     }
   }
 
   // copy
   *observed = observed_new;
-  *freqv = freqv_new;
 
   return;
 }
@@ -559,8 +550,8 @@ bool FeatureIndex::convert(const char* txtfile, std::string *output) {
   while (ifs.getline(buf.get(), buf.size())) {
     CHECK_DIE(tokenize2(buf.get(), "\t", column, 2) == 2)
         << "format error: " << buf.get();
-    const uint64_t fp = fingerprint(std::string(column[0]));
-    const double alpha = atof(column[1]);
+    const uint64_t fp = fingerprint(std::string(column[1]));
+    const double alpha = atof(column[0]);
     dic.push_back(std::pair<uint64_t, double>(fp, alpha));
   }
 
@@ -592,10 +583,6 @@ bool FeatureIndex::convert(const char* txtfile, std::string *output) {
 bool EncoderFeatureIndex::reopen(const char *filename,
                                  const char *dic_charset,
                                  std::vector<double> *alpha,
-                                 std::vector<double> *observed,
-                                 std::vector<double> *expected,
-                                 std::vector<size_t> *freqv,
-                                 double *obj,
                                  Param *param) {
   close();
   std::ifstream ifs(WPATH(filename));
@@ -604,7 +591,6 @@ bool EncoderFeatureIndex::reopen(const char *filename,
   scoped_fixed_array<char, BUF_SIZE> buf;
   char *column[8];
 
-  *obj = 0.0;
   std::string model_charset;
 
   while (ifs.getline(buf.get(), buf.size())) {
@@ -615,8 +601,6 @@ bool EncoderFeatureIndex::reopen(const char *filename,
         << "format error: " << buf.get();
     if (std::string(column[0]) == "charset") {
       model_charset = column[1] + 1;
-    } else if (std::string(column[0]) == "obj") {
-      *obj = atof(column[1] + 1);
     } else {
       param->set<std::string>(column[0], column[1] + 1, true);
     }
@@ -631,24 +615,16 @@ bool EncoderFeatureIndex::reopen(const char *filename,
       << " to=" << dic_charset;
 
   alpha->clear();
-  expected->clear();
-  observed->clear();
-  freqv->clear();
-
-  CHECK_DIE(*obj != 0.0);
   CHECK_DIE(maxid_ == 0);
   CHECK_DIE(dic_.empty());
 
   while (ifs.getline(buf.get(), buf.size())) {
-    CHECK_DIE(tokenize2(buf.get(), "\t", column, 5) == 5)
+    CHECK_DIE(tokenize2(buf.get(), "\t", column, 2) == 2)
         << "format error: " << buf.get();
-    std::string feature = column[0];
+    std::string feature = column[1];
     CHECK_DIE(iconv.convert(&feature));
     dic_.insert(std::make_pair(feature, maxid_++));
-    alpha->push_back(atof(column[1]));
-    observed->push_back(atof(column[2]));
-    expected->push_back(atof(column[3]));
-    freqv->push_back(atof(column[4]));
+    alpha->push_back(atof(column[0]));
   }
 
   return true;
@@ -657,9 +633,6 @@ bool EncoderFeatureIndex::reopen(const char *filename,
 bool EncoderFeatureIndex::save(const char *filename, const char *header) const {
   CHECK_DIE(header);
   CHECK_DIE(alpha_);
-  CHECK_DIE(observed_);
-  CHECK_DIE(expected_);
-  CHECK_DIE(freqv_);
 
   std::ofstream ofs(WPATH(filename));
   CHECK_DIE(ofs) << "permission denied: " << filename;
@@ -672,13 +645,7 @@ bool EncoderFeatureIndex::save(const char *filename, const char *header) const {
 
   for (std::map<std::string, int>::const_iterator it = dic_.begin();
        it != dic_.end(); ++it) {
-    CHECK_DIE(observed_[it->second] >= 0.0);
-    // TODO(taku): currently, we assume that observed_ is an integer.
-    ofs << it->first << '\t'
-        << alpha_[it->second] << '\t'
-        << static_cast<int>(observed_[it->second]) << '\t'
-        << expected_[it->second] << '\t'
-        << freqv_[it->second] << '\n';
+    ofs << alpha_[it->second] << '\t' << it->first << '\n';
   }
 
   return true;
