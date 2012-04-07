@@ -95,7 +95,7 @@ bool FeatureIndex::openTemplate(const Param &param) {
 
     if (std::strcmp(column[0], "UNIGRAM") == 0) {
       unigram_templs_.push_back(this->strdup(column[1]));
-    } else if (std::strcmp(column[0], "BIGRAM") == 0 ) {
+    } else if (std::strcmp(column[0], "BIGRAM") == 0) {
       bigram_templs_.push_back(this->strdup(column[1]));
     } else {
       CHECK_DIE(false) << "format error: " <<  filename;
@@ -120,9 +120,12 @@ bool DecoderFeatureIndex::open(const Param &param) {
   // open the file as binary mode again and fallback to text file
   if (!openBinaryModel(modelfile.c_str())) {
     std::cout << modelfile
-              << " is not a binary model. reopen it as text mode..." << std::endl;
-    CHECK_DIE(openTextModel(modelfile.c_str())) <<
-        "no such file or directory: " << modelfile;
+              << " is not a binary model. reopen it as text mode..."
+              << std::endl;
+    alpha_buffer_.clear();
+    CHECK_DIE(openTextModel(modelfile.c_str(), &alpha_buffer_, 0))
+        << "no such file or directory: " << modelfile;
+    alpha_ = &alpha_buffer_[0];
   }
 
   if (!openTemplate(param)) {
@@ -133,8 +136,10 @@ bool DecoderFeatureIndex::open(const Param &param) {
   return true;
 }
 
-
-bool DecoderFeatureIndex::openFromArray(const char *begin, const char *end) {
+bool DecoderFeatureIndex::openBinaryModel(const char *filename) {
+  CHECK_DIE(mmap_.open(filename)) << mmap_.what();
+  const char *begin = mmap_.begin();
+  const char *end = mmap_.end();
   const char *ptr = begin;
   unsigned int maxid = 0;
   read_static<unsigned int>(&ptr, maxid);
@@ -143,6 +148,7 @@ bool DecoderFeatureIndex::openFromArray(const char *begin, const char *end) {
   const size_t expected_file_size =
       (sizeof(double) + sizeof(uint64_t)) * maxid_ + sizeof(maxid) + 32;
   if (expected_file_size != file_size) {
+    mmap_.close();
     return false;
   }
   charset_ = ptr;
@@ -151,21 +157,6 @@ bool DecoderFeatureIndex::openFromArray(const char *begin, const char *end) {
   ptr += (sizeof(alpha_[0]) * maxid_);
   key_ = reinterpret_cast<const uint64_t *>(ptr);
   return true;
-}
-
-bool DecoderFeatureIndex::openBinaryModel(const char *filename) {
-  CHECK_DIE(mmap_.open(filename)) << mmap_.what();
-  if (!openFromArray(mmap_.begin(), mmap_.end())) {
-    mmap_.close();
-    return false;
-  }
-  return true;
-}
-
-bool DecoderFeatureIndex::openTextModel(const char *filename) {
-  CHECK_DIE(FeatureIndex::convert(filename, &model_buffer_));
-  return openFromArray(model_buffer_.data(),
-                       model_buffer_.data() + model_buffer_.size());
 }
 
 void DecoderFeatureIndex::clear() {
@@ -187,7 +178,6 @@ void EncoderFeatureIndex::close() {
 
 void DecoderFeatureIndex::close() {
   mmap_.close();
-  model_buffer_.clear();
   maxid_ = 0;
 }
 
@@ -422,16 +412,24 @@ bool FeatureIndex::buildBigramFeature(LearnerPath *path,
 }
 
 int DecoderFeatureIndex::id(const char *key) {
-  const uint64_t fp = fingerprint(key, std::strlen(key));
-  const uint64_t *result = std::lower_bound(key_,
-                                            key_ + maxid_,
-                                            fp);
-  if (result == key_ + maxid_ || *result != fp) {
-    return -1;
+  if (!dic_.empty()) {
+    std::map<std::string, int>::const_iterator it = dic_.find(key);
+    if (it == dic_.end()) {
+      return -1;
+    }
+    return it->second;
+  } else {
+    const uint64_t fp = fingerprint(key, std::strlen(key));
+    const uint64_t *result = std::lower_bound(key_, key_ + maxid_, fp);
+    if (result == key_ + maxid_ || *result != fp) {
+      return -1;
+    }
+    const int n = static_cast<int>(result - key_);
+    CHECK_DIE(key_[n] == fp);
+    return n;
   }
-  const int n = static_cast<int>(result - key_);
-  CHECK_DIE(key_[n] == fp);
-  return n;
+
+  return -1;
 }
 
 int EncoderFeatureIndex::id(const char *key) {
@@ -512,27 +510,70 @@ void EncoderFeatureIndex::shrink(size_t freq,
   return;
 }
 
-bool FeatureIndex::compile(const char* txtfile, const char *binfile) {
-  std::string buf;
-  if (!FeatureIndex::convert(txtfile, &buf)) {
+// static
+bool FeatureIndex::compile(const Param &param,
+                           const char* txtfile, const char *binfile) {
+  const std::string from = param.get<std::string>("dictionary-charset");
+  const std::string to = param.get<std::string>("charset");
+
+  DecoderFeatureIndex fi;
+  std::vector<double> alpha;
+  if (!fi.openTextModel(txtfile, &alpha, 0)) {
     return false;
   }
+
   std::ofstream ofs(WPATH(binfile), std::ios::binary|std::ios::out);
   CHECK_DIE(ofs) << "permission denied: " << binfile;
-  ofs.write(buf.data(), buf.size());
+
+  const unsigned int size = static_cast<unsigned int>(fi.dic_.size());
+  ofs.write(reinterpret_cast<const char*>(&size), sizeof(size));
+
+  char charset_buf[32];
+  std::fill(charset_buf, charset_buf + sizeof(charset_buf), '\0');
+  std::strncpy(charset_buf, to.c_str(), 31);
+  ofs.write(reinterpret_cast<const char *>(charset_buf),  sizeof(charset_buf));
+
+  Iconv iconv;
+  CHECK_DIE(iconv.open(from.c_str(), to.c_str()))
+      << "cannot create model from=" << from
+      << " to=" << to;
+
+  std::vector<std::pair<uint64_t, double> > dic;
+  for (std::map<std::string, int>::const_iterator it = fi.dic_.begin();
+       it != fi.dic_.end(); ++it) {
+    std::string feature = it->first;
+    CHECK_DIE(iconv.convert(&feature));
+    dic.push_back(std::make_pair(fingerprint(feature),
+                                 alpha[it->second]));
+  }
+
+  std::sort(dic.begin(), dic.end());
+
+  for (size_t i = 0; i < dic.size(); ++i) {
+    const double w = dic[i].second;
+    ofs.write(reinterpret_cast<const char *>(&w), sizeof(w));
+  }
+
+  for (size_t i = 0; i < dic.size(); ++i) {
+    const uint64_t fp = dic[i].first;
+    ofs.write(reinterpret_cast<const char *>(&fp), sizeof(fp));
+  }
+
   return true;
 }
 
-bool FeatureIndex::convert(const char* txtfile, std::string *output) {
-  std::ifstream ifs(WPATH(txtfile));
+bool FeatureIndex::openTextModel(const char *filename,
+                                 std::vector<double> *alpha,
+                                 Param *param) {
+  CHECK_DIE(alpha);
+  close();
+  std::ifstream ifs(WPATH(filename));
   if (!ifs) {
     return false;
   }
 
   scoped_fixed_array<char, BUF_SIZE> buf;
-  char *column[4];
-  std::vector<std::pair<uint64_t, double> > dic;
-  std::string charset;
+  char *column[2];
 
   while (ifs.getline(buf.get(), buf.size())) {
     if (std::strlen(buf.get()) == 0) {
@@ -540,89 +581,19 @@ bool FeatureIndex::convert(const char* txtfile, std::string *output) {
     }
     CHECK_DIE(tokenize2(buf.get(), ":", column, 2) == 2)
         << "format error: " << buf.get();
-    if (std::string(column[0]) == "charset") {
-      charset = column[1] + 1;
-    }
-  }
-
-  CHECK_DIE(!charset.empty()) << "charset: is not found in this model";
-
-  while (ifs.getline(buf.get(), buf.size())) {
-    CHECK_DIE(tokenize2(buf.get(), "\t", column, 2) == 2)
-        << "format error: " << buf.get();
-    const uint64_t fp = fingerprint(std::string(column[1]));
-    const double alpha = atof(column[0]);
-    dic.push_back(std::pair<uint64_t, double>(fp, alpha));
-  }
-
-  output->clear();
-  unsigned int size = static_cast<unsigned int>(dic.size());
-  output->append(reinterpret_cast<const char*>(&size), sizeof(size));
-
-  char charset_buf[32];
-  std::fill(charset_buf, charset_buf + sizeof(charset_buf), '\0');
-  std::strncpy(charset_buf, charset.c_str(), 31);
-  output->append(reinterpret_cast<const char *>(charset_buf),  sizeof(charset_buf));
-
-  std::sort(dic.begin(), dic.end());
-
-  for (size_t i = 0; i < dic.size(); ++i) {
-    const double alpha = dic[i].second;
-    output->append(reinterpret_cast<const char *>(&alpha), sizeof(alpha));
-  }
-
-  for (size_t i = 0; i < dic.size(); ++i) {
-    const uint64_t fp = dic[i].first;
-    output->append(reinterpret_cast<const char *>(&fp), sizeof(fp));
-  }
-
-  return true;
-}
-
-// TODO(taku): consider charset
-bool EncoderFeatureIndex::reopen(const char *filename,
-                                 const char *dic_charset,
-                                 std::vector<double> *alpha,
-                                 Param *param) {
-  close();
-  std::ifstream ifs(WPATH(filename));
-  CHECK_DIE(ifs) << "no such file or directory: " << filename;
-
-  scoped_fixed_array<char, BUF_SIZE> buf;
-  char *column[8];
-
-  std::string model_charset;
-
-  while (ifs.getline(buf.get(), buf.size())) {
-    if (std::strlen(buf.get()) == 0) {
-      break;
-    }
-    CHECK_DIE(tokenize2(buf.get(), ":", column, 2) == 2)
-        << "format error: " << buf.get();
-    if (std::string(column[0]) == "charset") {
-      model_charset = column[1] + 1;
-    } else {
+    if (param) {
       param->set<std::string>(column[0], column[1] + 1, true);
     }
   }
 
-  CHECK_DIE(dic_charset);
-  CHECK_DIE(!model_charset.empty()) << "charset is empty";
-
-  Iconv iconv;
-  CHECK_DIE(iconv.open(model_charset.c_str(), dic_charset))
-      << "cannot create model from=" << model_charset
-      << " to=" << dic_charset;
-
-  alpha->clear();
   CHECK_DIE(maxid_ == 0);
   CHECK_DIE(dic_.empty());
 
+  alpha->clear();
   while (ifs.getline(buf.get(), buf.size())) {
     CHECK_DIE(tokenize2(buf.get(), "\t", column, 2) == 2)
         << "format error: " << buf.get();
-    std::string feature = column[1];
-    CHECK_DIE(iconv.convert(&feature));
+    const std::string feature = column[1];
     dic_.insert(std::make_pair(feature, maxid_++));
     alpha->push_back(atof(column[0]));
   }
@@ -638,7 +609,7 @@ bool EncoderFeatureIndex::save(const char *filename, const char *header) const {
   CHECK_DIE(ofs) << "permission denied: " << filename;
 
   ofs.setf(std::ios::fixed, std::ios::floatfield);
-  ofs.precision(16);
+  ofs.precision(20);
 
   ofs << header;
   ofs << std::endl;

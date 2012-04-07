@@ -79,10 +79,14 @@ class CRFLearner {
       std::cout << "Using previous model: " << old_model << std::endl;
       std::cout << "--cost --freq and --eta options are overwritten."
                 << std::endl;
+      CHECK_DIE(feature_index.openTextModel(old_model.c_str(),
+                                            &old_alpha, param))
+          << "no such file or directory: " << old_model;
+      const std::string charset = param->get<std::string>("charset");
       CHECK_DIE(tokenizer.dictionary_info());
       const char *dic_charset = tokenizer.dictionary_info()->charset;
-      feature_index.reopen(old_model.c_str(),
-                           dic_charset, &old_alpha, param);
+      CHECK_DIE(charset == dic_charset)
+          << "model charset and dic_charset are different";
     }
 
     const double C = param->get<double>("cost");
