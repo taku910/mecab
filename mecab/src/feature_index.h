@@ -40,13 +40,8 @@ class FeatureIndex {
 
   const char *strdup(const char *str);
 
-  bool openTextModel(const char *filename,
-                     std::vector<double> *alpha,
-                     Param *param);
-
-  static bool compile(const Param &param,
-                      const char *text_filename,
-                      const char *binary_filename);
+  static bool convert(const char *text_filename, std::string *output);
+  static bool compile(const char *text_filename, const char *binary_filename);
 
   explicit FeatureIndex(): feature_freelist_(8192 * 32),
                            char_freelist_(8192 * 32),
@@ -54,7 +49,6 @@ class FeatureIndex {
   virtual ~FeatureIndex() {}
 
  protected:
-  std::map<std::string, int> dic_;
   std::vector<int>     feature_;
   ChunkFreeList<int>   feature_freelist_;
   ChunkFreeList<char>  char_freelist_;
@@ -76,6 +70,11 @@ class EncoderFeatureIndex: public FeatureIndex {
   void close();
   void clear();
 
+  bool reopen(const char *filename,
+              const char *charset,
+              std::vector<double> *alpha,
+              Param *param);
+
   bool save(const char *filename, const char *header) const;
   void shrink(size_t freq,
               std::vector<double> *observed);
@@ -83,6 +82,7 @@ class EncoderFeatureIndex: public FeatureIndex {
   void clearcache();
 
  private:
+  std::map<std::string, int> dic_;
   std::map<std::string, std::pair<const int*, size_t> > feature_cache_;
   int id(const char *key);
 };
@@ -100,13 +100,15 @@ class DecoderFeatureIndex: public FeatureIndex {
   }
 
  private:
+  bool openFromArray(const char *begin, const char *end);
   bool openBinaryModel(const char *binary_file);
+  bool openTextModel(const char *text_file);
   int id(const char *key);
 
   Mmap<char>  mmap_;
+  std::string model_buffer_;
   const uint64_t *key_;
   const char *charset_;
-  std::vector<double> alpha_buffer_;
 };
 }
 #endif

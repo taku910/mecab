@@ -109,7 +109,7 @@ class DictionaryComplier {
       }
 
       if (opt_model) {
-        FeatureIndex::compile(param, DCONF(MODEL_DEF_FILE), OCONF(MODEL_FILE));
+        FeatureIndex::compile(DCONF(MODEL_DEF_FILE), OCONF(MODEL_FILE));
       }
 
       if (opt_sysdic) {
