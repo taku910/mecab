@@ -20,6 +20,7 @@
 #include "writer.h"
 
 namespace MeCab {
+namespace {
 
 const unsigned int DictionaryMagicID = 0xef718f77u;
 
@@ -62,6 +63,15 @@ int calcCost(const std::string &w, const std::string &feature,
 int progress_bar_darts(size_t current, size_t total) {
   return progress_bar("emitting double-array", current, total);
 }
+
+template <typename T1, typename T2>
+struct pair_1st_cmp: public std::binary_function<bool, T1, T2> {
+  bool operator () (const std::pair<T1, T2>& x1,
+                    const std::pair<T1, T2> &x2)  {
+    return x1.first < x2.first;
+  }
+};
+}  // namespace
 
 bool Dictionary::open(const char *file, const char *mode) {
   close();
@@ -342,7 +352,8 @@ bool Dictionary::compile(const Param &param,
     fbuf.append("\0", 1);
   }
 
-  std::stable_sort(dic.begin(), dic.end());
+  std::stable_sort(dic.begin(), dic.end(),
+                   pair_1st_cmp<std::string, Token *>());
 
   size_t bsize = 0;
   size_t idx = 0;

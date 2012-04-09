@@ -283,7 +283,7 @@ class Learner {
         "set FLOAT for cost C for constraints violatoin" },
       { "freq",     'f',  "1",     "INT",
         "set the frequency cut-off (default 1)" },
-      { "eta",      'e',  "0.001", "DIR",
+      { "eta",      'e',  "0.00005", "DIR",
         "set FLOAT for tolerance of termination criterion" },
       { "thread",   'p',  "1",     "INT",    "number of threads(default 1)" },
       { "version",  'v',  0,   0,  "show the version and exit"  },
