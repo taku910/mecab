@@ -12,23 +12,6 @@
 namespace MeCab {
 
 class LBFGS {
- private:
-  class Mcsrch;
-  int iflag_, iscn, nfev, iycn, point, npt;
-  int iter, info, ispt, isyt, iypt, maxfev;
-  double stp, stp1;
-  std::vector <double> diag_;
-  std::vector <double> w_;
-  Mcsrch *mcsrch_;
-
-  void lbfgs_optimize(int size,
-                      int msize,
-                      double *x,
-                      double f,
-                      const double *g,
-                      double *diag,
-                      double *w, bool orthant, double C, int *iflag);
-
  public:
   explicit LBFGS(): iflag_(0), iscn(0), nfev(0), iycn(0),
                     point(0), npt(0), iter(0), info(0),
@@ -65,6 +48,23 @@ class LBFGS {
 
     return 1;   // evaluate next f and g
   }
+
+ private:
+  class Mcsrch;
+  int iflag_, iscn, nfev, iycn, point, npt;
+  int iter, info, ispt, isyt, iypt, maxfev;
+  double stp, stp1;
+  std::vector <double> diag_;
+  std::vector <double> w_;
+  Mcsrch *mcsrch_;
+
+  void lbfgs_optimize(int size,
+                      int msize,
+                      double *x,
+                      double f,
+                      const double *g,
+                      double *diag,
+                      double *w, bool orthant, double C, int *iflag);
 };
 }
 

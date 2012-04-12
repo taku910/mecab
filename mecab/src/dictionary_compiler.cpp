@@ -29,7 +29,8 @@ class DictionaryComplier {
         "set DIR as output dir (default \".\")" },
       { "model",   'm',  0,     "FILE", "use FILE as model file" },
       { "userdic",  'u',   0,   "FILE",   "build user dictionary" },
-      { "build-unknown",  'U',   0,   0,   "build parameters for unknown words" },
+      { "build-unknown",  'U',   0,   0,
+        "build parameters for unknown words" },
       { "build-model", 'M', 0, 0,   "build model file" },
       { "build-charcategory", 'C', 0, 0,   "build character category maps" },
       { "build-sysdic",  's', 0, 0,   "build system dictionary" },
@@ -109,7 +110,14 @@ class DictionaryComplier {
       }
 
       if (opt_model) {
-        FeatureIndex::compile(DCONF(MODEL_DEF_FILE), OCONF(MODEL_FILE));
+        if (file_exists(DCONF(MODEL_DEF_FILE))) {
+          FeatureIndex::compile(param,
+                                DCONF(MODEL_DEF_FILE),
+                                OCONF(MODEL_FILE));
+        } else {
+          std::cout << DCONF(MODEL_DEF_FILE)
+                    << " is not found. skipped." << std::endl;
+        }
       }
 
       if (opt_sysdic) {

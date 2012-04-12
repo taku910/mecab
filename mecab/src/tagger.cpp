@@ -61,8 +61,6 @@ const MeCab::Option long_options[] = {
   { "input-buffer-size",  'b',  0, "INT",
     "set input buffer size (default 8192)" },
   { "dump-config", 'P', 0, 0, "dump MeCab parameters" },
-  { "open-mutable-dictionary", 'M', 0, 0,
-    "open dictioanry with mutable mode (experimental)" },
   { "allocate-sentence",  'C', 0, 0,
     "allocate new memory for input sentence" },
   { "theta",        't',  "0.75",  "FLOAT",

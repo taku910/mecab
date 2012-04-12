@@ -266,7 +266,8 @@ class CRFLearner {
 
     const std::string header = oss.str();
 
-    CHECK_DIE(feature_index.save(model.c_str(), header.c_str()));
+    CHECK_DIE(feature_index.save(model.c_str(), header.c_str()))
+        << "permission denied: " << model;
 
     return 0;
   }

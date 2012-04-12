@@ -16,9 +16,7 @@ namespace MeCab {
 bool Connector::open(const Param &param) {
   const std::string filename = create_filename
       (param.get<std::string>("dicdir"), MATRIX_FILE);
-  const char *mode = param.get<bool>("open-mutable-dictionary") ?
-      "r+" : "r";
-  return open(filename.c_str(), mode);
+  return open(filename.c_str());
 }
 
 bool Connector::open(const char* filename,

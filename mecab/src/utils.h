@@ -104,6 +104,8 @@ inline void read_static(const char **ptr, T& value) {
   memcpy(&value, r, sizeof(T));
 }
 
+bool file_exists(const char *filename);
+
 int load_request_type(const Param &param);
 
 bool load_dictionary_resource(Param *);

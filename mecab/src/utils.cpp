@@ -552,4 +552,12 @@ uint64_t fingerprint(const char *str, size_t size) {
 uint64_t fingerprint(const std::string &str) {
   return fingerprint(str.data(), str.size());
 }
+
+bool file_exists(const char *filename) {
+  std::ifstream ifs(WPATH(filename));
+  if (!ifs) {
+    return false;
+  }
+  return true;
+}
 }  // namespace MeCab

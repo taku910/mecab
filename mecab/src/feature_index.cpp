@@ -95,7 +95,7 @@ bool FeatureIndex::openTemplate(const Param &param) {
 
     if (std::strcmp(column[0], "UNIGRAM") == 0) {
       unigram_templs_.push_back(this->strdup(column[1]));
-    } else if (std::strcmp(column[0], "BIGRAM") == 0 ) {
+    } else if (std::strcmp(column[0], "BIGRAM") == 0) {
       bigram_templs_.push_back(this->strdup(column[1]));
     } else {
       CHECK_DIE(false) << "format error: " <<  filename;
@@ -116,12 +116,12 @@ bool EncoderFeatureIndex::open(const Param &param) {
 
 bool DecoderFeatureIndex::open(const Param &param) {
   const std::string modelfile = param.get<std::string>("model");
-
   // open the file as binary mode again and fallback to text file
-  if (!openBinaryModel(modelfile.c_str())) {
+  if (!openBinaryModel(param)) {
     std::cout << modelfile
-              << " is not a binary model. reopen it as text mode..." << std::endl;
-    CHECK_DIE(openTextModel(modelfile.c_str())) <<
+              << " is not a binary model. reopen it as text mode..."
+              << std::endl;
+    CHECK_DIE(openTextModel(param)) <<
         "no such file or directory: " << modelfile;
   }
 
@@ -153,17 +153,26 @@ bool DecoderFeatureIndex::openFromArray(const char *begin, const char *end) {
   return true;
 }
 
-bool DecoderFeatureIndex::openBinaryModel(const char *filename) {
-  CHECK_DIE(mmap_.open(filename)) << mmap_.what();
+bool DecoderFeatureIndex::openBinaryModel(const Param &param) {
+  const std::string modelfile = param.get<std::string>("model");
+  CHECK_DIE(mmap_.open(modelfile.c_str())) << mmap_.what();
   if (!openFromArray(mmap_.begin(), mmap_.end())) {
     mmap_.close();
     return false;
   }
+  const std::string to = param.get<std::string>("charset");
+  CHECK_DIE(decode_charset(charset_) ==
+            decode_charset(to.c_str()))
+      << "model charset and dictionary charset are different. "
+      << "model_charset=" << charset_
+      << " dictionary_charset=" << to;
+
   return true;
 }
 
-bool DecoderFeatureIndex::openTextModel(const char *filename) {
-  CHECK_DIE(FeatureIndex::convert(filename, &model_buffer_));
+bool DecoderFeatureIndex::openTextModel(const Param &param) {
+  const std::string modelfile = param.get<std::string>("model");
+  CHECK_DIE(FeatureIndex::convert(param, modelfile.c_str(), &model_buffer_));
   return openFromArray(model_buffer_.data(),
                        model_buffer_.data() + model_buffer_.size());
 }
@@ -512,27 +521,24 @@ void EncoderFeatureIndex::shrink(size_t freq,
   return;
 }
 
-bool FeatureIndex::compile(const char* txtfile, const char *binfile) {
+bool FeatureIndex::compile(const Param &param,
+                           const char* txtfile, const char *binfile) {
   std::string buf;
-  if (!FeatureIndex::convert(txtfile, &buf)) {
-    return false;
-  }
+  FeatureIndex::convert(param, txtfile, &buf);
   std::ofstream ofs(WPATH(binfile), std::ios::binary|std::ios::out);
   CHECK_DIE(ofs) << "permission denied: " << binfile;
   ofs.write(buf.data(), buf.size());
   return true;
 }
 
-bool FeatureIndex::convert(const char* txtfile, std::string *output) {
+bool FeatureIndex::convert(const Param &param,
+                           const char* txtfile, std::string *output) {
   std::ifstream ifs(WPATH(txtfile));
-  if (!ifs) {
-    return false;
-  }
-
+  CHECK_DIE(ifs) << "no such file or directory: " << txtfile;
   scoped_fixed_array<char, BUF_SIZE> buf;
   char *column[4];
   std::vector<std::pair<uint64_t, double> > dic;
-  std::string charset;
+  std::string model_charset;
 
   while (ifs.getline(buf.get(), buf.size())) {
     if (std::strlen(buf.get()) == 0) {
@@ -541,16 +547,38 @@ bool FeatureIndex::convert(const char* txtfile, std::string *output) {
     CHECK_DIE(tokenize2(buf.get(), ":", column, 2) == 2)
         << "format error: " << buf.get();
     if (std::string(column[0]) == "charset") {
-      charset = column[1] + 1;
+      model_charset = column[1] + 1;
     }
   }
 
-  CHECK_DIE(!charset.empty()) << "charset: is not found in this model";
+  std::string from = param.get<std::string>("dictionary-charset");
+  std::string to = param.get<std::string>("charset");
+
+  if (!from.empty()) {
+    CHECK_DIE(decode_charset(model_charset.c_str())
+              == decode_charset(from.c_str()))
+        << "dictionary charset and model charset are different. "
+        << "dictionary_charset=" << from
+        << " model_charset=" << model_charset;
+  } else {
+    from = model_charset;
+  }
+
+  if (to.empty()) {
+    to = from;
+  }
+
+  Iconv iconv;
+  CHECK_DIE(iconv.open(from.c_str(), to.c_str()))
+            << "cannot create model from=" << from
+            << " to=" << to;
 
   while (ifs.getline(buf.get(), buf.size())) {
     CHECK_DIE(tokenize2(buf.get(), "\t", column, 2) == 2)
         << "format error: " << buf.get();
-    const uint64_t fp = fingerprint(std::string(column[1]));
+    std::string feature = column[1];
+    CHECK_DIE(iconv.convert(&feature));
+    const uint64_t fp = fingerprint(feature);
     const double alpha = atof(column[0]);
     dic.push_back(std::pair<uint64_t, double>(fp, alpha));
   }
@@ -561,8 +589,9 @@ bool FeatureIndex::convert(const char* txtfile, std::string *output) {
 
   char charset_buf[32];
   std::fill(charset_buf, charset_buf + sizeof(charset_buf), '\0');
-  std::strncpy(charset_buf, charset.c_str(), 31);
-  output->append(reinterpret_cast<const char *>(charset_buf),  sizeof(charset_buf));
+  std::strncpy(charset_buf, to.c_str(), 31);
+  output->append(reinterpret_cast<const char *>(charset_buf),
+                 sizeof(charset_buf));
 
   std::sort(dic.begin(), dic.end());
 
@@ -586,7 +615,9 @@ bool EncoderFeatureIndex::reopen(const char *filename,
                                  Param *param) {
   close();
   std::ifstream ifs(WPATH(filename));
-  CHECK_DIE(ifs) << "no such file or directory: " << filename;
+  if (!ifs) {
+    return false;
+  }
 
   scoped_fixed_array<char, BUF_SIZE> buf;
   char *column[8];
@@ -635,7 +666,9 @@ bool EncoderFeatureIndex::save(const char *filename, const char *header) const {
   CHECK_DIE(alpha_);
 
   std::ofstream ofs(WPATH(filename));
-  CHECK_DIE(ofs) << "permission denied: " << filename;
+  if (!ofs) {
+    return false;
+  }
 
   ofs.setf(std::ios::fixed, std::ios::floatfield);
   ofs.precision(16);

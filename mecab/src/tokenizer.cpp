@@ -96,18 +96,15 @@ bool Tokenizer<N, P>::open(const Param &param) {
 
   const std::string prefix = param.template get<std::string>("dicdir");
 
-  const char *mode = param.template get<bool>("open-mutable-dictionary") ?
-      "r+" : "r";
-
   CHECK_FALSE(unkdic_.open(create_filename
-                                 (prefix, UNK_DIC_FILE).c_str(), mode))
+                                 (prefix, UNK_DIC_FILE).c_str()))
       << unkdic_.what();
   CHECK_FALSE(property_.open(param)) << property_.what();
 
   Dictionary *sysdic = new Dictionary;
 
   CHECK_FALSE(sysdic->open
-                    (create_filename(prefix, SYS_DIC_FILE).c_str(), mode))
+                    (create_filename(prefix, SYS_DIC_FILE).c_str()))
       << sysdic->what();
 
   CHECK_FALSE(sysdic->type() == 0)
@@ -124,7 +121,7 @@ bool Tokenizer<N, P>::open(const Param &param) {
     const size_t n = tokenizeCSV(buf.get(), dicfile.get(), dicfile.size());
     for (size_t i = 0; i < n; ++i) {
       Dictionary *d = new Dictionary;
-      CHECK_FALSE(d->open(dicfile[i], mode)) << d->what();
+      CHECK_FALSE(d->open(dicfile[i])) << d->what();
       CHECK_FALSE(d->type() == 1)
           << "not a user dictionary: " << dicfile[i];
       CHECK_FALSE(sysdic->isCompatible(*d))

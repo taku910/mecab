@@ -25,20 +25,6 @@ struct Token {
 };
 
 class Dictionary {
- private:
-  scoped_ptr<Mmap<char> > dmmap_;
-  const Token        *token_;
-  const char         *feature_;
-  const char         *charset_;
-  unsigned int        version_;
-  unsigned int        type_;
-  unsigned int        lexsize_;
-  unsigned int        lsize_;
-  unsigned int        rsize_;
-  std::string         filename_;
-  whatlog             what_;
-  Darts::DoubleArray  da_;
-
  public:
   typedef Darts::DoubleArray::result_pair_type result_type;
 
@@ -88,6 +74,20 @@ class Dictionary {
   explicit Dictionary(): dmmap_(new Mmap<char>), token_(0),
                          feature_(0), charset_(0) {}
   virtual ~Dictionary() { this->close(); }
+
+ private:
+  scoped_ptr<Mmap<char> > dmmap_;
+  const Token        *token_;
+  const char         *feature_;
+  const char         *charset_;
+  unsigned int        version_;
+  unsigned int        type_;
+  unsigned int        lexsize_;
+  unsigned int        lsize_;
+  unsigned int        rsize_;
+  std::string         filename_;
+  whatlog             what_;
+  Darts::DoubleArray  da_;
 };
 }
 #endif  // MECAB_DICTIONARY_H_

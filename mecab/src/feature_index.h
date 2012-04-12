@@ -40,8 +40,10 @@ class FeatureIndex {
 
   const char *strdup(const char *str);
 
-  static bool convert(const char *text_filename, std::string *output);
-  static bool compile(const char *text_filename, const char *binary_filename);
+  static bool convert(const Param &param,
+                      const char *text_filename, std::string *output);
+  static bool compile(const Param &param,
+                      const char *text_filename, const char *binary_filename);
 
   explicit FeatureIndex(): feature_freelist_(8192 * 32),
                            char_freelist_(8192 * 32),
@@ -90,7 +92,6 @@ class EncoderFeatureIndex: public FeatureIndex {
 class DecoderFeatureIndex: public FeatureIndex {
  public:
   bool open(const Param &param);
-
   void clear();
   void close();
   bool buildFeature(LearnerPath *path);
@@ -101,8 +102,8 @@ class DecoderFeatureIndex: public FeatureIndex {
 
  private:
   bool openFromArray(const char *begin, const char *end);
-  bool openBinaryModel(const char *binary_file);
-  bool openTextModel(const char *text_file);
+  bool openBinaryModel(const Param &param);
+  bool openTextModel(const Param &param);
   int id(const char *key);
 
   Mmap<char>  mmap_;

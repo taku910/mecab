@@ -23,13 +23,6 @@ struct CharInfo {
 };
 
 class CharProperty {
- private:
-  scoped_ptr<Mmap<char> >   cmmap_;
-  std::vector<const char *>  clist_;
-  const CharInfo            *map_;
-  int                        charset_;
-  whatlog                    what_;
-
  public:
   bool open(const Param &);
   bool open(const char*);
@@ -84,8 +77,15 @@ class CharProperty {
 
   static bool compile(const char *, const char *, const char*);
 
-  explicit CharProperty(): cmmap_(new Mmap<char>), map_(0), charset_(0) {}
+  CharProperty(): cmmap_(new Mmap<char>), map_(0), charset_(0) {}
   virtual ~CharProperty() { this->close(); }
+
+ private:
+  scoped_ptr<Mmap<char> >   cmmap_;
+  std::vector<const char *>  clist_;
+  const CharInfo            *map_;
+  int                        charset_;
+  whatlog                    what_;
 };
 }
 #endif   // MECAB_CHARACTER_CATEGORY_H_

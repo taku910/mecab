@@ -23,9 +23,7 @@
 #include "config.h"
 #endif
 
-// tricky macro for MSVC
 #if defined(_MSC_VER) || defined(__CYGWIN__)
-// #define for if (0); else for
 #define NOMINMAX
 #define snprintf _snprintf
 #endif
