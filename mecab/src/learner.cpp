@@ -17,6 +17,7 @@
 #include "utils.h"
 
 namespace MeCab {
+namespace {
 
 #define DCONF(file) create_filename(dicdir, std::string(file)).c_str()
 
@@ -306,6 +307,7 @@ class Learner {
     return CRFLearner::run(&param);
   }
 };
+}
 }
 
 int mecab_cost_train(int argc, char **argv) {
