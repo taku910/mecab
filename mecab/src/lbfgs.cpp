@@ -27,9 +27,6 @@
 #include "lbfgs.h"
 #include "common.h"
 
-#define min(a, b) ((a) <= (b) ? (a) : (b))
-#define max(a, b) ((a) >= (b) ? (a) : (b))
-
 namespace {
 static const double ftol = 1e-4;
 static const double xtol = 1e-16;
@@ -41,18 +38,22 @@ static const int lb3_1_mp = 6;
 static const int lb3_1_lp = 6;
 
 inline double sigma(double x) {
-  if (x > 0) return 1.0;
-  else if (x < 0) return -1.0;
+  if (x > 0) {
+    return 1.0;
+  } else if (x < 0) {
+    return -1.0;
+  }
   return 0.0;
 }
 
 inline double pi(double x, double y) {
-  return sigma(x) == sigma(y) ?x : 0.0;
+  return sigma(x) == sigma(y) ? x : 0.0;
 }
 
 inline void daxpy_(int n, double da, const double *dx, double *dy) {
-  for (int i = 0; i < n; ++i)
+  for (int i = 0; i < n; ++i) {
     dy[i] += da * dx[i];
+  }
 }
 
 inline double ddot_(int size, const double *dx, const double *dy) {
@@ -69,7 +70,8 @@ void mcstep(double *stx, double *fx, double *dx,
   double p, q, s, d1, d2, d3, r, gamma, theta, stpq, stpc, stpf;
   *info = 0;
 
-  if (*brackt && ((*stp <= min(*stx, *sty) || *stp >= max(*stx, *sty)) ||
+  if (*brackt && ((*stp <= std::min(*stx, *sty) ||
+                   *stp >= std::max(*stx, *sty)) ||
                   *dx * (*stp - *stx) >= 0.0 || stpmax < stpmin)) {
     return;
   }
@@ -82,9 +84,9 @@ void mcstep(double *stx, double *fx, double *dx,
     theta =(*fx - fp) * 3 / (*stp - *stx) + *dx + dp;
     d1 = std::abs(theta);
     d2 = std::abs(*dx);
-    d1 = max(d1, d2);
+    d1 = std::max(d1, d2);
     d2 = std::abs(dp);
-    s = max(d1, d2);
+    s = std::max(d1, d2);
     d1 = theta / s;
     gamma = s * std::sqrt(d1 * d1 - *dx / s *(dp / s));
     if (*stp < *stx) {
@@ -108,9 +110,9 @@ void mcstep(double *stx, double *fx, double *dx,
     theta = (*fx - fp) * 3 / (*stp - *stx) + *dx + dp;
     d1 = std::abs(theta);
     d2 = std::abs(*dx);
-    d1 = max(d1, d2);
+    d1 = std::max(d1, d2);
     d2 = std::abs(dp);
-    s = max(d1, d2);
+    s = std::max(d1, d2);
     d1 = theta / s;
     gamma = s * std::sqrt(d1 * d1 - *dx / s * (dp / s));
     if (*stp > *stx) {
@@ -133,13 +135,13 @@ void mcstep(double *stx, double *fx, double *dx,
     theta = (*fx - fp) * 3 / (*stp - *stx) + *dx + dp;
     d1 = std::abs(theta);
     d2 = std::abs(*dx);
-    d1 = max(d1, d2);
+    d1 = std::max(d1, d2);
     d2 = std::abs(dp);
-    s = max(d1, d2);
+    s = std::max(d1, d2);
     d3 = theta / s;
     d1 = 0.0;
     d2 = d3 * d3 - *dx / s *(dp / s);
-    gamma = s * std::sqrt((max(d1, d2)));
+    gamma = s * std::sqrt((std::max(d1, d2)));
     if (*stp > *stx) {
       gamma = -gamma;
     }
@@ -176,9 +178,9 @@ void mcstep(double *stx, double *fx, double *dx,
       theta =(fp - *fy) * 3 / (*sty - *stp) + *dy + dp;
       d1 = std::abs(theta);
       d2 = std::abs(*dy);
-      d1 = max(d1, d2);
+      d1 = std::max(d1, d2);
       d2 = std::abs(dp);
-      s = max(d1, d2);
+      s = std::max(d1, d2);
       d1 = theta / s;
       gamma = s * std::sqrt(d1 * d1 - *dy / s * (dp / s));
       if (*stp > *sty) {
@@ -211,16 +213,16 @@ void mcstep(double *stx, double *fx, double *dx,
     *dx = dp;
   }
 
-  stpf = min(stpmax, stpf);
-  stpf = max(stpmin, stpf);
+  stpf = std::min(stpmax, stpf);
+  stpf = std::max(stpmin, stpf);
   *stp = stpf;
   if (*brackt && bound) {
     if (*sty > *stx) {
       d1 = *stx + (*sty - *stx) * 0.66;
-      *stp = min(d1, *stp);
+      *stp = std::min(d1, *stp);
     } else {
       d1 = *stx + (*sty - *stx) * 0.66;
-      *stp = max(d1, *stp);
+      *stp = std::max(d1, *stp);
     }
   }
 
@@ -250,10 +252,10 @@ class LBFGS::Mcsrch {
               double f, const double *g, double *s,
               double *stp,
               int *info, int *nfev, double *wa, bool orthant, double C) {
-    static const double p5 = 0.5;
-    static const double p66 = 0.66;
-    static const double xtrapf = 4.0;
-    static const int maxfev = 20;
+    const double p5 = 0.5;
+    const double p66 = 0.66;
+    const double xtrapf = 4.0;
+    const int maxfev = 20;
 
     /* Parameter adjustments */
     --wa;
@@ -261,13 +263,19 @@ class LBFGS::Mcsrch {
     --g;
     --x;
 
-    if (*info == -1) goto L45;
+    if (*info == -1) {
+      goto L45;
+    }
     infoc = 1;
 
-    if (size <= 0 || *stp <= 0.0) return;
+    if (size <= 0 || *stp <= 0.0) {
+      return;
+    }
 
     dginit = ddot_(size, &g[1], &s[1]);
-    if (dginit >= 0.0) return;
+    if (dginit >= 0.0) {
+      return;
+    }
 
     brackt = false;
     stage1 = true;
@@ -289,15 +297,15 @@ class LBFGS::Mcsrch {
 
     while (true) {
       if (brackt) {
-        stmin = min(stx, sty);
-        stmax = max(stx, sty);
+        stmin = std::min(stx, sty);
+        stmax = std::max(stx, sty);
       } else {
         stmin = stx;
         stmax = *stp + xtrapf * (*stp - stx);
       }
 
-      *stp = max(*stp, lb3_1_stpmin);
-      *stp = min(*stp, lb3_1_stpmax);
+      *stp = std::max(*stp, lb3_1_stpmin);
+      *stp = std::min(*stp, lb3_1_stpmax);
 
       if ((brackt && ((*stp <= stmin || *stp >= stmax) ||
                       *nfev >= maxfev - 1 || infoc == 0)) ||
@@ -364,7 +372,7 @@ class LBFGS::Mcsrch {
         return;
       }
 
-      if (stage1 && f <= ftest1 && dg >= min(ftol, lb3_1_gtol) * dginit) {
+      if (stage1 && f <= ftest1 && dg >= std::min(ftol, lb3_1_gtol) * dginit) {
         stage1 = false;
       }
 
@@ -430,10 +438,16 @@ void LBFGS::lbfgs_optimize(int size,
   --x;
   --w;
 
-  if (!mcsrch_) mcsrch_ = new Mcsrch;
+  if (!mcsrch_) {
+    mcsrch_ = new Mcsrch;
+  }
 
-  if (*iflag == 1) goto L172;
-  if (*iflag == 2) goto L100;
+  if (*iflag == 1) {
+    goto L172;
+  }
+  if (*iflag == 2) {
+    goto L100;
+  }
 
   // initialization
   if (*iflag == 0) {
@@ -474,7 +488,7 @@ void LBFGS::lbfgs_optimize(int size,
       w[i] = -g[i];
     }
 
-    bound = min(iter - 1, msize);
+    bound = std::min(iter - 1, msize);
 
     cp = point;
     for (int i = 1; i <= bound; ++i) {
@@ -500,7 +514,9 @@ void LBFGS::lbfgs_optimize(int size,
       iscn = ispt + cp * size;
       daxpy_(size, beta, &w[iscn + 1], &w[1]);
       ++cp;
-      if (cp == msize) cp = 0;
+      if (cp == msize) {
+        cp = 0;
+      }
     }
 
     // STORE THE NEW SEARCH DIRECTION
@@ -541,16 +557,16 @@ void LBFGS::lbfgs_optimize(int size,
       w[iypt + npt + i] = g[i] - w[i];
     }
     ++point;
-    if (point == msize) point = 0;
+    if (point == msize) {
+      point = 0;
+    }
 
     double gnorm = std::sqrt(ddot_(size, &g[1], &g[1]));
-    double xnorm = max(1.0, std::sqrt(ddot_(size, &x[1], &x[1])));
+    double xnorm = std::max(1.0, std::sqrt(ddot_(size, &x[1], &x[1])));
     if (gnorm / xnorm <= eps) {
       *iflag = 0;  // OK terminated
       return;
     }
   }
-
-  return;
 }
 }

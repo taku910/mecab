@@ -244,15 +244,6 @@ const mecab_dictionary_info_t *mecab_dictionary_info(mecab_t *tagger) {
       reinterpret_cast<MeCab::Tagger *>(tagger)->dictionary_info());
 }
 
-  /**
-   * C wrapper of MeCab::Model::lookup()
-   */
-  MECAB_DLL_EXTERN mecab_node_t *mecab_model_lookup(mecab_model_t *model,
-                                                    const char *begin,
-                                                    const char *end,
-                                                    mecab_lattice_t *lattice);
-
-
 int mecab_parse_lattice(mecab_t *mecab, mecab_lattice_t *lattice) {
   return static_cast<int>(
       reinterpret_cast<MeCab::Tagger *>(mecab)->parse(
