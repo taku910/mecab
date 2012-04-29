@@ -1,5 +1,3 @@
-@charset "euc-jp";
-
 a:link {
   text-decoration: none;
  color: #006699;
@@ -20,7 +18,6 @@ a:hover, a:focus {
 }
 
 body {
-  font-family         : 'Lucida Sans Unicode', Verdana, '�ҥ饮�γѥ� Pro W3', '�ҥ饮�γѥ�3', sans-serif;
   font-size           : 10pt;
   line-height         : 145%;
   background-color    : #ffffff;
@@ -39,7 +36,6 @@ li {
 
 
 h1 {
-  font-family         : '�ҥ饮�γѥ� Pro W6', '�ҥ饮�γѥ�6', Verdana, sans-serif;
  margin: 0.2em 0.2em 0.2em 0.2em;
   text-align: left;
   font-size: 150%;
@@ -48,7 +44,6 @@ h1 {
 }
 
 h2 {
-  font-family         : '�ҥ饮�γѥ� Pro W6', '�ҥ饮�γѥ�6', Verdana, sans-serif;
  margin: 1.0em 0.1em 0.2em 0.4em;
  padding: 3px;
   font-size: 120%;
@@ -58,7 +53,6 @@ h2 {
 }
 
 h3 {
-  font-family         : '�ҥ饮�γѥ� Pro W6', '�ҥ饮�γѥ�6', Verdana, sans-serif;
  margin: 0.2em 0.1em 0.2em 0.8em;
  padding: 3px;
   font-size: 110%;
@@ -80,8 +74,6 @@ pre {
 }
 
 table {
-  font-family         : 'Lucida Sans Unicode', Verdana, '�ҥ饮�γѥ� Pro W3', '�ҥ饮�γѥ�3', sans-serif;
-  font-size: 80%;
   margin: 0.2em 0.2em 0.2em 2em;
   line-height: 120%;
   border-width: 0em;
