@@ -65,11 +65,11 @@ class DictionaryComplier {
 
     const std::string dicdir = param.get<std::string>("dicdir");
     const std::string outdir = param.get<std::string>("outdir");
-    bool opt_unknown = param.get<bool>("unknown");
-    bool opt_matrix = param.get<bool>("matrix");
-    bool opt_charcategory = param.get<bool>("charcategory");
-    bool opt_sysdic = param.get<bool>("sysdic");
-    bool opt_model = param.get<bool>("model");
+    bool opt_unknown = param.get<bool>("build-unknown");
+    bool opt_matrix = param.get<bool>("build-matrix");
+    bool opt_charcategory = param.get<bool>("build-charcategory");
+    bool opt_sysdic = param.get<bool>("build-sysdic");
+    bool opt_model = param.get<bool>("build-model");
     const std::string userdic = param.get<std::string>("userdic");
 
 #define DCONF(file) create_filename(dicdir, std::string(file)).c_str()
