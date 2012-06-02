@@ -11,10 +11,10 @@
 
 <h2>概要</h2>
 
-<p>学習用コーパスからパラメータ(コスト値)を推定することができます. 
-MeCab 自身は品詞体系に非依存な設計になっているため, 
-独自の品詞体系,  辞書,  コーパスに基づく解析器を作成することができます. 
-パラメータ推定には Conditinoal Random Fields (<a href="http://www.cis.upenn.edu/~pereira/papers/crf.pdf">CRF</a>) を使っています. </p> 
+<p>学習用コーパスからパラメータ(コスト値)を推定することができます.
+MeCab 自身は品詞体系に非依存な設計になっているため,
+独自の品詞体系,  辞書,  コーパスに基づく解析器を作成することができます.
+パラメータ推定には Conditinoal Random Fields (<a href="http://www.cis.upenn.edu/~pereira/papers/crf.pdf">CRF</a>) を使っています. </p>
 <p>
 
 <h2>処理の流れ</h2>
@@ -35,9 +35,10 @@ MeCab 自身は品詞体系に非依存な設計になっているため,
 <li><a href="#corpus">学習用コーパスの準備</a>
 <li><a href="#binary">学習用バイナリ辞書の作成</a>
 <li><a href="#crf"><a href="http://www.cis.upenn.edu/~pereira/papers/crf.pdf">CRF</a> パラメータの学習</a>
- <li><a href="#dist">配布用辞書の作成</a>
+<li><a href="#dist">配布用辞書の作成</a>
 <li><a href="#test">解析用バイナリ辞書の作成</a>
- <li><a href="#eval">評価</a>
+<li><a href="#eval">評価</a>
+<li><a href="#retrain">再学習</a>
 </ul>
 
 <p>それぞれ順に説明していきます. </p>
@@ -602,6 +603,32 @@ LEVEL 4:    96.8367(634968/655710) 97.1218(634968/653785) 96.9791
   <li>-l "0 1 2" 0番目,  0〜1番目,  0〜4番目の3つの評価を表示します. 
   <li>-l "0 1 -1" 0番目,  0〜1番目,  全レベルの3つの評価を表示します. 
 </ul>
+
+<h2><a name="retrain">再学習</a></h2>
+<p>
+再学習とは, 現在の学習済みモデルと少量の追加学習データからモデルを再構築する仕組みです.
+<b>元の学習データは必要ありません.</b> mecab-ipadic についてはモデルファイルを配布する予定です.
+同モデルファイルと, お手元の少量の学習データや追加辞書を用いることで, 簡単なドメイン適応が可能となります.
+</p>
+
+<p>
+再学習は, 以下のように -M オプションを用いて以前のモデルファイルを指定します. 
+初期学習時に用いた seed 辞書に新規語彙を追加しても構いません. corpus は再学習用の新規コーパスです.
+</p>
+<pre>
+% cd $WORK/seed
+% /usr/local/libexec/mecab/mecab-cost-train -c 1.0 -M old_model corpus model
+
+以下のように -d を使って辞書を指定することもできます<
+% /usr/local/libexec/mecab/mecab-cost-train -M old_model -d $WORK/seed -c 1.0 $WORK/seed/corpus $WORK/seed/model
+</pre>
+
+<p>
+再学習は, 現在のパラメータをできるだけ変更せずに新しい学習データにできるだけ適応するような学習が行われます.
+適応先のコーパスの性質が元のコーパスのそれと大きく変わる場合は、元の学習データに対する精度が低下する恐れがあります.
+ご了承下さい
+</p>
+</p>
 </body>
 </html>
 
