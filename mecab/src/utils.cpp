@@ -355,7 +355,7 @@ bool load_dictionary_resource(Param *param) {
     vt = ::GetModuleFileNameW(DllInstance, v.get(), size);
     if (vt != 0) {
       scoped_fixed_array<wchar_t, _MAX_DRIVE> drive;
-      scoped_fixed_array<wchar_t, _MAX_DRIVE> dir;
+      scoped_fixed_array<wchar_t, _MAX_DIR> dir;
       _wsplitpath(v.get(), drive.get(), dir.get(), NULL, NULL);
       const std::wstring path =
           std::wstring(drive.get()) + std::wstring(dir.get()) + L"mecabrc";
