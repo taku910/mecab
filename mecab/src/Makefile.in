@@ -54,6 +54,12 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
+am__uninstall_files_from_dir = { \
+  test -z "$$files" \
+    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
+    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
+         $(am__cd) "$$dir" && rm -f $$files; }; \
+  }
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" \
 	"$(DESTDIR)$(pkglibexecdir)" "$(DESTDIR)$(includedir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
@@ -341,7 +347,7 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libmecab.la: $(libmecab_la_OBJECTS) $(libmecab_la_DEPENDENCIES) 
+libmecab.la: $(libmecab_la_OBJECTS) $(libmecab_la_DEPENDENCIES) $(EXTRA_libmecab_la_DEPENDENCIES) 
 	$(libmecab_la_LINK) -rpath $(libdir) $(libmecab_la_OBJECTS) $(libmecab_la_LIBADD) $(LIBS)
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
@@ -399,22 +405,22 @@ clean-pkglibexecPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
-mecab$(EXEEXT): $(mecab_OBJECTS) $(mecab_DEPENDENCIES) 
+mecab$(EXEEXT): $(mecab_OBJECTS) $(mecab_DEPENDENCIES) $(EXTRA_mecab_DEPENDENCIES) 
 	@rm -f mecab$(EXEEXT)
 	$(CXXLINK) $(mecab_OBJECTS) $(mecab_LDADD) $(LIBS)
-mecab-cost-train$(EXEEXT): $(mecab_cost_train_OBJECTS) $(mecab_cost_train_DEPENDENCIES) 
+mecab-cost-train$(EXEEXT): $(mecab_cost_train_OBJECTS) $(mecab_cost_train_DEPENDENCIES) $(EXTRA_mecab_cost_train_DEPENDENCIES) 
 	@rm -f mecab-cost-train$(EXEEXT)
 	$(CXXLINK) $(mecab_cost_train_OBJECTS) $(mecab_cost_train_LDADD) $(LIBS)
-mecab-dict-gen$(EXEEXT): $(mecab_dict_gen_OBJECTS) $(mecab_dict_gen_DEPENDENCIES) 
+mecab-dict-gen$(EXEEXT): $(mecab_dict_gen_OBJECTS) $(mecab_dict_gen_DEPENDENCIES) $(EXTRA_mecab_dict_gen_DEPENDENCIES) 
 	@rm -f mecab-dict-gen$(EXEEXT)
 	$(CXXLINK) $(mecab_dict_gen_OBJECTS) $(mecab_dict_gen_LDADD) $(LIBS)
-mecab-dict-index$(EXEEXT): $(mecab_dict_index_OBJECTS) $(mecab_dict_index_DEPENDENCIES) 
+mecab-dict-index$(EXEEXT): $(mecab_dict_index_OBJECTS) $(mecab_dict_index_DEPENDENCIES) $(EXTRA_mecab_dict_index_DEPENDENCIES) 
 	@rm -f mecab-dict-index$(EXEEXT)
 	$(CXXLINK) $(mecab_dict_index_OBJECTS) $(mecab_dict_index_LDADD) $(LIBS)
-mecab-system-eval$(EXEEXT): $(mecab_system_eval_OBJECTS) $(mecab_system_eval_DEPENDENCIES) 
+mecab-system-eval$(EXEEXT): $(mecab_system_eval_OBJECTS) $(mecab_system_eval_DEPENDENCIES) $(EXTRA_mecab_system_eval_DEPENDENCIES) 
 	@rm -f mecab-system-eval$(EXEEXT)
 	$(CXXLINK) $(mecab_system_eval_OBJECTS) $(mecab_system_eval_LDADD) $(LIBS)
-mecab-test-gen$(EXEEXT): $(mecab_test_gen_OBJECTS) $(mecab_test_gen_DEPENDENCIES) 
+mecab-test-gen$(EXEEXT): $(mecab_test_gen_OBJECTS) $(mecab_test_gen_DEPENDENCIES) $(EXTRA_mecab_test_gen_DEPENDENCIES) 
 	@rm -f mecab-test-gen$(EXEEXT)
 	$(CXXLINK) $(mecab_test_gen_OBJECTS) $(mecab_test_gen_LDADD) $(LIBS)
 
@@ -549,10 +555,15 @@ install-am: all-am
 
 installcheck: installcheck-am
 install-strip:
-	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
-	  install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
-	  `test -z '$(STRIP)' || \
-	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
+	if test -z '$(STRIP)'; then \
+	  $(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+	    install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
+	      install; \
+	else \
+	  $(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+	    install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
+	    "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'" install; \
+	fi
 mostlyclean-generic:
 
 clean-generic:
