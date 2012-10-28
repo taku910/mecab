@@ -59,6 +59,9 @@ class CommandLine {
 
 int wmain_to_main_wrapper(int argc, char **argv);
 
+#if defined(__MINGW32__)
+extern "C"
+#endif
 int wmain(int argc, wchar_t **argv) {
   CommandLine cmd(argc, argv);
   return wmain_to_main_wrapper(cmd.argc(), cmd.argv());

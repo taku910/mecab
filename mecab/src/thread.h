@@ -47,7 +47,7 @@ namespace MeCab {
 #undef yield_processor
 #define atomic_add(a, b) ::InterlockedExchangeAdd(a, b)
 #define compare_and_swap(a, b, c)  ::InterlockedCompareExchange(a, c, b)
-#define yield_processor() ::YieldProcessor()
+#define yield_processor() YieldProcessor()
 #define HAVE_ATOMIC_OPS 1
 #endif
 

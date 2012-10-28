@@ -44,6 +44,9 @@ class StringBuffer {
   StringBuffer& operator<<(unsigned short int n) { _UITOA(n); }
   StringBuffer& operator<<(unsigned int n)       { _UITOA(n); }
   StringBuffer& operator<<(unsigned long int n)  { _UITOA(n); }
+#ifdef HAVE_UNSIGNED_LONG_LONG_INT
+  StringBuffer& operator<<(unsigned long long int n) { _UITOA(n); }
+#endif
 
   StringBuffer& operator<< (char n) {
     return this->write(n);

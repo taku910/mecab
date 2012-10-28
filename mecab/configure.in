@@ -3,7 +3,7 @@ AC_INIT(src/mecab.cpp)
 AH_TEMPLATE([HAVE_GCC_ATOMIC_OPS], [])
 AH_TEMPLATE([HAVE_OSX_ATOMIC_OPS], [])
 AH_TEMPLATE([HAVE_TLS_KEYWORD], [])
-AM_INIT_AUTOMAKE(mecab, 0.994)
+AM_INIT_AUTOMAKE(mecab, 0.995)
 AC_CONFIG_MACRO_DIR([m4])
 
 # DIC_VERSION XXYY
@@ -47,13 +47,12 @@ AC_CHECK_SIZEOF(long)
 AC_CHECK_SIZEOF(long long)
 AC_CHECK_SIZEOF(size_t)
 AC_TYPE_SIZE_T
+AC_TYPE_UNSIGNED_LONG_LONG_INT
 
 AC_FUNC_MMAP
 AC_CHECK_LIB(stdc++, main, MECAB_LIBS="-lstdc++")
 AC_CHECK_LIB(pthread,pthread_create)
 AC_CHECK_LIB(pthread,pthread_join)
-AC_CHECK_LIB(iconv,iconv_open)
-AC_SEARCH_LIBS(iconv, iconv)
 AC_CHECK_FUNCS(getenv)
 AC_CHECK_FUNCS(opendir)
 AC_LANG(C++)
@@ -66,7 +65,7 @@ else
 MECAB_USE_UTF8_ONLY=""
 fi
 
-LIBS="$LIBS $MECAB_LIBS"
+LIBS="$LIBS $MECAB_LIBS $LIBICONV"
 AC_SUBST(MECAB_LIBS)
 AC_SUBST(MECAB_USE_UTF8_ONLY)
 
@@ -302,6 +301,8 @@ AC_MSG_RESULT([yes])
 case "$host_os" in
  mingw* | os2*)
   MECAB_DEFAULT_RC='c:\\\\Program Files\\\\mecab\\\\etc\\\\mecabrc'
+  CFLAGS="$CFLAGS -municode -DUNICODE -D_UNICODE"
+  CXXFLAGS="$CXXFLAGS -municode -DUNICODE -D_UNICODE"
   ;;
  *)
   MECAB_DEFAULT_RC="$sysconfdir/mecabrc"
