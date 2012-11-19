@@ -2,6 +2,15 @@
 %include exception.i
 %{
 #include "mecab.h"
+
+/* Workaround for ruby1.9.x */
+#if defined SWIGRUBY
+#include "ruby/version.h"
+#if RUBY_API_VERSION_CODE >= 10900
+#include "ruby/encoding.h"
+#define rb_str_new rb_external_str_new
+#endif
+#endif
 %}
 
 %newobject surface;

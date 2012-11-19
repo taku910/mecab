@@ -3051,6 +3051,15 @@ namespace swig {
 
 #include "mecab.h"
 
+/* Workaround for ruby1.9.x */
+#if defined SWIGRUBY
+#include "ruby/version.h"
+#if RUBY_API_VERSION_CODE >= 10900
+#include "ruby/encoding.h"
+#define rb_str_new rb_external_str_new
+#endif
+#endif
+
 
 
 MeCab::Tagger* new_MeCab_Tagger (const char *arg) {
@@ -8156,7 +8165,7 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, "MECAB_ALTERNATIVE",SWIG_From_int(static_cast< int >(MECAB_ALTERNATIVE)));
   SWIG_Python_SetConstant(d, "MECAB_ALL_MORPHS",SWIG_From_int(static_cast< int >(MECAB_ALL_MORPHS)));
   SWIG_Python_SetConstant(d, "MECAB_ALLOCATE_SENTENCE",SWIG_From_int(static_cast< int >(MECAB_ALLOCATE_SENTENCE)));
-  SWIG_Python_SetConstant(d, "VERSION",SWIG_FromCharPtr("0.994"));
+  SWIG_Python_SetConstant(d, "VERSION",SWIG_FromCharPtr("0.995"));
 #if PY_VERSION_HEX >= 0x03000000
   return m;
 #else

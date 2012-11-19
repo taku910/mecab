@@ -1575,6 +1575,15 @@ SWIGEXPORT void SWIG_init (CV *cv, CPerlObj *);
 
 #include "mecab.h"
 
+/* Workaround for ruby1.9.x */
+#if defined SWIGRUBY
+#include "ruby/version.h"
+#if RUBY_API_VERSION_CODE >= 10900
+#include "ruby/encoding.h"
+#define rb_str_new rb_external_str_new
+#endif
+#endif
+
 
 
 MeCab::Tagger* new_MeCab_Tagger (const char *arg) {
@@ -7178,7 +7187,7 @@ XS(SWIG_init) {
   SWIG_TypeClientData(SWIGTYPE_p_MeCab__Tagger, (void*) "MeCab::Tagger");
   /*@SWIG:/usr/share/swig2.0/perl5/perltypemaps.swg,65,%set_constant@*/ do {
     SV *sv = get_sv((char*) SWIG_prefix "VERSION", TRUE | 0x2 | GV_ADDMULTI);
-    sv_setsv(sv, SWIG_FromCharPtr("0.994"));
+    sv_setsv(sv, SWIG_FromCharPtr("0.995"));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
   ST(0) = &PL_sv_yes;

@@ -267,6 +267,15 @@ SWIGINTERN void SWIG_JavaException(JNIEnv *jenv, int code, const char *msg) {
 
 #include "mecab.h"
 
+/* Workaround for ruby1.9.x */
+#if defined SWIGRUBY
+#include "ruby/version.h"
+#if RUBY_API_VERSION_CODE >= 10900
+#include "ruby/encoding.h"
+#define rb_str_new rb_external_str_new
+#endif
+#endif
+
 
 
 MeCab::Tagger* new_MeCab_Tagger (const char *arg) {
@@ -3402,7 +3411,7 @@ SWIGEXPORT jstring JNICALL Java_org_chasen_mecab_MeCabJNI_VERSION_1get(JNIEnv *j
   
   (void)jenv;
   (void)jcls;
-  result = (char *)("0.994");
+  result = (char *)("0.995");
   if (result) jresult = jenv->NewStringUTF((const char *)result);
   return jresult;
 }

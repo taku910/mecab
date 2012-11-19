@@ -1854,6 +1854,15 @@ static VALUE mMeCab;
 
 #include "mecab.h"
 
+/* Workaround for ruby1.9.x */
+#if defined SWIGRUBY
+#include "ruby/version.h"
+#if RUBY_API_VERSION_CODE >= 10900
+#include "ruby/encoding.h"
+#define rb_str_new rb_external_str_new
+#endif
+#endif
+
 
 
 MeCab::Tagger* new_MeCab_Tagger (const char *arg) {
@@ -6552,6 +6561,6 @@ SWIGEXPORT void Init_MeCab(void) {
   SwigClassTagger.mark = 0;
   SwigClassTagger.destroy = (void (*)(void *)) free_MeCab_Tagger;
   SwigClassTagger.trackObjects = 0;
-  rb_define_const(mMeCab, "VERSION", SWIG_FromCharPtr("0.994"));
+  rb_define_const(mMeCab, "VERSION", SWIG_FromCharPtr("0.995"));
 }
 

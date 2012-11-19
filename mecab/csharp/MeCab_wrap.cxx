@@ -338,6 +338,15 @@ SWIGINTERN void SWIG_CSharpException(int code, const char *msg) {
 
 #include "mecab.h"
 
+/* Workaround for ruby1.9.x */
+#if defined SWIGRUBY
+#include "ruby/version.h"
+#if RUBY_API_VERSION_CODE >= 10900
+#include "ruby/encoding.h"
+#define rb_str_new rb_external_str_new
+#endif
+#endif
+
 
 
 MeCab::Tagger* new_MeCab_Tagger (const char *arg) {
@@ -3057,7 +3066,7 @@ SWIGEXPORT char * SWIGSTDCALL CSharp_VERSION_get() {
   char * jresult ;
   char *result = 0 ;
   
-  result = (char *)("0.994");
+  result = (char *)("0.995");
   jresult = SWIG_csharp_string_callback((const char *)result); 
   return jresult;
 }
