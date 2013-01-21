@@ -146,7 +146,7 @@ struct mecab_node_t {
   unsigned int          id;
 
   /**
-   * length of the surface form/.
+   * length of the surface form.
    */
   unsigned short        length;
 
@@ -176,7 +176,7 @@ struct mecab_node_t {
   unsigned char         char_type;
 
   /**
-   * statis of this model.
+   * status of this model.
    * This value is MECAB_NOR_NODE, MECAB_UNK_NODE, MECAB_BOS_NODE, MECAB_EOS_NODE, or MECAB_EON_NODE.
    */
   unsigned char         stat;
@@ -308,17 +308,20 @@ enum {
  * Parameters for MeCab::Lattice::boundary_constraint_type
  */
 enum {
+  /**
+   * The token boundary is not specified.
+   */
   MECAB_ANY_BOUNDARY = 0,
-  MECAB_TOKEN_BOUNDARY = 1,
-  MECAB_INSIDE_TOKEN = 2
-};
 
-/**
- * Parameters for MeCab::Lattice::node_constraint_type
- */
-enum {
-  MECAB_SINGLE_NODE = 1,
-  MECAB_MULTIPLE_NODES = 2
+  /**
+   * The position is a strong token boundary.
+   */
+  MECAB_TOKEN_BOUNDARY = 1,
+
+  /**
+   * The position is not a token boundary.
+   */
+  MECAB_INSIDE_TOKEN = 2
 };
 
 /* C interface  */
@@ -662,6 +665,32 @@ extern "C" {
   MECAB_DLL_EXTERN const char      *mecab_lattice_nbest_tostr2(mecab_lattice_t *lattice, size_t N, char *buf, size_t size);
 
   /**
+   * C wrapper of MeCab::Lattice::has_constraint()
+   */
+  MECAB_DLL_EXTERN int             mecab_lattice_has_constraint(mecab_lattice_t *lattice);
+
+  /**
+   * C wrapper of MeCab::Lattice::boundary_constraint(pos)
+   */
+  MECAB_DLL_EXTERN int             mecab_lattice_get_boundary_constraint(mecab_lattice_t *lattice, size_t pos);
+
+
+  /**
+   * C wrapper of MeCab::Lattice::feature_constraint(pos)
+   */
+  MECAB_DLL_EXTERN const char     *mecab_lattice_get_feature_constraint(mecab_lattice_t *lattice, size_t pos);
+
+  /**
+   * C wrapper of MeCab::Lattice::boundary_constraint(pos, type)
+   */
+  MECAB_DLL_EXTERN void            mecab_lattice_set_boundary_constraint(mecab_lattice_t *lattice, size_t pos, int boundary_type);
+
+  /**
+   * C wrapper of MeCab::Lattice::set_feature_constraint(begin_pos, end_pos, feature)
+   */
+  MECAB_DLL_EXTERN void            mecab_lattice_set_feature_constraint(mecab_lattice_t *lattice, size_t begin_pos, size_t end_pos, const char *feature);
+
+  /**
    * C wrapper of MeCab::Lattice::what()
    */
   MECAB_DLL_EXTERN const char      *mecab_lattice_strerror(mecab_lattice_t *lattice);
@@ -975,10 +1004,10 @@ public:
 
   /**
    * Returns the token constraint at the position.
-   * @param pos the position of constraint
+   * @param pos the beginning position of constraint.
    * @return constrained node starting at the position.
    */
-  virtual const char *feature_constraint(size_t begin_pos) const = 0;
+  virtual const char *feature_constraint(size_t pos) const = 0;
 
   /**
    * Set parsing constraint for partial parsing mode.
@@ -990,8 +1019,8 @@ public:
 
   /**
    * Set parsing constraint for partial parsing mode.
-   * @param begin_pos the starting position of new token.
-   * @param end_pos the the ending position of new token.
+   * @param begin_pos the starting position of the constrained token.
+   * @param end_pos the the ending position of the constrained token.
    * @param feature the feature of the constrained token.
    */
   virtual void set_feature_constraint(
