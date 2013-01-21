@@ -46,6 +46,8 @@ const MeCab::Option long_options[] = {
     "partial parsing mode (default false)" },
   { "marginal",           'm',  0, 0,
     "output marginal probability (default false)" },
+  { "max-grouping-size",  'M',  "24",
+    "INT",  "maximum grouping size for unknown words (default 24)" },
   { "node-format",        'F',  "%m\\t%H\\n", "STR",
     "use STR as the user-defined node format" },
   { "unk-format",        'U',  "%m\\t%H\\n", "STR",
@@ -279,6 +281,16 @@ class LatticeImpl : public Lattice {
     return allocator_->newNode();
   }
 
+  bool has_constraint() const;
+  int boundary_constraint(size_t pos) const;
+  const char *feature_constraint(size_t begin_pos) const;
+
+  void set_boundary_constraint(size_t pos,
+                               int boundary_constraint_type);
+
+  void set_feature_constraint(size_t begin_pos, size_t end_pos,
+                              const char *feature);
+
   const char *what() const { return what_.c_str(); }
 
   void set_what(const char *str) {
@@ -302,6 +314,8 @@ class LatticeImpl : public Lattice {
   std::string                 what_;
   std::vector<Node *>         end_nodes_;
   std::vector<Node *>         begin_nodes_;
+  std::vector<const char *>   feature_constraint_;
+  std::vector<unsigned char>  boundary_constraint_;
   const Writer               *writer_;
   scoped_ptr<StringBuffer>    ostrs_;
   scoped_ptr<Allocator<Node, Path> > allocator_;
@@ -375,7 +389,7 @@ bool ModelImpl::swap(Model *model) {
   setGlobalError("atomic model replacement is not supported");
   return false;
 #else
-  ModelImpl *m = dynamic_cast<ModelImpl *>(model_data.get());
+  ModelImpl *m = static_cast<ModelImpl *>(model_data.get());
   if (!m) {
     setGlobalError("Invalid model is passed");
     return false;
@@ -731,6 +745,8 @@ void LatticeImpl::clear() {
   }
   begin_nodes_.clear();
   end_nodes_.clear();
+  feature_constraint_.clear();
+  boundary_constraint_.clear();
   size_ = 0;
   theta_ = kDefaultTheta;
   Z_ = 0.0;
@@ -897,6 +913,53 @@ const char *LatticeImpl::enumNBestAsStringInternal(size_t N,
   }
 
   return os->str();
+}
+
+bool LatticeImpl::has_constraint() const {
+  return !boundary_constraint_.empty();
+}
+
+int LatticeImpl::boundary_constraint(size_t pos) const {
+  if (!boundary_constraint_.empty()) {
+    return boundary_constraint_[pos];
+  }
+  return MECAB_ANY_BOUNDARY;
+}
+
+const char *LatticeImpl::feature_constraint(size_t begin_pos) const {
+  if (!feature_constraint_.empty()) {
+    return feature_constraint_[begin_pos];
+  }
+  return 0;
+}
+
+void LatticeImpl::set_boundary_constraint(size_t pos,
+                                          int boundary_constraint_type) {
+  if (boundary_constraint_.empty()) {
+    boundary_constraint_.resize(size() + 4, MECAB_ANY_BOUNDARY);
+  }
+  boundary_constraint_[pos] = boundary_constraint_type;
+}
+
+void LatticeImpl::set_feature_constraint(size_t begin_pos, size_t end_pos,
+                                         const char *feature) {
+  if (begin_pos >= end_pos || !feature) {
+    return;
+  }
+
+  if (feature_constraint_.empty()) {
+    feature_constraint_.resize(size() + 4, 0);
+  }
+
+  end_pos = std::min(end_pos, size());
+
+  set_boundary_constraint(begin_pos, MECAB_TOKEN_BOUNDARY);
+  set_boundary_constraint(end_pos, MECAB_TOKEN_BOUNDARY);
+  for (size_t i = begin_pos + 1; i < end_pos; ++i) {
+    set_boundary_constraint(i, MECAB_INSIDE_TOKEN);
+  }
+
+  feature_constraint_[begin_pos] = feature;
 }
 }  // namespace
 

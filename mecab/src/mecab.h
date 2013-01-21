@@ -276,6 +276,8 @@ enum {
   MECAB_NBEST             = 2,
   /**
    * Set this flag if you want to enable a partial parsing mode.
+   * When this flag is set, the input |sentence| needs to be written
+   * in partial parsing format.
    */
   MECAB_PARTIAL           = 4,
   /**
@@ -300,6 +302,23 @@ enum {
    * sentence into internal buffer.
    */
   MECAB_ALLOCATE_SENTENCE = 64
+};
+
+/**
+ * Parameters for MeCab::Lattice::boundary_constraint_type
+ */
+enum {
+  MECAB_ANY_BOUNDARY = 0,
+  MECAB_TOKEN_BOUNDARY = 1,
+  MECAB_INSIDE_TOKEN = 2
+};
+
+/**
+ * Parameters for MeCab::Lattice::node_constraint_type
+ */
+enum {
+  MECAB_SINGLE_NODE = 1,
+  MECAB_MULTIPLE_NODES = 2
 };
 
 /* C interface  */
@@ -941,6 +960,43 @@ public:
    */
   virtual const char *enumNBestAsString(size_t N, char *buf, size_t size) = 0;
 #endif
+
+  /**
+   * Returns true if any parsing constraint is set
+   */
+  virtual bool has_constraint() const = 0;
+
+  /**
+   * Returns the boundary constraint at the position.
+   * @param pos the position of constraint
+   * @return boundary constraint type
+   */
+  virtual int boundary_constraint(size_t pos) const = 0;
+
+  /**
+   * Returns the token constraint at the position.
+   * @param pos the position of constraint
+   * @return constrained node starting at the position.
+   */
+  virtual const char *feature_constraint(size_t begin_pos) const = 0;
+
+  /**
+   * Set parsing constraint for partial parsing mode.
+   * @param pos the position of the boundary
+   * @param boundary_constraint_type the type of boundary
+   */
+  virtual void set_boundary_constraint(size_t pos,
+                                       int boundary_constraint_type) = 0;
+
+  /**
+   * Set parsing constraint for partial parsing mode.
+   * @param begin_pos the starting position of new token.
+   * @param end_pos the the ending position of new token.
+   * @param feature the feature of the constrained token.
+   */
+  virtual void set_feature_constraint(
+      size_t begin_pos, size_t end_pos,
+      const char *feature) = 0;
 
   /**
    * Return error string.

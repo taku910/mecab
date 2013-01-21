@@ -255,8 +255,6 @@ bool Dictionary::compile(const Param &param,
       }
 
       if (lid < 0  || rid < 0 || lid == INT_MAX || rid == INT_MAX) {
-        CHECK_DIE(type == MECAB_USR_DIC)
-            << "lid/rid fields should not be empty in sys/unk dic.";
         if (!rewrite.get()) {
           rewrite.reset(new DictionaryRewriter);
           rewrite->open(rewrite_file.c_str(), &config_iconv);

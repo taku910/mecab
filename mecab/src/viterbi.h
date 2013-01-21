@@ -37,11 +37,11 @@ class Viterbi {
  private:
   bool viterbiWithAllPath(Lattice *lattice) const;
   bool viterbi(Lattice *lattice) const;
+  Node *filterNode(Lattice *lattice, Node *node, size_t pos) const;
 
   static bool forwardbackward(Lattice *lattice);
   static bool initPartial(Lattice *lattice);
   static bool initNBest(Lattice *lattice);
-  static Node *filterNode(Node *constrained_node, Node *node);
   static bool buildBestLattice(Lattice *lattice);
   static bool buildAllLattice(Lattice *lattice);
 

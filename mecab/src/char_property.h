@@ -19,6 +19,7 @@ struct CharInfo {
   unsigned int length:       4;
   unsigned int group:        1;
   unsigned int invoke:       1;
+  CharInfo() : type(0), default_type(0), length(0), group(0), invoke(0) {}
   bool isKindOf(CharInfo c) const { return type & c.type; }
 };
 

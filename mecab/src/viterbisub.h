@@ -75,7 +75,7 @@ bool Viterbi::viterbi
   Node **end_node_list   = lattice->end_nodes();
   Node **begin_node_list = lattice->begin_nodes();
   Allocator<Node, Path> *allocator = lattice->allocator();
-  const bool partial  = lattice->has_request_type(MECAB_PARTIAL);
+  const bool partial  = lattice->has_constraint();
   const size_t len = lattice->size();
   const char *begin = lattice->sentence();
   const char *end = begin + len;
@@ -88,7 +88,7 @@ bool Viterbi::viterbi
     if (end_node_list[pos]) {
       Node *right_node = tokenizer_->lookup(begin + pos, end, allocator);
       if (partial) {
-        right_node = filterNode(begin_node_list[pos], right_node);
+        right_node = filterNode(lattice, right_node, pos);
       }
       begin_node_list[pos] = right_node;
 #ifdef VITERBI_WITH_ALL_PATH_

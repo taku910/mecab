@@ -230,6 +230,11 @@ bool Viterbi::initNBest(Lattice *lattice) {
 // static
 bool Viterbi::initPartial(Lattice *lattice) {
   if (!lattice->has_request_type(MECAB_PARTIAL)) {
+    if (lattice->has_constraint()) {
+      lattice->set_boundary_constraint(0, MECAB_TOKEN_BOUNDARY);
+      lattice->set_boundary_constraint(lattice->size(),
+                                       MECAB_TOKEN_BOUNDARY);
+    }
     return true;
   }
 
@@ -239,79 +244,76 @@ bool Viterbi::initPartial(Lattice *lattice) {
 
   std::vector<char *> lines;
   const size_t lsize = tokenize(str, "\n",
-                                std::back_inserter(lines), 0xffff);
-  if (lsize >= 0xffff) {
-    lattice->set_what("too long lines");
-    return false;
-  }
-
+                                std::back_inserter(lines),
+                                lattice->size() + 1);
   char* column[2];
   scoped_array<char> buf(new char[lattice->size() + 1]);
   StringBuffer os(buf.get(), lattice->size() + 1);
-  os << ' ';
 
   std::vector<std::pair<char *, char *> > tokens;
   tokens.reserve(lsize);
 
-  size_t pos = 1;
+  size_t pos = 0;
   for (size_t i = 0; i < lsize; ++i) {
     const size_t size = tokenize(lines[i], "\t", column, 2);
     if (size == 1 && std::strcmp(column[0], "EOS") == 0) {
       break;
     }
     const size_t len = std::strlen(column[0]);
-    os << column[0] << ' ';
     if (size == 2) {
       tokens.push_back(std::make_pair(column[0], column[1]));
     } else {
       tokens.push_back(std::make_pair(column[0], reinterpret_cast<char *>(0)));
     }
-    pos += len + 1;
+    os << column[0];
+    pos += len;
   }
 
   os << '\0';
-  lattice->set_sentence(os.str(), pos - 1);
 
-  pos = 1;
-  Node **begin_node_list = lattice->begin_nodes();
+  lattice->set_sentence(os.str());
 
+  pos = 0;
   for (size_t i = 0; i < tokens.size(); ++i) {
     const char *surface = tokens[i].first;
     const char *feature = tokens[i].second;
     const size_t len = std::strlen(surface);
+    lattice->set_boundary_constraint(pos, MECAB_TOKEN_BOUNDARY);
+    lattice->set_boundary_constraint(pos + len, MECAB_TOKEN_BOUNDARY);
     if (feature) {
-      if (*feature == '\0') {
-        lattice->set_what("use \\t as separator");
-        return false;
+      lattice->set_feature_constraint(pos, pos + len, feature);
+      for (size_t n = 1; n < len; ++n) {
+        lattice->set_boundary_constraint(pos + n,
+                                         MECAB_INSIDE_TOKEN);
       }
-      Node *node = allocator->newNode();
-      node->surface = surface;
-      node->feature = feature;
-      node->length  = len;
-      node->rlength = len + 1;
-      node->bnext = 0;
-      node->wcost = 0;
-      begin_node_list[pos - 1] = node;
     }
-    pos += len + 1;
+    pos += len;
   }
 
   return true;
 }
 
-// static
-Node *Viterbi::filterNode(Node *constrained_node, Node *node) {
-  if (!constrained_node) {
-    return node;
-  }
-
+namespace {
+inline Node *filterNodeInternal(Lattice *lattice,
+                                Node *node,
+                                const char *feature,
+                                size_t pos,
+                                size_t next_strong_boundary_pos) {
   Node *prev = 0;
   Node *result = 0;
 
   for (Node *n = node; n; n = n->bnext) {
-    if (constrained_node->length == n->length &&
-        (std::strcmp(constrained_node->feature, "*") == 0 ||
-         partial_match(constrained_node->feature, n->feature))) {
+    if (n->stat == MECAB_UNK_NODE &&
+        pos + n->rlength > next_strong_boundary_pos) {
+      const size_t diff = pos + n->rlength - next_strong_boundary_pos;
+      n->rlength -= diff;
+      n->length -= diff;
+    }
+    if (pos + n->rlength <= next_strong_boundary_pos &&
+        MECAB_INSIDE_TOKEN !=
+        lattice->boundary_constraint(pos + n->rlength) &&
+        (!feature || std::strcmp(feature, "*") == 0 ||
+         partial_match(feature, n->feature))) {
       if (prev) {
         prev->bnext = n;
         prev = n;
@@ -322,17 +324,68 @@ Node *Viterbi::filterNode(Node *constrained_node, Node *node) {
     }
   }
 
-  if (!result) {
-    result = constrained_node;
-  }
-
   if (prev) {
     prev->bnext = 0;
   }
 
   return result;
 }
+}  // namespace
+
+// static
+Node *Viterbi::filterNode(Lattice *lattice, Node *node, size_t pos) const {
+  // |next_strong_boundary_pos| is the position of strong boundary where
+  // any words cannot be longer than |next_strong_boundary_pos - pos|.
+  // |next_strong_boundary_pos| is a possible and shortest
+  // word which can satisfy the boundary constraints.
+  // TODO(taku): This part is potentially O(n^2).
+  size_t next_strong_boundary_pos = lattice->size();
+  size_t next_weak_boundary_pos = lattice->size();
+  for (size_t i = pos + 1; i <= lattice->size(); ++i) {
+    const int b = lattice->boundary_constraint(i);
+    if (MECAB_INSIDE_TOKEN != b) {
+      next_weak_boundary_pos = i;
+    }
+    if (MECAB_TOKEN_BOUNDARY == b) {
+      next_strong_boundary_pos = i;
+      break;
+    }
+  }
+
+  const char *feature = lattice->feature_constraint(pos);
+
+  Node *result = 0;
+  result = filterNodeInternal(lattice, node, feature,
+                              pos, next_strong_boundary_pos);
+
+  if (result) {
+    return result;
+  }
+
+  node = tokenizer_->getUnknownNode(
+      lattice->sentence() + pos,
+      lattice->sentence() + next_weak_boundary_pos,
+      lattice->allocator());
+  result = filterNodeInternal(lattice, node, feature,
+                              pos, next_strong_boundary_pos);
+
+  if (result) {
+    return result;
+  }
+
+  node = lattice->newNode();
+  node->surface = lattice->sentence() + pos;
+  node->feature = feature;
+  node->length = next_weak_boundary_pos - pos;
+  node->rlength = next_weak_boundary_pos - pos;
+  node->bnext = 0;
+  node->wcost = 0;
+
+  result = node;
+
+  return result;
 }
+}  // MeCab
 
 #undef VITERBI_WITH_ALL_PATH_
 #include "viterbisub.h"

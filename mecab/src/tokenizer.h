@@ -119,6 +119,8 @@ class Tokenizer {
   N *getEOSNode(Allocator<N, P> *allocator) const;
   N *lookup(const char *begin, const char *end,
             Allocator<N, P> *allocator) const;
+  N *getUnknownNode(const char *begin, const char *end,
+                    Allocator<N, P> *allocator) const;
 
   bool open(const Param &param);
   void close();

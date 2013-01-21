@@ -47,22 +47,30 @@ template const DictionaryInfo
 *Tokenizer<Node, Path>::dictionary_info() const;
 template Node* Tokenizer<Node, Path>::getBOSNode(Allocator<Node, Path> *) const;
 template Node* Tokenizer<Node, Path>::getEOSNode(Allocator<Node, Path> *) const;
-template Node* Tokenizer<Node, Path>::lookup(const char*,
-                                             const char*,
+template Node* Tokenizer<Node, Path>::lookup(const char *,
+                                             const char *,
                                              Allocator<Node, Path> *) const;
+template Node* Tokenizer<Node, Path>::getUnknownNode(const char *,
+                                                     const char *,
+                                                    Allocator<Node, Path> *) const;
 template bool Tokenizer<Node, Path>::open(const Param &);
 template Tokenizer<LearnerNode, LearnerPath>::Tokenizer();
 template void Tokenizer<LearnerNode, LearnerPath>::close();
 template const DictionaryInfo
 *Tokenizer<LearnerNode, LearnerPath>::dictionary_info() const;
-template LearnerNode* Tokenizer<LearnerNode, LearnerPath>::getEOSNode(
+template LearnerNode * Tokenizer<LearnerNode, LearnerPath>::getEOSNode(
     Allocator<LearnerNode, LearnerPath> *) const;
-template LearnerNode* Tokenizer<LearnerNode, LearnerPath>::getBOSNode(
+template LearnerNode * Tokenizer<LearnerNode, LearnerPath>::getBOSNode(
     Allocator<LearnerNode, LearnerPath> *) const;
-template LearnerNode*
+template LearnerNode *
 Tokenizer<LearnerNode, LearnerPath>::lookup(
-    const char*,
-    const char*,
+    const char *,
+    const char *,
+    Allocator<LearnerNode, LearnerPath> *) const;
+template LearnerNode *
+Tokenizer<LearnerNode, LearnerPath>::getUnknownNode(
+    const char *,
+    const char *,
     Allocator<LearnerNode, LearnerPath> *) const;
 template bool Tokenizer<LearnerNode, LearnerPath>::open(const Param &);
 #endif
@@ -174,6 +182,37 @@ bool Tokenizer<N, P>::open(const Param &param) {
   }
 
   return true;
+}
+
+template <typename N, typename P>
+N *Tokenizer<N, P>::getUnknownNode(const char *begin, const char *end,
+                                   Allocator<N, P> *allocator) const {
+  CharInfo cinfo;
+  // skip white spaces
+  size_t mblen = 0;
+  size_t clen = 0;
+  const char *begin2 = property_.seekToOtherType(begin, end, space_,
+                                                 &cinfo, &mblen, &clen);
+  N *result_node = 0;
+
+  const Token *token = unk_tokens_[cinfo.default_type].first;
+  size_t size = unk_tokens_[cinfo.default_type].second;
+  for (size_t k = 0; k < size; ++k) {
+    N *new_node = allocator->newNode();
+    read_node_info(unkdic_, *(token + k), &new_node);
+    new_node->char_type = cinfo.default_type;
+    new_node->surface = begin2;
+    new_node->length = end - begin2;
+    new_node->rlength = end - begin;
+    new_node->bnext = result_node;
+    new_node->stat = MECAB_UNK_NODE;
+    if (unk_feature_.get()) {
+      new_node->feature = unk_feature_.get();
+    }
+    result_node = new_node;
+  }
+
+  return result_node;
 }
 
 #define ADDUNKNWON do {                                                  \
