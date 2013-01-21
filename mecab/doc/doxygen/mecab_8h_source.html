@@ -118,7 +118,7 @@
 <a name="l00142"></a>00142 
 <a name="l00146"></a><a class="code" href="structmecab__node__t.html#af3b0df07beb88458314904394e85d5fb">00146</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>          <a class="code" href="structmecab__node__t.html#af3b0df07beb88458314904394e85d5fb" title="unique node id">id</a>;
 <a name="l00147"></a>00147 
-<a name="l00151"></a><a class="code" href="structmecab__node__t.html#a26755cea9e3b38f87a64fbbf34060bbf">00151</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>        <a class="code" href="structmecab__node__t.html#a26755cea9e3b38f87a64fbbf34060bbf" title="length of the surface form/.">length</a>;
+<a name="l00151"></a><a class="code" href="structmecab__node__t.html#a26755cea9e3b38f87a64fbbf34060bbf">00151</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>        <a class="code" href="structmecab__node__t.html#a26755cea9e3b38f87a64fbbf34060bbf" title="length of the surface form.">length</a>;
 <a name="l00152"></a>00152 
 <a name="l00156"></a><a class="code" href="structmecab__node__t.html#a5df494eb0fa00ac9768edbf0974325d9">00156</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>        <a class="code" href="structmecab__node__t.html#a5df494eb0fa00ac9768edbf0974325d9" title="length of the surface form including white space before the morph.">rlength</a>;
 <a name="l00157"></a>00157 
@@ -130,7 +130,7 @@
 <a name="l00172"></a>00172 
 <a name="l00176"></a><a class="code" href="structmecab__node__t.html#a48fdc35b0e4701dc1bdeff3563c45cf3">00176</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>         <a class="code" href="structmecab__node__t.html#a48fdc35b0e4701dc1bdeff3563c45cf3" title="character type">char_type</a>;
 <a name="l00177"></a>00177 
-<a name="l00182"></a><a class="code" href="structmecab__node__t.html#a8b26293a70a048eb0b88f3213b6d423e">00182</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>         <a class="code" href="structmecab__node__t.html#a8b26293a70a048eb0b88f3213b6d423e" title="statis of this model.">stat</a>;
+<a name="l00182"></a><a class="code" href="structmecab__node__t.html#a8b26293a70a048eb0b88f3213b6d423e">00182</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>         <a class="code" href="structmecab__node__t.html#a8b26293a70a048eb0b88f3213b6d423e" title="status of this model.">stat</a>;
 <a name="l00183"></a>00183 
 <a name="l00187"></a><a class="code" href="structmecab__node__t.html#a563c8aae7c236596ba84ae7f95a415a0">00187</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>         <a class="code" href="structmecab__node__t.html#a563c8aae7c236596ba84ae7f95a415a0" title="set 1 if this node is best node.">isbest</a>;
 <a name="l00188"></a>00188 
@@ -174,473 +174,470 @@
 <a name="l00305"></a>00305 };
 <a name="l00306"></a>00306 
 <a name="l00310"></a>00310 <span class="keyword">enum</span> {
-<a name="l00311"></a><a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04adfea8bf0fe0f3b7bc555f68e277d1c80">00311</a>   <a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04adfea8bf0fe0f3b7bc555f68e277d1c80">MECAB_ANY_BOUNDARY</a> = 0,
-<a name="l00312"></a><a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04a50841f2f30d16bec7196f1d7a66c1cba">00312</a>   <a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04a50841f2f30d16bec7196f1d7a66c1cba">MECAB_TOKEN_BOUNDARY</a> = 1,
-<a name="l00313"></a><a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04a1333e953c759a625a2a2dac078a7c1fc">00313</a>   <a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04a1333e953c759a625a2a2dac078a7c1fc">MECAB_INSIDE_TOKEN</a> = 2
-<a name="l00314"></a>00314 };
+<a name="l00314"></a><a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04adfea8bf0fe0f3b7bc555f68e277d1c80">00314</a>   <a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04adfea8bf0fe0f3b7bc555f68e277d1c80" title="The token boundary is not specified.">MECAB_ANY_BOUNDARY</a> = 0,
 <a name="l00315"></a>00315 
-<a name="l00319"></a>00319 <span class="keyword">enum</span> {
-<a name="l00320"></a><a class="code" href="mecab_8h.html#adc29c2ff13d900c2f185ee95427fb06ca985ec89783ff68a7a8a880f31daf2f85">00320</a>   <a class="code" href="mecab_8h.html#adc29c2ff13d900c2f185ee95427fb06ca985ec89783ff68a7a8a880f31daf2f85">MECAB_SINGLE_NODE</a> = 1,
-<a name="l00321"></a><a class="code" href="mecab_8h.html#adc29c2ff13d900c2f185ee95427fb06cadb2e374f4b41cd6ab15408ec92ae5be0">00321</a>   <a class="code" href="mecab_8h.html#adc29c2ff13d900c2f185ee95427fb06cadb2e374f4b41cd6ab15408ec92ae5be0">MECAB_MULTIPLE_NODES</a> = 2
-<a name="l00322"></a>00322 };
-<a name="l00323"></a>00323 
-<a name="l00324"></a>00324 <span class="comment">/* C interface  */</span>
-<a name="l00325"></a>00325 <span class="preprocessor">#ifdef __cplusplus</span>
-<a name="l00326"></a>00326 <span class="preprocessor"></span><span class="preprocessor">#include &lt;cstdio&gt;</span>
-<a name="l00327"></a>00327 <span class="preprocessor">#else</span>
-<a name="l00328"></a>00328 <span class="preprocessor"></span><span class="preprocessor">#include &lt;stdio.h&gt;</span>
-<a name="l00329"></a>00329 <span class="preprocessor">#endif</span>
-<a name="l00330"></a>00330 <span class="preprocessor"></span>
-<a name="l00331"></a>00331 <span class="preprocessor">#ifdef __cplusplus</span>
-<a name="l00332"></a>00332 <span class="preprocessor"></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {
-<a name="l00333"></a>00333 <span class="preprocessor">#endif</span>
-<a name="l00334"></a>00334 <span class="preprocessor"></span>
-<a name="l00335"></a>00335 <span class="preprocessor">#ifdef _WIN32</span>
-<a name="l00336"></a>00336 <span class="preprocessor"></span><span class="preprocessor">#include &lt;windows.h&gt;</span>
-<a name="l00337"></a>00337 <span class="preprocessor">#  ifdef DLL_EXPORT</span>
-<a name="l00338"></a>00338 <span class="preprocessor"></span><span class="preprocessor">#    define MECAB_DLL_EXTERN  __declspec(dllexport)</span>
-<a name="l00339"></a>00339 <span class="preprocessor"></span><span class="preprocessor">#    define MECAB_DLL_CLASS_EXTERN  __declspec(dllexport)</span>
-<a name="l00340"></a>00340 <span class="preprocessor"></span><span class="preprocessor">#  else</span>
-<a name="l00341"></a>00341 <span class="preprocessor"></span><span class="preprocessor">#    define MECAB_DLL_EXTERN  __declspec(dllimport)</span>
-<a name="l00342"></a>00342 <span class="preprocessor"></span><span class="preprocessor">#  endif</span>
-<a name="l00343"></a>00343 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00344"></a>00344 <span class="preprocessor"></span>
-<a name="l00345"></a>00345 <span class="preprocessor">#ifndef MECAB_DLL_EXTERN</span>
-<a name="l00346"></a>00346 <span class="preprocessor"></span><span class="preprocessor">#  define MECAB_DLL_EXTERN extern</span>
-<a name="l00347"></a>00347 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00348"></a>00348 <span class="preprocessor"></span>
-<a name="l00349"></a>00349 <span class="preprocessor">#ifndef MECAB_DLL_CLASS_EXTERN</span>
-<a name="l00350"></a><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">00350</a> <span class="preprocessor"></span><span class="preprocessor">#  define MECAB_DLL_CLASS_EXTERN</span>
-<a name="l00351"></a>00351 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00352"></a>00352 <span class="preprocessor"></span>
-<a name="l00353"></a><a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">00353</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a>                 <a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a>;
-<a name="l00354"></a><a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">00354</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a>           <a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a>;
-<a name="l00355"></a><a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">00355</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a>         <a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a>;
-<a name="l00356"></a><a class="code" href="mecab_8h.html#ae828c205ee76b54e0c9ab6de871b9418">00356</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">mecab_dictionary_info_t</a> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">mecab_dictionary_info_t</a>;
-<a name="l00357"></a><a class="code" href="mecab_8h.html#aa7e0aceb2a70245ff3e255177be81b9b">00357</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>            <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>;
-<a name="l00358"></a><a class="code" href="mecab_8h.html#a5e9fa892726a93ea97786752c3e3f3ac">00358</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__path__t.html" title="Path structure.">mecab_path_t</a>            <a class="code" href="structmecab__path__t.html" title="Path structure.">mecab_path_t</a>;
-<a name="l00359"></a>00359 
-<a name="l00360"></a>00360 <span class="preprocessor">#ifndef SWIG</span>
-<a name="l00361"></a>00361 <span class="preprocessor"></span>  <span class="comment">/* C interface */</span>
+<a name="l00319"></a><a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04a50841f2f30d16bec7196f1d7a66c1cba">00319</a>   <a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04a50841f2f30d16bec7196f1d7a66c1cba" title="The position is a strong token boundary.">MECAB_TOKEN_BOUNDARY</a> = 1,
+<a name="l00320"></a>00320 
+<a name="l00324"></a><a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04a1333e953c759a625a2a2dac078a7c1fc">00324</a>   <a class="code" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04a1333e953c759a625a2a2dac078a7c1fc" title="The position is not a token boundary.">MECAB_INSIDE_TOKEN</a> = 2
+<a name="l00325"></a>00325 };
+<a name="l00326"></a>00326 
+<a name="l00327"></a>00327 <span class="comment">/* C interface  */</span>
+<a name="l00328"></a>00328 <span class="preprocessor">#ifdef __cplusplus</span>
+<a name="l00329"></a>00329 <span class="preprocessor"></span><span class="preprocessor">#include &lt;cstdio&gt;</span>
+<a name="l00330"></a>00330 <span class="preprocessor">#else</span>
+<a name="l00331"></a>00331 <span class="preprocessor"></span><span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<a name="l00332"></a>00332 <span class="preprocessor">#endif</span>
+<a name="l00333"></a>00333 <span class="preprocessor"></span>
+<a name="l00334"></a>00334 <span class="preprocessor">#ifdef __cplusplus</span>
+<a name="l00335"></a>00335 <span class="preprocessor"></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {
+<a name="l00336"></a>00336 <span class="preprocessor">#endif</span>
+<a name="l00337"></a>00337 <span class="preprocessor"></span>
+<a name="l00338"></a>00338 <span class="preprocessor">#ifdef _WIN32</span>
+<a name="l00339"></a>00339 <span class="preprocessor"></span><span class="preprocessor">#include &lt;windows.h&gt;</span>
+<a name="l00340"></a>00340 <span class="preprocessor">#  ifdef DLL_EXPORT</span>
+<a name="l00341"></a>00341 <span class="preprocessor"></span><span class="preprocessor">#    define MECAB_DLL_EXTERN  __declspec(dllexport)</span>
+<a name="l00342"></a>00342 <span class="preprocessor"></span><span class="preprocessor">#    define MECAB_DLL_CLASS_EXTERN  __declspec(dllexport)</span>
+<a name="l00343"></a>00343 <span class="preprocessor"></span><span class="preprocessor">#  else</span>
+<a name="l00344"></a>00344 <span class="preprocessor"></span><span class="preprocessor">#    define MECAB_DLL_EXTERN  __declspec(dllimport)</span>
+<a name="l00345"></a>00345 <span class="preprocessor"></span><span class="preprocessor">#  endif</span>
+<a name="l00346"></a>00346 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00347"></a>00347 <span class="preprocessor"></span>
+<a name="l00348"></a>00348 <span class="preprocessor">#ifndef MECAB_DLL_EXTERN</span>
+<a name="l00349"></a>00349 <span class="preprocessor"></span><span class="preprocessor">#  define MECAB_DLL_EXTERN extern</span>
+<a name="l00350"></a>00350 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00351"></a>00351 <span class="preprocessor"></span>
+<a name="l00352"></a>00352 <span class="preprocessor">#ifndef MECAB_DLL_CLASS_EXTERN</span>
+<a name="l00353"></a><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">00353</a> <span class="preprocessor"></span><span class="preprocessor">#  define MECAB_DLL_CLASS_EXTERN</span>
+<a name="l00354"></a>00354 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00355"></a>00355 <span class="preprocessor"></span>
+<a name="l00356"></a><a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">00356</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a>                 <a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a>;
+<a name="l00357"></a><a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">00357</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a>           <a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a>;
+<a name="l00358"></a><a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">00358</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a>         <a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a>;
+<a name="l00359"></a><a class="code" href="mecab_8h.html#ae828c205ee76b54e0c9ab6de871b9418">00359</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">mecab_dictionary_info_t</a> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">mecab_dictionary_info_t</a>;
+<a name="l00360"></a><a class="code" href="mecab_8h.html#aa7e0aceb2a70245ff3e255177be81b9b">00360</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>            <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>;
+<a name="l00361"></a><a class="code" href="mecab_8h.html#a5e9fa892726a93ea97786752c3e3f3ac">00361</a>   <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__path__t.html" title="Path structure.">mecab_path_t</a>            <a class="code" href="structmecab__path__t.html" title="Path structure.">mecab_path_t</a>;
 <a name="l00362"></a>00362 
-<a name="l00363"></a>00363   <span class="comment">/* old mecab interface */</span>
-<a name="l00367"></a>00367   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a>*      <a class="code" href="mecab_8h.html#a96b09534020ae2d302efc4486dd2aac1" title="C wrapper of MeCab::Tagger::create(argc, argv)">mecab_new</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l00368"></a>00368 
-<a name="l00372"></a>00372   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a>*      <a class="code" href="mecab_8h.html#afe98346e134b8b6f523f275728c6f4e6" title="C wrapper of MeCab::Tagger::create(arg)">mecab_new2</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
-<a name="l00373"></a>00373 
-<a name="l00377"></a>00377   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#a23cbbd30ca80142282e79cec07816c2e" title="C wrapper of MeCab::Tagger::version()">mecab_version</a>();
-<a name="l00378"></a>00378 
-<a name="l00382"></a>00382   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#ab19c9fa1dd8e6a5e9368f3d1e46c6e1c" title="C wrapper of MeCab::getLastError()">mecab_strerror</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
-<a name="l00383"></a>00383 
-<a name="l00387"></a>00387   MECAB_DLL_EXTERN <span class="keywordtype">void</span>          <a class="code" href="mecab_8h.html#aa1fa78580ce234ec6144ecca305644ee" title="C wrapper of MeCab::deleteTagger(tagger)">mecab_destroy</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
-<a name="l00388"></a>00388 
-<a name="l00392"></a>00392   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#aef7ac9a1550a72f34fb2428b881385c5" title="C wrapper of MeCab::Tagger:set_partial()">mecab_get_partial</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
-<a name="l00393"></a>00393 
-<a name="l00397"></a>00397   MECAB_DLL_EXTERN <span class="keywordtype">void</span>          <a class="code" href="mecab_8h.html#a9ea0d3de04ff9fb237a3197c89b1c232" title="C wrapper of MeCab::Tagger::partial()">mecab_set_partial</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">int</span> partial);
-<a name="l00398"></a>00398 
-<a name="l00402"></a>00402   MECAB_DLL_EXTERN <span class="keywordtype">float</span>         <a class="code" href="mecab_8h.html#a36b4a14daafa9eeef0d99a1be5ba4cc2" title="C wrapper of MeCab::Tagger::theta()">mecab_get_theta</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
-<a name="l00403"></a>00403 
-<a name="l00407"></a>00407   MECAB_DLL_EXTERN <span class="keywordtype">void</span>          <a class="code" href="mecab_8h.html#a4cd5c72bb4d831f8fa736c6d9cf66db7" title="C wrapper of MeCab::Tagger::set_theta()">mecab_set_theta</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">float</span> theta);
-<a name="l00408"></a>00408 
-<a name="l00412"></a>00412   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a8bac4239499e2e68ab93ec3387075a88" title="C wrapper of MeCab::Tagger::lattice_level()">mecab_get_lattice_level</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
-<a name="l00413"></a>00413 
-<a name="l00417"></a>00417   MECAB_DLL_EXTERN <span class="keywordtype">void</span>          <a class="code" href="mecab_8h.html#ac4bd37c75dbe298b1a77de39a2024e87" title="C wrapper of MeCab::Tagger::set_lattice_level()">mecab_set_lattice_level</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">int</span> level);
-<a name="l00418"></a>00418 
-<a name="l00422"></a>00422   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a2208e262afb2bb2a65e3399815c085b0" title="C wrapper of MeCab::Tagger::all_morphs()">mecab_get_all_morphs</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
-<a name="l00423"></a>00423 
-<a name="l00427"></a>00427   MECAB_DLL_EXTERN <span class="keywordtype">void</span>          <a class="code" href="mecab_8h.html#a94f469609fc2357b71fab9c1bbd985e3" title="C wrapper of MeCab::Tagger::set_all_moprhs()">mecab_set_all_morphs</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">int</span> all_morphs);
-<a name="l00428"></a>00428 
-<a name="l00432"></a>00432   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a346e06ac12f8f011094500a5611ca28d" title="C wrapper of MeCab::Tagger::parse(MeCab::Lattice *lattice)">mecab_parse_lattice</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00433"></a>00433 
-<a name="l00437"></a>00437   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#a33b099f576e4d280ceb47e22b4f276cf" title="C wrapper of MeCab::Tagger::parse(const char *str)">mecab_sparse_tostr</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span> *str);
-<a name="l00438"></a>00438 
-<a name="l00442"></a>00442   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#adbd54f8d23ac633748185b2293e61838" title="C wrapper of MeCab::Tagger::parse(const char *str, size_t len)">mecab_sparse_tostr2</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len);
-<a name="l00443"></a>00443 
-<a name="l00447"></a>00447   MECAB_DLL_EXTERN <span class="keywordtype">char</span>*         <a class="code" href="mecab_8h.html#aca24a1473b5135d5b77024dff1a3543d" title="C wrapper of MeCab::Tagger::parse(const char *str, char *ostr, size_t olen)">mecab_sparse_tostr3</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len,
-<a name="l00448"></a>00448                                                      <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen);
-<a name="l00449"></a>00449 
-<a name="l00453"></a>00453   MECAB_DLL_EXTERN <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>* <a class="code" href="mecab_8h.html#a64ec51ef944843074d549d40f6dcdfcb" title="C wrapper of MeCab::Tagger::parseToNode(const char *str)">mecab_sparse_tonode</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span>*);
-<a name="l00454"></a>00454 
-<a name="l00458"></a>00458   MECAB_DLL_EXTERN <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>* <a class="code" href="mecab_8h.html#a669fbf2b619d4c925dfba37e816b5646" title="C wrapper of MeCab::Tagger::parseToNode(const char *str, size_t len)">mecab_sparse_tonode2</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span>*, <span class="keywordtype">size_t</span>);
-<a name="l00459"></a>00459 
-<a name="l00463"></a>00463   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#a07014692271db786ac5b90b10c9b4811" title="C wrapper of MeCab::Tagger::parseNBest(size_t N, const char *str)">mecab_nbest_sparse_tostr</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str);
-<a name="l00464"></a>00464 
-<a name="l00468"></a>00468   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#accc88243e54e66996ef5b60a6c2c908b" title="C wrapper of MeCab::Tagger::parseNBest(size_t N, const char *str, size_t len)">mecab_nbest_sparse_tostr2</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">size_t</span> N,
-<a name="l00469"></a>00469                                                            <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len);
-<a name="l00470"></a>00470 
-<a name="l00474"></a>00474   MECAB_DLL_EXTERN <span class="keywordtype">char</span>*         <a class="code" href="mecab_8h.html#a1f4efcc7ae95f7fc7a5fe268bf8c36f2" title="C wrapper of MeCab::Tagger::parseNBest(size_t N, const char *str, char *ostr, size_t olen)...">mecab_nbest_sparse_tostr3</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">size_t</span> N,
-<a name="l00475"></a>00475                                                            <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len,
-<a name="l00476"></a>00476                                                            <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen);
-<a name="l00477"></a>00477 
-<a name="l00481"></a>00481   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#aa3a4ee7111a45bb09bdd3d552fa366ad" title="C wrapper of MeCab::Tagger::parseNBestInit(const char *str)">mecab_nbest_init</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span> *str);
-<a name="l00482"></a>00482 
-<a name="l00486"></a>00486   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a5e413996d454378fd0bbb9556812aaa7" title="C wrapper of MeCab::Tagger::parseNBestInit(const char *str, size_t len)">mecab_nbest_init2</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len);
-<a name="l00487"></a>00487 
-<a name="l00491"></a>00491   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#a9fcf5382dda5e6fb969f97e8b8c73c06" title="C wrapper of MeCab::Tagger::next()">mecab_nbest_next_tostr</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
-<a name="l00492"></a>00492 
-<a name="l00496"></a>00496   MECAB_DLL_EXTERN <span class="keywordtype">char</span>*         <a class="code" href="mecab_8h.html#a02eaf0fe2251bdd9fb8d7dde5d839d92" title="C wrapper of MeCab::Tagger::next(char *ostr, size_t olen)">mecab_nbest_next_tostr2</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen);
-<a name="l00497"></a>00497 
-<a name="l00501"></a>00501   MECAB_DLL_EXTERN <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>* <a class="code" href="mecab_8h.html#a748180a98e939893766232e3856d334b" title="C wrapper of MeCab::Tagger::nextNode()">mecab_nbest_next_tonode</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
-<a name="l00502"></a>00502 
-<a name="l00506"></a>00506   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#a70f4aae03f9fc12eaf04b1fdc46bdc1e" title="C wrapper of MeCab::Tagger::formatNode(const Node *node)">mecab_format_node</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a> *node);
-<a name="l00507"></a>00507 
-<a name="l00511"></a>00511   MECAB_DLL_EXTERN <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">mecab_dictionary_info_t</a>* <a class="code" href="mecab_8h.html#a634f8f6983b14c55eca83f06c6109382" title="C wrapper of MeCab::Tagger::dictionary_info()">mecab_dictionary_info</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
-<a name="l00512"></a>00512 
-<a name="l00513"></a>00513   <span class="comment">/* lattice interface */</span>
-<a name="l00517"></a>00517   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *<a class="code" href="mecab_8h.html#a84c2061ed903c78454b770f5415872da" title="C wrapper of MeCab::createLattice()">mecab_lattice_new</a>();
-<a name="l00518"></a>00518 
-<a name="l00522"></a>00522   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#a79a79f4cb1cacd810db28039d84fc7c4" title="C wrapper of MeCab::deleteLattice(lattice)">mecab_lattice_destroy</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00523"></a>00523 
-<a name="l00527"></a>00527   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#a81e6103ba51ef0067ab9ef272b238671" title="C wrapper of MeCab::Lattice::clear()">mecab_lattice_clear</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00528"></a>00528 
-<a name="l00533"></a>00533   MECAB_DLL_EXTERN <span class="keywordtype">int</span>              <a class="code" href="mecab_8h.html#af299ae4865c38e2dd6842adaf0aabe90" title="C wrapper of MeCab::Lattice::is_available()">mecab_lattice_is_available</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00534"></a>00534 
-<a name="l00538"></a>00538   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>    *<a class="code" href="mecab_8h.html#a4591e7569926e453e2f3ab8356af10ed" title="C wrapper of MeCab::Lattice::bos_node()">mecab_lattice_get_bos_node</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00539"></a>00539 
-<a name="l00543"></a>00543   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>    *<a class="code" href="mecab_8h.html#ac9ec2fece4f5662f2b21e0bfc63a4c96" title="C wrapper of MeCab::Lattice::eos_node()">mecab_lattice_get_eos_node</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00544"></a>00544 
-<a name="l00549"></a>00549   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>   **<a class="code" href="mecab_8h.html#ae9a7c3998adbd6427745c2238e0cc1ed" title="C wrapper of MeCab::Lattice::begin_nodes()">mecab_lattice_get_all_begin_nodes</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00553"></a>00553   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>   **<a class="code" href="mecab_8h.html#a7e9319cff2f91f082488a06c2c425372" title="C wrapper of MeCab::Lattice::end_nodes()">mecab_lattice_get_all_end_nodes</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00554"></a>00554 
-<a name="l00558"></a>00558   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>    *<a class="code" href="mecab_8h.html#a444a51a5aed6d7ec1ab2740981c70560" title="C wrapper of MeCab::Lattice::begin_nodes(pos)">mecab_lattice_get_begin_nodes</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> pos);
-<a name="l00559"></a>00559 
-<a name="l00563"></a>00563   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>    *<a class="code" href="mecab_8h.html#afdd78afb2feb6bd35abba65a82be2d32" title="C wrapper of MeCab::Lattice::end_nodes(pos)">mecab_lattice_get_end_nodes</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> pos);
-<a name="l00564"></a>00564 
-<a name="l00568"></a>00568   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#a6cb4f3635ef8d4160be7b72a086c398f" title="C wrapper of MeCab::Lattice::sentence()">mecab_lattice_get_sentence</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00569"></a>00569 
-<a name="l00573"></a>00573   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#ae1056a1837780342eccb330c16156cbd" title="C wrapper of MeCab::Lattice::set_sentence(sentence)">mecab_lattice_set_sentence</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keyword">const</span> <span class="keywordtype">char</span> *sentence);
-<a name="l00574"></a>00574 
-<a name="l00579"></a>00579   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#a3b55ae7f91b859258494ce0127c3be3b" title="C wrapper of MeCab::Lattice::set_sentence(sentence, len)">mecab_lattice_set_sentence2</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keyword">const</span> <span class="keywordtype">char</span> *sentence, <span class="keywordtype">size_t</span> len);
-<a name="l00580"></a>00580 
-<a name="l00584"></a>00584   MECAB_DLL_EXTERN <span class="keywordtype">size_t</span>           <a class="code" href="mecab_8h.html#a9363944df2727fa193d0bbab99f17ad9" title="C wrapper of MeCab::Lattice::size()">mecab_lattice_get_size</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00585"></a>00585 
-<a name="l00589"></a>00589   MECAB_DLL_EXTERN <span class="keywordtype">double</span>           <a class="code" href="mecab_8h.html#aee71e8e0cb5fc39a43499d08542c41c1" title="C wrapper of MeCab::Lattice::Z()">mecab_lattice_get_z</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00590"></a>00590 
-<a name="l00594"></a>00594   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#adbf590d9bb18852071ce020d3fd85396" title="C wrapper of MeCab::Lattice::set_Z()">mecab_lattice_set_z</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">double</span> Z);
-<a name="l00595"></a>00595 
-<a name="l00599"></a>00599   MECAB_DLL_EXTERN <span class="keywordtype">double</span>           <a class="code" href="mecab_8h.html#a1c06a1802888b79d63544d2fa8036d57" title="C wrapper of MeCab::Lattice::theta()">mecab_lattice_get_theta</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00600"></a>00600 
-<a name="l00605"></a>00605   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#a2ba4806173b90729dd312d88c2a2b20a" title="C wrapper of MeCab::Lattice::set_theta()">mecab_lattice_set_theta</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">double</span> theta);
-<a name="l00606"></a>00606 
-<a name="l00610"></a>00610   MECAB_DLL_EXTERN <span class="keywordtype">int</span>              <a class="code" href="mecab_8h.html#ade3b0f830becb26e3a65673dcd9cd8ce" title="C wrapper of MeCab::Lattice::next()">mecab_lattice_next</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00611"></a>00611 
-<a name="l00615"></a>00615   MECAB_DLL_EXTERN <span class="keywordtype">int</span>              <a class="code" href="mecab_8h.html#a3e1c49fce085ac5fee4a43f91d37e798" title="C wrapper of MeCab::Lattice::request_type()">mecab_lattice_get_request_type</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00616"></a>00616 
-<a name="l00620"></a>00620   MECAB_DLL_EXTERN <span class="keywordtype">int</span>              <a class="code" href="mecab_8h.html#a74fab9903c6ffbdb9a6def01048a29ff" title="C wrapper of MeCab::Lattice::has_request_type()">mecab_lattice_has_request_type</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">int</span> request_type);
-<a name="l00621"></a>00621 
-<a name="l00625"></a>00625   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#ac1b8828945e98a6188f90ba2e2642ee5" title="C wrapper of MeCab::Lattice::set_request_type()">mecab_lattice_set_request_type</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">int</span> request_type);
-<a name="l00626"></a>00626 
-<a name="l00631"></a>00631   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#a3529316d6be6d390daf738c8c8ba79d4" title="C wrapper of MeCab::Lattice::add_request_type()">mecab_lattice_add_request_type</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">int</span> request_type);
-<a name="l00632"></a>00632 
-<a name="l00636"></a>00636   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#affbb2134d8dd318fa8291dd5773046ce" title="C wrapper of MeCab::Lattice::remove_request_type()">mecab_lattice_remove_request_type</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">int</span> request_type);
-<a name="l00637"></a>00637 
-<a name="l00641"></a>00641   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>    *<a class="code" href="mecab_8h.html#a1965de0136f575411bc2d9cc3c74a7bc" title="C wrapper of MeCab::Lattice::newNode();.">mecab_lattice_new_node</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00642"></a>00642 
-<a name="l00646"></a>00646   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#a36e3f6258582efd30c56c3328917e433" title="C wrapper of MeCab::Lattice::toString()">mecab_lattice_tostr</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00647"></a>00647 
-<a name="l00651"></a>00651   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#aca4bc15a51154cb6287b01ad155eb9a8" title="C wrapper of MeCab::Lattice::toString(buf, size)">mecab_lattice_tostr2</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> size);
-<a name="l00652"></a>00652 
-<a name="l00656"></a>00656   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#a5cda0f72b20721e5da20c783ec37a58d" title="C wrapper of MeCab::Lattice::enumNBestAsString(N)">mecab_lattice_nbest_tostr</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> N);
-<a name="l00657"></a>00657 
-<a name="l00662"></a>00662   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#a1b944792e2114e508ff365b167f8c605" title="C wrapper of MeCab::Lattice::enumNBestAsString(N, buf, size)">mecab_lattice_nbest_tostr2</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> N, <span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> size);
-<a name="l00663"></a>00663 
-<a name="l00667"></a>00667   MECAB_DLL_EXTERN <span class="keywordtype">int</span>             <a class="code" href="mecab_8h.html#a18b29459c3fd257481ad0ad3cab535ad" title="C wrapper of MeCab::Lattice::has_constraint()">mecab_lattice_has_constraint</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00668"></a>00668 
-<a name="l00672"></a>00672   MECAB_DLL_EXTERN <span class="keywordtype">int</span>             <a class="code" href="mecab_8h.html#afd166ffeeded4f0eaa56a5e75ed53458" title="C wrapper of MeCab::Lattice::boundary_constraint(pos)">mecab_lattice_get_boundary_constraint</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> pos);
-<a name="l00673"></a>00673 
-<a name="l00674"></a>00674 
-<a name="l00678"></a>00678   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>     *<a class="code" href="mecab_8h.html#aa09203f567092827f2edfc431c3ea7c7" title="C wrapper of MeCab::Lattice::feature_constraint(pos)">mecab_lattice_get_feature_constraint</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> pos);
-<a name="l00679"></a>00679 
-<a name="l00683"></a>00683   MECAB_DLL_EXTERN <span class="keywordtype">void</span>            <a class="code" href="mecab_8h.html#a1ada506af3452914520f6299a4fd3904" title="C wrapper of MeCab::Lattice::boundary_constraint(pos, type)">mecab_lattice_set_boundary_constraint</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> pos, <span class="keywordtype">int</span> boundary_type);
-<a name="l00684"></a>00684 
-<a name="l00688"></a>00688   MECAB_DLL_EXTERN <span class="keywordtype">void</span>            <a class="code" href="mecab_8h.html#add015fc06e0b09b0123efc85822881e9" title="C wrapper of MeCab::Lattice::set_feature_constraint(begin_pos, end_pos, feature)">mecab_lattice_set_feature_constraint</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> begin_pos, <span class="keywordtype">size_t</span> end_pos, <span class="keyword">const</span> <span class="keywordtype">char</span> *feature);
-<a name="l00689"></a>00689 
-<a name="l00693"></a>00693   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#ae17603a0d78f80495841bd7c85681718" title="C wrapper of MeCab::Lattice::what()">mecab_lattice_strerror</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00694"></a>00694 
-<a name="l00695"></a>00695 
-<a name="l00696"></a>00696   <span class="comment">/* model interface */</span>
-<a name="l00700"></a>00700   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a>   *<a class="code" href="mecab_8h.html#a54cc1d92f891a5f1f3d9e37f04c07c85" title="C wapper of MeCab::Model::create(argc, argv)">mecab_model_new</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l00701"></a>00701 
-<a name="l00705"></a>00705   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a>   *<a class="code" href="mecab_8h.html#aa4576c7f37e3a08e3ed8bd85683f776c" title="C wapper of MeCab::Model::create(arg)">mecab_model_new2</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
-<a name="l00706"></a>00706 
-<a name="l00711"></a>00711   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#ae64b687be87cf095dde1f75bd2801ee8" title="C wapper of MeCab::deleteModel(model)">mecab_model_destroy</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model);
-<a name="l00712"></a>00712 
-<a name="l00716"></a>00716   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a>         *<a class="code" href="mecab_8h.html#a542243e6629589ca34127e4e556fa096" title="C wapper of MeCab::Model::createTagger()">mecab_model_new_tagger</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model);
-<a name="l00717"></a>00717 
-<a name="l00721"></a>00721   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *<a class="code" href="mecab_8h.html#a4a13db757018319057c0881fd4c2a5c5" title="C wapper of MeCab::Model::createLattice()">mecab_model_new_lattice</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model);
-<a name="l00722"></a>00722 
-<a name="l00726"></a>00726   MECAB_DLL_EXTERN <span class="keywordtype">int</span> <a class="code" href="mecab_8h.html#a5b9cb480735f724a241b6ee490c222fe" title="C wrapper of MeCab::Model::swap()">mecab_model_swap</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model, <a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *new_model);
-<a name="l00727"></a>00727 
-<a name="l00731"></a>00731   MECAB_DLL_EXTERN <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">mecab_dictionary_info_t</a>* <a class="code" href="mecab_8h.html#a463bb4f7591289783c832989f0eb8e17" title="C wapper of MeCab::Model::dictionary_info()">mecab_model_dictionary_info</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model);
-<a name="l00732"></a>00732 
-<a name="l00736"></a>00736   MECAB_DLL_EXTERN <span class="keywordtype">int</span> <a class="code" href="mecab_8h.html#a119fed14abf800aa7ffc13dcef9b8a11" title="C wrapper of MeCab::Model::transition_cost()">mecab_model_transition_cost</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model,
-<a name="l00737"></a>00737                                                    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> rcAttr,
-<a name="l00738"></a>00738                                                    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> lcAttr);
-<a name="l00739"></a>00739 
-<a name="l00743"></a>00743   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a> *<a class="code" href="mecab_8h.html#a39f7fd1dc84588c5745b44a71b0f6aeb" title="C wrapper of MeCab::Model::lookup()">mecab_model_lookup</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model,
-<a name="l00744"></a>00744                                                     <span class="keyword">const</span> <span class="keywordtype">char</span> *begin,
-<a name="l00745"></a>00745                                                     <span class="keyword">const</span> <span class="keywordtype">char</span> *end,
-<a name="l00746"></a>00746                                                     <a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
-<a name="l00747"></a>00747 
-<a name="l00748"></a>00748   <span class="comment">/* static functions */</span>
-<a name="l00749"></a>00749   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a65a449af7e5924fbb93687d009187b9d">mecab_do</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l00750"></a>00750   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a49059ba0ce6c7465a2a85a200e6a2328">mecab_dict_index</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l00751"></a>00751   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a8096686867227214927b92ac11b18f5b">mecab_dict_gen</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l00752"></a>00752   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#af6d368b45555b6a37012bcfd6f73482c">mecab_cost_train</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l00753"></a>00753   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#ad80d0462223de818fb811d2acfd1d7b1">mecab_system_eval</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l00754"></a>00754   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#aacc06313289f2ee4f620afa0f3fadef4">mecab_test_gen</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l00755"></a>00755 <span class="preprocessor">#endif</span>
-<a name="l00756"></a>00756 <span class="preprocessor"></span>
-<a name="l00757"></a>00757 <span class="preprocessor">#ifdef __cplusplus</span>
-<a name="l00758"></a>00758 <span class="preprocessor"></span>}
-<a name="l00759"></a>00759 <span class="preprocessor">#endif</span>
-<a name="l00760"></a>00760 <span class="preprocessor"></span>
-<a name="l00761"></a>00761 <span class="comment">/* C++ interface */</span>
-<a name="l00762"></a>00762 <span class="preprocessor">#ifdef __cplusplus</span>
+<a name="l00363"></a>00363 <span class="preprocessor">#ifndef SWIG</span>
+<a name="l00364"></a>00364 <span class="preprocessor"></span>  <span class="comment">/* C interface */</span>
+<a name="l00365"></a>00365 
+<a name="l00366"></a>00366   <span class="comment">/* old mecab interface */</span>
+<a name="l00370"></a>00370   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a>*      <a class="code" href="mecab_8h.html#a96b09534020ae2d302efc4486dd2aac1" title="C wrapper of MeCab::Tagger::create(argc, argv)">mecab_new</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l00371"></a>00371 
+<a name="l00375"></a>00375   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a>*      <a class="code" href="mecab_8h.html#afe98346e134b8b6f523f275728c6f4e6" title="C wrapper of MeCab::Tagger::create(arg)">mecab_new2</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
+<a name="l00376"></a>00376 
+<a name="l00380"></a>00380   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#a23cbbd30ca80142282e79cec07816c2e" title="C wrapper of MeCab::Tagger::version()">mecab_version</a>();
+<a name="l00381"></a>00381 
+<a name="l00385"></a>00385   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#ab19c9fa1dd8e6a5e9368f3d1e46c6e1c" title="C wrapper of MeCab::getLastError()">mecab_strerror</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
+<a name="l00386"></a>00386 
+<a name="l00390"></a>00390   MECAB_DLL_EXTERN <span class="keywordtype">void</span>          <a class="code" href="mecab_8h.html#aa1fa78580ce234ec6144ecca305644ee" title="C wrapper of MeCab::deleteTagger(tagger)">mecab_destroy</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
+<a name="l00391"></a>00391 
+<a name="l00395"></a>00395   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#aef7ac9a1550a72f34fb2428b881385c5" title="C wrapper of MeCab::Tagger:set_partial()">mecab_get_partial</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
+<a name="l00396"></a>00396 
+<a name="l00400"></a>00400   MECAB_DLL_EXTERN <span class="keywordtype">void</span>          <a class="code" href="mecab_8h.html#a9ea0d3de04ff9fb237a3197c89b1c232" title="C wrapper of MeCab::Tagger::partial()">mecab_set_partial</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">int</span> partial);
+<a name="l00401"></a>00401 
+<a name="l00405"></a>00405   MECAB_DLL_EXTERN <span class="keywordtype">float</span>         <a class="code" href="mecab_8h.html#a36b4a14daafa9eeef0d99a1be5ba4cc2" title="C wrapper of MeCab::Tagger::theta()">mecab_get_theta</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
+<a name="l00406"></a>00406 
+<a name="l00410"></a>00410   MECAB_DLL_EXTERN <span class="keywordtype">void</span>          <a class="code" href="mecab_8h.html#a4cd5c72bb4d831f8fa736c6d9cf66db7" title="C wrapper of MeCab::Tagger::set_theta()">mecab_set_theta</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">float</span> theta);
+<a name="l00411"></a>00411 
+<a name="l00415"></a>00415   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a8bac4239499e2e68ab93ec3387075a88" title="C wrapper of MeCab::Tagger::lattice_level()">mecab_get_lattice_level</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
+<a name="l00416"></a>00416 
+<a name="l00420"></a>00420   MECAB_DLL_EXTERN <span class="keywordtype">void</span>          <a class="code" href="mecab_8h.html#ac4bd37c75dbe298b1a77de39a2024e87" title="C wrapper of MeCab::Tagger::set_lattice_level()">mecab_set_lattice_level</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">int</span> level);
+<a name="l00421"></a>00421 
+<a name="l00425"></a>00425   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a2208e262afb2bb2a65e3399815c085b0" title="C wrapper of MeCab::Tagger::all_morphs()">mecab_get_all_morphs</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
+<a name="l00426"></a>00426 
+<a name="l00430"></a>00430   MECAB_DLL_EXTERN <span class="keywordtype">void</span>          <a class="code" href="mecab_8h.html#a94f469609fc2357b71fab9c1bbd985e3" title="C wrapper of MeCab::Tagger::set_all_moprhs()">mecab_set_all_morphs</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">int</span> all_morphs);
+<a name="l00431"></a>00431 
+<a name="l00435"></a>00435   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a346e06ac12f8f011094500a5611ca28d" title="C wrapper of MeCab::Tagger::parse(MeCab::Lattice *lattice)">mecab_parse_lattice</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00436"></a>00436 
+<a name="l00440"></a>00440   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#a33b099f576e4d280ceb47e22b4f276cf" title="C wrapper of MeCab::Tagger::parse(const char *str)">mecab_sparse_tostr</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span> *str);
+<a name="l00441"></a>00441 
+<a name="l00445"></a>00445   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#adbd54f8d23ac633748185b2293e61838" title="C wrapper of MeCab::Tagger::parse(const char *str, size_t len)">mecab_sparse_tostr2</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len);
+<a name="l00446"></a>00446 
+<a name="l00450"></a>00450   MECAB_DLL_EXTERN <span class="keywordtype">char</span>*         <a class="code" href="mecab_8h.html#aca24a1473b5135d5b77024dff1a3543d" title="C wrapper of MeCab::Tagger::parse(const char *str, char *ostr, size_t olen)">mecab_sparse_tostr3</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len,
+<a name="l00451"></a>00451                                                      <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen);
+<a name="l00452"></a>00452 
+<a name="l00456"></a>00456   MECAB_DLL_EXTERN <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>* <a class="code" href="mecab_8h.html#a64ec51ef944843074d549d40f6dcdfcb" title="C wrapper of MeCab::Tagger::parseToNode(const char *str)">mecab_sparse_tonode</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span>*);
+<a name="l00457"></a>00457 
+<a name="l00461"></a>00461   MECAB_DLL_EXTERN <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>* <a class="code" href="mecab_8h.html#a669fbf2b619d4c925dfba37e816b5646" title="C wrapper of MeCab::Tagger::parseToNode(const char *str, size_t len)">mecab_sparse_tonode2</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span>*, <span class="keywordtype">size_t</span>);
+<a name="l00462"></a>00462 
+<a name="l00466"></a>00466   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#a07014692271db786ac5b90b10c9b4811" title="C wrapper of MeCab::Tagger::parseNBest(size_t N, const char *str)">mecab_nbest_sparse_tostr</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str);
+<a name="l00467"></a>00467 
+<a name="l00471"></a>00471   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#accc88243e54e66996ef5b60a6c2c908b" title="C wrapper of MeCab::Tagger::parseNBest(size_t N, const char *str, size_t len)">mecab_nbest_sparse_tostr2</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">size_t</span> N,
+<a name="l00472"></a>00472                                                            <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len);
+<a name="l00473"></a>00473 
+<a name="l00477"></a>00477   MECAB_DLL_EXTERN <span class="keywordtype">char</span>*         <a class="code" href="mecab_8h.html#a1f4efcc7ae95f7fc7a5fe268bf8c36f2" title="C wrapper of MeCab::Tagger::parseNBest(size_t N, const char *str, char *ostr, size_t olen)...">mecab_nbest_sparse_tostr3</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">size_t</span> N,
+<a name="l00478"></a>00478                                                            <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len,
+<a name="l00479"></a>00479                                                            <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen);
+<a name="l00480"></a>00480 
+<a name="l00484"></a>00484   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#aa3a4ee7111a45bb09bdd3d552fa366ad" title="C wrapper of MeCab::Tagger::parseNBestInit(const char *str)">mecab_nbest_init</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span> *str);
+<a name="l00485"></a>00485 
+<a name="l00489"></a>00489   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a5e413996d454378fd0bbb9556812aaa7" title="C wrapper of MeCab::Tagger::parseNBestInit(const char *str, size_t len)">mecab_nbest_init2</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len);
+<a name="l00490"></a>00490 
+<a name="l00494"></a>00494   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#a9fcf5382dda5e6fb969f97e8b8c73c06" title="C wrapper of MeCab::Tagger::next()">mecab_nbest_next_tostr</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
+<a name="l00495"></a>00495 
+<a name="l00499"></a>00499   MECAB_DLL_EXTERN <span class="keywordtype">char</span>*         <a class="code" href="mecab_8h.html#a02eaf0fe2251bdd9fb8d7dde5d839d92" title="C wrapper of MeCab::Tagger::next(char *ostr, size_t olen)">mecab_nbest_next_tostr2</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen);
+<a name="l00500"></a>00500 
+<a name="l00504"></a>00504   MECAB_DLL_EXTERN <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>* <a class="code" href="mecab_8h.html#a748180a98e939893766232e3856d334b" title="C wrapper of MeCab::Tagger::nextNode()">mecab_nbest_next_tonode</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
+<a name="l00505"></a>00505 
+<a name="l00509"></a>00509   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*   <a class="code" href="mecab_8h.html#a70f4aae03f9fc12eaf04b1fdc46bdc1e" title="C wrapper of MeCab::Tagger::formatNode(const Node *node)">mecab_format_node</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab, <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a> *node);
+<a name="l00510"></a>00510 
+<a name="l00514"></a>00514   MECAB_DLL_EXTERN <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">mecab_dictionary_info_t</a>* <a class="code" href="mecab_8h.html#a634f8f6983b14c55eca83f06c6109382" title="C wrapper of MeCab::Tagger::dictionary_info()">mecab_dictionary_info</a>(<a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *mecab);
+<a name="l00515"></a>00515 
+<a name="l00516"></a>00516   <span class="comment">/* lattice interface */</span>
+<a name="l00520"></a>00520   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *<a class="code" href="mecab_8h.html#a84c2061ed903c78454b770f5415872da" title="C wrapper of MeCab::createLattice()">mecab_lattice_new</a>();
+<a name="l00521"></a>00521 
+<a name="l00525"></a>00525   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#a79a79f4cb1cacd810db28039d84fc7c4" title="C wrapper of MeCab::deleteLattice(lattice)">mecab_lattice_destroy</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00526"></a>00526 
+<a name="l00530"></a>00530   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#a81e6103ba51ef0067ab9ef272b238671" title="C wrapper of MeCab::Lattice::clear()">mecab_lattice_clear</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00531"></a>00531 
+<a name="l00536"></a>00536   MECAB_DLL_EXTERN <span class="keywordtype">int</span>              <a class="code" href="mecab_8h.html#af299ae4865c38e2dd6842adaf0aabe90" title="C wrapper of MeCab::Lattice::is_available()">mecab_lattice_is_available</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00537"></a>00537 
+<a name="l00541"></a>00541   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>    *<a class="code" href="mecab_8h.html#a4591e7569926e453e2f3ab8356af10ed" title="C wrapper of MeCab::Lattice::bos_node()">mecab_lattice_get_bos_node</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00542"></a>00542 
+<a name="l00546"></a>00546   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>    *<a class="code" href="mecab_8h.html#ac9ec2fece4f5662f2b21e0bfc63a4c96" title="C wrapper of MeCab::Lattice::eos_node()">mecab_lattice_get_eos_node</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00547"></a>00547 
+<a name="l00552"></a>00552   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>   **<a class="code" href="mecab_8h.html#ae9a7c3998adbd6427745c2238e0cc1ed" title="C wrapper of MeCab::Lattice::begin_nodes()">mecab_lattice_get_all_begin_nodes</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00556"></a>00556   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>   **<a class="code" href="mecab_8h.html#a7e9319cff2f91f082488a06c2c425372" title="C wrapper of MeCab::Lattice::end_nodes()">mecab_lattice_get_all_end_nodes</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00557"></a>00557 
+<a name="l00561"></a>00561   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>    *<a class="code" href="mecab_8h.html#a444a51a5aed6d7ec1ab2740981c70560" title="C wrapper of MeCab::Lattice::begin_nodes(pos)">mecab_lattice_get_begin_nodes</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> pos);
+<a name="l00562"></a>00562 
+<a name="l00566"></a>00566   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>    *<a class="code" href="mecab_8h.html#afdd78afb2feb6bd35abba65a82be2d32" title="C wrapper of MeCab::Lattice::end_nodes(pos)">mecab_lattice_get_end_nodes</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> pos);
+<a name="l00567"></a>00567 
+<a name="l00571"></a>00571   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#a6cb4f3635ef8d4160be7b72a086c398f" title="C wrapper of MeCab::Lattice::sentence()">mecab_lattice_get_sentence</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00572"></a>00572 
+<a name="l00576"></a>00576   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#ae1056a1837780342eccb330c16156cbd" title="C wrapper of MeCab::Lattice::set_sentence(sentence)">mecab_lattice_set_sentence</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keyword">const</span> <span class="keywordtype">char</span> *sentence);
+<a name="l00577"></a>00577 
+<a name="l00582"></a>00582   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#a3b55ae7f91b859258494ce0127c3be3b" title="C wrapper of MeCab::Lattice::set_sentence(sentence, len)">mecab_lattice_set_sentence2</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keyword">const</span> <span class="keywordtype">char</span> *sentence, <span class="keywordtype">size_t</span> len);
+<a name="l00583"></a>00583 
+<a name="l00587"></a>00587   MECAB_DLL_EXTERN <span class="keywordtype">size_t</span>           <a class="code" href="mecab_8h.html#a9363944df2727fa193d0bbab99f17ad9" title="C wrapper of MeCab::Lattice::size()">mecab_lattice_get_size</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00588"></a>00588 
+<a name="l00592"></a>00592   MECAB_DLL_EXTERN <span class="keywordtype">double</span>           <a class="code" href="mecab_8h.html#aee71e8e0cb5fc39a43499d08542c41c1" title="C wrapper of MeCab::Lattice::Z()">mecab_lattice_get_z</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00593"></a>00593 
+<a name="l00597"></a>00597   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#adbf590d9bb18852071ce020d3fd85396" title="C wrapper of MeCab::Lattice::set_Z()">mecab_lattice_set_z</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">double</span> Z);
+<a name="l00598"></a>00598 
+<a name="l00602"></a>00602   MECAB_DLL_EXTERN <span class="keywordtype">double</span>           <a class="code" href="mecab_8h.html#a1c06a1802888b79d63544d2fa8036d57" title="C wrapper of MeCab::Lattice::theta()">mecab_lattice_get_theta</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00603"></a>00603 
+<a name="l00608"></a>00608   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#a2ba4806173b90729dd312d88c2a2b20a" title="C wrapper of MeCab::Lattice::set_theta()">mecab_lattice_set_theta</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">double</span> theta);
+<a name="l00609"></a>00609 
+<a name="l00613"></a>00613   MECAB_DLL_EXTERN <span class="keywordtype">int</span>              <a class="code" href="mecab_8h.html#ade3b0f830becb26e3a65673dcd9cd8ce" title="C wrapper of MeCab::Lattice::next()">mecab_lattice_next</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00614"></a>00614 
+<a name="l00618"></a>00618   MECAB_DLL_EXTERN <span class="keywordtype">int</span>              <a class="code" href="mecab_8h.html#a3e1c49fce085ac5fee4a43f91d37e798" title="C wrapper of MeCab::Lattice::request_type()">mecab_lattice_get_request_type</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00619"></a>00619 
+<a name="l00623"></a>00623   MECAB_DLL_EXTERN <span class="keywordtype">int</span>              <a class="code" href="mecab_8h.html#a74fab9903c6ffbdb9a6def01048a29ff" title="C wrapper of MeCab::Lattice::has_request_type()">mecab_lattice_has_request_type</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">int</span> request_type);
+<a name="l00624"></a>00624 
+<a name="l00628"></a>00628   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#ac1b8828945e98a6188f90ba2e2642ee5" title="C wrapper of MeCab::Lattice::set_request_type()">mecab_lattice_set_request_type</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">int</span> request_type);
+<a name="l00629"></a>00629 
+<a name="l00634"></a>00634   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#a3529316d6be6d390daf738c8c8ba79d4" title="C wrapper of MeCab::Lattice::add_request_type()">mecab_lattice_add_request_type</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">int</span> request_type);
+<a name="l00635"></a>00635 
+<a name="l00639"></a>00639   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#affbb2134d8dd318fa8291dd5773046ce" title="C wrapper of MeCab::Lattice::remove_request_type()">mecab_lattice_remove_request_type</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">int</span> request_type);
+<a name="l00640"></a>00640 
+<a name="l00644"></a>00644   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>    *<a class="code" href="mecab_8h.html#a1965de0136f575411bc2d9cc3c74a7bc" title="C wrapper of MeCab::Lattice::newNode();.">mecab_lattice_new_node</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00645"></a>00645 
+<a name="l00649"></a>00649   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#a36e3f6258582efd30c56c3328917e433" title="C wrapper of MeCab::Lattice::toString()">mecab_lattice_tostr</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00650"></a>00650 
+<a name="l00654"></a>00654   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#aca4bc15a51154cb6287b01ad155eb9a8" title="C wrapper of MeCab::Lattice::toString(buf, size)">mecab_lattice_tostr2</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> size);
+<a name="l00655"></a>00655 
+<a name="l00659"></a>00659   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#a5cda0f72b20721e5da20c783ec37a58d" title="C wrapper of MeCab::Lattice::enumNBestAsString(N)">mecab_lattice_nbest_tostr</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> N);
+<a name="l00660"></a>00660 
+<a name="l00665"></a>00665   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#a1b944792e2114e508ff365b167f8c605" title="C wrapper of MeCab::Lattice::enumNBestAsString(N, buf, size)">mecab_lattice_nbest_tostr2</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> N, <span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> size);
+<a name="l00666"></a>00666 
+<a name="l00670"></a>00670   MECAB_DLL_EXTERN <span class="keywordtype">int</span>             <a class="code" href="mecab_8h.html#a18b29459c3fd257481ad0ad3cab535ad" title="C wrapper of MeCab::Lattice::has_constraint()">mecab_lattice_has_constraint</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00671"></a>00671 
+<a name="l00675"></a>00675   MECAB_DLL_EXTERN <span class="keywordtype">int</span>             <a class="code" href="mecab_8h.html#afd166ffeeded4f0eaa56a5e75ed53458" title="C wrapper of MeCab::Lattice::boundary_constraint(pos)">mecab_lattice_get_boundary_constraint</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> pos);
+<a name="l00676"></a>00676 
+<a name="l00677"></a>00677 
+<a name="l00681"></a>00681   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>     *<a class="code" href="mecab_8h.html#aa09203f567092827f2edfc431c3ea7c7" title="C wrapper of MeCab::Lattice::feature_constraint(pos)">mecab_lattice_get_feature_constraint</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> pos);
+<a name="l00682"></a>00682 
+<a name="l00686"></a>00686   MECAB_DLL_EXTERN <span class="keywordtype">void</span>            <a class="code" href="mecab_8h.html#a1ada506af3452914520f6299a4fd3904" title="C wrapper of MeCab::Lattice::boundary_constraint(pos, type)">mecab_lattice_set_boundary_constraint</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> pos, <span class="keywordtype">int</span> boundary_type);
+<a name="l00687"></a>00687 
+<a name="l00691"></a>00691   MECAB_DLL_EXTERN <span class="keywordtype">void</span>            <a class="code" href="mecab_8h.html#add015fc06e0b09b0123efc85822881e9" title="C wrapper of MeCab::Lattice::set_feature_constraint(begin_pos, end_pos, feature)">mecab_lattice_set_feature_constraint</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, <span class="keywordtype">size_t</span> begin_pos, <span class="keywordtype">size_t</span> end_pos, <span class="keyword">const</span> <span class="keywordtype">char</span> *feature);
+<a name="l00692"></a>00692 
+<a name="l00696"></a>00696   MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="mecab_8h.html#ae17603a0d78f80495841bd7c85681718" title="C wrapper of MeCab::Lattice::what()">mecab_lattice_strerror</a>(<a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00697"></a>00697 
+<a name="l00698"></a>00698 
+<a name="l00699"></a>00699   <span class="comment">/* model interface */</span>
+<a name="l00703"></a>00703   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a>   *<a class="code" href="mecab_8h.html#a54cc1d92f891a5f1f3d9e37f04c07c85" title="C wapper of MeCab::Model::create(argc, argv)">mecab_model_new</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l00704"></a>00704 
+<a name="l00708"></a>00708   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a>   *<a class="code" href="mecab_8h.html#aa4576c7f37e3a08e3ed8bd85683f776c" title="C wapper of MeCab::Model::create(arg)">mecab_model_new2</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
+<a name="l00709"></a>00709 
+<a name="l00714"></a>00714   MECAB_DLL_EXTERN <span class="keywordtype">void</span>             <a class="code" href="mecab_8h.html#ae64b687be87cf095dde1f75bd2801ee8" title="C wapper of MeCab::deleteModel(model)">mecab_model_destroy</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model);
+<a name="l00715"></a>00715 
+<a name="l00719"></a>00719   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a>         *<a class="code" href="mecab_8h.html#a542243e6629589ca34127e4e556fa096" title="C wapper of MeCab::Model::createTagger()">mecab_model_new_tagger</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model);
+<a name="l00720"></a>00720 
+<a name="l00724"></a>00724   MECAB_DLL_EXTERN <a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *<a class="code" href="mecab_8h.html#a4a13db757018319057c0881fd4c2a5c5" title="C wapper of MeCab::Model::createLattice()">mecab_model_new_lattice</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model);
+<a name="l00725"></a>00725 
+<a name="l00729"></a>00729   MECAB_DLL_EXTERN <span class="keywordtype">int</span> <a class="code" href="mecab_8h.html#a5b9cb480735f724a241b6ee490c222fe" title="C wrapper of MeCab::Model::swap()">mecab_model_swap</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model, <a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *new_model);
+<a name="l00730"></a>00730 
+<a name="l00734"></a>00734   MECAB_DLL_EXTERN <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">mecab_dictionary_info_t</a>* <a class="code" href="mecab_8h.html#a463bb4f7591289783c832989f0eb8e17" title="C wapper of MeCab::Model::dictionary_info()">mecab_model_dictionary_info</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model);
+<a name="l00735"></a>00735 
+<a name="l00739"></a>00739   MECAB_DLL_EXTERN <span class="keywordtype">int</span> <a class="code" href="mecab_8h.html#a119fed14abf800aa7ffc13dcef9b8a11" title="C wrapper of MeCab::Model::transition_cost()">mecab_model_transition_cost</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model,
+<a name="l00740"></a>00740                                                    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> rcAttr,
+<a name="l00741"></a>00741                                                    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> lcAttr);
+<a name="l00742"></a>00742 
+<a name="l00746"></a>00746   MECAB_DLL_EXTERN <a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a> *<a class="code" href="mecab_8h.html#a39f7fd1dc84588c5745b44a71b0f6aeb" title="C wrapper of MeCab::Model::lookup()">mecab_model_lookup</a>(<a class="code" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *model,
+<a name="l00747"></a>00747                                                     <span class="keyword">const</span> <span class="keywordtype">char</span> *begin,
+<a name="l00748"></a>00748                                                     <span class="keyword">const</span> <span class="keywordtype">char</span> *end,
+<a name="l00749"></a>00749                                                     <a class="code" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice);
+<a name="l00750"></a>00750 
+<a name="l00751"></a>00751   <span class="comment">/* static functions */</span>
+<a name="l00752"></a>00752   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a65a449af7e5924fbb93687d009187b9d">mecab_do</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l00753"></a>00753   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a49059ba0ce6c7465a2a85a200e6a2328">mecab_dict_index</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l00754"></a>00754   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#a8096686867227214927b92ac11b18f5b">mecab_dict_gen</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l00755"></a>00755   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#af6d368b45555b6a37012bcfd6f73482c">mecab_cost_train</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l00756"></a>00756   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#ad80d0462223de818fb811d2acfd1d7b1">mecab_system_eval</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l00757"></a>00757   MECAB_DLL_EXTERN <span class="keywordtype">int</span>           <a class="code" href="mecab_8h.html#aacc06313289f2ee4f620afa0f3fadef4">mecab_test_gen</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l00758"></a>00758 <span class="preprocessor">#endif</span>
+<a name="l00759"></a>00759 <span class="preprocessor"></span>
+<a name="l00760"></a>00760 <span class="preprocessor">#ifdef __cplusplus</span>
+<a name="l00761"></a>00761 <span class="preprocessor"></span>}
+<a name="l00762"></a>00762 <span class="preprocessor">#endif</span>
 <a name="l00763"></a>00763 <span class="preprocessor"></span>
-<a name="l00764"></a><a class="code" href="namespaceMeCab.html">00764</a> <span class="keyword">namespace </span>MeCab {
-<a name="l00765"></a><a class="code" href="namespaceMeCab.html#a581b6e7f533add983ea9dabc4a44166b">00765</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">mecab_dictionary_info_t</a> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">DictionaryInfo</a>;
-<a name="l00766"></a><a class="code" href="namespaceMeCab.html#adf62d9125f2e4ad9d38f27c59ccb587d">00766</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__path__t.html" title="Path structure.">mecab_path_t</a>            <a class="code" href="structmecab__path__t.html" title="Path structure.">Path</a>;
-<a name="l00767"></a><a class="code" href="namespaceMeCab.html#a3679371b5a373ad35e86a545b5f0d127">00767</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>            <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>;
-<a name="l00768"></a>00768 
-<a name="l00769"></a>00769 <span class="keyword">template</span> &lt;<span class="keyword">typename</span> N, <span class="keyword">typename</span> P&gt; <span class="keyword">class </span>Allocator;
-<a name="l00770"></a>00770 <span class="keyword">class </span><a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a>;
+<a name="l00764"></a>00764 <span class="comment">/* C++ interface */</span>
+<a name="l00765"></a>00765 <span class="preprocessor">#ifdef __cplusplus</span>
+<a name="l00766"></a>00766 <span class="preprocessor"></span>
+<a name="l00767"></a><a class="code" href="namespaceMeCab.html">00767</a> <span class="keyword">namespace </span>MeCab {
+<a name="l00768"></a><a class="code" href="namespaceMeCab.html#a581b6e7f533add983ea9dabc4a44166b">00768</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">mecab_dictionary_info_t</a> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">DictionaryInfo</a>;
+<a name="l00769"></a><a class="code" href="namespaceMeCab.html#adf62d9125f2e4ad9d38f27c59ccb587d">00769</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__path__t.html" title="Path structure.">mecab_path_t</a>            <a class="code" href="structmecab__path__t.html" title="Path structure.">Path</a>;
+<a name="l00770"></a><a class="code" href="namespaceMeCab.html#a3679371b5a373ad35e86a545b5f0d127">00770</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structmecab__node__t.html" title="Node structure.">mecab_node_t</a>            <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>;
 <a name="l00771"></a>00771 
-<a name="l00775"></a><a class="code" href="classMeCab_1_1Lattice.html">00775</a> <span class="keyword">class </span><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">MECAB_DLL_CLASS_EXTERN</a> <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> {
-<a name="l00776"></a>00776 <span class="keyword">public</span>:
-<a name="l00780"></a>00780   <span class="keyword">virtual</span> <span class="keywordtype">void</span> clear()              = 0;
-<a name="l00781"></a>00781 
-<a name="l00786"></a>00786   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> is_available() <span class="keyword">const</span> = 0;
-<a name="l00787"></a>00787 
-<a name="l00793"></a>00793   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *bos_node() <span class="keyword">const</span>              = 0;
-<a name="l00794"></a>00794 
-<a name="l00799"></a>00799   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *eos_node() <span class="keyword">const</span>              = 0;
-<a name="l00800"></a>00800 
-<a name="l00801"></a>00801 <span class="preprocessor">#ifndef SWIG</span>
-<a name="l00802"></a>00802 <span class="preprocessor"></span>
-<a name="l00805"></a>00805   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> **begin_nodes() <span class="keyword">const</span>          = 0;
-<a name="l00806"></a>00806 
-<a name="l00810"></a>00810   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> **end_nodes() <span class="keyword">const</span>            = 0;
-<a name="l00811"></a>00811 <span class="preprocessor">#endif</span>
-<a name="l00812"></a>00812 <span class="preprocessor"></span>
-<a name="l00819"></a>00819   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *end_nodes(<span class="keywordtype">size_t</span> pos) <span class="keyword">const</span>   = 0;
-<a name="l00820"></a>00820 
-<a name="l00827"></a>00827   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *begin_nodes(<span class="keywordtype">size_t</span> pos) <span class="keyword">const</span> = 0;
-<a name="l00828"></a>00828 
-<a name="l00834"></a>00834   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *sentence() <span class="keyword">const</span> = 0;
-<a name="l00835"></a>00835 
-<a name="l00840"></a>00840   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_sentence(<span class="keyword">const</span> <span class="keywordtype">char</span> *sentence)             = 0;
-<a name="l00841"></a>00841 
-<a name="l00842"></a>00842 <span class="preprocessor">#ifndef SWIG</span>
-<a name="l00843"></a>00843 <span class="preprocessor"></span>
-<a name="l00848"></a>00848   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_sentence(<span class="keyword">const</span> <span class="keywordtype">char</span> *sentence, <span class="keywordtype">size_t</span> len) = 0;
-<a name="l00849"></a>00849 <span class="preprocessor">#endif</span>
-<a name="l00850"></a>00850 <span class="preprocessor"></span>
-<a name="l00855"></a>00855   <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> size() <span class="keyword">const</span>                                 = 0;
-<a name="l00856"></a>00856 
-<a name="l00861"></a>00861   <span class="keyword">virtual</span> <span class="keywordtype">void</span>   set_Z(<span class="keywordtype">double</span> Z) = 0;
-<a name="l00862"></a>00862 
-<a name="l00867"></a>00867   <span class="keyword">virtual</span> <span class="keywordtype">double</span> Z() <span class="keyword">const</span> = 0;
-<a name="l00868"></a>00868 
-<a name="l00873"></a>00873   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_theta(<span class="keywordtype">float</span> theta) = 0;
-<a name="l00874"></a>00874 
-<a name="l00879"></a>00879   <span class="keyword">virtual</span> <span class="keywordtype">float</span> theta() <span class="keyword">const</span>          = 0;
-<a name="l00880"></a>00880 
-<a name="l00887"></a>00887   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> next() = 0;
-<a name="l00888"></a>00888 
-<a name="l00893"></a>00893   <span class="keyword">virtual</span> <span class="keywordtype">int</span> request_type() <span class="keyword">const</span>                = 0;
-<a name="l00894"></a>00894 
-<a name="l00899"></a>00899   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> has_request_type(<span class="keywordtype">int</span> request_type) <span class="keyword">const</span> = 0;
-<a name="l00900"></a>00900 
-<a name="l00905"></a>00905   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_request_type(<span class="keywordtype">int</span> request_type) = 0;
-<a name="l00906"></a>00906 
-<a name="l00911"></a>00911   <span class="keyword">virtual</span> <span class="keywordtype">void</span> add_request_type(<span class="keywordtype">int</span> request_type) = 0;
-<a name="l00912"></a>00912 
-<a name="l00917"></a>00917   <span class="keyword">virtual</span> <span class="keywordtype">void</span> remove_request_type(<span class="keywordtype">int</span> request_type) = 0;
-<a name="l00918"></a>00918 
-<a name="l00919"></a>00919 <span class="preprocessor">#ifndef SWIG</span>
-<a name="l00920"></a>00920 <span class="preprocessor"></span>
-<a name="l00923"></a>00923   <span class="keyword">virtual</span> Allocator&lt;Node, Path&gt; *allocator() <span class="keyword">const</span> = 0;
-<a name="l00924"></a>00924 <span class="preprocessor">#endif</span>
-<a name="l00925"></a>00925 <span class="preprocessor"></span>
-<a name="l00930"></a>00930   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *newNode() = 0;
-<a name="l00931"></a>00931 
-<a name="l00938"></a>00938   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *toString()                = 0;
-<a name="l00939"></a>00939 
-<a name="l00947"></a>00947   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *toString(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node) = 0;
-<a name="l00948"></a>00948 
-<a name="l00956"></a>00956   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *enumNBestAsString(<span class="keywordtype">size_t</span> N) = 0;
-<a name="l00957"></a>00957 
-<a name="l00958"></a>00958 <span class="preprocessor">#ifndef SWIG</span>
-<a name="l00959"></a>00959 <span class="preprocessor"></span>
-<a name="l00966"></a>00966   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *toString(<span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> size) = 0;
-<a name="l00967"></a>00967 
-<a name="l00976"></a>00976   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *toString(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node,
-<a name="l00977"></a>00977                                <span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> size) = 0;
-<a name="l00978"></a>00978 
-<a name="l00987"></a>00987   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *enumNBestAsString(<span class="keywordtype">size_t</span> N, <span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> size) = 0;
-<a name="l00988"></a>00988 <span class="preprocessor">#endif</span>
-<a name="l00989"></a>00989 <span class="preprocessor"></span>
-<a name="l00993"></a>00993   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> has_constraint() <span class="keyword">const</span> = 0;
-<a name="l00994"></a>00994 
-<a name="l01000"></a>01000   <span class="keyword">virtual</span> <span class="keywordtype">int</span> boundary_constraint(<span class="keywordtype">size_t</span> pos) <span class="keyword">const</span> = 0;
-<a name="l01001"></a>01001 
-<a name="l01007"></a>01007   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *feature_constraint(<span class="keywordtype">size_t</span> begin_pos) <span class="keyword">const</span> = 0;
-<a name="l01008"></a>01008 
-<a name="l01014"></a>01014   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_boundary_constraint(<span class="keywordtype">size_t</span> pos,
-<a name="l01015"></a>01015                                        <span class="keywordtype">int</span> boundary_constraint_type) = 0;
-<a name="l01016"></a>01016 
-<a name="l01023"></a>01023   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_feature_constraint(
-<a name="l01024"></a>01024       <span class="keywordtype">size_t</span> begin_pos, <span class="keywordtype">size_t</span> end_pos,
-<a name="l01025"></a>01025       <span class="keyword">const</span> <span class="keywordtype">char</span> *feature) = 0;
-<a name="l01026"></a>01026 
-<a name="l01031"></a>01031   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *what() <span class="keyword">const</span>            = 0;
-<a name="l01032"></a>01032 
-<a name="l01037"></a>01037   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_what(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)        = 0;
-<a name="l01038"></a>01038 
-<a name="l01039"></a>01039 <span class="preprocessor">#ifndef SWIG</span>
-<a name="l01040"></a>01040 <span class="preprocessor"></span>
-<a name="l01044"></a>01044   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *create();
-<a name="l01045"></a>01045 <span class="preprocessor">#endif</span>
-<a name="l01046"></a>01046 <span class="preprocessor"></span>
-<a name="l01047"></a><a class="code" href="classMeCab_1_1Lattice.html#a63ffb4d69082263c1cf3051f95ed727f">01047</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Lattice.html#a63ffb4d69082263c1cf3051f95ed727f">~Lattice</a>() {}
-<a name="l01048"></a>01048 };
-<a name="l01049"></a>01049 
-<a name="l01053"></a><a class="code" href="classMeCab_1_1Model.html">01053</a> <span class="keyword">class </span><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">MECAB_DLL_CLASS_EXTERN</a> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> {
-<a name="l01054"></a>01054 <span class="keyword">public</span>:
-<a name="l01059"></a>01059   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">DictionaryInfo</a> *dictionary_info() <span class="keyword">const</span> = 0;
-<a name="l01060"></a>01060 
-<a name="l01065"></a>01065   <span class="keyword">virtual</span> <span class="keywordtype">int</span> transition_cost(<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> rcAttr,
-<a name="l01066"></a>01066                               <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> lcAttr) <span class="keyword">const</span> = 0;
-<a name="l01067"></a>01067 
-<a name="l01073"></a>01073   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *lookup(<span class="keyword">const</span> <span class="keywordtype">char</span> *begin, <span class="keyword">const</span> <span class="keywordtype">char</span> *end,
-<a name="l01074"></a>01074                        <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice) <span class="keyword">const</span> = 0;
-<a name="l01075"></a>01075 
-<a name="l01082"></a>01082   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a>  *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>() <span class="keyword">const</span> = 0;
-<a name="l01083"></a>01083 
-<a name="l01088"></a>01088   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *<a class="code" href="namespaceMeCab.html#a4a86d3fa68b44c72618e9b90719bf557" title="Alias of Lattice::create()">createLattice</a>() <span class="keyword">const</span> = 0;
-<a name="l01089"></a>01089 
-<a name="l01101"></a>01101   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> swap(<a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> *model) = 0;
-<a name="l01102"></a>01102 
-<a name="l01107"></a>01107   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *version();
-<a name="l01108"></a>01108 
-<a name="l01109"></a><a class="code" href="classMeCab_1_1Model.html#abccfe166fbb9db7ab5fe8479657dd63c">01109</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Model.html#abccfe166fbb9db7ab5fe8479657dd63c">~Model</a>() {}
-<a name="l01110"></a>01110 
-<a name="l01111"></a>01111 <span class="preprocessor">#ifndef SIWG</span>
-<a name="l01112"></a>01112 <span class="preprocessor"></span>
-<a name="l01120"></a>01120   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a>* create(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l01121"></a>01121 
-<a name="l01130"></a>01130   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a>* create(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
-<a name="l01131"></a>01131 <span class="preprocessor">#endif</span>
-<a name="l01132"></a>01132 <span class="preprocessor"></span>};
-<a name="l01133"></a>01133 
-<a name="l01137"></a><a class="code" href="classMeCab_1_1Tagger.html">01137</a> <span class="keyword">class </span><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">MECAB_DLL_CLASS_EXTERN</a> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> {
-<a name="l01138"></a>01138 <span class="keyword">public</span>:
-<a name="l01151"></a>01151   <span class="keyword">static</span> <span class="keywordtype">bool</span>  parse(<span class="keyword">const</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> &amp;model, <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice);
-<a name="l01152"></a>01152 
-<a name="l01162"></a>01162   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> parse(<a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice) <span class="keyword">const</span>                = 0;
-<a name="l01163"></a>01163 
-<a name="l01172"></a>01172   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)                = 0;
-<a name="l01173"></a>01173 
-<a name="l01183"></a>01183   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* parseToNode(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)          = 0;
-<a name="l01184"></a>01184 
-<a name="l01195"></a>01195   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str) = 0;
-<a name="l01196"></a>01196 
-<a name="l01206"></a>01206   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  parseNBestInit(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)             = 0;
-<a name="l01207"></a>01207 
-<a name="l01215"></a>01215   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* nextNode()                            = 0;
-<a name="l01216"></a>01216 
-<a name="l01224"></a>01224   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* next()                                = 0;
-<a name="l01225"></a>01225 
-<a name="l01236"></a>01236   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* formatNode(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node)          = 0;
-<a name="l01237"></a>01237 
-<a name="l01238"></a>01238 <span class="preprocessor">#ifndef SWIG</span>
-<a name="l01239"></a>01239 <span class="preprocessor"></span>
-<a name="l01249"></a>01249   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen) = 0;
-<a name="l01250"></a>01250 
-<a name="l01257"></a>01257   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                          = 0;
-<a name="l01258"></a>01258 
-<a name="l01265"></a>01265   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* parseToNode(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                    = 0;
-<a name="l01266"></a>01266 
-<a name="l01274"></a>01274   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)           = 0;
-<a name="l01275"></a>01275 
-<a name="l01283"></a>01283   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  parseNBestInit(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                  = 0;
-<a name="l01284"></a>01284 
-<a name="l01292"></a>01292   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* next(<span class="keywordtype">char</span> *ostr , <span class="keywordtype">size_t</span> olen)                        = 0;
-<a name="l01293"></a>01293 
-<a name="l01304"></a>01304   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str,
-<a name="l01305"></a>01305                                  <span class="keywordtype">size_t</span> len, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen)       = 0;
-<a name="l01306"></a>01306 
-<a name="l01315"></a>01315   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* formatNode(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen) = 0;
-<a name="l01316"></a>01316 <span class="preprocessor">#endif</span>
-<a name="l01317"></a>01317 <span class="preprocessor"></span>
-<a name="l01323"></a>01323   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_request_type(<span class="keywordtype">int</span> request_type) = 0;
-<a name="l01324"></a>01324 
-<a name="l01330"></a>01330   <span class="keyword">virtual</span> <span class="keywordtype">int</span>  request_type() <span class="keyword">const</span> = 0;
-<a name="l01331"></a>01331 
-<a name="l01337"></a>01337   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  partial() <span class="keyword">const</span>                             = 0;
-<a name="l01338"></a>01338 
-<a name="l01344"></a>01344   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_partial(<span class="keywordtype">bool</span> partial)                   = 0;
-<a name="l01345"></a>01345 
-<a name="l01351"></a>01351   <span class="keyword">virtual</span> <span class="keywordtype">int</span>   lattice_level() <span class="keyword">const</span>                       = 0;
-<a name="l01352"></a>01352 
-<a name="l01358"></a>01358   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_lattice_level(<span class="keywordtype">int</span> level)                = 0;
-<a name="l01359"></a>01359 
-<a name="l01365"></a>01365   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  all_morphs() <span class="keyword">const</span>                          = 0;
-<a name="l01366"></a>01366 
-<a name="l01372"></a>01372   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_all_morphs(<span class="keywordtype">bool</span> all_morphs)             = 0;
-<a name="l01373"></a>01373 
-<a name="l01378"></a>01378   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_theta(<span class="keywordtype">float</span> theta)                      = 0;
-<a name="l01379"></a>01379 
-<a name="l01384"></a>01384   <span class="keyword">virtual</span> <span class="keywordtype">float</span> theta() <span class="keyword">const</span>                               = 0;
-<a name="l01385"></a>01385 
-<a name="l01390"></a>01390   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">DictionaryInfo</a>* dictionary_info() <span class="keyword">const</span> = 0;
-<a name="l01391"></a>01391 
-<a name="l01396"></a>01396   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* what() <span class="keyword">const</span> = 0;
-<a name="l01397"></a>01397 
-<a name="l01398"></a><a class="code" href="classMeCab_1_1Tagger.html#a73821650a97b4ca39a26f833014af516">01398</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Tagger.html#a73821650a97b4ca39a26f833014af516">~Tagger</a>() {}
-<a name="l01399"></a>01399 
-<a name="l01400"></a>01400 <span class="preprocessor">#ifndef SIWG</span>
-<a name="l01401"></a>01401 <span class="preprocessor"></span>
-<a name="l01409"></a>01409   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> *create(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l01410"></a>01410 
-<a name="l01419"></a>01419   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> *create(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
-<a name="l01420"></a>01420 <span class="preprocessor">#endif</span>
-<a name="l01421"></a>01421 <span class="preprocessor"></span>
-<a name="l01426"></a>01426   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *version();
-<a name="l01427"></a>01427 };
-<a name="l01428"></a>01428 
-<a name="l01429"></a>01429 <span class="preprocessor">#ifndef SWIG</span>
-<a name="l01430"></a>01430 <span class="preprocessor"></span>
-<a name="l01433"></a>01433 MECAB_DLL_EXTERN Lattice     *<a class="code" href="namespaceMeCab.html#a4a86d3fa68b44c72618e9b90719bf557" title="Alias of Lattice::create()">createLattice</a>();
-<a name="l01434"></a>01434 
-<a name="l01438"></a>01438 MECAB_DLL_EXTERN Model       *<a class="code" href="namespaceMeCab.html#a89b79d176709a3a38ff7618a4d8b73d0" title="Alias of Mode::create(argc, argv)">createModel</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l01439"></a>01439 
-<a name="l01443"></a>01443 MECAB_DLL_EXTERN Model       *<a class="code" href="namespaceMeCab.html#a89b79d176709a3a38ff7618a4d8b73d0" title="Alias of Mode::create(argc, argv)">createModel</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
-<a name="l01444"></a>01444 
-<a name="l01448"></a>01448 MECAB_DLL_EXTERN Tagger      *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l01449"></a>01449 
-<a name="l01453"></a>01453 MECAB_DLL_EXTERN Tagger      *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
-<a name="l01454"></a>01454 
-<a name="l01461"></a>01461 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#a317648976dd958252c47e585c0afcdce" title="delete Lattice object.">deleteLattice</a>(Lattice *lattice);
-<a name="l01462"></a>01462 
-<a name="l01463"></a>01463 
-<a name="l01470"></a>01470 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#aca70757f3fc3c6e2f8c4afea035c3426" title="delete Model object.">deleteModel</a>(Model *model);
-<a name="l01471"></a>01471 
-<a name="l01478"></a>01478 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#a7ffb485887c9058fc5affb99718f1b93" title="delete Tagger object.">deleteTagger</a>(Tagger *tagger);
-<a name="l01479"></a>01479 
-<a name="l01484"></a>01484 MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*  <a class="code" href="namespaceMeCab.html#af6b513c7789770d47bdf64f9b86f8445" title="Return last error string.">getLastError</a>();
-<a name="l01485"></a>01485 
-<a name="l01491"></a>01491 MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*  <a class="code" href="namespaceMeCab.html#adb1d3f0f95c4729445a0cd96469041d5" title="An alias of getLastError.">getTaggerError</a>();
-<a name="l01492"></a>01492 <span class="preprocessor">#endif</span>
-<a name="l01493"></a>01493 <span class="preprocessor"></span>}
-<a name="l01494"></a>01494 <span class="preprocessor">#endif</span>
-<a name="l01495"></a>01495 <span class="preprocessor"></span><span class="preprocessor">#endif  </span><span class="comment">/* MECAB_MECAB_H_ */</span>
+<a name="l00772"></a>00772 <span class="keyword">template</span> &lt;<span class="keyword">typename</span> N, <span class="keyword">typename</span> P&gt; <span class="keyword">class </span>Allocator;
+<a name="l00773"></a>00773 <span class="keyword">class </span><a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a>;
+<a name="l00774"></a>00774 
+<a name="l00778"></a><a class="code" href="classMeCab_1_1Lattice.html">00778</a> <span class="keyword">class </span><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">MECAB_DLL_CLASS_EXTERN</a> <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> {
+<a name="l00779"></a>00779 <span class="keyword">public</span>:
+<a name="l00783"></a>00783   <span class="keyword">virtual</span> <span class="keywordtype">void</span> clear()              = 0;
+<a name="l00784"></a>00784 
+<a name="l00789"></a>00789   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> is_available() <span class="keyword">const</span> = 0;
+<a name="l00790"></a>00790 
+<a name="l00796"></a>00796   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *bos_node() <span class="keyword">const</span>              = 0;
+<a name="l00797"></a>00797 
+<a name="l00802"></a>00802   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *eos_node() <span class="keyword">const</span>              = 0;
+<a name="l00803"></a>00803 
+<a name="l00804"></a>00804 <span class="preprocessor">#ifndef SWIG</span>
+<a name="l00805"></a>00805 <span class="preprocessor"></span>
+<a name="l00808"></a>00808   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> **begin_nodes() <span class="keyword">const</span>          = 0;
+<a name="l00809"></a>00809 
+<a name="l00813"></a>00813   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> **end_nodes() <span class="keyword">const</span>            = 0;
+<a name="l00814"></a>00814 <span class="preprocessor">#endif</span>
+<a name="l00815"></a>00815 <span class="preprocessor"></span>
+<a name="l00822"></a>00822   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *end_nodes(<span class="keywordtype">size_t</span> pos) <span class="keyword">const</span>   = 0;
+<a name="l00823"></a>00823 
+<a name="l00830"></a>00830   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *begin_nodes(<span class="keywordtype">size_t</span> pos) <span class="keyword">const</span> = 0;
+<a name="l00831"></a>00831 
+<a name="l00837"></a>00837   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *sentence() <span class="keyword">const</span> = 0;
+<a name="l00838"></a>00838 
+<a name="l00843"></a>00843   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_sentence(<span class="keyword">const</span> <span class="keywordtype">char</span> *sentence)             = 0;
+<a name="l00844"></a>00844 
+<a name="l00845"></a>00845 <span class="preprocessor">#ifndef SWIG</span>
+<a name="l00846"></a>00846 <span class="preprocessor"></span>
+<a name="l00851"></a>00851   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_sentence(<span class="keyword">const</span> <span class="keywordtype">char</span> *sentence, <span class="keywordtype">size_t</span> len) = 0;
+<a name="l00852"></a>00852 <span class="preprocessor">#endif</span>
+<a name="l00853"></a>00853 <span class="preprocessor"></span>
+<a name="l00858"></a>00858   <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> size() <span class="keyword">const</span>                                 = 0;
+<a name="l00859"></a>00859 
+<a name="l00864"></a>00864   <span class="keyword">virtual</span> <span class="keywordtype">void</span>   set_Z(<span class="keywordtype">double</span> Z) = 0;
+<a name="l00865"></a>00865 
+<a name="l00870"></a>00870   <span class="keyword">virtual</span> <span class="keywordtype">double</span> Z() <span class="keyword">const</span> = 0;
+<a name="l00871"></a>00871 
+<a name="l00876"></a>00876   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_theta(<span class="keywordtype">float</span> theta) = 0;
+<a name="l00877"></a>00877 
+<a name="l00882"></a>00882   <span class="keyword">virtual</span> <span class="keywordtype">float</span> theta() <span class="keyword">const</span>          = 0;
+<a name="l00883"></a>00883 
+<a name="l00890"></a>00890   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> next() = 0;
+<a name="l00891"></a>00891 
+<a name="l00896"></a>00896   <span class="keyword">virtual</span> <span class="keywordtype">int</span> request_type() <span class="keyword">const</span>                = 0;
+<a name="l00897"></a>00897 
+<a name="l00902"></a>00902   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> has_request_type(<span class="keywordtype">int</span> request_type) <span class="keyword">const</span> = 0;
+<a name="l00903"></a>00903 
+<a name="l00908"></a>00908   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_request_type(<span class="keywordtype">int</span> request_type) = 0;
+<a name="l00909"></a>00909 
+<a name="l00914"></a>00914   <span class="keyword">virtual</span> <span class="keywordtype">void</span> add_request_type(<span class="keywordtype">int</span> request_type) = 0;
+<a name="l00915"></a>00915 
+<a name="l00920"></a>00920   <span class="keyword">virtual</span> <span class="keywordtype">void</span> remove_request_type(<span class="keywordtype">int</span> request_type) = 0;
+<a name="l00921"></a>00921 
+<a name="l00922"></a>00922 <span class="preprocessor">#ifndef SWIG</span>
+<a name="l00923"></a>00923 <span class="preprocessor"></span>
+<a name="l00926"></a>00926   <span class="keyword">virtual</span> Allocator&lt;Node, Path&gt; *allocator() <span class="keyword">const</span> = 0;
+<a name="l00927"></a>00927 <span class="preprocessor">#endif</span>
+<a name="l00928"></a>00928 <span class="preprocessor"></span>
+<a name="l00933"></a>00933   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *newNode() = 0;
+<a name="l00934"></a>00934 
+<a name="l00941"></a>00941   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *toString()                = 0;
+<a name="l00942"></a>00942 
+<a name="l00950"></a>00950   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *toString(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node) = 0;
+<a name="l00951"></a>00951 
+<a name="l00959"></a>00959   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *enumNBestAsString(<span class="keywordtype">size_t</span> N) = 0;
+<a name="l00960"></a>00960 
+<a name="l00961"></a>00961 <span class="preprocessor">#ifndef SWIG</span>
+<a name="l00962"></a>00962 <span class="preprocessor"></span>
+<a name="l00969"></a>00969   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *toString(<span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> size) = 0;
+<a name="l00970"></a>00970 
+<a name="l00979"></a>00979   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *toString(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node,
+<a name="l00980"></a>00980                                <span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> size) = 0;
+<a name="l00981"></a>00981 
+<a name="l00990"></a>00990   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *enumNBestAsString(<span class="keywordtype">size_t</span> N, <span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> size) = 0;
+<a name="l00991"></a>00991 <span class="preprocessor">#endif</span>
+<a name="l00992"></a>00992 <span class="preprocessor"></span>
+<a name="l00996"></a>00996   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> has_constraint() <span class="keyword">const</span> = 0;
+<a name="l00997"></a>00997 
+<a name="l01003"></a>01003   <span class="keyword">virtual</span> <span class="keywordtype">int</span> boundary_constraint(<span class="keywordtype">size_t</span> pos) <span class="keyword">const</span> = 0;
+<a name="l01004"></a>01004 
+<a name="l01010"></a>01010   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *feature_constraint(<span class="keywordtype">size_t</span> pos) <span class="keyword">const</span> = 0;
+<a name="l01011"></a>01011 
+<a name="l01017"></a>01017   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_boundary_constraint(<span class="keywordtype">size_t</span> pos,
+<a name="l01018"></a>01018                                        <span class="keywordtype">int</span> boundary_constraint_type) = 0;
+<a name="l01019"></a>01019 
+<a name="l01026"></a>01026   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_feature_constraint(
+<a name="l01027"></a>01027       <span class="keywordtype">size_t</span> begin_pos, <span class="keywordtype">size_t</span> end_pos,
+<a name="l01028"></a>01028       <span class="keyword">const</span> <span class="keywordtype">char</span> *feature) = 0;
+<a name="l01029"></a>01029 
+<a name="l01034"></a>01034   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *what() <span class="keyword">const</span>            = 0;
+<a name="l01035"></a>01035 
+<a name="l01040"></a>01040   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_what(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)        = 0;
+<a name="l01041"></a>01041 
+<a name="l01042"></a>01042 <span class="preprocessor">#ifndef SWIG</span>
+<a name="l01043"></a>01043 <span class="preprocessor"></span>
+<a name="l01047"></a>01047   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *create();
+<a name="l01048"></a>01048 <span class="preprocessor">#endif</span>
+<a name="l01049"></a>01049 <span class="preprocessor"></span>
+<a name="l01050"></a><a class="code" href="classMeCab_1_1Lattice.html#a63ffb4d69082263c1cf3051f95ed727f">01050</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Lattice.html#a63ffb4d69082263c1cf3051f95ed727f">~Lattice</a>() {}
+<a name="l01051"></a>01051 };
+<a name="l01052"></a>01052 
+<a name="l01056"></a><a class="code" href="classMeCab_1_1Model.html">01056</a> <span class="keyword">class </span><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">MECAB_DLL_CLASS_EXTERN</a> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> {
+<a name="l01057"></a>01057 <span class="keyword">public</span>:
+<a name="l01062"></a>01062   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">DictionaryInfo</a> *dictionary_info() <span class="keyword">const</span> = 0;
+<a name="l01063"></a>01063 
+<a name="l01068"></a>01068   <span class="keyword">virtual</span> <span class="keywordtype">int</span> transition_cost(<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> rcAttr,
+<a name="l01069"></a>01069                               <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> lcAttr) <span class="keyword">const</span> = 0;
+<a name="l01070"></a>01070 
+<a name="l01076"></a>01076   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *lookup(<span class="keyword">const</span> <span class="keywordtype">char</span> *begin, <span class="keyword">const</span> <span class="keywordtype">char</span> *end,
+<a name="l01077"></a>01077                        <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice) <span class="keyword">const</span> = 0;
+<a name="l01078"></a>01078 
+<a name="l01085"></a>01085   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a>  *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>() <span class="keyword">const</span> = 0;
+<a name="l01086"></a>01086 
+<a name="l01091"></a>01091   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *<a class="code" href="namespaceMeCab.html#a4a86d3fa68b44c72618e9b90719bf557" title="Alias of Lattice::create()">createLattice</a>() <span class="keyword">const</span> = 0;
+<a name="l01092"></a>01092 
+<a name="l01104"></a>01104   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> swap(<a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> *model) = 0;
+<a name="l01105"></a>01105 
+<a name="l01110"></a>01110   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *version();
+<a name="l01111"></a>01111 
+<a name="l01112"></a><a class="code" href="classMeCab_1_1Model.html#abccfe166fbb9db7ab5fe8479657dd63c">01112</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Model.html#abccfe166fbb9db7ab5fe8479657dd63c">~Model</a>() {}
+<a name="l01113"></a>01113 
+<a name="l01114"></a>01114 <span class="preprocessor">#ifndef SIWG</span>
+<a name="l01115"></a>01115 <span class="preprocessor"></span>
+<a name="l01123"></a>01123   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a>* create(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l01124"></a>01124 
+<a name="l01133"></a>01133   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a>* create(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
+<a name="l01134"></a>01134 <span class="preprocessor">#endif</span>
+<a name="l01135"></a>01135 <span class="preprocessor"></span>};
+<a name="l01136"></a>01136 
+<a name="l01140"></a><a class="code" href="classMeCab_1_1Tagger.html">01140</a> <span class="keyword">class </span><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">MECAB_DLL_CLASS_EXTERN</a> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> {
+<a name="l01141"></a>01141 <span class="keyword">public</span>:
+<a name="l01154"></a>01154   <span class="keyword">static</span> <span class="keywordtype">bool</span>  parse(<span class="keyword">const</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> &amp;model, <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice);
+<a name="l01155"></a>01155 
+<a name="l01165"></a>01165   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> parse(<a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice) <span class="keyword">const</span>                = 0;
+<a name="l01166"></a>01166 
+<a name="l01175"></a>01175   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)                = 0;
+<a name="l01176"></a>01176 
+<a name="l01186"></a>01186   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* parseToNode(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)          = 0;
+<a name="l01187"></a>01187 
+<a name="l01198"></a>01198   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str) = 0;
+<a name="l01199"></a>01199 
+<a name="l01209"></a>01209   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  parseNBestInit(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)             = 0;
+<a name="l01210"></a>01210 
+<a name="l01218"></a>01218   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* nextNode()                            = 0;
+<a name="l01219"></a>01219 
+<a name="l01227"></a>01227   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* next()                                = 0;
+<a name="l01228"></a>01228 
+<a name="l01239"></a>01239   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* formatNode(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node)          = 0;
+<a name="l01240"></a>01240 
+<a name="l01241"></a>01241 <span class="preprocessor">#ifndef SWIG</span>
+<a name="l01242"></a>01242 <span class="preprocessor"></span>
+<a name="l01252"></a>01252   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen) = 0;
+<a name="l01253"></a>01253 
+<a name="l01260"></a>01260   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                          = 0;
+<a name="l01261"></a>01261 
+<a name="l01268"></a>01268   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* parseToNode(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                    = 0;
+<a name="l01269"></a>01269 
+<a name="l01277"></a>01277   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)           = 0;
+<a name="l01278"></a>01278 
+<a name="l01286"></a>01286   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  parseNBestInit(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                  = 0;
+<a name="l01287"></a>01287 
+<a name="l01295"></a>01295   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* next(<span class="keywordtype">char</span> *ostr , <span class="keywordtype">size_t</span> olen)                        = 0;
+<a name="l01296"></a>01296 
+<a name="l01307"></a>01307   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str,
+<a name="l01308"></a>01308                                  <span class="keywordtype">size_t</span> len, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen)       = 0;
+<a name="l01309"></a>01309 
+<a name="l01318"></a>01318   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* formatNode(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen) = 0;
+<a name="l01319"></a>01319 <span class="preprocessor">#endif</span>
+<a name="l01320"></a>01320 <span class="preprocessor"></span>
+<a name="l01326"></a>01326   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_request_type(<span class="keywordtype">int</span> request_type) = 0;
+<a name="l01327"></a>01327 
+<a name="l01333"></a>01333   <span class="keyword">virtual</span> <span class="keywordtype">int</span>  request_type() <span class="keyword">const</span> = 0;
+<a name="l01334"></a>01334 
+<a name="l01340"></a>01340   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  partial() <span class="keyword">const</span>                             = 0;
+<a name="l01341"></a>01341 
+<a name="l01347"></a>01347   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_partial(<span class="keywordtype">bool</span> partial)                   = 0;
+<a name="l01348"></a>01348 
+<a name="l01354"></a>01354   <span class="keyword">virtual</span> <span class="keywordtype">int</span>   lattice_level() <span class="keyword">const</span>                       = 0;
+<a name="l01355"></a>01355 
+<a name="l01361"></a>01361   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_lattice_level(<span class="keywordtype">int</span> level)                = 0;
+<a name="l01362"></a>01362 
+<a name="l01368"></a>01368   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  all_morphs() <span class="keyword">const</span>                          = 0;
+<a name="l01369"></a>01369 
+<a name="l01375"></a>01375   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_all_morphs(<span class="keywordtype">bool</span> all_morphs)             = 0;
+<a name="l01376"></a>01376 
+<a name="l01381"></a>01381   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_theta(<span class="keywordtype">float</span> theta)                      = 0;
+<a name="l01382"></a>01382 
+<a name="l01387"></a>01387   <span class="keyword">virtual</span> <span class="keywordtype">float</span> theta() <span class="keyword">const</span>                               = 0;
+<a name="l01388"></a>01388 
+<a name="l01393"></a>01393   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">DictionaryInfo</a>* dictionary_info() <span class="keyword">const</span> = 0;
+<a name="l01394"></a>01394 
+<a name="l01399"></a>01399   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* what() <span class="keyword">const</span> = 0;
+<a name="l01400"></a>01400 
+<a name="l01401"></a><a class="code" href="classMeCab_1_1Tagger.html#a73821650a97b4ca39a26f833014af516">01401</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Tagger.html#a73821650a97b4ca39a26f833014af516">~Tagger</a>() {}
+<a name="l01402"></a>01402 
+<a name="l01403"></a>01403 <span class="preprocessor">#ifndef SIWG</span>
+<a name="l01404"></a>01404 <span class="preprocessor"></span>
+<a name="l01412"></a>01412   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> *create(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l01413"></a>01413 
+<a name="l01422"></a>01422   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> *create(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
+<a name="l01423"></a>01423 <span class="preprocessor">#endif</span>
+<a name="l01424"></a>01424 <span class="preprocessor"></span>
+<a name="l01429"></a>01429   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *version();
+<a name="l01430"></a>01430 };
+<a name="l01431"></a>01431 
+<a name="l01432"></a>01432 <span class="preprocessor">#ifndef SWIG</span>
+<a name="l01433"></a>01433 <span class="preprocessor"></span>
+<a name="l01436"></a>01436 MECAB_DLL_EXTERN Lattice     *<a class="code" href="namespaceMeCab.html#a4a86d3fa68b44c72618e9b90719bf557" title="Alias of Lattice::create()">createLattice</a>();
+<a name="l01437"></a>01437 
+<a name="l01441"></a>01441 MECAB_DLL_EXTERN Model       *<a class="code" href="namespaceMeCab.html#a89b79d176709a3a38ff7618a4d8b73d0" title="Alias of Mode::create(argc, argv)">createModel</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l01442"></a>01442 
+<a name="l01446"></a>01446 MECAB_DLL_EXTERN Model       *<a class="code" href="namespaceMeCab.html#a89b79d176709a3a38ff7618a4d8b73d0" title="Alias of Mode::create(argc, argv)">createModel</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
+<a name="l01447"></a>01447 
+<a name="l01451"></a>01451 MECAB_DLL_EXTERN Tagger      *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l01452"></a>01452 
+<a name="l01456"></a>01456 MECAB_DLL_EXTERN Tagger      *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
+<a name="l01457"></a>01457 
+<a name="l01464"></a>01464 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#a317648976dd958252c47e585c0afcdce" title="delete Lattice object.">deleteLattice</a>(Lattice *lattice);
+<a name="l01465"></a>01465 
+<a name="l01466"></a>01466 
+<a name="l01473"></a>01473 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#aca70757f3fc3c6e2f8c4afea035c3426" title="delete Model object.">deleteModel</a>(Model *model);
+<a name="l01474"></a>01474 
+<a name="l01481"></a>01481 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#a7ffb485887c9058fc5affb99718f1b93" title="delete Tagger object.">deleteTagger</a>(Tagger *tagger);
+<a name="l01482"></a>01482 
+<a name="l01487"></a>01487 MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*  <a class="code" href="namespaceMeCab.html#af6b513c7789770d47bdf64f9b86f8445" title="Return last error string.">getLastError</a>();
+<a name="l01488"></a>01488 
+<a name="l01494"></a>01494 MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*  <a class="code" href="namespaceMeCab.html#adb1d3f0f95c4729445a0cd96469041d5" title="An alias of getLastError.">getTaggerError</a>();
+<a name="l01495"></a>01495 <span class="preprocessor">#endif</span>
+<a name="l01496"></a>01496 <span class="preprocessor"></span>}
+<a name="l01497"></a>01497 <span class="preprocessor">#endif</span>
+<a name="l01498"></a>01498 <span class="preprocessor"></span><span class="preprocessor">#endif  </span><span class="comment">/* MECAB_MECAB_H_ */</span>
 </pre></div></div><!-- contents -->
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 21 2013 02:22:35 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 21 2013 02:35:58 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

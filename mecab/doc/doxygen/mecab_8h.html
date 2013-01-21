@@ -111,7 +111,7 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="mecab_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba3c73fdaaff1241dd7ee150237c8cdc70">MECAB_EON_NODE</a> =  4
 <br/>
  }</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters for <a class="el" href="structmecab__node__t.html#a8b26293a70a048eb0b88f3213b6d423e" title="statis of this model.">MeCab::Node::stat</a>.  <a href="mecab_8h.html#a06fc87d81c62e9abb8790b6e5713c55b">More...</a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters for <a class="el" href="structmecab__node__t.html#a8b26293a70a048eb0b88f3213b6d423e" title="status of this model.">MeCab::Node::stat</a>.  <a href="mecab_8h.html#a06fc87d81c62e9abb8790b6e5713c55b">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="mecab_8h.html#adf764cbdea00d65edcd07bb9953ad2b7a304406ccefd50df5540702f7c97bdfe4">MECAB_SYS_DIC</a> =  0, 
 <a class="el" href="mecab_8h.html#adf764cbdea00d65edcd07bb9953ad2b7acb95c34b5ef68a95618d110fa05f64d0">MECAB_USR_DIC</a> =  1, 
 <a class="el" href="mecab_8h.html#adf764cbdea00d65edcd07bb9953ad2b7a96bd8a50016e1bab8c4818c67f519b0e">MECAB_UNK_DIC</a> =  2
@@ -134,10 +134,6 @@ Enumerations</h2></td></tr>
 <a class="el" href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04a1333e953c759a625a2a2dac078a7c1fc">MECAB_INSIDE_TOKEN</a> =  2
  }</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters for MeCab::Lattice::boundary_constraint_type.  <a href="mecab_8h.html#abc6126af1d45847bc59afa0aa3216b04">More...</a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="mecab_8h.html#adc29c2ff13d900c2f185ee95427fb06ca985ec89783ff68a7a8a880f31daf2f85">MECAB_SINGLE_NODE</a> =  1, 
-<a class="el" href="mecab_8h.html#adc29c2ff13d900c2f185ee95427fb06cadb2e374f4b41cd6ab15408ec92ae5be0">MECAB_MULTIPLE_NODES</a> =  2
- }</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters for MeCab::Lattice::node_constraint_type.  <a href="mecab_8h.html#adc29c2ff13d900c2f185ee95427fb06c">More...</a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">MECAB_DLL_EXTERN <a class="el" href="mecab_8h.html#ad7ca914d54c7d7b7614de652424af877">mecab_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a96b09534020ae2d302efc4486dd2aac1">mecab_new</a> (int argc, char **argv)</td></tr>
@@ -423,7 +419,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Parameters for <a class="el" href="structmecab__node__t.html#a8b26293a70a048eb0b88f3213b6d423e" title="statis of this model.">MeCab::Node::stat</a>. </p>
+<p>Parameters for <a class="el" href="structmecab__node__t.html#a8b26293a70a048eb0b88f3213b6d423e" title="status of this model.">MeCab::Node::stat</a>. </p>
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba444c4320cf0dc77aa1553e85a9656179"></a><!-- doxytag: member="MECAB_NOR_NODE" ref="a06fc87d81c62e9abb8790b6e5713c55ba444c4320cf0dc77aa1553e85a9656179" args="" -->MECAB_NOR_NODE</em>&nbsp;</td><td>
 <p>Normal node defined in the dictionary. </p>
@@ -531,33 +527,13 @@ Functions</h2></td></tr>
 <p>Parameters for MeCab::Lattice::boundary_constraint_type. </p>
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em><a class="anchor" id="abc6126af1d45847bc59afa0aa3216b04adfea8bf0fe0f3b7bc555f68e277d1c80"></a><!-- doxytag: member="MECAB_ANY_BOUNDARY" ref="abc6126af1d45847bc59afa0aa3216b04adfea8bf0fe0f3b7bc555f68e277d1c80" args="" -->MECAB_ANY_BOUNDARY</em>&nbsp;</td><td>
+<p>The token boundary is not specified. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="abc6126af1d45847bc59afa0aa3216b04a50841f2f30d16bec7196f1d7a66c1cba"></a><!-- doxytag: member="MECAB_TOKEN_BOUNDARY" ref="abc6126af1d45847bc59afa0aa3216b04a50841f2f30d16bec7196f1d7a66c1cba" args="" -->MECAB_TOKEN_BOUNDARY</em>&nbsp;</td><td>
+<p>The position is a strong token boundary. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="abc6126af1d45847bc59afa0aa3216b04a1333e953c759a625a2a2dac078a7c1fc"></a><!-- doxytag: member="MECAB_INSIDE_TOKEN" ref="abc6126af1d45847bc59afa0aa3216b04a1333e953c759a625a2a2dac078a7c1fc" args="" -->MECAB_INSIDE_TOKEN</em>&nbsp;</td><td>
-</td></tr>
-</table>
-</dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="adc29c2ff13d900c2f185ee95427fb06c"></a><!-- doxytag: member="mecab.h::@4" ref="adc29c2ff13d900c2f185ee95427fb06c" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">anonymous enum</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Parameters for MeCab::Lattice::node_constraint_type. </p>
-<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" id="adc29c2ff13d900c2f185ee95427fb06ca985ec89783ff68a7a8a880f31daf2f85"></a><!-- doxytag: member="MECAB_SINGLE_NODE" ref="adc29c2ff13d900c2f185ee95427fb06ca985ec89783ff68a7a8a880f31daf2f85" args="" -->MECAB_SINGLE_NODE</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="adc29c2ff13d900c2f185ee95427fb06cadb2e374f4b41cd6ab15408ec92ae5be0"></a><!-- doxytag: member="MECAB_MULTIPLE_NODES" ref="adc29c2ff13d900c2f185ee95427fb06cadb2e374f4b41cd6ab15408ec92ae5be0" args="" -->MECAB_MULTIPLE_NODES</em>&nbsp;</td><td>
+<p>The position is not a token boundary. </p>
 </td></tr>
 </table>
 </dd>
@@ -2651,7 +2627,7 @@ Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 21 2013 02:22:35 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 21 2013 02:35:58 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

@@ -139,8 +139,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if any parsing constraint is set.  <a href="#a8fde3e588c3e3c0529c96eb888deab12"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Lattice.html#a9a38797bf6a3199891ce581b9f219cc2">boundary_constraint</a> (size_t pos) const =0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the boundary constraint at the position.  <a href="#a9a38797bf6a3199891ce581b9f219cc2"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Lattice.html#aaeba2d3b0e4983ad36d7c13bfa8292f7">feature_constraint</a> (size_t begin_pos) const =0</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the token constraint at the position.  <a href="#aaeba2d3b0e4983ad36d7c13bfa8292f7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Lattice.html#a5dafd8f6737c929ab6604a2d84ccfcb7">feature_constraint</a> (size_t pos) const =0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the token constraint at the position.  <a href="#a5dafd8f6737c929ab6604a2d84ccfcb7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Lattice.html#ad42406ac4a6994a1e2c252efea15cf5f">set_boundary_constraint</a> (size_t pos, int boundary_constraint_type)=0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parsing constraint for partial parsing mode.  <a href="#ad42406ac4a6994a1e2c252efea15cf5f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Lattice.html#a32fdfd3d40d166ef79a44c6094485088">set_feature_constraint</a> (size_t begin_pos, size_t end_pos, const char *feature)=0</td></tr>
@@ -482,15 +482,15 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aaeba2d3b0e4983ad36d7c13bfa8292f7"></a><!-- doxytag: member="MeCab::Lattice::feature_constraint" ref="aaeba2d3b0e4983ad36d7c13bfa8292f7" args="(size_t begin_pos) const =0" -->
+<a class="anchor" id="a5dafd8f6737c929ab6604a2d84ccfcb7"></a><!-- doxytag: member="MeCab::Lattice::feature_constraint" ref="a5dafd8f6737c929ab6604a2d84ccfcb7" args="(size_t pos) const =0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual const char* <a class="el" href="classMeCab_1_1Lattice.html#aaeba2d3b0e4983ad36d7c13bfa8292f7">MeCab::Lattice::feature_constraint</a> </td>
+          <td class="memname">virtual const char* <a class="el" href="classMeCab_1_1Lattice.html#a5dafd8f6737c929ab6604a2d84ccfcb7">MeCab::Lattice::feature_constraint</a> </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>begin_pos</em></td><td>)</td>
+          <td class="paramname"><em>pos</em></td><td>)</td>
           <td> const<code> [pure virtual]</code></td>
         </tr>
       </table>
@@ -500,7 +500,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Returns the token constraint at the position. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">pos</td><td>the position of constraint </td></tr>
+    <tr><td class="paramname">pos</td><td>the beginning position of constraint. </td></tr>
   </table>
   </dd>
 </dl>
@@ -739,8 +739,8 @@ Static Public Member Functions</h2></td></tr>
 <p>Set parsing constraint for partial parsing mode. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">begin_pos</td><td>the starting position of new token. </td></tr>
-    <tr><td class="paramname">end_pos</td><td>the the ending position of new token. </td></tr>
+    <tr><td class="paramname">begin_pos</td><td>the starting position of the constrained token. </td></tr>
+    <tr><td class="paramname">end_pos</td><td>the the ending position of the constrained token. </td></tr>
     <tr><td class="paramname">feature</td><td>the feature of the constrained token. </td></tr>
   </table>
   </dd>
@@ -1125,7 +1125,7 @@ Static Public Member Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 21 2013 02:22:35 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 21 2013 02:35:58 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
