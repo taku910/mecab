@@ -27,5 +27,9 @@ public interface MeCabConstants {
   public final static int MECAB_ALL_MORPHS = MeCabJNI.MECAB_ALL_MORPHS_get();
   public final static int MECAB_ALLOCATE_SENTENCE = MeCabJNI.MECAB_ALLOCATE_SENTENCE_get();
 
+  public final static int MECAB_ANY_BOUNDARY = MeCabJNI.MECAB_ANY_BOUNDARY_get();
+  public final static int MECAB_TOKEN_BOUNDARY = MeCabJNI.MECAB_TOKEN_BOUNDARY_get();
+  public final static int MECAB_INSIDE_TOKEN = MeCabJNI.MECAB_INSIDE_TOKEN_get();
+
   public final static String VERSION = MeCabJNI.VERSION_get();
 }

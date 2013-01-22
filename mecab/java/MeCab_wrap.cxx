@@ -1369,6 +1369,84 @@ SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1ALLOCATE_1SENTENCE
 }
 
 
+SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1ANY_1BOUNDARY_1get(JNIEnv *jenv, jclass jcls) {
+  jint jresult = 0 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  {
+    try {
+      result = (int)MECAB_ANY_BOUNDARY; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1TOKEN_1BOUNDARY_1get(JNIEnv *jenv, jclass jcls) {
+  jint jresult = 0 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  {
+    try {
+      result = (int)MECAB_TOKEN_BOUNDARY; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_MECAB_1INSIDE_1TOKEN_1get(JNIEnv *jenv, jclass jcls) {
+  jint jresult = 0 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  {
+    try {
+      result = (int)MECAB_INSIDE_TOKEN; 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
   
@@ -2001,6 +2079,162 @@ SWIGEXPORT jstring JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1enumNBestAsSt
   }
   if (result) jresult = jenv->NewStringUTF((const char *)result);
   return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1has_1constraint(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Lattice **)&jarg1; 
+  {
+    try {
+      result = (bool)((MeCab::Lattice const *)arg1)->has_constraint(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1boundary_1constraint(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jint jresult = 0 ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Lattice **)&jarg1; 
+  arg2 = (size_t)jarg2; 
+  {
+    try {
+      result = (int)((MeCab::Lattice const *)arg1)->boundary_constraint(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1feature_1constraint(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jstring jresult = 0 ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Lattice **)&jarg1; 
+  arg2 = (size_t)jarg2; 
+  {
+    try {
+      result = (char *)((MeCab::Lattice const *)arg1)->feature_constraint(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  if (result) jresult = jenv->NewStringUTF((const char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1boundary_1constraint(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jint jarg3) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  int arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Lattice **)&jarg1; 
+  arg2 = (size_t)jarg2; 
+  arg3 = (int)jarg3; 
+  {
+    try {
+      (arg1)->set_boundary_constraint(arg2,arg3); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1feature_1constraint(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jstring jarg4) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  size_t arg3 ;
+  char *arg4 = (char *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Lattice **)&jarg1; 
+  arg2 = (size_t)jarg2; 
+  arg3 = (size_t)jarg3; 
+  arg4 = 0;
+  if (jarg4) {
+    arg4 = (char *)jenv->GetStringUTFChars(jarg4, 0);
+    if (!arg4) return ;
+  }
+  {
+    try {
+      (arg1)->set_feature_constraint(arg2,arg3,(char const *)arg4); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+  if (arg4) jenv->ReleaseStringUTFChars(jarg4, (const char *)arg4);
 }
 
 

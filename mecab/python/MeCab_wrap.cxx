@@ -5331,6 +5331,230 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Lattice_has_constraint(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Lattice_has_constraint",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_has_constraint" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  {
+    try {
+      result = (bool)((MeCab::Lattice const *)arg1)->has_constraint(); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Lattice_boundary_constraint(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Lattice_boundary_constraint",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_boundary_constraint" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_boundary_constraint" "', argument " "2"" of type '" "size_t""'");
+  } 
+  arg2 = static_cast< size_t >(val2);
+  {
+    try {
+      result = (int)((MeCab::Lattice const *)arg1)->boundary_constraint(arg2); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Lattice_feature_constraint(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  char *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Lattice_feature_constraint",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_feature_constraint" "', argument " "1"" of type '" "MeCab::Lattice const *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_feature_constraint" "', argument " "2"" of type '" "size_t""'");
+  } 
+  arg2 = static_cast< size_t >(val2);
+  {
+    try {
+      result = (char *)((MeCab::Lattice const *)arg1)->feature_constraint(arg2); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_FromCharPtr((const char *)result);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Lattice_set_boundary_constraint(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:Lattice_set_boundary_constraint",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_set_boundary_constraint" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_set_boundary_constraint" "', argument " "2"" of type '" "size_t""'");
+  } 
+  arg2 = static_cast< size_t >(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Lattice_set_boundary_constraint" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    try {
+      (arg1)->set_boundary_constraint(arg2,arg3); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Lattice_set_feature_constraint(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  size_t arg3 ;
+  char *arg4 = (char *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 ;
+  char *buf4 = 0 ;
+  int alloc4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:Lattice_set_feature_constraint",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_set_feature_constraint" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Lattice_set_feature_constraint" "', argument " "2"" of type '" "size_t""'");
+  } 
+  arg2 = static_cast< size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Lattice_set_feature_constraint" "', argument " "3"" of type '" "size_t""'");
+  } 
+  arg3 = static_cast< size_t >(val3);
+  res4 = SWIG_AsCharPtrAndSize(obj3, &buf4, NULL, &alloc4);
+  if (!SWIG_IsOK(res4)) {
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "Lattice_set_feature_constraint" "', argument " "4"" of type '" "char const *""'");
+  }
+  arg4 = reinterpret_cast< char * >(buf4);
+  {
+    try {
+      (arg1)->set_feature_constraint(arg2,arg3,(char const *)arg4); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (alloc4 == SWIG_NEWOBJ) delete[] buf4;
+  return resultobj;
+fail:
+  if (alloc4 == SWIG_NEWOBJ) delete[] buf4;
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Lattice_what(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
@@ -7375,6 +7599,11 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Lattice_newNode", _wrap_Lattice_newNode, METH_VARARGS, NULL},
 	 { (char *)"Lattice_toString", _wrap_Lattice_toString, METH_VARARGS, NULL},
 	 { (char *)"Lattice_enumNBestAsString", _wrap_Lattice_enumNBestAsString, METH_VARARGS, NULL},
+	 { (char *)"Lattice_has_constraint", _wrap_Lattice_has_constraint, METH_VARARGS, NULL},
+	 { (char *)"Lattice_boundary_constraint", _wrap_Lattice_boundary_constraint, METH_VARARGS, NULL},
+	 { (char *)"Lattice_feature_constraint", _wrap_Lattice_feature_constraint, METH_VARARGS, NULL},
+	 { (char *)"Lattice_set_boundary_constraint", _wrap_Lattice_set_boundary_constraint, METH_VARARGS, NULL},
+	 { (char *)"Lattice_set_feature_constraint", _wrap_Lattice_set_feature_constraint, METH_VARARGS, NULL},
 	 { (char *)"Lattice_what", _wrap_Lattice_what, METH_VARARGS, NULL},
 	 { (char *)"Lattice_set_what", _wrap_Lattice_set_what, METH_VARARGS, NULL},
 	 { (char *)"delete_Lattice", _wrap_delete_Lattice, METH_VARARGS, NULL},
@@ -8165,6 +8394,9 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, "MECAB_ALTERNATIVE",SWIG_From_int(static_cast< int >(MECAB_ALTERNATIVE)));
   SWIG_Python_SetConstant(d, "MECAB_ALL_MORPHS",SWIG_From_int(static_cast< int >(MECAB_ALL_MORPHS)));
   SWIG_Python_SetConstant(d, "MECAB_ALLOCATE_SENTENCE",SWIG_From_int(static_cast< int >(MECAB_ALLOCATE_SENTENCE)));
+  SWIG_Python_SetConstant(d, "MECAB_ANY_BOUNDARY",SWIG_From_int(static_cast< int >(MECAB_ANY_BOUNDARY)));
+  SWIG_Python_SetConstant(d, "MECAB_TOKEN_BOUNDARY",SWIG_From_int(static_cast< int >(MECAB_TOKEN_BOUNDARY)));
+  SWIG_Python_SetConstant(d, "MECAB_INSIDE_TOKEN",SWIG_From_int(static_cast< int >(MECAB_INSIDE_TOKEN)));
   SWIG_Python_SetConstant(d, "VERSION",SWIG_FromCharPtr("0.995"));
 #if PY_VERSION_HEX >= 0x03000000
   return m;

@@ -30,6 +30,10 @@ public class MeCab {
   public static readonly int MECAB_ALL_MORPHS = MeCabPINVOKE.MECAB_ALL_MORPHS_get();
   public static readonly int MECAB_ALLOCATE_SENTENCE = MeCabPINVOKE.MECAB_ALLOCATE_SENTENCE_get();
 
+  public static readonly int MECAB_ANY_BOUNDARY = MeCabPINVOKE.MECAB_ANY_BOUNDARY_get();
+  public static readonly int MECAB_TOKEN_BOUNDARY = MeCabPINVOKE.MECAB_TOKEN_BOUNDARY_get();
+  public static readonly int MECAB_INSIDE_TOKEN = MeCabPINVOKE.MECAB_INSIDE_TOKEN_get();
+
   public static readonly string VERSION = MeCabPINVOKE.VERSION_get();
 }
 

@@ -1292,6 +1292,78 @@ SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_ALLOCATE_SENTENCE_get() {
 }
 
 
+SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_ANY_BOUNDARY_get() {
+  int jresult ;
+  int result;
+  
+  {
+    try {
+      result = (int)MECAB_ANY_BOUNDARY; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_TOKEN_BOUNDARY_get() {
+  int jresult ;
+  int result;
+  
+  {
+    try {
+      result = (int)MECAB_TOKEN_BOUNDARY; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_MECAB_INSIDE_TOKEN_get() {
+  int jresult ;
+  int result;
+  
+  {
+    try {
+      result = (int)MECAB_INSIDE_TOKEN; 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_clear(void * jarg1) {
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
   
@@ -1857,6 +1929,142 @@ SWIGEXPORT char * SWIGSTDCALL CSharp_Lattice_enumNBestAsString(void * jarg1, uns
   }
   jresult = SWIG_csharp_string_callback((const char *)result); 
   return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Lattice_has_constraint(void * jarg1) {
+  unsigned int jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  bool result;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  {
+    try {
+      result = (bool)((MeCab::Lattice const *)arg1)->has_constraint(); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_Lattice_boundary_constraint(void * jarg1, unsigned long jarg2) {
+  int jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  int result;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (size_t)jarg2; 
+  {
+    try {
+      result = (int)((MeCab::Lattice const *)arg1)->boundary_constraint(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT char * SWIGSTDCALL CSharp_Lattice_feature_constraint(void * jarg1, unsigned long jarg2) {
+  char * jresult ;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  char *result = 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (size_t)jarg2; 
+  {
+    try {
+      result = (char *)((MeCab::Lattice const *)arg1)->feature_constraint(arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return 0; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return 0; 
+      }; 
+    }
+  }
+  jresult = SWIG_csharp_string_callback((const char *)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_boundary_constraint(void * jarg1, unsigned long jarg2, int jarg3) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  int arg3 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (size_t)jarg2; 
+  arg3 = (int)jarg3; 
+  {
+    try {
+      (arg1)->set_boundary_constraint(arg2,arg3); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_feature_constraint(void * jarg1, unsigned long jarg2, unsigned long jarg3, char * jarg4) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  size_t arg3 ;
+  char *arg4 = (char *) 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (size_t)jarg2; 
+  arg3 = (size_t)jarg3; 
+  arg4 = (char *)jarg4; 
+  {
+    try {
+      (arg1)->set_feature_constraint(arg2,arg3,(char const *)arg4); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
 }
 
 

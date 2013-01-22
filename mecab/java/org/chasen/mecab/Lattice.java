@@ -128,6 +128,26 @@ public class Lattice {
     return MeCabJNI.Lattice_enumNBestAsString(swigCPtr, this, N);
   }
 
+  public boolean has_constraint() {
+    return MeCabJNI.Lattice_has_constraint(swigCPtr, this);
+  }
+
+  public int boundary_constraint(long pos) {
+    return MeCabJNI.Lattice_boundary_constraint(swigCPtr, this, pos);
+  }
+
+  public String feature_constraint(long pos) {
+    return MeCabJNI.Lattice_feature_constraint(swigCPtr, this, pos);
+  }
+
+  public void set_boundary_constraint(long pos, int boundary_constraint_type) {
+    MeCabJNI.Lattice_set_boundary_constraint(swigCPtr, this, pos, boundary_constraint_type);
+  }
+
+  public void set_feature_constraint(long begin_pos, long end_pos, String feature) {
+    MeCabJNI.Lattice_set_feature_constraint(swigCPtr, this, begin_pos, end_pos, feature);
+  }
+
   public String what() {
     return MeCabJNI.Lattice_what(swigCPtr, this);
   }

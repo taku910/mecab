@@ -545,7 +545,7 @@ uint64_t fingerprint(const char *str, size_t size) {
   uint64_t result[2] = { 0 };
   const uint32_t kFingerPrint32Seed = 0xfd14deff;
   MurmurHash3_x86_128(str, size, kFingerPrint32Seed,
-		      reinterpret_cast<char *>(result));
+                      reinterpret_cast<char *>(result));
   return result[0];
 }
 

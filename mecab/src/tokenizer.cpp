@@ -50,9 +50,10 @@ template Node* Tokenizer<Node, Path>::getEOSNode(Allocator<Node, Path> *) const;
 template Node* Tokenizer<Node, Path>::lookup(const char *,
                                              const char *,
                                              Allocator<Node, Path> *) const;
-template Node* Tokenizer<Node, Path>::getUnknownNode(const char *,
-                                                     const char *,
-                                                    Allocator<Node, Path> *) const;
+template Node* Tokenizer<Node, Path>::getUnknownNode(
+    const char *,
+    const char *,
+    Allocator<Node, Path> *) const;
 template bool Tokenizer<Node, Path>::open(const Param &);
 template Tokenizer<LearnerNode, LearnerPath>::Tokenizer();
 template void Tokenizer<LearnerNode, LearnerPath>::close();

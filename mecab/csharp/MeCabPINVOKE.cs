@@ -354,6 +354,15 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_MECAB_ALLOCATE_SENTENCE_get")]
   public static extern int MECAB_ALLOCATE_SENTENCE_get();
 
+  [DllImport("MeCab", EntryPoint="CSharp_MECAB_ANY_BOUNDARY_get")]
+  public static extern int MECAB_ANY_BOUNDARY_get();
+
+  [DllImport("MeCab", EntryPoint="CSharp_MECAB_TOKEN_BOUNDARY_get")]
+  public static extern int MECAB_TOKEN_BOUNDARY_get();
+
+  [DllImport("MeCab", EntryPoint="CSharp_MECAB_INSIDE_TOKEN_get")]
+  public static extern int MECAB_INSIDE_TOKEN_get();
+
   [DllImport("MeCab", EntryPoint="CSharp_Lattice_clear")]
   public static extern void Lattice_clear(HandleRef jarg1);
 
@@ -419,6 +428,21 @@ class MeCabPINVOKE {
 
   [DllImport("MeCab", EntryPoint="CSharp_Lattice_enumNBestAsString")]
   public static extern string Lattice_enumNBestAsString(HandleRef jarg1, uint jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_has_constraint")]
+  public static extern bool Lattice_has_constraint(HandleRef jarg1);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_boundary_constraint")]
+  public static extern int Lattice_boundary_constraint(HandleRef jarg1, uint jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_feature_constraint")]
+  public static extern string Lattice_feature_constraint(HandleRef jarg1, uint jarg2);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_boundary_constraint")]
+  public static extern void Lattice_set_boundary_constraint(HandleRef jarg1, uint jarg2, int jarg3);
+
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_feature_constraint")]
+  public static extern void Lattice_set_feature_constraint(HandleRef jarg1, uint jarg2, uint jarg3, string jarg4);
 
   [DllImport("MeCab", EntryPoint="CSharp_Lattice_what")]
   public static extern string Lattice_what(HandleRef jarg1);

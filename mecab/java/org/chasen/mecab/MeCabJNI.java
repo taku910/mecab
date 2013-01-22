@@ -64,6 +64,9 @@ public class MeCabJNI {
   public final static native int MECAB_ALTERNATIVE_get();
   public final static native int MECAB_ALL_MORPHS_get();
   public final static native int MECAB_ALLOCATE_SENTENCE_get();
+  public final static native int MECAB_ANY_BOUNDARY_get();
+  public final static native int MECAB_TOKEN_BOUNDARY_get();
+  public final static native int MECAB_INSIDE_TOKEN_get();
   public final static native void Lattice_clear(long jarg1, Lattice jarg1_);
   public final static native boolean Lattice_is_available(long jarg1, Lattice jarg1_);
   public final static native long Lattice_bos_node(long jarg1, Lattice jarg1_);
@@ -86,6 +89,11 @@ public class MeCabJNI {
   public final static native String Lattice_toString__SWIG_0(long jarg1, Lattice jarg1_);
   public final static native String Lattice_toString__SWIG_1(long jarg1, Lattice jarg1_, long jarg2, Node jarg2_);
   public final static native String Lattice_enumNBestAsString(long jarg1, Lattice jarg1_, long jarg2);
+  public final static native boolean Lattice_has_constraint(long jarg1, Lattice jarg1_);
+  public final static native int Lattice_boundary_constraint(long jarg1, Lattice jarg1_, long jarg2);
+  public final static native String Lattice_feature_constraint(long jarg1, Lattice jarg1_, long jarg2);
+  public final static native void Lattice_set_boundary_constraint(long jarg1, Lattice jarg1_, long jarg2, int jarg3);
+  public final static native void Lattice_set_feature_constraint(long jarg1, Lattice jarg1_, long jarg2, long jarg3, String jarg4);
   public final static native String Lattice_what(long jarg1, Lattice jarg1_);
   public final static native void Lattice_set_what(long jarg1, Lattice jarg1_, String jarg2);
   public final static native void delete_Lattice(long jarg1);

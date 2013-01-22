@@ -4123,6 +4123,229 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_Lattice_has_constraint(int argc, VALUE *argv, VALUE self) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Lattice const *","has_constraint", 1, self )); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  {
+    try {
+      result = (bool)((MeCab::Lattice const *)arg1)->has_constraint(); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  vresult = SWIG_From_bool(static_cast< bool >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Lattice_boundary_constraint(int argc, VALUE *argv, VALUE self) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  int result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Lattice const *","boundary_constraint", 1, self )); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "size_t","boundary_constraint", 2, argv[0] ));
+  } 
+  arg2 = static_cast< size_t >(val2);
+  {
+    try {
+      result = (int)((MeCab::Lattice const *)arg1)->boundary_constraint(arg2); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  vresult = SWIG_From_int(static_cast< int >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Lattice_feature_constraint(int argc, VALUE *argv, VALUE self) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  char *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Lattice const *","feature_constraint", 1, self )); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "size_t","feature_constraint", 2, argv[0] ));
+  } 
+  arg2 = static_cast< size_t >(val2);
+  {
+    try {
+      result = (char *)((MeCab::Lattice const *)arg1)->feature_constraint(arg2); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  vresult = SWIG_FromCharPtr((const char *)result);
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Lattice_set_boundary_constraint(int argc, VALUE *argv, VALUE self) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Lattice *","set_boundary_constraint", 1, self )); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "size_t","set_boundary_constraint", 2, argv[0] ));
+  } 
+  arg2 = static_cast< size_t >(val2);
+  ecode3 = SWIG_AsVal_int(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "int","set_boundary_constraint", 3, argv[1] ));
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    try {
+      (arg1)->set_boundary_constraint(arg2,arg3); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_Lattice_set_feature_constraint(int argc, VALUE *argv, VALUE self) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  size_t arg2 ;
+  size_t arg3 ;
+  char *arg4 = (char *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 ;
+  char *buf4 = 0 ;
+  int alloc4 = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Lattice *","set_feature_constraint", 1, self )); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "size_t","set_feature_constraint", 2, argv[0] ));
+  } 
+  arg2 = static_cast< size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "size_t","set_feature_constraint", 3, argv[1] ));
+  } 
+  arg3 = static_cast< size_t >(val3);
+  res4 = SWIG_AsCharPtrAndSize(argv[2], &buf4, NULL, &alloc4);
+  if (!SWIG_IsOK(res4)) {
+    SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "char const *","set_feature_constraint", 4, argv[2] ));
+  }
+  arg4 = reinterpret_cast< char * >(buf4);
+  {
+    try {
+      (arg1)->set_feature_constraint(arg2,arg3,(char const *)arg4); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  if (alloc4 == SWIG_NEWOBJ) delete[] buf4;
+  return Qnil;
+fail:
+  if (alloc4 == SWIG_NEWOBJ) delete[] buf4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 _wrap_Lattice_what(int argc, VALUE *argv, VALUE self) {
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
   void *argp1 = 0 ;
@@ -6483,6 +6706,9 @@ SWIGEXPORT void Init_MeCab(void) {
   rb_define_const(mMeCab, "MECAB_ALTERNATIVE", SWIG_From_int(static_cast< int >(MECAB_ALTERNATIVE)));
   rb_define_const(mMeCab, "MECAB_ALL_MORPHS", SWIG_From_int(static_cast< int >(MECAB_ALL_MORPHS)));
   rb_define_const(mMeCab, "MECAB_ALLOCATE_SENTENCE", SWIG_From_int(static_cast< int >(MECAB_ALLOCATE_SENTENCE)));
+  rb_define_const(mMeCab, "MECAB_ANY_BOUNDARY", SWIG_From_int(static_cast< int >(MECAB_ANY_BOUNDARY)));
+  rb_define_const(mMeCab, "MECAB_TOKEN_BOUNDARY", SWIG_From_int(static_cast< int >(MECAB_TOKEN_BOUNDARY)));
+  rb_define_const(mMeCab, "MECAB_INSIDE_TOKEN", SWIG_From_int(static_cast< int >(MECAB_INSIDE_TOKEN)));
   
   SwigClassLattice.klass = rb_define_class_under(mMeCab, "Lattice", rb_cObject);
   SWIG_TypeClientData(SWIGTYPE_p_MeCab__Lattice, (void *) &SwigClassLattice);
@@ -6509,6 +6735,11 @@ SWIGEXPORT void Init_MeCab(void) {
   rb_define_method(SwigClassLattice.klass, "newNode", VALUEFUNC(_wrap_Lattice_newNode), -1);
   rb_define_method(SwigClassLattice.klass, "toString", VALUEFUNC(_wrap_Lattice_toString), -1);
   rb_define_method(SwigClassLattice.klass, "enumNBestAsString", VALUEFUNC(_wrap_Lattice_enumNBestAsString), -1);
+  rb_define_method(SwigClassLattice.klass, "has_constraint", VALUEFUNC(_wrap_Lattice_has_constraint), -1);
+  rb_define_method(SwigClassLattice.klass, "boundary_constraint", VALUEFUNC(_wrap_Lattice_boundary_constraint), -1);
+  rb_define_method(SwigClassLattice.klass, "feature_constraint", VALUEFUNC(_wrap_Lattice_feature_constraint), -1);
+  rb_define_method(SwigClassLattice.klass, "set_boundary_constraint", VALUEFUNC(_wrap_Lattice_set_boundary_constraint), -1);
+  rb_define_method(SwigClassLattice.klass, "set_feature_constraint", VALUEFUNC(_wrap_Lattice_set_feature_constraint), -1);
   rb_define_method(SwigClassLattice.klass, "what", VALUEFUNC(_wrap_Lattice_what), -1);
   rb_define_method(SwigClassLattice.klass, "set_what", VALUEFUNC(_wrap_Lattice_set_what), -1);
   rb_define_method(SwigClassLattice.klass, "set_sentence", VALUEFUNC(_wrap_Lattice_set_sentence), -1);

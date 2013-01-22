@@ -191,6 +191,9 @@ MECAB_MARGINAL_PROB = _MeCab.MECAB_MARGINAL_PROB
 MECAB_ALTERNATIVE = _MeCab.MECAB_ALTERNATIVE
 MECAB_ALL_MORPHS = _MeCab.MECAB_ALL_MORPHS
 MECAB_ALLOCATE_SENTENCE = _MeCab.MECAB_ALLOCATE_SENTENCE
+MECAB_ANY_BOUNDARY = _MeCab.MECAB_ANY_BOUNDARY
+MECAB_TOKEN_BOUNDARY = _MeCab.MECAB_TOKEN_BOUNDARY
+MECAB_INSIDE_TOKEN = _MeCab.MECAB_INSIDE_TOKEN
 class Lattice(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Lattice, name, value)
@@ -218,6 +221,11 @@ class Lattice(_object):
     def newNode(self): return _MeCab.Lattice_newNode(self)
     def toString(self, *args): return _MeCab.Lattice_toString(self, *args)
     def enumNBestAsString(self, *args): return _MeCab.Lattice_enumNBestAsString(self, *args)
+    def has_constraint(self): return _MeCab.Lattice_has_constraint(self)
+    def boundary_constraint(self, *args): return _MeCab.Lattice_boundary_constraint(self, *args)
+    def feature_constraint(self, *args): return _MeCab.Lattice_feature_constraint(self, *args)
+    def set_boundary_constraint(self, *args): return _MeCab.Lattice_set_boundary_constraint(self, *args)
+    def set_feature_constraint(self, *args): return _MeCab.Lattice_set_feature_constraint(self, *args)
     def what(self): return _MeCab.Lattice_what(self)
     def set_what(self, *args): return _MeCab.Lattice_set_what(self, *args)
     __swig_destroy__ = _MeCab.delete_Lattice

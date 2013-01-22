@@ -172,6 +172,34 @@ public class Lattice : IDisposable {
     return ret;
   }
 
+  public virtual bool has_constraint() {
+    bool ret = MeCabPINVOKE.Lattice_has_constraint(swigCPtr);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual int boundary_constraint(uint pos) {
+    int ret = MeCabPINVOKE.Lattice_boundary_constraint(swigCPtr, pos);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual string feature_constraint(uint pos) {
+    string ret = MeCabPINVOKE.Lattice_feature_constraint(swigCPtr, pos);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual void set_boundary_constraint(uint pos, int boundary_constraint_type) {
+    MeCabPINVOKE.Lattice_set_boundary_constraint(swigCPtr, pos, boundary_constraint_type);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public virtual void set_feature_constraint(uint begin_pos, uint end_pos, string feature) {
+    MeCabPINVOKE.Lattice_set_feature_constraint(swigCPtr, begin_pos, end_pos, feature);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public virtual string what() {
     string ret = MeCabPINVOKE.Lattice_what(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();

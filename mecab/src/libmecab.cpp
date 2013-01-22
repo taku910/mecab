@@ -394,10 +394,12 @@ const char *mecab_lattice_nbest_tostr2(mecab_lattice_t *lattice,
 }
 
 int mecab_lattice_has_constraint(mecab_lattice_t *lattice) {
-  return static_cast<bool>(reinterpret_cast<MeCab::Lattice *>(lattice)->has_constraint());
+  return static_cast<bool>(reinterpret_cast<MeCab::Lattice *>(
+                               lattice)->has_constraint());
 }
 
-int mecab_lattice_get_boundary_constraint(mecab_lattice_t *lattice, size_t pos) {
+int mecab_lattice_get_boundary_constraint(mecab_lattice_t *lattice,
+                                          size_t pos) {
   return reinterpret_cast<MeCab::Lattice *>(
       lattice)->boundary_constraint(pos);
 }
