@@ -117,11 +117,9 @@ class Tokenizer {
  public:
   N *getBOSNode(Allocator<N, P> *allocator) const;
   N *getEOSNode(Allocator<N, P> *allocator) const;
-  N *lookup(const char *begin, const char *end,
-            Allocator<N, P> *allocator) const;
-  N *getUnknownNode(const char *begin, const char *end,
-                    Allocator<N, P> *allocator) const;
-
+  template <bool IsPartial> N *lookup(const char *begin, const char *end,
+                                      Allocator<N, P> *allocator,
+                                      Lattice *lattice) const;
   bool open(const Param &param);
   void close();
 

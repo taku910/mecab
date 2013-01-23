@@ -35,9 +35,7 @@ class Viterbi {
   virtual ~Viterbi();
 
  private:
-  bool viterbiWithAllPath(Lattice *lattice) const;
-  bool viterbi(Lattice *lattice) const;
-  Node *filterNode(Lattice *lattice, Node *node, size_t pos) const;
+  template <bool IsAllPath, bool IsPartial> bool viterbi(Lattice *lattice) const;
 
   static bool forwardbackward(Lattice *lattice);
   static bool initPartial(Lattice *lattice);

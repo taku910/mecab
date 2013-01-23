@@ -278,7 +278,7 @@ LearnerNode *LearnerTagger::lookup(size_t pos) {
   if (begin_node_list_[pos]) {
     return begin_node_list_[pos];
   }
-  LearnerNode *m = tokenizer_->lookup(begin_ + pos, end_, allocator_);
+  LearnerNode *m = tokenizer_->lookup<false>(begin_ + pos, end_, allocator_, 0);
   begin_node_list_[pos] = m;
   return m;
 }

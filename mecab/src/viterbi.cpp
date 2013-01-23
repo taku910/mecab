@@ -37,28 +37,6 @@ void calc_beta(Node *n, double beta) {
                         path == n->rpath);
   }
 }
-
-bool partial_match(const char *f1, const char *f2) {
-  scoped_fixed_array<char, BUF_SIZE> buf1;
-  scoped_fixed_array<char, BUF_SIZE> buf2;
-  scoped_fixed_array<char *, 64> c1;
-  scoped_fixed_array<char *, 64> c2;
-
-  std::strncpy(buf1.get(), f1, buf1.size());
-  std::strncpy(buf2.get(), f2, buf2.size());
-
-  const size_t n1 = MeCab::tokenizeCSV(buf1.get(), c1.get(), c1.size());
-  const size_t n2 = MeCab::tokenizeCSV(buf2.get(), c2.get(), c2.size());
-  const size_t n  = std::min(n1, n2);
-
-  for (size_t i = 0; i < n; ++i) {
-    if (std::strcmp(c1[i], "*") != 0 &&
-        std::strcmp(c1[i], c2[i]) != 0) {
-      return false;
-    }
-  }
-  return true;
-}
 }  // namespace
 
 Viterbi::Viterbi()
@@ -100,12 +78,24 @@ bool Viterbi::analyze(Lattice *lattice) const {
 
   if (lattice->has_request_type(MECAB_NBEST) ||
       lattice->has_request_type(MECAB_MARGINAL_PROB)) {
-    if (!viterbiWithAllPath(lattice)) {
-      return false;
+    if (lattice->has_constraint()) {
+      if (!viterbi<true, true>(lattice)) {
+        return false;
+      }
+    } else {
+      if (!viterbi<true, false>(lattice)) {
+        return false;
+      }
     }
   } else {
-    if (!viterbi(lattice)) {
-      return false;
+    if (lattice->has_constraint()) {
+      if (!viterbi<false, true>(lattice)) {
+        return false;
+      }
+    } else {
+      if (!viterbi<false, false>(lattice)) {
+        return false;
+      }
     }
   }
 
@@ -294,100 +284,101 @@ bool Viterbi::initPartial(Lattice *lattice) {
 }
 
 namespace {
-inline Node *filterNodeInternal(Lattice *lattice,
-                                Node *node,
-                                const char *feature,
-                                size_t pos,
-                                size_t next_strong_boundary_pos) {
-  Node *prev = 0;
-  Node *result = 0;
+template <bool IsAllPath> bool connect(size_t pos, Node *rnode,
+                                       Node **begin_node_list,
+                                       Node **end_node_list,
+                                       const Connector *connector,
+                                       Allocator<Node, Path> *allocator) {
+  for (;rnode; rnode = rnode->bnext) {
+    register long best_cost = 2147483647;
+    Node* best_node = 0;
+    for (Node *lnode = end_node_list[pos]; lnode; lnode = lnode->enext) {
+      register int lcost = connector->cost(lnode, rnode);  // local cost
+      register long cost = lnode->cost + lcost;
 
-  for (Node *n = node; n; n = n->bnext) {
-    if (n->stat == MECAB_UNK_NODE &&
-        pos + n->rlength > next_strong_boundary_pos) {
-      const size_t diff = pos + n->rlength - next_strong_boundary_pos;
-      n->rlength -= diff;
-      n->length -= diff;
+      if (cost < best_cost) {
+        best_node  = lnode;
+        best_cost  = cost;
+      }
+
+      if (IsAllPath) {
+        Path *path   = allocator->newPath();
+        path->cost   = lcost;
+        path->rnode  = rnode;
+        path->lnode  = lnode;
+        path->lnext  = rnode->lpath;
+        rnode->lpath = path;
+        path->rnext  = lnode->rpath;
+        lnode->rpath = path;
+      }
     }
-    if (pos + n->rlength <= next_strong_boundary_pos &&
-        MECAB_INSIDE_TOKEN !=
-        lattice->boundary_constraint(pos + n->rlength) &&
-        (!feature || std::strcmp(feature, "*") == 0 ||
-         partial_match(feature, n->feature))) {
-      if (prev) {
-        prev->bnext = n;
-        prev = n;
-      } else {
-        result = n;
-        prev = result;
+
+    // overflow check 2003/03/09
+    if (!best_node) {
+      return false;
+    }
+
+    rnode->prev = best_node;
+    rnode->next = 0;
+    rnode->cost = best_cost;
+    const size_t x = rnode->rlength + pos;
+    rnode->enext = end_node_list[x];
+    end_node_list[x] = rnode;
+  }
+
+  return true;
+}
+}  // namespace
+
+template <bool IsAllPath, bool IsPartial> bool Viterbi::viterbi(Lattice *lattice) const {
+  Node **end_node_list   = lattice->end_nodes();
+  Node **begin_node_list = lattice->begin_nodes();
+  Allocator<Node, Path> *allocator = lattice->allocator();
+  const size_t len = lattice->size();
+  const char *begin = lattice->sentence();
+  const char *end = begin + len;
+
+  Node *bos_node = tokenizer_->getBOSNode(lattice->allocator());
+  bos_node->surface = lattice->sentence();
+  end_node_list[0] = bos_node;
+
+  for (size_t pos = 0; pos < len; ++pos) {
+    if (end_node_list[pos]) {
+      Node *right_node = tokenizer_->lookup<IsPartial>(begin + pos, end,
+                                                       allocator, lattice);
+      begin_node_list[pos] = right_node;
+      if (!connect<IsAllPath>(pos, right_node,
+                              begin_node_list,
+                              end_node_list,
+                              connector_.get(),
+                              allocator)) {
+        lattice->set_what("too long sentence.");
+        return false;
       }
     }
   }
 
-  if (prev) {
-    prev->bnext = 0;
-  }
+  Node *eos_node = tokenizer_->getEOSNode(lattice->allocator());
+  eos_node->surface = lattice->sentence() + lattice->size();
+  begin_node_list[lattice->size()] = eos_node;
 
-  return result;
-}
-}  // namespace
-
-// static
-Node *Viterbi::filterNode(Lattice *lattice, Node *node, size_t pos) const {
-  // |next_strong_boundary_pos| is the position of strong boundary where
-  // any words cannot be longer than |next_strong_boundary_pos - pos|.
-  // |next_strong_boundary_pos| is a possible and shortest
-  // word which can satisfy the boundary constraints.
-  // TODO(taku): This part is potentially O(n^2).
-  size_t next_strong_boundary_pos = lattice->size();
-  size_t next_weak_boundary_pos = lattice->size();
-  for (size_t i = pos + 1; i <= lattice->size(); ++i) {
-    const int b = lattice->boundary_constraint(i);
-    if (MECAB_INSIDE_TOKEN != b) {
-      next_weak_boundary_pos = i;
-    }
-    if (MECAB_TOKEN_BOUNDARY == b) {
-      next_strong_boundary_pos = i;
+  for (long pos = len; static_cast<long>(pos) >= 0; --pos) {
+    if (end_node_list[pos]) {
+      if (!connect<IsAllPath>(pos, eos_node,
+                              begin_node_list,
+                              end_node_list,
+                              connector_.get(),
+                              allocator)) {
+        lattice->set_what("too long sentence.");
+        return false;
+      }
       break;
     }
   }
 
-  const char *feature = lattice->feature_constraint(pos);
+  end_node_list[0] = bos_node;
+  begin_node_list[lattice->size()] = eos_node;
 
-  Node *result = 0;
-  result = filterNodeInternal(lattice, node, feature,
-                              pos, next_strong_boundary_pos);
-
-  if (result) {
-    return result;
-  }
-
-  node = tokenizer_->getUnknownNode(
-      lattice->sentence() + pos,
-      lattice->sentence() + next_weak_boundary_pos,
-      lattice->allocator());
-  result = filterNodeInternal(lattice, node, feature,
-                              pos, next_strong_boundary_pos);
-
-  if (result) {
-    return result;
-  }
-
-  node = lattice->newNode();
-  node->surface = lattice->sentence() + pos;
-  node->feature = feature;
-  node->length = next_weak_boundary_pos - pos;
-  node->rlength = next_weak_boundary_pos - pos;
-  node->bnext = 0;
-  node->wcost = 0;
-
-  result = node;
-
-  return result;
+  return true;
 }
-}  // MeCab
-
-#undef VITERBI_WITH_ALL_PATH_
-#include "viterbisub.h"
-#define VITERBI_WITH_ALL_PATH_
-#include "viterbisub.h"
+}  // Mecab

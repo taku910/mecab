@@ -110,8 +110,9 @@ class ModelImpl: public Model {
 
   Node *lookup(const char *begin, const char *end,
                Lattice *lattice) const {
-    return viterbi_->tokenizer()->lookup(begin, end,
-                                         lattice->allocator());
+    return viterbi_->tokenizer()->lookup<false>(
+        begin, end,
+        lattice->allocator(), lattice);
   }
 
   Tagger *createTagger() const;

@@ -47,13 +47,14 @@ template const DictionaryInfo
 *Tokenizer<Node, Path>::dictionary_info() const;
 template Node* Tokenizer<Node, Path>::getBOSNode(Allocator<Node, Path> *) const;
 template Node* Tokenizer<Node, Path>::getEOSNode(Allocator<Node, Path> *) const;
-template Node* Tokenizer<Node, Path>::lookup(const char *,
-                                             const char *,
-                                             Allocator<Node, Path> *) const;
-template Node* Tokenizer<Node, Path>::getUnknownNode(
-    const char *,
-    const char *,
-    Allocator<Node, Path> *) const;
+template Node* Tokenizer<Node, Path>::lookup<true>(const char *,
+                                                   const char *,
+                                                   Allocator<Node, Path> *,
+                                                   Lattice *) const;
+template Node* Tokenizer<Node, Path>::lookup<false>(const char *,
+                                                    const char *,
+                                                    Allocator<Node, Path> *,
+                                                    Lattice *) const;
 template bool Tokenizer<Node, Path>::open(const Param &);
 template Tokenizer<LearnerNode, LearnerPath>::Tokenizer();
 template void Tokenizer<LearnerNode, LearnerPath>::close();
@@ -64,15 +65,10 @@ template LearnerNode * Tokenizer<LearnerNode, LearnerPath>::getEOSNode(
 template LearnerNode * Tokenizer<LearnerNode, LearnerPath>::getBOSNode(
     Allocator<LearnerNode, LearnerPath> *) const;
 template LearnerNode *
-Tokenizer<LearnerNode, LearnerPath>::lookup(
+Tokenizer<LearnerNode, LearnerPath>::lookup<false>(
     const char *,
     const char *,
-    Allocator<LearnerNode, LearnerPath> *) const;
-template LearnerNode *
-Tokenizer<LearnerNode, LearnerPath>::getUnknownNode(
-    const char *,
-    const char *,
-    Allocator<LearnerNode, LearnerPath> *) const;
+    Allocator<LearnerNode, LearnerPath> *, Lattice *) const;
 template bool Tokenizer<LearnerNode, LearnerPath>::open(const Param &);
 #endif
 
@@ -185,61 +181,92 @@ bool Tokenizer<N, P>::open(const Param &param) {
   return true;
 }
 
-template <typename N, typename P>
-N *Tokenizer<N, P>::getUnknownNode(const char *begin, const char *end,
-                                   Allocator<N, P> *allocator) const {
-  CharInfo cinfo;
-  // skip white spaces
-  size_t mblen = 0;
-  size_t clen = 0;
-  const char *begin2 = property_.seekToOtherType(begin, end, space_,
-                                                 &cinfo, &mblen, &clen);
-  N *result_node = 0;
-
-  const Token *token = unk_tokens_[cinfo.default_type].first;
-  size_t size = unk_tokens_[cinfo.default_type].second;
-  for (size_t k = 0; k < size; ++k) {
-    N *new_node = allocator->newNode();
-    read_node_info(unkdic_, *(token + k), &new_node);
-    new_node->char_type = cinfo.default_type;
-    new_node->surface = begin2;
-    new_node->length = end - begin2;
-    new_node->rlength = end - begin;
-    new_node->bnext = result_node;
-    new_node->stat = MECAB_UNK_NODE;
-    if (unk_feature_.get()) {
-      new_node->feature = unk_feature_.get();
-    }
-    result_node = new_node;
+namespace {
+inline bool partial_match(const char *f1, const char *f2) {
+  if (std::strcmp(f1, "*") == 0) {
+    return true;
   }
 
-  return result_node;
+  scoped_fixed_array<char, BUF_SIZE> buf1;
+  scoped_fixed_array<char, BUF_SIZE> buf2;
+  scoped_fixed_array<char *, 64> c1;
+  scoped_fixed_array<char *, 64> c2;
+
+  std::strncpy(buf1.get(), f1, buf1.size());
+  std::strncpy(buf2.get(), f2, buf2.size());
+
+  const size_t n1 = tokenizeCSV(buf1.get(), c1.get(), c1.size());
+  const size_t n2 = tokenizeCSV(buf2.get(), c2.get(), c2.size());
+  const size_t n  = std::min(n1, n2);
+
+  for (size_t i = 0; i < n; ++i) {
+    if (std::strcmp(c1[i], "*") != 0 &&
+        std::strcmp(c1[i], c2[i]) != 0) {
+      return false;
+    }
+  }
+
+  return true;
 }
+
+template <typename N>
+bool is_valid_node(const Lattice *lattice,  N *node) {
+  const size_t end_pos = node->surface - lattice->sentence() + node->length;
+  if (lattice->boundary_constraint(end_pos) == MECAB_INSIDE_TOKEN) {
+    return false;
+  }
+  const size_t begin_pos =
+      node->surface - lattice->sentence() + node->length - node->rlength;
+  const char *feature = lattice->feature_constraint(begin_pos);
+  if (!feature) {
+    return true;
+  }
+  if (lattice->boundary_constraint(begin_pos) == MECAB_TOKEN_BOUNDARY &&
+      lattice->boundary_constraint(end_pos) == MECAB_TOKEN_BOUNDARY &&
+      partial_match(feature, node->feature)) {
+    return true;
+  }
+  return false;
+}
+}  // namespace
 
 #define ADDUNKNWON do {                                                  \
     const Token *token = unk_tokens_[cinfo.default_type].first;          \
     size_t size  = unk_tokens_[cinfo.default_type].second;               \
     for (size_t k = 0; k < size; ++k) {                                  \
       N *new_node = allocator->newNode();                                \
-      read_node_info(unkdic_, *(token + k), &new_node);                  \
+      read_node_info(unkdic_, *(token + k), &new_node);                 \
       new_node->char_type = cinfo.default_type;                          \
       new_node->surface = begin2;                                        \
       new_node->length = begin3 - begin2;                                \
-      new_node->rlength = begin3 - begin;                                \
-      new_node->bnext = result_node;                                     \
+      new_node->rlength = begin3 - begin;                               \
       new_node->stat = MECAB_UNK_NODE;                                   \
-      if (unk_feature_.get()) new_node->feature = unk_feature_.get();    \
+      new_node->bnext = result_node;                                     \
+      if (unk_feature_.get()) new_node->feature = unk_feature_.get();   \
+      if (isPartial && !is_valid_node(lattice, new_node)) { continue; }    \
       result_node = new_node; } } while (0)
 
 template <typename N, typename P>
+template <bool isPartial>
 N *Tokenizer<N, P>::lookup(const char *begin, const char *end,
-                           Allocator<N, P> *allocator) const {
+                           Allocator<N, P> *allocator, Lattice *lattice) const {
   CharInfo cinfo;
   N *result_node = 0;
   size_t mblen = 0;
   size_t clen = 0;
 
   end = static_cast<size_t>(end - begin) >= 65535 ? begin + 65535 : end;
+
+  if (isPartial) {
+    const size_t begin_pos = begin - lattice->sentence();
+    for (size_t n = begin_pos + 1; n < lattice->size(); ++n) {
+      if (lattice->boundary_constraint(n) == MECAB_TOKEN_BOUNDARY) {
+        end = lattice->sentence() + n;
+        break;
+      }
+    }
+  }
+
   const char *begin2 = property_.seekToOtherType(begin, end, space_,
                                                  &cinfo, &mblen, &clen);
 
@@ -252,7 +279,6 @@ N *Tokenizer<N, P>::lookup(const char *begin, const char *end,
         begin2,
         static_cast<size_t>(end - begin2),
         daresults, results_size);
-
     for (size_t i = 0; i < n; ++i) {
       size_t size = (*it)->token_size(daresults[i]);
       const Token *token = (*it)->token(daresults[i]);
@@ -264,6 +290,9 @@ N *Tokenizer<N, P>::lookup(const char *begin, const char *end,
         new_node->surface = begin2;
         new_node->stat = MECAB_NOR_NODE;
         new_node->char_type = cinfo.default_type;
+        if (isPartial && !is_valid_node(lattice, new_node)) {
+          continue;
+        }
         new_node->bnext = result_node;
         result_node = new_node;
       }
@@ -279,7 +308,9 @@ N *Tokenizer<N, P>::lookup(const char *begin, const char *end,
 
   if (begin3 > end) {
     ADDUNKNWON;
-    return result_node;
+    if (result_node) {
+      return result_node;
+    }
   }
 
   if (cinfo.group) {
@@ -311,6 +342,33 @@ N *Tokenizer<N, P>::lookup(const char *begin, const char *end,
 
   if (!result_node) {
     ADDUNKNWON;
+  }
+
+  if (isPartial && !result_node) {
+    begin3 = begin2;
+    while (true) {
+      cinfo = property_.getCharInfo(begin3, end, &mblen);
+      begin3 += mblen;
+      if (begin3 > end ||
+          lattice->boundary_constraint(begin3 - lattice->sentence())
+          != MECAB_INSIDE_TOKEN) {
+        break;
+      }
+    }
+    ADDUNKNWON;
+
+    if (!result_node) {
+      N *new_node = allocator->newNode();
+      new_node->char_type = cinfo.default_type;
+      new_node->surface = begin2;
+      new_node->length = begin3 - begin2;
+      new_node->rlength = begin3 - begin;
+      new_node->stat = MECAB_UNK_NODE;
+      new_node->bnext = result_node;
+      new_node->feature = lattice->feature_constraint(begin - lattice->sentence());
+      CHECK_DIE(new_node->feature);
+      result_node = new_node;
+    }
   }
 
   return result_node;
