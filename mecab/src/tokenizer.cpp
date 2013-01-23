@@ -39,22 +39,22 @@ void inline read_node_info(const Dictionary &dic,
 
 template class Tokenizer<Node, Path>;
 template class Tokenizer<LearnerNode, LearnerPath>;
-
-#if __GNUC__ >= 4
 template Tokenizer<Node, Path>::Tokenizer();
 template void Tokenizer<Node, Path>::close();
 template const DictionaryInfo
 *Tokenizer<Node, Path>::dictionary_info() const;
 template Node* Tokenizer<Node, Path>::getBOSNode(Allocator<Node, Path> *) const;
 template Node* Tokenizer<Node, Path>::getEOSNode(Allocator<Node, Path> *) const;
-template Node* Tokenizer<Node, Path>::lookup<true>(const char *,
-                                                   const char *,
-                                                   Allocator<Node, Path> *,
-                                                   Lattice *) const;
-template Node* Tokenizer<Node, Path>::lookup<false>(const char *,
-                                                    const char *,
-                                                    Allocator<Node, Path> *,
-                                                    Lattice *) const;
+template Node* Tokenizer<Node, Path>::lookup<false>(
+    const char *,
+    const char *,
+    Allocator<Node, Path> *,
+    Lattice *) const;
+template Node* Tokenizer<Node, Path>::lookup<true>(
+    const char *,
+    const char *,
+    Allocator<Node, Path> *,
+    Lattice *) const;
 template bool Tokenizer<Node, Path>::open(const Param &);
 template Tokenizer<LearnerNode, LearnerPath>::Tokenizer();
 template void Tokenizer<LearnerNode, LearnerPath>::close();
@@ -64,13 +64,11 @@ template LearnerNode * Tokenizer<LearnerNode, LearnerPath>::getEOSNode(
     Allocator<LearnerNode, LearnerPath> *) const;
 template LearnerNode * Tokenizer<LearnerNode, LearnerPath>::getBOSNode(
     Allocator<LearnerNode, LearnerPath> *) const;
-template LearnerNode *
-Tokenizer<LearnerNode, LearnerPath>::lookup<false>(
+template LearnerNode *Tokenizer<LearnerNode, LearnerPath>::lookup<false>(
     const char *,
     const char *,
     Allocator<LearnerNode, LearnerPath> *, Lattice *) const;
 template bool Tokenizer<LearnerNode, LearnerPath>::open(const Param &);
-#endif
 
 template <typename N, typename P>
 Tokenizer<N, P>::Tokenizer()
@@ -235,15 +233,15 @@ bool is_valid_node(const Lattice *lattice,  N *node) {
     size_t size  = unk_tokens_[cinfo.default_type].second;               \
     for (size_t k = 0; k < size; ++k) {                                  \
       N *new_node = allocator->newNode();                                \
-      read_node_info(unkdic_, *(token + k), &new_node);                 \
+      read_node_info(unkdic_, *(token + k), &new_node);                  \
       new_node->char_type = cinfo.default_type;                          \
       new_node->surface = begin2;                                        \
       new_node->length = begin3 - begin2;                                \
-      new_node->rlength = begin3 - begin;                               \
+      new_node->rlength = begin3 - begin;                                \
       new_node->stat = MECAB_UNK_NODE;                                   \
       new_node->bnext = result_node;                                     \
-      if (unk_feature_.get()) new_node->feature = unk_feature_.get();   \
-      if (isPartial && !is_valid_node(lattice, new_node)) { continue; }    \
+      if (unk_feature_.get()) new_node->feature = unk_feature_.get();    \
+      if (isPartial && !is_valid_node(lattice, new_node)) { continue; }  \
       result_node = new_node; } } while (0)
 
 template <typename N, typename P>
@@ -365,7 +363,8 @@ N *Tokenizer<N, P>::lookup(const char *begin, const char *end,
       new_node->rlength = begin3 - begin;
       new_node->stat = MECAB_UNK_NODE;
       new_node->bnext = result_node;
-      new_node->feature = lattice->feature_constraint(begin - lattice->sentence());
+      new_node->feature =
+          lattice->feature_constraint(begin - lattice->sentence());
       CHECK_DIE(new_node->feature);
       result_node = new_node;
     }

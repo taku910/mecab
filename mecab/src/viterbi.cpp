@@ -76,27 +76,26 @@ bool Viterbi::analyze(Lattice *lattice) const {
     return false;
   }
 
+  bool result = false;
   if (lattice->has_request_type(MECAB_NBEST) ||
       lattice->has_request_type(MECAB_MARGINAL_PROB)) {
+    // IsAllPath=true
     if (lattice->has_constraint()) {
-      if (!viterbi<true, true>(lattice)) {
-        return false;
-      }
+      result = viterbi<true, true>(lattice);
     } else {
-      if (!viterbi<true, false>(lattice)) {
-        return false;
-      }
+      result = viterbi<true, false>(lattice);
     }
   } else {
+    // IsAllPath=false
     if (lattice->has_constraint()) {
-      if (!viterbi<false, true>(lattice)) {
-        return false;
-      }
+      result = viterbi<false, true>(lattice);
     } else {
-      if (!viterbi<false, false>(lattice)) {
-        return false;
-      }
+      result = viterbi<false, false>(lattice);
     }
+  }
+
+  if (!result) {
+    return false;
   }
 
   if (!forwardbackward(lattice)) {
@@ -330,7 +329,8 @@ template <bool IsAllPath> bool connect(size_t pos, Node *rnode,
 }
 }  // namespace
 
-template <bool IsAllPath, bool IsPartial> bool Viterbi::viterbi(Lattice *lattice) const {
+template <bool IsAllPath, bool IsPartial>
+bool Viterbi::viterbi(Lattice *lattice) const {
   Node **end_node_list   = lattice->end_nodes();
   Node **begin_node_list = lattice->begin_nodes();
   Allocator<Node, Path> *allocator = lattice->allocator();
