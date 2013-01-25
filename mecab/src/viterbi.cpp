@@ -195,6 +195,35 @@ bool Viterbi::buildAllLattice(Lattice *lattice) {
 }
 
 // static
+bool Viterbi::buildAlternative(Lattice *lattice) {
+  Node **begin_node_list = lattice->begin_nodes();
+
+  const Node *bos_node = lattice->bos_node();
+  for (const Node *node = bos_node; node; node = node->next) {
+    if (node->stat == MECAB_BOS_NODE || node->stat == MECAB_EOS_NODE) {
+      continue;
+    }
+    const size_t pos = node->surface - lattice->sentence() -
+        node->rlength + node->length;
+    std::cout.write(node->surface, node->length);
+    std::cout << "\t" << node->feature << std::endl;
+    for (const Node *anode = begin_node_list[pos];
+         anode; anode = anode->bnext) {
+      if (anode->rlength == node->rlength &&
+          anode->length == node->length) {
+        std::cout << "@ ";
+        std::cout.write(anode->surface, anode->length);
+        std::cout << "\t" << anode->feature << std::endl;
+      }
+    }
+  }
+
+  std::cout << "EOS" << std::endl;
+
+  return true;
+}
+
+// static
 bool Viterbi::buildBestLattice(Lattice *lattice) {
   Node *node = lattice->eos_node();
   for (Node *prev_node; node->prev;) {

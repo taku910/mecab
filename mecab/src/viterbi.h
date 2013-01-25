@@ -42,6 +42,7 @@ class Viterbi {
   static bool initNBest(Lattice *lattice);
   static bool buildBestLattice(Lattice *lattice);
   static bool buildAllLattice(Lattice *lattice);
+  static bool buildAlternative(Lattice *lattice);
 
   scoped_ptr<Tokenizer<Node, Path> > tokenizer_;
   scoped_ptr<Connector> connector_;

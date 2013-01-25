@@ -280,7 +280,7 @@ libmecab_la_SOURCES = viterbi.cpp tagger.cpp  utils.cpp utils.h eval.cpp iconv_u
 	              dictionary_compiler.cpp context_id.h context_id.cpp \
                       winmain.h thread.h connector.cpp nbest_generator.h nbest_generator.cpp connector.h \
                       writer.h writer.cpp mmap.h ucs.h  \
-	              string_buffer.h string_buffer.cpp viterbisub.h \
+	              string_buffer.h string_buffer.cpp \
 		      tokenizer.h stream_wrapper.h common.h darts.h char_property.h ucstable.h \
 			freelist.h viterbi.h param.cpp tokenizer.cpp \
 			ucstable.h char_property.cpp dictionary.h scoped_ptr.h \
