@@ -33,10 +33,10 @@ int toInt(const char *str) {
 
 int calcCost(const std::string &w, const std::string &feature,
              int factor,
-             DecoderFeatureIndex *fi, DictionaryRewriter *rewrite,
+             DecoderFeatureIndex *fi, DictionaryRewriter *rewriter,
              CharProperty *property) {
   CHECK_DIE(fi);
-  CHECK_DIE(rewrite);
+  CHECK_DIE(rewriter);
   CHECK_DIE(property);
 
   LearnerPath path;
@@ -54,7 +54,7 @@ int calcCost(const std::string &w, const std::string &feature,
                                                &mblen);
   path.rnode->char_type = cinfo.default_type;
   std::string ufeature, lfeature, rfeature;
-  rewrite->rewrite2(feature, &ufeature, &lfeature, &rfeature);
+  rewriter->rewrite2(feature, &ufeature, &lfeature, &rfeature);
   fi->buildUnigramFeature(&path, ufeature.c_str());
   fi->calcCost(&rnode);
   return tocost(rnode.wcost, factor);
@@ -129,6 +129,102 @@ void Dictionary::close() {
   dmmap_->close();
 }
 
+#define DCONF(file) create_filename(dicdir, std::string(file));
+
+bool Dictionary::assignUserDictionaryCosts(
+    const Param &param,
+    const std::vector<std::string> &dics,
+    const char *output) {
+  Connector matrix;
+  DictionaryRewriter rewriter;
+  DecoderFeatureIndex fi;
+  ContextID cid;
+  CharProperty property;
+
+  const std::string dicdir = param.get<std::string>("dicdir");
+
+  const std::string matrix_file     = DCONF(MATRIX_DEF_FILE);
+  const std::string matrix_bin_file = DCONF(MATRIX_FILE);
+  const std::string left_id_file    = DCONF(LEFT_ID_FILE);
+  const std::string right_id_file   = DCONF(RIGHT_ID_FILE);
+  const std::string rewrite_file    = DCONF(REWRITE_FILE);
+
+  const std::string from = param.get<std::string>("dictionary-charset");
+
+  const int factor = param.get<int>("cost-factor");
+  CHECK_DIE(factor > 0)   << "cost factor needs to be positive value";
+
+  std::string config_charset = param.get<std::string>("config-charset");
+  if (config_charset.empty()) {
+    config_charset = from;
+  }
+
+  CHECK_DIE(!from.empty()) << "input dictionary charset is empty";
+
+  Iconv config_iconv;
+  CHECK_DIE(config_iconv.open(config_charset.c_str(), from.c_str()))
+      << "iconv_open() failed with from=" << config_charset << " to=" << from;
+
+  rewriter.open(rewrite_file.c_str(), &config_iconv);
+  CHECK_DIE(fi.open(param)) << "cannot open feature index";
+
+  CHECK_DIE(property.open(param));
+  property.set_charset(from.c_str());
+
+  if (!matrix.openText(matrix_file.c_str()) &&
+      !matrix.open(matrix_bin_file.c_str())) {
+    matrix.set_left_size(1);
+    matrix.set_right_size(1);
+  }
+
+  cid.open(left_id_file.c_str(),
+           right_id_file.c_str(), &config_iconv);
+  CHECK_DIE(cid.left_size()  == matrix.left_size() &&
+            cid.right_size() == matrix.right_size())
+      << "Context ID files("
+      << left_id_file
+      << " or "
+      << right_id_file << " may be broken: "
+      << cid.left_size() << " " << matrix.left_size() << " "
+      << cid.right_size() << " " << matrix.right_size();
+
+  CHECK_DIE(!dics.empty()) << "dictionary files are empty";
+
+  std::ofstream ofs(output);
+  CHECK_DIE(ofs) << "permission denied: " << output;
+
+  for (size_t i = 0; i < dics.size(); ++i) {
+    std::ifstream ifs(WPATH(dics[i].c_str()));
+    CHECK_DIE(ifs) << "no such file or directory: " << dics[i];
+    std::cout << "reading " << dics[i] << " ... ";
+    scoped_fixed_array<char, BUF_SIZE> line;
+    while (ifs.getline(line.get(), line.size())) {
+      char *col[8];
+      const size_t n = tokenizeCSV(line.get(), col, 5);
+      CHECK_DIE(n == 5) << "format error: " << line.get();
+      std::string w = col[0];
+      int lid = toInt(col[1]);
+      int rid = toInt(col[2]);
+      int cost = toInt(col[3]);
+      std::string feature = col[4];
+      cost = calcCost(w, feature, factor,
+                      &fi, &rewriter, &property);
+      std::string ufeature, lfeature, rfeature;
+      CHECK_DIE(rewriter.rewrite(feature, &ufeature, &lfeature, &rfeature))
+          << "rewrite failed: " << feature;
+      lid = cid.lid(lfeature.c_str());
+      rid = cid.rid(rfeature.c_str());
+      CHECK_DIE(lid >= 0 && rid >= 0 && matrix.is_valid(lid, rid))
+          << "invalid ids are found lid=" << lid << " rid=" << rid;
+      escape_csv_element(&w);
+      ofs << w << ',' << lid << ',' << rid << ','
+          << cost << ',' << feature << '\n';
+    }
+  }
+
+  return true;
+}
+
 bool Dictionary::compile(const Param &param,
                          const std::vector<std::string> &dics,
                          const char *output) {
@@ -144,8 +240,6 @@ bool Dictionary::compile(const Param &param,
   Node node;
 
   const std::string dicdir = param.get<std::string>("dicdir");
-
-#define DCONF(file) create_filename(dicdir, std::string(file));
 
   const std::string matrix_file     = DCONF(MATRIX_DEF_FILE);
   const std::string matrix_bin_file = DCONF(MATRIX_FILE);
@@ -167,11 +261,6 @@ bool Dictionary::compile(const Param &param,
   const std::string node_format = param.get<std::string>("node-format");
   const int factor = param.get<int>("cost-factor");
   CHECK_DIE(factor > 0)   << "cost factor needs to be positive value";
-
-  std::string model_file = param.get<std::string>("model");
-  if (model_file.empty()) {
-    model_file = DCONF(MODEL_FILE);
-  }
 
   // for backward compatibility
   std::string config_charset = param.get<std::string>("config-charset");

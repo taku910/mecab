@@ -26,9 +26,11 @@ class DictionaryComplier {
     static const MeCab::Option long_options[] = {
       { "dicdir",   'd',   ".",   "DIR", "set DIR as dic dir (default \".\")" },
       { "outdir",   'o',   ".",   "DIR",
-        "set DIR as output dir (default \".\")" },
+        "set DIR as output dir (default \".\")"  },
       { "model",   'm',  0,     "FILE", "use FILE as model file" },
       { "userdic",  'u',   0,   "FILE",   "build user dictionary" },
+      { "assign-user-dictionary-costs", 'a', 0, 0,
+        "only assign costs/ids to user dictionary" },
       { "build-unknown",  'U',   0,   0,
         "build parameters for unknown words" },
       { "build-model", 'M', 0, 0,   "build model file" },
@@ -70,6 +72,8 @@ class DictionaryComplier {
     bool opt_charcategory = param.get<bool>("build-charcategory");
     bool opt_sysdic = param.get<bool>("build-sysdic");
     bool opt_model = param.get<bool>("build-model");
+    bool opt_assign_user_dictionary_costs = param.get<bool>
+        ("assign-user-dictionary-costs");
     const std::string userdic = param.get<std::string>("userdic");
 
 #define DCONF(file) create_filename(dicdir, std::string(file)).c_str()
@@ -88,7 +92,12 @@ class DictionaryComplier {
     if (!userdic.empty()) {
       CHECK_DIE(dic.size()) << "no dictionaries are specified";
       param.set("type", static_cast<int>(MECAB_USR_DIC));
-      Dictionary::compile(param, dic, userdic.c_str());
+      if (opt_assign_user_dictionary_costs) {
+        Dictionary::assignUserDictionaryCosts(param, dic,
+                                              userdic.c_str());
+      } else {
+        Dictionary::compile(param, dic, userdic.c_str());
+      }
     } else {
       if (!opt_unknown && !opt_matrix && !opt_charcategory &&
           !opt_sysdic && !opt_model) {

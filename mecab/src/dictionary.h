@@ -69,6 +69,12 @@ class Dictionary {
                       const std::vector<std::string> &dics,
                       const char *output);  // outputs
 
+  static bool assignUserDictionaryCosts(
+      const Param &param,
+      const std::vector<std::string> &dics,
+      const char *output);  // outputs
+
+
   const char *what() { return what_.str(); }
 
   explicit Dictionary(): dmmap_(new Mmap<char>), token_(0),
