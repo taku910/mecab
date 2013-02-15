@@ -173,10 +173,17 @@ EOS
 <h2>コストの自動推定機能</h2>
 <p>
 学習時に出力されたモデルファイルがあれば, 新規単語のコスト値を自動推定することができます.
-mecab-ipadicのモデルファイルは随時公開される予定です. 自動推定を行なう場合は, -m オプションでモデルファイルを指定し, コストのCSVフィールドを空にします. 空以外の値が設定されると, その値が優先されます.
+mecab-ipadicのモデルファイルは<a href="https://code.google.com/p/mecab/downloads/detail?name=mecab-ipadic-2.7.0-20070801.model.bz2">こちら</a>よりダウンロード可能です. (bzip2で圧縮されているため, 適宜解凍してください.) 自動推定を行なう場合は, -m オプションでモデルファイルを指定し, コストのCSVフィールドを空にします. 空以外の値が設定されると, その値が優先されます.
 </p>
 <pre>% /usr/local/libexec/mecab/mecab-dict-index -m model_file -d/usr/local/lib/mecab/dic/ipadic \
 -u foo.dic -f euc-jp -t euc-jp foo.csv</pre>
+
+<p>
+-a オプションを用いて, コスト値や文脈IDが空のCSVファイルに対し, 自動的にそれらを埋めて新しいCSVを作成することができます. 以下の例では foo.csv から foo2.csv を生成しています.
+</p>
+<pre>
+% /usr/local/libexec/mecab/mecab-dict-index -m model_file -d/usr/local/lib/mecab/dic/ipadic \
+-u foo2.csv -f euc-jp -t euc-jp -a foo.csv</pre>
 </body>
 </html>
 
