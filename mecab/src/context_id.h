@@ -16,12 +16,6 @@ class Param;
 class Iconv;
 
 class ContextID {
- private:
-  std::map<std::string, int>  left_;
-  std::map<std::string, int>  right_;
-  std::string                 left_bos_;
-  std::string                 right_bos_;
-
  public:
   void clear();
   void add(const char *l, const char *r);
@@ -35,8 +29,8 @@ class ContextID {
   int  lid(const char *l) const;
   int  rid(const char *r) const;
 
-  size_t left_size() const { return left_.size(); }
-  size_t right_size() const { return right_.size(); }
+  size_t left_size() const { return left_size_; }
+  size_t right_size() const { return right_size_; }
 
   const std::map<std::string, int>& left_ids()  const { return left_; }
   const std::map<std::string, int>& right_ids() const { return right_; }
@@ -45,6 +39,16 @@ class ContextID {
     return (lid >= 0 && lid < left_size() &&
             rid >= 0 && rid < right_size());
   }
+
+  ContextID() : left_size_(0), right_size_(0) {}
+
+ private:
+  std::map<std::string, int>  left_;
+  std::map<std::string, int>  right_;
+  std::string                 left_bos_;
+  std::string                 right_bos_;
+  size_t                      left_size_;
+  size_t                      right_size_;
 };
 }
 #endif

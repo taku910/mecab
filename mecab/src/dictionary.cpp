@@ -188,8 +188,6 @@ bool Dictionary::assignUserDictionaryCosts(
       << cid.left_size() << " " << matrix.left_size() << " "
       << cid.right_size() << " " << matrix.right_size();
 
-  CHECK_DIE(!dics.empty()) << "dictionary files are empty";
-
   std::ofstream ofs(output);
   CHECK_DIE(ofs) << "permission denied: " << output;
 
@@ -203,17 +201,14 @@ bool Dictionary::assignUserDictionaryCosts(
       const size_t n = tokenizeCSV(line.get(), col, 5);
       CHECK_DIE(n == 5) << "format error: " << line.get();
       std::string w = col[0];
-      int lid = toInt(col[1]);
-      int rid = toInt(col[2]);
-      int cost = toInt(col[3]);
-      std::string feature = col[4];
-      cost = calcCost(w, feature, factor,
-                      &fi, &rewriter, &property);
+      const std::string feature = col[4];
+      const int cost = calcCost(w, feature, factor,
+                                &fi, &rewriter, &property);
       std::string ufeature, lfeature, rfeature;
       CHECK_DIE(rewriter.rewrite(feature, &ufeature, &lfeature, &rfeature))
           << "rewrite failed: " << feature;
-      lid = cid.lid(lfeature.c_str());
-      rid = cid.rid(rfeature.c_str());
+      const int lid = cid.lid(lfeature.c_str());
+      const int rid = cid.rid(rfeature.c_str());
       CHECK_DIE(lid >= 0 && rid >= 0 && matrix.is_valid(lid, rid))
           << "invalid ids are found lid=" << lid << " rid=" << rid;
       escape_csv_element(&w);
