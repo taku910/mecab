@@ -85,13 +85,6 @@ class DictionaryGenerator {
     CHECK_DIE(left.size() > 0)  << "left id size is empty";
     CHECK_DIE(right.size() > 0) << "right id size is empty";
 
-    // TODO: add a workaround for the case
-    // when duplicate features are in the context id table.
-    CHECK_DIE(left.size() == cid.left_size())
-        << "may contain duplicate left ids";
-    CHECK_DIE(right.size() == cid.right_size())
-        << "may contain duplicate right ids";
-
     ofs << right.size() << ' ' << left.size() << std::endl;
 
     size_t l = 0;
