@@ -14,14 +14,10 @@ using namespace MeCab;
 
 bool open_map(const char *filename,
               std::map<std::string, int> *cmap,
-              size_t *cmap_size,
               Iconv *iconv) {
   std::ifstream ifs(WPATH(filename));
   CHECK_DIE(ifs) << "no such file or directory: " << filename;
-  CHECK_DIE(cmap);
-  CHECK_DIE(cmap_size);
   cmap->clear();
-  *cmap_size = 0;
   char *col[2];
   std::string line;
   while (std::getline(ifs, line)) {
@@ -32,9 +28,8 @@ bool open_map(const char *filename,
     if (iconv) {
       iconv->convert(&pos);
     }
-    const int id = std::atoi(col[0]);
-    cmap->insert(std::pair<std::string, int>(pos, id));
-    *cmap_size = std::max(static_cast<size_t>(id + 1), *cmap_size);
+    cmap->insert(std::pair<std::string, int>
+                 (pos, std::atoi(col[0])));
   }
   return true;
 }
@@ -44,9 +39,7 @@ bool build(std::map<std::string, int> *cmap,
   int id = 1;  // for BOS/EOS
   for (std::map<std::string, int>::iterator it = cmap->begin();
        it != cmap->end();
-       ++it) {
-    it->second = id++;
-  }
+       ++it) it->second = id++;
   cmap->insert(std::make_pair(bos, 0));
   return true;
 }
@@ -61,7 +54,7 @@ bool save(const char* filename,
   }
   return true;
 }
-}  // namespace
+}
 
 namespace MeCab {
 
@@ -70,8 +63,6 @@ void ContextID::clear() {
   right_.clear();
   left_bos_.clear();
   right_bos_.clear();
-  left_size_ = 0;
-  right_size_ = 0;
 }
 
 void ContextID::add(const char *l, const char *r) {
@@ -92,8 +83,8 @@ bool ContextID::save(const char* lfile,
 bool ContextID::open(const char *lfile,
                      const char *rfile,
                      Iconv *iconv) {
-  return (::open_map(lfile, &left_, &left_size_, iconv) &&
-          ::open_map(rfile, &right_, &right_size_, iconv));
+  return (::open_map(lfile, &left_, iconv) &&
+          ::open_map(rfile, &right_, iconv));
 }
 
 bool ContextID::build() {

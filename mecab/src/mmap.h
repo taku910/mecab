@@ -54,13 +54,6 @@ extern "C" {
 #define O_BINARY 0
 #endif
 
-#if !defined(_WIN32) || defined(__CYGWIN__)
-namespace {
-int open__(const char* name, int flag) { return open(name, flag); }
-int close__(int fd) { return close(fd); }
-}
-#endif
-
 namespace MeCab {
 
 template <class T> class Mmap {
@@ -156,10 +149,10 @@ template <class T> class Mmap {
     else
       CHECK_FALSE(false) << "unknown open mode: " << filename;
 
-    CHECK_FALSE((fd = open__(filename, flag | O_BINARY)) >= 0)
+    CHECK_FALSE((fd = ::open(filename, flag | O_BINARY)) >= 0)
         << "open failed: " << filename;
 
-    CHECK_FALSE(fstat(fd, &st) >= 0)
+    CHECK_FALSE(::fstat(fd, &st) >= 0)
         << "failed to get file size: " << filename;
 
     length = st.st_size;
@@ -169,17 +162,17 @@ template <class T> class Mmap {
     if (flag == O_RDWR) prot |= PROT_WRITE;
     char *p;
     CHECK_FALSE((p = reinterpret_cast<char *>
-                       (mmap(0, length, prot, MAP_SHARED, fd, 0)))
-                      != MAP_FAILED)
+                 (::mmap(0, length, prot, MAP_SHARED, fd, 0)))
+                != MAP_FAILED)
         << "mmap() failed: " << filename;
 
     text = reinterpret_cast<T *>(p);
 #else
     text = new T[length];
-    CHECK_FALSE(read(fd, text, length) >= 0)
+    CHECK_FALSE(::read(fd, text, length) >= 0)
         << "read() failed: " << filename;
 #endif
-    close__(fd);
+    ::close(fd);
     fd = -1;
 
     return true;
@@ -187,20 +180,20 @@ template <class T> class Mmap {
 
   void close() {
     if (fd >= 0) {
-      close__(fd);
+      ::close(fd);
       fd = -1;
     }
 
     if (text) {
 #ifdef HAVE_MMAP
-      munmap(reinterpret_cast<char *>(text), length);
+      ::munmap(reinterpret_cast<char *>(text), length);
       text = 0;
 #else
       if (flag == O_RDWR) {
         int fd2;
-        if ((fd2 = open__(fileName.c_str(), O_RDWR)) >= 0) {
-          write(fd2, text, length);
-          close__(fd2);
+        if ((fd2 = ::open(fileName.c_str(), O_RDWR)) >= 0) {
+          ::write(fd2, text, length);
+          ::close(fd2);
         }
       }
       delete [] text;
@@ -210,7 +203,7 @@ template <class T> class Mmap {
     text = 0;
   }
 
-  Mmap(): text(0), fd(-1) {}
+  Mmap() : text(0), fd(-1) {}
 #endif
 
   virtual ~Mmap() { this->close(); }
