@@ -232,6 +232,7 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *feature_constraint = *MeCabc::Lattice_feature_constraint;
 *set_boundary_constraint = *MeCabc::Lattice_set_boundary_constraint;
 *set_feature_constraint = *MeCabc::Lattice_set_feature_constraint;
+*set_result = *MeCabc::Lattice_set_result;
 *what = *MeCabc::Lattice_what;
 *set_what = *MeCabc::Lattice_set_what;
 sub DESTROY {

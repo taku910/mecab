@@ -491,153 +491,155 @@
 <a name="l01027"></a>01027       <span class="keywordtype">size_t</span> begin_pos, <span class="keywordtype">size_t</span> end_pos,
 <a name="l01028"></a>01028       <span class="keyword">const</span> <span class="keywordtype">char</span> *feature) = 0;
 <a name="l01029"></a>01029 
-<a name="l01034"></a>01034   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *what() <span class="keyword">const</span>            = 0;
+<a name="l01034"></a>01034   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_result(<span class="keyword">const</span> <span class="keywordtype">char</span> *result) = 0;
 <a name="l01035"></a>01035 
-<a name="l01040"></a>01040   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_what(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)        = 0;
+<a name="l01040"></a>01040   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *what() <span class="keyword">const</span>            = 0;
 <a name="l01041"></a>01041 
-<a name="l01042"></a>01042 <span class="preprocessor">#ifndef SWIG</span>
-<a name="l01043"></a>01043 <span class="preprocessor"></span>
-<a name="l01047"></a>01047   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *create();
-<a name="l01048"></a>01048 <span class="preprocessor">#endif</span>
+<a name="l01046"></a>01046   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_what(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)        = 0;
+<a name="l01047"></a>01047 
+<a name="l01048"></a>01048 <span class="preprocessor">#ifndef SWIG</span>
 <a name="l01049"></a>01049 <span class="preprocessor"></span>
-<a name="l01050"></a><a class="code" href="classMeCab_1_1Lattice.html#a63ffb4d69082263c1cf3051f95ed727f">01050</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Lattice.html#a63ffb4d69082263c1cf3051f95ed727f">~Lattice</a>() {}
-<a name="l01051"></a>01051 };
-<a name="l01052"></a>01052 
-<a name="l01056"></a><a class="code" href="classMeCab_1_1Model.html">01056</a> <span class="keyword">class </span><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">MECAB_DLL_CLASS_EXTERN</a> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> {
-<a name="l01057"></a>01057 <span class="keyword">public</span>:
-<a name="l01062"></a>01062   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">DictionaryInfo</a> *dictionary_info() <span class="keyword">const</span> = 0;
-<a name="l01063"></a>01063 
-<a name="l01068"></a>01068   <span class="keyword">virtual</span> <span class="keywordtype">int</span> transition_cost(<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> rcAttr,
-<a name="l01069"></a>01069                               <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> lcAttr) <span class="keyword">const</span> = 0;
-<a name="l01070"></a>01070 
-<a name="l01076"></a>01076   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *lookup(<span class="keyword">const</span> <span class="keywordtype">char</span> *begin, <span class="keyword">const</span> <span class="keywordtype">char</span> *end,
-<a name="l01077"></a>01077                        <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice) <span class="keyword">const</span> = 0;
-<a name="l01078"></a>01078 
-<a name="l01085"></a>01085   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a>  *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>() <span class="keyword">const</span> = 0;
-<a name="l01086"></a>01086 
-<a name="l01091"></a>01091   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *<a class="code" href="namespaceMeCab.html#a4a86d3fa68b44c72618e9b90719bf557" title="Alias of Lattice::create()">createLattice</a>() <span class="keyword">const</span> = 0;
+<a name="l01053"></a>01053   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *create();
+<a name="l01054"></a>01054 <span class="preprocessor">#endif</span>
+<a name="l01055"></a>01055 <span class="preprocessor"></span>
+<a name="l01056"></a><a class="code" href="classMeCab_1_1Lattice.html#a63ffb4d69082263c1cf3051f95ed727f">01056</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Lattice.html#a63ffb4d69082263c1cf3051f95ed727f">~Lattice</a>() {}
+<a name="l01057"></a>01057 };
+<a name="l01058"></a>01058 
+<a name="l01062"></a><a class="code" href="classMeCab_1_1Model.html">01062</a> <span class="keyword">class </span><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">MECAB_DLL_CLASS_EXTERN</a> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> {
+<a name="l01063"></a>01063 <span class="keyword">public</span>:
+<a name="l01068"></a>01068   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">DictionaryInfo</a> *dictionary_info() <span class="keyword">const</span> = 0;
+<a name="l01069"></a>01069 
+<a name="l01074"></a>01074   <span class="keyword">virtual</span> <span class="keywordtype">int</span> transition_cost(<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> rcAttr,
+<a name="l01075"></a>01075                               <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> lcAttr) <span class="keyword">const</span> = 0;
+<a name="l01076"></a>01076 
+<a name="l01082"></a>01082   <span class="keyword">virtual</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *lookup(<span class="keyword">const</span> <span class="keywordtype">char</span> *begin, <span class="keyword">const</span> <span class="keywordtype">char</span> *end,
+<a name="l01083"></a>01083                        <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice) <span class="keyword">const</span> = 0;
+<a name="l01084"></a>01084 
+<a name="l01091"></a>01091   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a>  *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>() <span class="keyword">const</span> = 0;
 <a name="l01092"></a>01092 
-<a name="l01104"></a>01104   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> swap(<a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> *model) = 0;
-<a name="l01105"></a>01105 
-<a name="l01110"></a>01110   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *version();
+<a name="l01097"></a>01097   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *<a class="code" href="namespaceMeCab.html#a4a86d3fa68b44c72618e9b90719bf557" title="Alias of Lattice::create()">createLattice</a>() <span class="keyword">const</span> = 0;
+<a name="l01098"></a>01098 
+<a name="l01110"></a>01110   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> swap(<a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> *model) = 0;
 <a name="l01111"></a>01111 
-<a name="l01112"></a><a class="code" href="classMeCab_1_1Model.html#abccfe166fbb9db7ab5fe8479657dd63c">01112</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Model.html#abccfe166fbb9db7ab5fe8479657dd63c">~Model</a>() {}
-<a name="l01113"></a>01113 
-<a name="l01114"></a>01114 <span class="preprocessor">#ifndef SIWG</span>
-<a name="l01115"></a>01115 <span class="preprocessor"></span>
-<a name="l01123"></a>01123   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a>* create(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l01124"></a>01124 
-<a name="l01133"></a>01133   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a>* create(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
-<a name="l01134"></a>01134 <span class="preprocessor">#endif</span>
-<a name="l01135"></a>01135 <span class="preprocessor"></span>};
-<a name="l01136"></a>01136 
-<a name="l01140"></a><a class="code" href="classMeCab_1_1Tagger.html">01140</a> <span class="keyword">class </span><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">MECAB_DLL_CLASS_EXTERN</a> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> {
-<a name="l01141"></a>01141 <span class="keyword">public</span>:
-<a name="l01154"></a>01154   <span class="keyword">static</span> <span class="keywordtype">bool</span>  parse(<span class="keyword">const</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> &amp;model, <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice);
-<a name="l01155"></a>01155 
-<a name="l01165"></a>01165   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> parse(<a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice) <span class="keyword">const</span>                = 0;
-<a name="l01166"></a>01166 
-<a name="l01175"></a>01175   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)                = 0;
-<a name="l01176"></a>01176 
-<a name="l01186"></a>01186   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* parseToNode(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)          = 0;
-<a name="l01187"></a>01187 
-<a name="l01198"></a>01198   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str) = 0;
-<a name="l01199"></a>01199 
-<a name="l01209"></a>01209   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  parseNBestInit(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)             = 0;
-<a name="l01210"></a>01210 
-<a name="l01218"></a>01218   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* nextNode()                            = 0;
-<a name="l01219"></a>01219 
-<a name="l01227"></a>01227   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* next()                                = 0;
-<a name="l01228"></a>01228 
-<a name="l01239"></a>01239   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* formatNode(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node)          = 0;
-<a name="l01240"></a>01240 
-<a name="l01241"></a>01241 <span class="preprocessor">#ifndef SWIG</span>
-<a name="l01242"></a>01242 <span class="preprocessor"></span>
-<a name="l01252"></a>01252   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen) = 0;
-<a name="l01253"></a>01253 
-<a name="l01260"></a>01260   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                          = 0;
-<a name="l01261"></a>01261 
-<a name="l01268"></a>01268   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* parseToNode(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                    = 0;
-<a name="l01269"></a>01269 
-<a name="l01277"></a>01277   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)           = 0;
-<a name="l01278"></a>01278 
-<a name="l01286"></a>01286   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  parseNBestInit(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                  = 0;
-<a name="l01287"></a>01287 
-<a name="l01295"></a>01295   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* next(<span class="keywordtype">char</span> *ostr , <span class="keywordtype">size_t</span> olen)                        = 0;
-<a name="l01296"></a>01296 
-<a name="l01307"></a>01307   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str,
-<a name="l01308"></a>01308                                  <span class="keywordtype">size_t</span> len, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen)       = 0;
-<a name="l01309"></a>01309 
-<a name="l01318"></a>01318   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* formatNode(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen) = 0;
-<a name="l01319"></a>01319 <span class="preprocessor">#endif</span>
-<a name="l01320"></a>01320 <span class="preprocessor"></span>
-<a name="l01326"></a>01326   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_request_type(<span class="keywordtype">int</span> request_type) = 0;
-<a name="l01327"></a>01327 
-<a name="l01333"></a>01333   <span class="keyword">virtual</span> <span class="keywordtype">int</span>  request_type() <span class="keyword">const</span> = 0;
-<a name="l01334"></a>01334 
-<a name="l01340"></a>01340   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  partial() <span class="keyword">const</span>                             = 0;
-<a name="l01341"></a>01341 
-<a name="l01347"></a>01347   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_partial(<span class="keywordtype">bool</span> partial)                   = 0;
-<a name="l01348"></a>01348 
-<a name="l01354"></a>01354   <span class="keyword">virtual</span> <span class="keywordtype">int</span>   lattice_level() <span class="keyword">const</span>                       = 0;
-<a name="l01355"></a>01355 
-<a name="l01361"></a>01361   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_lattice_level(<span class="keywordtype">int</span> level)                = 0;
-<a name="l01362"></a>01362 
-<a name="l01368"></a>01368   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  all_morphs() <span class="keyword">const</span>                          = 0;
-<a name="l01369"></a>01369 
-<a name="l01375"></a>01375   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_all_morphs(<span class="keywordtype">bool</span> all_morphs)             = 0;
-<a name="l01376"></a>01376 
-<a name="l01381"></a>01381   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_theta(<span class="keywordtype">float</span> theta)                      = 0;
+<a name="l01116"></a>01116   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *version();
+<a name="l01117"></a>01117 
+<a name="l01118"></a><a class="code" href="classMeCab_1_1Model.html#abccfe166fbb9db7ab5fe8479657dd63c">01118</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Model.html#abccfe166fbb9db7ab5fe8479657dd63c">~Model</a>() {}
+<a name="l01119"></a>01119 
+<a name="l01120"></a>01120 <span class="preprocessor">#ifndef SIWG</span>
+<a name="l01121"></a>01121 <span class="preprocessor"></span>
+<a name="l01129"></a>01129   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a>* create(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l01130"></a>01130 
+<a name="l01139"></a>01139   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a>* create(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
+<a name="l01140"></a>01140 <span class="preprocessor">#endif</span>
+<a name="l01141"></a>01141 <span class="preprocessor"></span>};
+<a name="l01142"></a>01142 
+<a name="l01146"></a><a class="code" href="classMeCab_1_1Tagger.html">01146</a> <span class="keyword">class </span><a class="code" href="mecab_8h.html#acd08679cd28701bb998d940fd74887b9">MECAB_DLL_CLASS_EXTERN</a> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> {
+<a name="l01147"></a>01147 <span class="keyword">public</span>:
+<a name="l01160"></a>01160   <span class="keyword">static</span> <span class="keywordtype">bool</span>  parse(<span class="keyword">const</span> <a class="code" href="classMeCab_1_1Model.html" title="Model class.">Model</a> &amp;model, <a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice);
+<a name="l01161"></a>01161 
+<a name="l01171"></a>01171   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> parse(<a class="code" href="classMeCab_1_1Lattice.html" title="Lattice class.">Lattice</a> *lattice) <span class="keyword">const</span>                = 0;
+<a name="l01172"></a>01172 
+<a name="l01181"></a>01181   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)                = 0;
+<a name="l01182"></a>01182 
+<a name="l01192"></a>01192   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* parseToNode(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)          = 0;
+<a name="l01193"></a>01193 
+<a name="l01204"></a>01204   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str) = 0;
+<a name="l01205"></a>01205 
+<a name="l01215"></a>01215   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  parseNBestInit(<span class="keyword">const</span> <span class="keywordtype">char</span> *str)             = 0;
+<a name="l01216"></a>01216 
+<a name="l01224"></a>01224   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* nextNode()                            = 0;
+<a name="l01225"></a>01225 
+<a name="l01233"></a>01233   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* next()                                = 0;
+<a name="l01234"></a>01234 
+<a name="l01245"></a>01245   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* formatNode(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node)          = 0;
+<a name="l01246"></a>01246 
+<a name="l01247"></a>01247 <span class="preprocessor">#ifndef SWIG</span>
+<a name="l01248"></a>01248 <span class="preprocessor"></span>
+<a name="l01258"></a>01258   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen) = 0;
+<a name="l01259"></a>01259 
+<a name="l01266"></a>01266   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parse(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                          = 0;
+<a name="l01267"></a>01267 
+<a name="l01274"></a>01274   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a>* parseToNode(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                    = 0;
+<a name="l01275"></a>01275 
+<a name="l01283"></a>01283   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)           = 0;
+<a name="l01284"></a>01284 
+<a name="l01292"></a>01292   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  parseNBestInit(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, <span class="keywordtype">size_t</span> len)                  = 0;
+<a name="l01293"></a>01293 
+<a name="l01301"></a>01301   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* next(<span class="keywordtype">char</span> *ostr , <span class="keywordtype">size_t</span> olen)                        = 0;
+<a name="l01302"></a>01302 
+<a name="l01313"></a>01313   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* parseNBest(<span class="keywordtype">size_t</span> N, <span class="keyword">const</span> <span class="keywordtype">char</span> *str,
+<a name="l01314"></a>01314                                  <span class="keywordtype">size_t</span> len, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen)       = 0;
+<a name="l01315"></a>01315 
+<a name="l01324"></a>01324   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* formatNode(<span class="keyword">const</span> <a class="code" href="structmecab__node__t.html" title="Node structure.">Node</a> *node, <span class="keywordtype">char</span> *ostr, <span class="keywordtype">size_t</span> olen) = 0;
+<a name="l01325"></a>01325 <span class="preprocessor">#endif</span>
+<a name="l01326"></a>01326 <span class="preprocessor"></span>
+<a name="l01332"></a>01332   <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_request_type(<span class="keywordtype">int</span> request_type) = 0;
+<a name="l01333"></a>01333 
+<a name="l01339"></a>01339   <span class="keyword">virtual</span> <span class="keywordtype">int</span>  request_type() <span class="keyword">const</span> = 0;
+<a name="l01340"></a>01340 
+<a name="l01346"></a>01346   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  partial() <span class="keyword">const</span>                             = 0;
+<a name="l01347"></a>01347 
+<a name="l01353"></a>01353   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_partial(<span class="keywordtype">bool</span> partial)                   = 0;
+<a name="l01354"></a>01354 
+<a name="l01360"></a>01360   <span class="keyword">virtual</span> <span class="keywordtype">int</span>   lattice_level() <span class="keyword">const</span>                       = 0;
+<a name="l01361"></a>01361 
+<a name="l01367"></a>01367   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_lattice_level(<span class="keywordtype">int</span> level)                = 0;
+<a name="l01368"></a>01368 
+<a name="l01374"></a>01374   <span class="keyword">virtual</span> <span class="keywordtype">bool</span>  all_morphs() <span class="keyword">const</span>                          = 0;
+<a name="l01375"></a>01375 
+<a name="l01381"></a>01381   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_all_morphs(<span class="keywordtype">bool</span> all_morphs)             = 0;
 <a name="l01382"></a>01382 
-<a name="l01387"></a>01387   <span class="keyword">virtual</span> <span class="keywordtype">float</span> theta() <span class="keyword">const</span>                               = 0;
+<a name="l01387"></a>01387   <span class="keyword">virtual</span> <span class="keywordtype">void</span>  set_theta(<span class="keywordtype">float</span> theta)                      = 0;
 <a name="l01388"></a>01388 
-<a name="l01393"></a>01393   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">DictionaryInfo</a>* dictionary_info() <span class="keyword">const</span> = 0;
+<a name="l01393"></a>01393   <span class="keyword">virtual</span> <span class="keywordtype">float</span> theta() <span class="keyword">const</span>                               = 0;
 <a name="l01394"></a>01394 
-<a name="l01399"></a>01399   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* what() <span class="keyword">const</span> = 0;
+<a name="l01399"></a>01399   <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structmecab__dictionary__info__t.html" title="DictionaryInfo structure.">DictionaryInfo</a>* dictionary_info() <span class="keyword">const</span> = 0;
 <a name="l01400"></a>01400 
-<a name="l01401"></a><a class="code" href="classMeCab_1_1Tagger.html#a73821650a97b4ca39a26f833014af516">01401</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Tagger.html#a73821650a97b4ca39a26f833014af516">~Tagger</a>() {}
-<a name="l01402"></a>01402 
-<a name="l01403"></a>01403 <span class="preprocessor">#ifndef SIWG</span>
-<a name="l01404"></a>01404 <span class="preprocessor"></span>
-<a name="l01412"></a>01412   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> *create(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l01413"></a>01413 
-<a name="l01422"></a>01422   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> *create(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
-<a name="l01423"></a>01423 <span class="preprocessor">#endif</span>
-<a name="l01424"></a>01424 <span class="preprocessor"></span>
-<a name="l01429"></a>01429   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *version();
-<a name="l01430"></a>01430 };
-<a name="l01431"></a>01431 
-<a name="l01432"></a>01432 <span class="preprocessor">#ifndef SWIG</span>
-<a name="l01433"></a>01433 <span class="preprocessor"></span>
-<a name="l01436"></a>01436 MECAB_DLL_EXTERN Lattice     *<a class="code" href="namespaceMeCab.html#a4a86d3fa68b44c72618e9b90719bf557" title="Alias of Lattice::create()">createLattice</a>();
+<a name="l01405"></a>01405   <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* what() <span class="keyword">const</span> = 0;
+<a name="l01406"></a>01406 
+<a name="l01407"></a><a class="code" href="classMeCab_1_1Tagger.html#a73821650a97b4ca39a26f833014af516">01407</a>   <span class="keyword">virtual</span> <a class="code" href="classMeCab_1_1Tagger.html#a73821650a97b4ca39a26f833014af516">~Tagger</a>() {}
+<a name="l01408"></a>01408 
+<a name="l01409"></a>01409 <span class="preprocessor">#ifndef SIWG</span>
+<a name="l01410"></a>01410 <span class="preprocessor"></span>
+<a name="l01418"></a>01418   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> *create(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l01419"></a>01419 
+<a name="l01428"></a>01428   <span class="keyword">static</span> <a class="code" href="classMeCab_1_1Tagger.html" title="Tagger class.">Tagger</a> *create(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
+<a name="l01429"></a>01429 <span class="preprocessor">#endif</span>
+<a name="l01430"></a>01430 <span class="preprocessor"></span>
+<a name="l01435"></a>01435   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *version();
+<a name="l01436"></a>01436 };
 <a name="l01437"></a>01437 
-<a name="l01441"></a>01441 MECAB_DLL_EXTERN Model       *<a class="code" href="namespaceMeCab.html#a89b79d176709a3a38ff7618a4d8b73d0" title="Alias of Mode::create(argc, argv)">createModel</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l01442"></a>01442 
-<a name="l01446"></a>01446 MECAB_DLL_EXTERN Model       *<a class="code" href="namespaceMeCab.html#a89b79d176709a3a38ff7618a4d8b73d0" title="Alias of Mode::create(argc, argv)">createModel</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
-<a name="l01447"></a>01447 
-<a name="l01451"></a>01451 MECAB_DLL_EXTERN Tagger      *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
-<a name="l01452"></a>01452 
-<a name="l01456"></a>01456 MECAB_DLL_EXTERN Tagger      *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
-<a name="l01457"></a>01457 
-<a name="l01464"></a>01464 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#a317648976dd958252c47e585c0afcdce" title="delete Lattice object.">deleteLattice</a>(Lattice *lattice);
-<a name="l01465"></a>01465 
-<a name="l01466"></a>01466 
-<a name="l01473"></a>01473 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#aca70757f3fc3c6e2f8c4afea035c3426" title="delete Model object.">deleteModel</a>(Model *model);
-<a name="l01474"></a>01474 
-<a name="l01481"></a>01481 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#a7ffb485887c9058fc5affb99718f1b93" title="delete Tagger object.">deleteTagger</a>(Tagger *tagger);
-<a name="l01482"></a>01482 
-<a name="l01487"></a>01487 MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*  <a class="code" href="namespaceMeCab.html#af6b513c7789770d47bdf64f9b86f8445" title="Return last error string.">getLastError</a>();
+<a name="l01438"></a>01438 <span class="preprocessor">#ifndef SWIG</span>
+<a name="l01439"></a>01439 <span class="preprocessor"></span>
+<a name="l01442"></a>01442 MECAB_DLL_EXTERN Lattice     *<a class="code" href="namespaceMeCab.html#a4a86d3fa68b44c72618e9b90719bf557" title="Alias of Lattice::create()">createLattice</a>();
+<a name="l01443"></a>01443 
+<a name="l01447"></a>01447 MECAB_DLL_EXTERN Model       *<a class="code" href="namespaceMeCab.html#a89b79d176709a3a38ff7618a4d8b73d0" title="Alias of Mode::create(argc, argv)">createModel</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l01448"></a>01448 
+<a name="l01452"></a>01452 MECAB_DLL_EXTERN Model       *<a class="code" href="namespaceMeCab.html#a89b79d176709a3a38ff7618a4d8b73d0" title="Alias of Mode::create(argc, argv)">createModel</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
+<a name="l01453"></a>01453 
+<a name="l01457"></a>01457 MECAB_DLL_EXTERN Tagger      *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv);
+<a name="l01458"></a>01458 
+<a name="l01462"></a>01462 MECAB_DLL_EXTERN Tagger      *<a class="code" href="namespaceMeCab.html#ab93991d4bda779f5ea7f2ce4f83535ff" title="Alias of Tagger::create(argc, argv)">createTagger</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *arg);
+<a name="l01463"></a>01463 
+<a name="l01470"></a>01470 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#a317648976dd958252c47e585c0afcdce" title="delete Lattice object.">deleteLattice</a>(Lattice *lattice);
+<a name="l01471"></a>01471 
+<a name="l01472"></a>01472 
+<a name="l01479"></a>01479 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#aca70757f3fc3c6e2f8c4afea035c3426" title="delete Model object.">deleteModel</a>(Model *model);
+<a name="l01480"></a>01480 
+<a name="l01487"></a>01487 MECAB_DLL_EXTERN <span class="keywordtype">void</span>        <a class="code" href="namespaceMeCab.html#a7ffb485887c9058fc5affb99718f1b93" title="delete Tagger object.">deleteTagger</a>(Tagger *tagger);
 <a name="l01488"></a>01488 
-<a name="l01494"></a>01494 MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*  <a class="code" href="namespaceMeCab.html#adb1d3f0f95c4729445a0cd96469041d5" title="An alias of getLastError.">getTaggerError</a>();
-<a name="l01495"></a>01495 <span class="preprocessor">#endif</span>
-<a name="l01496"></a>01496 <span class="preprocessor"></span>}
-<a name="l01497"></a>01497 <span class="preprocessor">#endif</span>
-<a name="l01498"></a>01498 <span class="preprocessor"></span><span class="preprocessor">#endif  </span><span class="comment">/* MECAB_MECAB_H_ */</span>
+<a name="l01493"></a>01493 MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*  <a class="code" href="namespaceMeCab.html#af6b513c7789770d47bdf64f9b86f8445" title="Return last error string.">getLastError</a>();
+<a name="l01494"></a>01494 
+<a name="l01500"></a>01500 MECAB_DLL_EXTERN <span class="keyword">const</span> <span class="keywordtype">char</span>*  <a class="code" href="namespaceMeCab.html#adb1d3f0f95c4729445a0cd96469041d5" title="An alias of getLastError.">getTaggerError</a>();
+<a name="l01501"></a>01501 <span class="preprocessor">#endif</span>
+<a name="l01502"></a>01502 <span class="preprocessor"></span>}
+<a name="l01503"></a>01503 <span class="preprocessor">#endif</span>
+<a name="l01504"></a>01504 <span class="preprocessor"></span><span class="preprocessor">#endif  </span><span class="comment">/* MECAB_MECAB_H_ */</span>
 </pre></div></div><!-- contents -->
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 16 2013 00:33:14 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 18 2013 01:49:50 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

@@ -5555,6 +5555,49 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Lattice_set_result(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  char *arg2 = (char *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Lattice_set_result",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Lattice_set_result" "', argument " "1"" of type '" "MeCab::Lattice *""'"); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  res2 = SWIG_AsCharPtrAndSize(obj1, &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Lattice_set_result" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = reinterpret_cast< char * >(buf2);
+  {
+    try {
+      (arg1)->set_result((char const *)arg2); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Lattice_what(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
@@ -7604,6 +7647,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Lattice_feature_constraint", _wrap_Lattice_feature_constraint, METH_VARARGS, NULL},
 	 { (char *)"Lattice_set_boundary_constraint", _wrap_Lattice_set_boundary_constraint, METH_VARARGS, NULL},
 	 { (char *)"Lattice_set_feature_constraint", _wrap_Lattice_set_feature_constraint, METH_VARARGS, NULL},
+	 { (char *)"Lattice_set_result", _wrap_Lattice_set_result, METH_VARARGS, NULL},
 	 { (char *)"Lattice_what", _wrap_Lattice_what, METH_VARARGS, NULL},
 	 { (char *)"Lattice_set_what", _wrap_Lattice_set_what, METH_VARARGS, NULL},
 	 { (char *)"delete_Lattice", _wrap_delete_Lattice, METH_VARARGS, NULL},

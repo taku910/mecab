@@ -2238,6 +2238,38 @@ SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1feature_1co
 }
 
 
+SWIGEXPORT void JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1set_1result(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(MeCab::Lattice **)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)jenv->GetStringUTFChars(jarg2, 0);
+    if (!arg2) return ;
+  }
+  {
+    try {
+      (arg1)->set_result((char const *)arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_JavaException(jenv, SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+  if (arg2) jenv->ReleaseStringUTFChars(jarg2, (const char *)arg2);
+}
+
+
 SWIGEXPORT jstring JNICALL Java_org_chasen_mecab_MeCabJNI_Lattice_1what(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;

@@ -4346,6 +4346,48 @@ fail:
 
 
 SWIGINTERN VALUE
+_wrap_Lattice_set_result(int argc, VALUE *argv, VALUE self) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  char *arg2 = (char *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MeCab__Lattice, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "MeCab::Lattice *","set_result", 1, self )); 
+  }
+  arg1 = reinterpret_cast< MeCab::Lattice * >(argp1);
+  res2 = SWIG_AsCharPtrAndSize(argv[0], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "char const *","set_result", 2, argv[0] ));
+  }
+  arg2 = reinterpret_cast< char * >(buf2);
+  {
+    try {
+      (arg1)->set_result((char const *)arg2); 
+    }
+    catch (char *e) {
+      SWIG_exception (SWIG_RuntimeError, e); 
+    }
+    catch (const char *e) {
+      SWIG_exception (SWIG_RuntimeError, (char*)e); 
+    }
+  }
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  return Qnil;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 _wrap_Lattice_what(int argc, VALUE *argv, VALUE self) {
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
   void *argp1 = 0 ;
@@ -6740,6 +6782,7 @@ SWIGEXPORT void Init_MeCab(void) {
   rb_define_method(SwigClassLattice.klass, "feature_constraint", VALUEFUNC(_wrap_Lattice_feature_constraint), -1);
   rb_define_method(SwigClassLattice.klass, "set_boundary_constraint", VALUEFUNC(_wrap_Lattice_set_boundary_constraint), -1);
   rb_define_method(SwigClassLattice.klass, "set_feature_constraint", VALUEFUNC(_wrap_Lattice_set_feature_constraint), -1);
+  rb_define_method(SwigClassLattice.klass, "set_result", VALUEFUNC(_wrap_Lattice_set_result), -1);
   rb_define_method(SwigClassLattice.klass, "what", VALUEFUNC(_wrap_Lattice_what), -1);
   rb_define_method(SwigClassLattice.klass, "set_what", VALUEFUNC(_wrap_Lattice_set_what), -1);
   rb_define_method(SwigClassLattice.klass, "set_sentence", VALUEFUNC(_wrap_Lattice_set_sentence), -1);

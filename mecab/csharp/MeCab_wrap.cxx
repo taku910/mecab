@@ -2068,6 +2068,30 @@ SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_feature_constraint(void * jarg1, 
 }
 
 
+SWIGEXPORT void SWIGSTDCALL CSharp_Lattice_set_result(void * jarg1, char * jarg2) {
+  MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  arg1 = (MeCab::Lattice *)jarg1; 
+  arg2 = (char *)jarg2; 
+  {
+    try {
+      (arg1)->set_result((char const *)arg2); 
+    }
+    catch (char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, e); return ; 
+      }; 
+    }
+    catch (const char *e) {
+      {
+        SWIG_CSharpException(SWIG_RuntimeError, (char*)e); return ; 
+      }; 
+    }
+  }
+}
+
+
 SWIGEXPORT char * SWIGSTDCALL CSharp_Lattice_what(void * jarg1) {
   char * jresult ;
   MeCab::Lattice *arg1 = (MeCab::Lattice *) 0 ;

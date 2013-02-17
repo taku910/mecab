@@ -148,6 +148,10 @@ public class Lattice {
     MeCabJNI.Lattice_set_feature_constraint(swigCPtr, this, begin_pos, end_pos, feature);
   }
 
+  public void set_result(String result) {
+    MeCabJNI.Lattice_set_result(swigCPtr, this, result);
+  }
+
   public String what() {
     return MeCabJNI.Lattice_what(swigCPtr, this);
   }

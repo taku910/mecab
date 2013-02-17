@@ -200,6 +200,11 @@ public class Lattice : IDisposable {
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public virtual void set_result(string result) {
+    MeCabPINVOKE.Lattice_set_result(swigCPtr, result);
+    if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public virtual string what() {
     string ret = MeCabPINVOKE.Lattice_what(swigCPtr);
     if (MeCabPINVOKE.SWIGPendingException.Pending) throw MeCabPINVOKE.SWIGPendingException.Retrieve();

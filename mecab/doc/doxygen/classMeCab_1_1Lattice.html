@@ -145,6 +145,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parsing constraint for partial parsing mode.  <a href="#ad42406ac4a6994a1e2c252efea15cf5f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Lattice.html#a32fdfd3d40d166ef79a44c6094485088">set_feature_constraint</a> (size_t begin_pos, size_t end_pos, const char *feature)=0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parsing constraint for partial parsing mode.  <a href="#a32fdfd3d40d166ef79a44c6094485088"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Lattice.html#a7b68776c23a5e72892fbd127a1edb133">set_result</a> (const char *result)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set golden parsing results for unittesting.  <a href="#a7b68776c23a5e72892fbd127a1edb133"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Lattice.html#ac38508be28a6cd0803eebde805ea8c6f">what</a> () const =0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return error string.  <a href="#ac38508be28a6cd0803eebde805ea8c6f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeCab_1_1Lattice.html#a2403a3abc4c8a77eefb4728bc0af04b1">set_what</a> (const char *str)=0</td></tr>
@@ -773,6 +775,31 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a7b68776c23a5e72892fbd127a1edb133"></a><!-- doxytag: member="MeCab::Lattice::set_result" ref="a7b68776c23a5e72892fbd127a1edb133" args="(const char *result)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classMeCab_1_1Lattice.html#a7b68776c23a5e72892fbd127a1edb133">MeCab::Lattice::set_result</a> </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>result</em></td><td>)</td>
+          <td><code> [pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Set golden parsing results for unittesting. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>the parsing result written in the standard mecab output. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="af7d37d6dfa93991fd949fa582391ed25"></a><!-- doxytag: member="MeCab::Lattice::set_sentence" ref="af7d37d6dfa93991fd949fa582391ed25" args="(const char *sentence)=0" -->
 <div class="memitem">
 <div class="memproto">
@@ -1125,7 +1152,7 @@ Static Public Member Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 16 2013 00:33:14 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 18 2013 01:49:50 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

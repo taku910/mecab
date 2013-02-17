@@ -1028,6 +1028,12 @@ public:
       const char *feature) = 0;
 
   /**
+   * Set golden parsing results for unittesting.
+   * @param result the parsing result written in the standard mecab output.
+   */
+  virtual void set_result(const char *result) = 0;
+
+  /**
    * Return error string.
    * @return error string
    */

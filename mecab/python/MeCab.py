@@ -226,6 +226,7 @@ class Lattice(_object):
     def feature_constraint(self, *args): return _MeCab.Lattice_feature_constraint(self, *args)
     def set_boundary_constraint(self, *args): return _MeCab.Lattice_set_boundary_constraint(self, *args)
     def set_feature_constraint(self, *args): return _MeCab.Lattice_set_feature_constraint(self, *args)
+    def set_result(self, *args): return _MeCab.Lattice_set_result(self, *args)
     def what(self): return _MeCab.Lattice_what(self)
     def set_what(self, *args): return _MeCab.Lattice_set_what(self, *args)
     __swig_destroy__ = _MeCab.delete_Lattice

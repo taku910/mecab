@@ -444,6 +444,9 @@ class MeCabPINVOKE {
   [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_feature_constraint")]
   public static extern void Lattice_set_feature_constraint(HandleRef jarg1, uint jarg2, uint jarg3, string jarg4);
 
+  [DllImport("MeCab", EntryPoint="CSharp_Lattice_set_result")]
+  public static extern void Lattice_set_result(HandleRef jarg1, string jarg2);
+
   [DllImport("MeCab", EntryPoint="CSharp_Lattice_what")]
   public static extern string Lattice_what(HandleRef jarg1);
 

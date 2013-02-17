@@ -94,6 +94,7 @@ public class MeCabJNI {
   public final static native String Lattice_feature_constraint(long jarg1, Lattice jarg1_, long jarg2);
   public final static native void Lattice_set_boundary_constraint(long jarg1, Lattice jarg1_, long jarg2, int jarg3);
   public final static native void Lattice_set_feature_constraint(long jarg1, Lattice jarg1_, long jarg2, long jarg3, String jarg4);
+  public final static native void Lattice_set_result(long jarg1, Lattice jarg1_, String jarg2);
   public final static native String Lattice_what(long jarg1, Lattice jarg1_);
   public final static native void Lattice_set_what(long jarg1, Lattice jarg1_, String jarg2);
   public final static native void delete_Lattice(long jarg1);

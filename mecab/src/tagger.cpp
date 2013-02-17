@@ -5,6 +5,7 @@
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 #include <cstring>
 #include <iostream>
+#include <iterator>
 #include "common.h"
 #include "connector.h"
 #include "mecab.h"
@@ -291,6 +292,8 @@ class LatticeImpl : public Lattice {
 
   void set_feature_constraint(size_t begin_pos, size_t end_pos,
                               const char *feature);
+
+  void set_result(const char *result);
 
   const char *what() const { return what_.c_str(); }
 
@@ -790,6 +793,73 @@ bool LatticeImpl::next() {
 
   Viterbi::buildResultForNBest(this);
   return true;
+}
+
+void LatticeImpl::set_result(const char *result) {
+  char *str = allocator()->strdup(result, std::strlen(result));
+  std::vector<char *> lines;
+  const size_t lsize = tokenize(str, "\n",
+                                std::back_inserter(lines),
+                                std::strlen(result));
+  CHECK_DIE(lsize == lines.size());
+
+  std::string sentence;
+  std::vector<std::string> surfaces, features;
+  for (size_t i = 0; i < lines.size(); ++i) {
+    if (::strcmp("EOS", lines[i]) == 0) {
+      break;
+    }
+    char *cols[2];
+    if (tokenize(lines[i], "\t", cols, 2) != 2) {
+      break;
+    }
+    sentence += cols[0];
+    surfaces.push_back(cols[0]);
+    features.push_back(cols[1]);
+  }
+
+  CHECK_DIE(features.size() == surfaces.size());
+
+  set_sentence(allocator()->strdup(sentence.c_str(), sentence.size()));
+
+  Node *bos_node = allocator()->newNode();
+  bos_node->surface = const_cast<const char *>(BOS_KEY);  // dummy
+  bos_node->feature = "BOS/EOS";
+  bos_node->isbest = 1;
+  bos_node->stat = MECAB_BOS_NODE;
+
+  Node *eos_node = allocator()->newNode();
+  eos_node->surface = const_cast<const char *>(BOS_KEY);  // dummy
+  eos_node->feature = "BOS/EOS";
+  eos_node->isbest = 1;
+  eos_node->stat = MECAB_EOS_NODE;
+
+  bos_node->surface = sentence_;
+  end_nodes_[0] = bos_node;
+
+  size_t offset = 0;
+  Node *prev = bos_node;
+  for (size_t i = 0; i < surfaces.size(); ++i) {
+    Node *node = allocator()->newNode();
+    node->prev = prev;
+    prev->next = node;
+    node->surface = sentence_ + offset;
+    node->length = surfaces[i].size();
+    node->rlength = surfaces[i].size();
+    node->isbest = 1;
+    node->stat = MECAB_NOR_NODE;
+    node->wcost = 0;
+    node->cost = 0;
+    node->feature = allocator()->strdup(features[i].c_str(),
+                                        features[i].size());
+    begin_nodes_[offset] = node;
+    end_nodes_[offset + node->length] = node;
+    offset += node->length;
+    prev = node;
+  }
+
+  prev->next = eos_node;
+  eos_node->prev = prev;
 }
 
 // default implementation of Lattice formatter.
