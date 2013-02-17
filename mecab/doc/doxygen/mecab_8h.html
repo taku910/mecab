@@ -266,6 +266,8 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">C wrapper of MeCab::Lattice::boundary_constraint(pos, type)  <a href="#a1ada506af3452914520f6299a4fd3904"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">MECAB_DLL_EXTERN void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#add015fc06e0b09b0123efc85822881e9">mecab_lattice_set_feature_constraint</a> (<a class="el" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, size_t begin_pos, size_t end_pos, const char *feature)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">C wrapper of MeCab::Lattice::set_feature_constraint(begin_pos, end_pos, feature)  <a href="#add015fc06e0b09b0123efc85822881e9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">MECAB_DLL_EXTERN void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#aafb53db40d4c6500d3b77ce950f718c6">mecab_lattice_set_result</a> (<a class="el" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice, const char *result)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">C wrapper of MeCab::Lattice::set_result(result);.  <a href="#aafb53db40d4c6500d3b77ce950f718c6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">MECAB_DLL_EXTERN const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#ae17603a0d78f80495841bd7c85681718">mecab_lattice_strerror</a> (<a class="el" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *lattice)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">C wrapper of <a class="el" href="classMeCab_1_1Lattice.html#ac38508be28a6cd0803eebde805ea8c6f" title="Return error string.">MeCab::Lattice::what()</a>  <a href="#ae17603a0d78f80495841bd7c85681718"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">MECAB_DLL_EXTERN <a class="el" href="mecab_8h.html#a977231990ee0d4a92fb18df53b918964">mecab_model_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mecab_8h.html#a54cc1d92f891a5f1f3d9e37f04c07c85">mecab_model_new</a> (int argc, char **argv)</td></tr>
@@ -1474,6 +1476,35 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aafb53db40d4c6500d3b77ce950f718c6"></a><!-- doxytag: member="mecab.h::mecab_lattice_set_result" ref="aafb53db40d4c6500d3b77ce950f718c6" args="(mecab_lattice_t *lattice, const char *result)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MECAB_DLL_EXTERN void <a class="el" href="mecab_8h.html#aafb53db40d4c6500d3b77ce950f718c6">mecab_lattice_set_result</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="mecab_8h.html#a619b3522263178323d77f4dd99a871cb">mecab_lattice_t</a> *&#160;</td>
+          <td class="paramname"><em>lattice</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>C wrapper of MeCab::Lattice::set_result(result);. </p>
+
+</div>
+</div>
 <a class="anchor" id="ae1056a1837780342eccb330c16156cbd"></a><!-- doxytag: member="mecab.h::mecab_lattice_set_sentence" ref="ae1056a1837780342eccb330c16156cbd" args="(mecab_lattice_t *lattice, const char *sentence)" -->
 <div class="memitem">
 <div class="memproto">
@@ -2627,7 +2658,7 @@ Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 18 2013 01:49:50 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 18 2013 02:23:58 for MeCab by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

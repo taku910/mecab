@@ -691,6 +691,11 @@ extern "C" {
   MECAB_DLL_EXTERN void            mecab_lattice_set_feature_constraint(mecab_lattice_t *lattice, size_t begin_pos, size_t end_pos, const char *feature);
 
   /**
+   * C wrapper of MeCab::Lattice::set_result(result);
+   */
+  MECAB_DLL_EXTERN void            mecab_lattice_set_result(mecab_lattice_t *lattice, const char *result);
+
+  /**
    * C wrapper of MeCab::Lattice::what()
    */
   MECAB_DLL_EXTERN const char      *mecab_lattice_strerror(mecab_lattice_t *lattice);

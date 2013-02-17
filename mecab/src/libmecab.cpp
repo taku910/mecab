@@ -423,6 +423,11 @@ void mecab_lattice_set_feature_constraint(mecab_lattice_t *lattice,
       lattice)->set_feature_constraint(begin_pos, end_pos, feature);
 }
 
+void mecab_lattice_set_result(mecab_lattice_t *lattice,
+                              const char *result) {
+  return reinterpret_cast<MeCab::Lattice *>(lattice)->set_result(result);
+}
+
 const char *mecab_lattice_strerror(mecab_lattice_t *lattice) {
   return reinterpret_cast<MeCab::Lattice *>(lattice)->what();
 }
