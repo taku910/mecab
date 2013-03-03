@@ -79,7 +79,7 @@ sub convert {
     
 	my @ctype__ = @{$ctype_->{$ctype}};
 	for (@ctype__) {
-	    if ($_->[0] eq "´ğËÜ·Á") {
+	    if ($_->[0] eq "åŸºæœ¬å½¢") {
 		$lexs  = substr ($lex,  0, length ($lex)  - length($_->[1]));
 		$reads = substr ($read, 0, length ($read) - length($_->[2]));
 		last;
@@ -94,7 +94,7 @@ sub convert {
 	    my $newread = &append ($reads, $_->[2]);
 	    $newread =~ s/\s+//g;
 	    $newlex  =~ s/\s+//g;
-	    $base = $newlex if ($cform eq "´ğËÜ·Á");
+	    $base = $newlex if ($cform eq "åŸºæœ¬å½¢");
 	    next if (length ($newlex) <= 1);
 	    push @list, 
 	      [($newlex,0,0,0,$pos1,$pos2,$ctype,$cform,$lexs,$newread,$sem)];
@@ -113,7 +113,7 @@ sub parse_morph() {
     my $m = shift @_;
 
     my @list = ();
-    if ($m->[0] eq "Ï¢¸ì") {
+    if ($m->[0] eq "é€£èª") {
 	@list = @{$m->[1]};
     } else {
 	push @list, $m;
@@ -141,7 +141,7 @@ sub parse_morph() {
 	    $e{pos2} = $pos2;
 	    $e{ctype} = $e{meaning} = $e{reading} = "*";
 	    for my $k (@{$n2}) {
-		if ($k->[0] eq "¸«½Ğ¤·¸ì") {
+		if ($k->[0] eq "è¦‹å‡ºã—èª") {
 		    for (my $i = 1; $i <= $#$k; ++$i) {
 			if (ref ($k->[$i]) eq 'ARRAY') {
 			    push @{$e{surface}}, $k->[$i]->[0];
@@ -149,11 +149,11 @@ sub parse_morph() {
 			    push @{$e{surface}}, $k->[$i];
 			}
 		    }
-		} elsif ($k->[0] eq "ÆÉ¤ß") {
+		} elsif ($k->[0] eq "èª­ã¿") {
 		    $e{reading} = $k->[1];
-		} elsif ($k->[0] eq "³èÍÑ·¿") {
+		} elsif ($k->[0] eq "æ´»ç”¨å‹") {
 		    $e{ctype} = $k->[1];
-		} elsif ($k->[0] eq "°ÕÌ£¾ğÊó") {
+		} elsif ($k->[0] eq "æ„å‘³æƒ…å ±") {
 		    $k->[1] =~ s/\"//g; 
 		    $e{meaning} = $k->[1];
 		}

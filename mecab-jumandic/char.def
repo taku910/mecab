@@ -65,7 +65,7 @@ CYRILLIC       1 1 0
 0x3041..0x309F  HIRAGANA
 
 # KATAKANA
-0x30A0..0x30FA  KATAKANA # remove °¶(0x30FB from KATAKANA)
+0x30A0..0x30FA  KATAKANA # remove „Éª(0x30FB from KATAKANA)
 0x30FC..0x30FF  KATAKANA
 
 0x31F0..0x31FF  KATAKANA  # Small KU .. Small RO
@@ -78,17 +78,17 @@ CYRILLIC       1 1 0
 # KANJI
 0x2E80..0x2EF3  KANJI # CJK Raidcals Supplement
 0x2F00..0x2FD5  KANJI 
-0x3005          KANJI # °π
+0x3005          KANJI # „ÄÖ
 0x3006          KANJI 
 0x3400..0x4DB5  KANJI # CJK Unified Ideographs Extention
 0x4E00..0x9FA5  KANJI
 0xF900..0xFA2D  KANJI
 0xFA30..0xFA6A  KANJI
 
-# NUMERIC (°˚ ∞Ï ∆Û ª∞ ªÕ ∏ﬁ œª º∑ »¨ ∂Â ΩΩ …¥ ¿È À¸ ≤Ø √˚)
-0x3007 NUMERIC # °˚
-0x3038 NUMERIC # ΩΩ?
-0x30FB NUMERIC # °¶
+# NUMERIC (‚óã ‰∏Ä ‰∫å ‰∏â Âõõ ‰∫î ÂÖ≠ ‰∏É ÂÖ´ ‰πù ÂçÅ Áôæ ÂçÉ ‰∏á ÂÑÑ ÂÖÜ)
+0x3007 NUMERIC # ‚óã
+0x3038 NUMERIC # ÂçÅ?
+0x30FB NUMERIC # „Éª
 0x4E00 NUMERIC
 0x4E8C NUMERIC
 0x4E09 NUMERIC
