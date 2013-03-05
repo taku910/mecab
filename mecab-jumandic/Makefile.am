@@ -7,8 +7,8 @@ EXTRA_DIST = @MECAB_LEXICAL_DIC@ @MECAB_PREDATA@ RESULT
 CLEANFILES = @MECAB_GENDATA@
 
 @MECAB_GENDATA@:
-	$(mecab_dict_index) -f euc-jp -t @CHARSET@
+	$(mecab_dict_index) -f utf-8 -t @CHARSET@
 	echo To enable dictionary, rewrite @MECAB_MECABRC@ as \"dicrc = @MECAB_DICDIR@\"
 
 export-package:
-	./upload.pl -p mecab -n @PACKAGE@ -r @VERSION@ -f @PACKAGE@-@VERSION@.tar.gz
+	python googlecode_upload.py -p mecab -s @PACKAGE@ -u taku@chasen.org -w `cat ~/.googlecode_upload_password` @PACKAGE@-@VERSION@.tar.gz
