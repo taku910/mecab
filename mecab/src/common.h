@@ -81,9 +81,15 @@
 #define EXIT_SUCCESS 0
 #endif
 
-#if defined(_WIN32) && !defined(__CYGWIN__)
-#define WPATH(path) (MeCab::Utf8ToWide(path).c_str())
+#ifdef _WIN32
+#ifdef __GNUC__
+#define WPATH_FORCE(path) (MeCab::Utf8ToWide(path).c_str())
+#define WPATH(path) (path)
 #else
+#define WPATH(path) WPATH_FORCE(path)
+#endif
+#else
+#define WPATH_FORCE(path) (path)
 #define WPATH(path) (path)
 #endif
 
