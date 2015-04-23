@@ -1823,7 +1823,7 @@ fi
 
 PACKAGE=mecab-ipadic
 
-VERSION=2.7.0-20070610
+VERSION=2.7.0-20070801
 
 if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
   { { echo "$as_me:$LINENO: error: source directory already configured; run \"make distclean\" there first" >&5
@@ -2111,7 +2111,7 @@ MECAB_GENDATA="matrix.bin char.bin sys.dic unk.dic"
 MECAB_PREDATA="`echo *.def` dicrc"
 
 
-ac_config_files="$ac_config_files Makefile mecab-ipadic.spec"
+ac_config_files="$ac_config_files Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -2669,7 +2669,6 @@ for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "mecab-ipadic.spec") CONFIG_FILES="$CONFIG_FILES mecab-ipadic.spec" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
