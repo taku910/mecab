@@ -564,8 +564,8 @@ const char *TaggerImpl::parse(const char *str) {
 
 const char *TaggerImpl::parse(const char *str, size_t len) {
   Lattice *lattice = mutable_lattice();
-  lattice->set_sentence(str, len);
   initRequestType();
+  lattice->set_sentence(str, len);
   if (!parse(lattice)) {
     set_what(lattice->what());
     return 0;
@@ -581,8 +581,8 @@ const char *TaggerImpl::parse(const char *str, size_t len) {
 const char *TaggerImpl::parse(const char *str, size_t len,
                               char *out, size_t len2) {
   Lattice *lattice = mutable_lattice();
-  lattice->set_sentence(str, len);
   initRequestType();
+  lattice->set_sentence(str, len);
   if (!parse(lattice)) {
     set_what(lattice->what());
     return 0;
@@ -601,8 +601,8 @@ const Node *TaggerImpl::parseToNode(const char *str) {
 
 const Node *TaggerImpl::parseToNode(const char *str, size_t len) {
   Lattice *lattice = mutable_lattice();
-  lattice->set_sentence(str, len);
   initRequestType();
+  lattice->set_sentence(str, len);
   if (!parse(lattice)) {
     set_what(lattice->what());
     return 0;
@@ -616,9 +616,9 @@ bool TaggerImpl::parseNBestInit(const char *str) {
 
 bool TaggerImpl::parseNBestInit(const char *str, size_t len) {
   Lattice *lattice = mutable_lattice();
-  lattice->set_sentence(str, len);
   initRequestType();
   lattice->add_request_type(MECAB_NBEST);
+  lattice->set_sentence(str, len);
   if (!parse(lattice)) {
     set_what(lattice->what());
     return false;
@@ -670,9 +670,9 @@ const char* TaggerImpl::parseNBest(size_t N, const char* str) {
 const char* TaggerImpl::parseNBest(size_t N,
                                    const char* str, size_t len) {
   Lattice *lattice = mutable_lattice();
-  lattice->set_sentence(str, len);
   initRequestType();
   lattice->add_request_type(MECAB_NBEST);
+  lattice->set_sentence(str, len);
 
   if (!parse(lattice)) {
     set_what(lattice->what());
@@ -690,9 +690,9 @@ const char* TaggerImpl::parseNBest(size_t N,
 const char* TaggerImpl::parseNBest(size_t N, const char* str, size_t len,
                                    char *out, size_t len2) {
   Lattice *lattice = mutable_lattice();
-  lattice->set_sentence(str, len);
   initRequestType();
   lattice->add_request_type(MECAB_NBEST);
+  lattice->set_sentence(str, len);
 
   if (!parse(lattice)) {
     set_what(lattice->what());
