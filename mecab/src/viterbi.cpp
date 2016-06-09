@@ -367,8 +367,8 @@ bool Viterbi::viterbi(Lattice *lattice) const {
   const char *begin = lattice->sentence();
   const char *end = begin + len;
 
-  Node *bos_node = tokenizer_->getBOSNode(lattice->allocator());
-  bos_node->surface = lattice->sentence();
+  Node *bos_node = tokenizer_->getBOSNode(allocator);
+  bos_node->surface = begin;
   end_node_list[0] = bos_node;
 
   for (size_t pos = 0; pos < len; ++pos) {
@@ -387,11 +387,11 @@ bool Viterbi::viterbi(Lattice *lattice) const {
     }
   }
 
-  Node *eos_node = tokenizer_->getEOSNode(lattice->allocator());
-  eos_node->surface = lattice->sentence() + lattice->size();
-  begin_node_list[lattice->size()] = eos_node;
+  Node *eos_node = tokenizer_->getEOSNode(allocator);
+  eos_node->surface = begin + len;
+  begin_node_list[len] = eos_node;
 
-  for (long pos = len; static_cast<long>(pos) >= 0; --pos) {
+  for (long pos = len; pos >= 0; --pos) {
     if (end_node_list[pos]) {
       if (!connect<IsAllPath>(pos, eos_node,
                               begin_node_list,
@@ -404,9 +404,6 @@ bool Viterbi::viterbi(Lattice *lattice) const {
       break;
     }
   }
-
-  end_node_list[0] = bos_node;
-  begin_node_list[lattice->size()] = eos_node;
 
   return true;
 }
