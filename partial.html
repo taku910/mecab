@@ -130,10 +130,10 @@ tagger->parse(lattice);
 lattice->set_sentence("thisisatest");
 
 // |this|is|a|test| で分割され、かつ品詞大分類をすべて名詞にするように強制
-lattice->set_feature_constriant(0,4,"名詞");
-lattice->set_feature_constriant(4,6,"名詞");
-lattice->set_feature_constriant(6,7,"名詞");
-lattice->set_feature_constriant(7,11,"名詞");
+lattice->set_feature_constraint(0,4,"名詞");
+lattice->set_feature_constraint(4,6,"名詞");
+lattice->set_feature_constraint(6,7,"名詞");
+lattice->set_feature_constraint(7,11,"名詞");
 
 tagger->parse(lattice);
 
