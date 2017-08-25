@@ -466,7 +466,7 @@ bool Dictionary::compile(const Param &param,
   Darts::DoubleArray da;
   CHECK_DIE(da.build(str.size(), const_cast<char **>(&str[0]),
                      &len[0], &val[0], &progress_bar_darts) == 0)
-      << "unkown error in building double-array";
+      << "unknown error in building double-array";
 
   std::string tbuf;
   for (size_t i = 0; i < dic.size(); ++i) {
