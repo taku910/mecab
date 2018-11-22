@@ -26,6 +26,7 @@
 #if defined(_MSC_VER) || defined(__CYGWIN__)
 #define NOMINMAX
 #define snprintf _snprintf
+#include <iterator>
 #endif
 
 #define COPYRIGHT "MeCab: Yet Another Part-of-Speech and Morphological Analyzer\n\
@@ -81,13 +82,9 @@
 #define EXIT_SUCCESS 0
 #endif
 
-#ifdef _WIN32
-#ifdef __GNUC__
+#if defined(_WIN32) && (defined(__GNUC__) || defined(_MSC_VER))
 #define WPATH_FORCE(path) (MeCab::Utf8ToWide(path).c_str())
-#define WPATH(path) (path)
-#else
 #define WPATH(path) WPATH_FORCE(path)
-#endif
 #else
 #define WPATH_FORCE(path) (path)
 #define WPATH(path) (path)
