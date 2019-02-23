@@ -1,0 +1,50 @@
+.SH "OUTPUT FORMAT"
+
+The default output format and the selectable output formats from the
+\fB\-O\fR option argument are defined in the resource file.
+There are few special hard coded formats.
+
+.TP
+\fB""\fR (null string)
+disable format setting of resource file.  This is required to set user\-defined
+format from the command line.
+.TP
+\fBwakati\fR
+output each node separated by a space
+.TP
+\fBdump\fR
+dump all node data in one line 
+.TP
+\fBnone\fR
+no output
+
+.PP
+See <https://taku910.github.io/mecab/format.html> for details of format
+definition.
+
+.SH DICTIONARY
+
+See 
+.IP \(bu 4
+<https://taku910.github.io/mecab/learn.html>
+.IP \(bu 4
+<https://taku910.github.io/mecab/dic-detail.html>
+.PP
+for details of preparation and updating of the mecab dictionary.
+
+.SH EXAMPLE
+
+Output reading in KataKana with installed and fully configured UniDic.
+
+    $ mecab -O "" -F"%pS%f[9]" -U"%M" -E"\\n" <input_file
+
+Output writing in Hiragana with installed and fully configured UniDic.
+
+    $ mecab -O "" -F"%pS%f[6]" -U"%M" -E"\\n" <input_file \\
+.br
+      |nkf --hiragana
+
+Output reading in KataKana with installed and fully configured Ipadic.
+
+    $ mecab -O yomi <input_file
+
