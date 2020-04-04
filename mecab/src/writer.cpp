@@ -60,7 +60,7 @@ bool Writer::open(const Param &param) {
       eon_format_key += "-";
       eon_format_key += ostyle;
       const std::string tmp = param.get<std::string>(node_format_key.c_str());
-      CHECK_FALSE(!tmp.empty()) << "unkown format type [" << ostyle << "]";
+      CHECK_FALSE(!tmp.empty()) << "unknown format type [" << ostyle << "]";
     }
 
     const std::string node_format2 =
