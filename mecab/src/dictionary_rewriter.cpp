@@ -44,7 +44,7 @@ bool match_rewrite_pattern(const char *pat,
     scoped_fixed_array<char, BUF_SIZE> buf;
     scoped_fixed_array<char *, BUF_SIZE> col;
     CHECK_DIE(len < buf.size() - 3) << "too long parameter";
-    std::strncpy(buf.get(), pat + 1, buf.size());
+    std::strncpy(buf.get(), pat + 1, buf.size() - 1u);
     buf[len-2] = '\0';
     const size_t n = tokenize(buf.get(), "|", col.get(), col.size());
     CHECK_DIE(n < col.size()) << "too long OR nodes";
@@ -64,10 +64,10 @@ bool RewritePattern::set_pattern(const char *src,
   spat_.clear();
   dpat_.clear();
 
-  std::strncpy(buf.get(), src, buf.size());
+  std::strncpy(buf.get(), src, buf.size() - 1u);
   tokenizeCSV(buf.get(), back_inserter(spat_), 512);
 
-  std::strncpy(buf.get(), dst, buf.size());
+  std::strncpy(buf.get(), dst, buf.size() - 1u);
   tokenizeCSV(buf.get(), back_inserter(dpat_), 512);
 
   return (spat_.size() && dpat_.size());
@@ -166,7 +166,7 @@ bool DictionaryRewriter::rewrite(const std::string &feature,
   scoped_fixed_array<char, BUF_SIZE> buf;
   scoped_fixed_array<char *, BUF_SIZE> col;
   CHECK_DIE(feature.size() < buf.size() - 1) << "too long feature";
-  std::strncpy(buf.get(), feature.c_str(), buf.size() - 1);
+  std::strncpy(buf.get(), feature.c_str(), buf.size() - 1u);
   const size_t n = tokenizeCSV(buf.get(), col.get(), col.size());
   CHECK_DIE(n < col.size()) << "too long CSV entities";
   return (unigram_rewrite_.rewrite(n, const_cast<const char **>(col.get()),
