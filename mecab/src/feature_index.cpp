@@ -334,7 +334,7 @@ bool FeatureIndex::buildUnigramFeature(LearnerPath *path,
   scoped_fixed_array<char *, POSSIZE> F;
 
   feature_.clear();
-  std::strncpy(ubuf.get(), ufeature, ubuf.size());
+  std::strncpy(ubuf.get(), ufeature, ubuf.size() - 1u);
   const size_t usize = tokenizeCSV(ubuf.get(), F.get(), F.size());
 
   for (std::vector<const char*>::const_iterator it = unigram_templs_.begin();
@@ -386,8 +386,8 @@ bool FeatureIndex::buildBigramFeature(LearnerPath *path,
   scoped_fixed_array<char *, POSSIZE> L;
 
   feature_.clear();
-  std::strncpy(lbuf.get(),  rfeature, lbuf.size());
-  std::strncpy(rbuf.get(),  lfeature, rbuf.size());
+  std::strncpy(lbuf.get(),  rfeature, lbuf.size() - 1u);
+  std::strncpy(rbuf.get(),  lfeature, rbuf.size() - 1u);
 
   const size_t lsize = tokenizeCSV(lbuf.get(), L.get(), L.size());
   const size_t rsize = tokenizeCSV(rbuf.get(), R.get(), R.size());
