@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
 from distutils.core import setup,Extension,os
-import string
 
 def cmd1(str):
     return os.popen(str).readlines()[0][:-1]
 
 def cmd2(str):
-    return string.split (cmd1(str))
+    return cmd1(str).split()
 
 setup(name = "mecab-python",
 	version = cmd1("mecab-config --version"),
