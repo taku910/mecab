@@ -1,0 +1,15 @@
+*.obj
+*.exe
+*.lib
+*.so
+*.pyc
+*.exp
+*.pyc
+*.dll
+*.pdb
+python/build
+python/dist
+python/*.egg-info
+python/.venv
+python/venv
+.vs
