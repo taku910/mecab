@@ -358,7 +358,7 @@ bool FeatureIndex::buildUnigramFeature(LearnerPath *path,
             case 'w':
               if (path->rnode->stat == MECAB_NOR_NODE) {
                 os_.write(path->rnode->surface, path->rnode->length);
-              }
+              } break;
             default:
               CHECK_DIE(false) << "unknown meta char: " <<  *p;
           }
