@@ -107,7 +107,7 @@ while test $# -gt 0; do
 	;;
 
     --libexecdir)
-       	echo @prefix@/libexec/mecab
+       	echo @libexecdir@/mecab
        	;;
 	
     --sysconfdir)
