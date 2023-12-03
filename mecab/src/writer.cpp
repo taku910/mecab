@@ -75,7 +75,8 @@ bool Writer::open(const Param &param) {
         param.get<std::string>(eon_format_key.c_str());
 
     if (node_format != node_format2 || bos_format != bos_format2 ||
-        eos_format != eos_format2 || unk_format != unk_format2) {
+        eos_format != eos_format2 || unk_format != unk_format2 ||
+	eon_format != eon_format2 ) {
       write_ = &Writer::writeUser;
       if (node_format != node_format2) {
         node_format = node_format2;
