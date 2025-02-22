@@ -1122,7 +1122,7 @@ public:
 
   virtual ~Model() {}
 
-#ifndef SIWG
+#ifndef SWIG
   /**
    * Factory method to create a new Model with a specified main's argc/argv-style parameters.
    * Return NULL if new model cannot be initialized. Use MeCab::getLastError() to obtain the
@@ -1411,7 +1411,7 @@ public:
 
   virtual ~Tagger() {}
 
-#ifndef SIWG
+#ifndef SWIG
   /**
    * Factory method to create a new Tagger with a specified main's argc/argv-style parameters.
    * Return NULL if new model cannot be initialized. Use MeCab::getLastError() to obtain the
