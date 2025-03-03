@@ -191,7 +191,7 @@ void Param::clear() {
 
 bool Param::open(const char *arg, const Option *opts) {
   scoped_fixed_array<char, BUF_SIZE> str;
-  std::strncpy(str.get(), arg, str.size());
+  std::strncpy(str.get(), arg, str.size() - 1u);
   char* ptr[64];
   unsigned int size = 1;
   ptr[0] = const_cast<char*>(PACKAGE);

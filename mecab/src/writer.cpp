@@ -349,7 +349,7 @@ bool Writer::writeNode(Lattice *lattice,
               return false;
             }
             if (!psize) {
-              std::strncpy(buf.get(), node->feature, buf.size());
+              std::strncpy(buf.get(), node->feature, buf.size() - 1u);
               psize = tokenizeCSV(buf.get(), ptr.get(), ptr.size());
             }
 
