@@ -23,7 +23,8 @@ void Writer::close() {
 }
 
 bool Writer::open(const Param &param) {
-  const std::string ostyle = param.get<std::string>("output-format-type");
+  const std::string node_format_option = param.get<std::string>("node-format");
+  const std::string ostyle = node_format_option.empty() ? param.get<std::string>("output-format-type") : "";
   write_ = &Writer::writeLattice;
 
   if (ostyle == "wakati") {
@@ -77,7 +78,8 @@ bool Writer::open(const Param &param) {
     if (node_format != node_format2 || bos_format != bos_format2 ||
         eos_format != eos_format2 || unk_format != unk_format2) {
       write_ = &Writer::writeUser;
-      if (node_format != node_format2) {
+
+      if (!node_format2.empty() && node_format != node_format2) {
         node_format = node_format2;
       }
       if (bos_format != bos_format2) {
@@ -86,9 +88,9 @@ bool Writer::open(const Param &param) {
       if (eos_format != eos_format2) {
         eos_format = eos_format2;
       }
-      if (unk_format != unk_format2) {
+      if (!unk_format2.empty() && unk_format != unk_format2) {
         unk_format = unk_format2;
-      } else if (node_format != node_format2) {
+      } else if (!node_format2.empty() && node_format != node_format2) {
         unk_format = node_format2;
       } else {
         unk_format = node_format;
