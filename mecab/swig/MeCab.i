@@ -14,6 +14,8 @@
 %}
 
 %newobject surface;
+%newobject MeCab::Model::createLattice;
+%newobject MeCab::Model::createTagger;
 
 %exception {
   try { $action }
