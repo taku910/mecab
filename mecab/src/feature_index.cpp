@@ -353,7 +353,7 @@ bool FeatureIndex::buildUnigramFeature(LearnerPath *path,
               if (!r) goto NEXT;
               os_ << r;
             } break;
-            case 't':  os_ << (size_t)path->rnode->char_type;     break;
+            case 't':  os_ << (unsigned int)path->rnode->char_type;     break;
             case 'u':  os_ << ufeature; break;
             case 'w':
               if (path->rnode->stat == MECAB_NOR_NODE) {

@@ -257,7 +257,7 @@ bool Writer::writeNode(Lattice *lattice,
             // input sentence
           case 'S': os->write(lattice->sentence(), lattice->size()); break;
             // sentence length
-          case 'L': *os << lattice->size(); break;
+          case 'L': *os << (unsigned int)lattice->size(); break;
             // morph
           case 'm': os->write(node->surface, node->length); break;
           case 'M': os->write(reinterpret_cast<const char *>
