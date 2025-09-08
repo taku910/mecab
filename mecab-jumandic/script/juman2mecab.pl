@@ -69,6 +69,16 @@ sub convert {
 	return $result;
     }
 
+    # special case for 無活用型
+    if ($ctype eq "無活用型"){
+        my $result ="";
+        for (@$surface) {
+            $result .= sprintf ("%s,0,0,0,%s,%s,%s,*,%s,%s,%s\n",
+            $_, $pos1, $pos2, $ctype, $_, $reading, $meaning);
+        }
+        return $result;
+    }
+
     my $result = "";
     for my $s (@$surface) {
 	my $lex   = $s;
