@@ -250,7 +250,7 @@ bool Writer::writeNode(Lattice *lattice,
       case '%': {  // macros
         switch (*++p) {
           default: {
-            const std::string error = "unknown meta char: " + *p;
+            const std::string error = std::string("unknown meta char: ") + *p;
             lattice->set_what(error.c_str());
             return false;
           }

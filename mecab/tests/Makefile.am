@@ -1,5 +1,5 @@
 # Generated automatically from Makefile.in by configure.x
-TESTS = run-dics.sh run-eval.sh run-cost-train.sh
+TESTS = run-dics.sh run-eval.sh run-cost-train.sh run-writer.sh
 EXTRA_DIR = eval autolink dic eval katakana latin shiin t9 chartype cost-train ngram
 EXTRA_DIST = $(TESTS)
 
