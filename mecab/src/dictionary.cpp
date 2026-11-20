@@ -5,6 +5,7 @@
 //  Copyright(C) 2004-2006 Nippon Telegraph and Telephone Corporation
 #include <fstream>
 #include <climits>
+#include <utility>
 #include "connector.h"
 #include "context_id.h"
 #include "char_property.h"
@@ -65,9 +66,9 @@ int progress_bar_darts(size_t current, size_t total) {
 }
 
 template <typename T1, typename T2>
-struct pair_1st_cmp: public std::binary_function<bool, T1, T2> {
+struct pair_1st_cmp {
   bool operator()(const std::pair<T1, T2> &x1,
-                  const std::pair<T1, T2> &x2)  {
+                  const std::pair<T1, T2> &x2) const {
     return x1.first < x2.first;
   }
 };
